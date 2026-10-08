@@ -12,6 +12,8 @@ Under the two types of dependency, how would the optimal policy of reducing regr
 
 The [temporal-bandit research map](research/temporal_bandits.md) reviews autoregressive and Markovian bandits, distinguishes rested and restless evolution, and compares regret against fixed arms, causal policies, and full-state oracles. It develops an AR(1) starting model with separate parameter and prediction uncertainty, including the effects of observation age and sampling gaps. A [formula illustration](research/temporal_information.svg) shows how persistence preserves forecasts while reducing the information in consecutive samples about the mean.
 
+The [predictive AR(1) study](research/predictive_ar1/README.md) develops an exact Gaussian Predictive Sampling policy and targets the coefficient of linear regret against an oracle seeing all current states. It includes proved lower and constructive upper bounds, a two-step control comparator, and reproducible simulations.
+
 ## Graph alignment and cumulative regret
 
 The revised [working research manuscript](research/alignment_paper/manuscript.pdf) develops graph-specific information complexity, resistance-based observation designs, a policy with finite-time regret bounds, and an explicit price for certified graph errors. Its central result compares paths and cliques with identical reward means, energy budgets, and resistance diameters: endpoint observations can reject a path component, while the clique class requires arm-wise exploration. Its [overview](research/alignment_paper/README.md) explains the results and limitations; the [LaTeX source](research/alignment_paper/manuscript.tex) includes the proofs and references.

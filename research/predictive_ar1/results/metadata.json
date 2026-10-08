@@ -1,0 +1,266 @@
+{
+  "runs": 40,
+  "horizon": 30000,
+  "burn": 5000,
+  "seed_rule": "7919*(run+1)+20261008; common states across policies",
+  "known_parameters": true,
+  "exact_observations": true,
+  "stationary_initialization": true,
+  "interval": "normal 95% across independent runs",
+  "ps_reference": "https://proceedings.mlr.press/v206/liu23e.html",
+  "cases": [
+    {
+      "name": "fast_noise_decoy",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.2
+      ],
+      "phis": [
+        0.99,
+        0.99,
+        0.99,
+        0.99,
+        0.0
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        4.0
+      ],
+      "innovations": [
+        0.01990000000000003,
+        0.01990000000000003,
+        0.01990000000000003,
+        0.01990000000000003,
+        4.0
+      ],
+      "oracle_rate": 1.5235796695053105,
+      "full_past_lower_bound": 0.47106805914120886,
+      "blind_coefficient": 1.3235796695053106,
+      "refresh_bound": 1.3235796695053106,
+      "refresh_period": null
+    },
+    {
+      "name": "homogeneous_0",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phis": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "innovations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "oracle_rate": 1.1629644736405176,
+      "full_past_lower_bound": 1.1629644736405176,
+      "blind_coefficient": 1.1629644736405176,
+      "refresh_bound": 1.1629644736405176,
+      "refresh_period": null
+    },
+    {
+      "name": "homogeneous_0.1",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phis": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "innovations": [
+        0.99,
+        0.99,
+        0.99,
+        0.99,
+        0.99
+      ],
+      "oracle_rate": 1.1629644736405176,
+      "full_past_lower_bound": 1.0466680262764658,
+      "blind_coefficient": 1.1629644736405176,
+      "refresh_bound": 1.1629644736405176,
+      "refresh_period": null
+    },
+    {
+      "name": "homogeneous_0.5",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phis": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "innovations": [
+        0.75,
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "oracle_rate": 1.1629644736405176,
+      "full_past_lower_bound": 0.5814822368202588,
+      "blind_coefficient": 1.1629644736405176,
+      "refresh_bound": 1.1629644736405176,
+      "refresh_period": null
+    },
+    {
+      "name": "homogeneous_0.9",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phis": [
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "innovations": [
+        0.18999999999999995,
+        0.18999999999999995,
+        0.18999999999999995,
+        0.18999999999999995,
+        0.18999999999999995
+      ],
+      "oracle_rate": 1.1629644736405176,
+      "full_past_lower_bound": 0.11629644736405154,
+      "blind_coefficient": 1.1629644736405176,
+      "refresh_bound": 1.1629644736405176,
+      "refresh_period": null
+    },
+    {
+      "name": "homogeneous_0.99",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phis": [
+        0.99,
+        0.99,
+        0.99,
+        0.99,
+        0.99
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "innovations": [
+        0.01990000000000003,
+        0.01990000000000003,
+        0.01990000000000003,
+        0.01990000000000003,
+        0.01990000000000003
+      ],
+      "oracle_rate": 1.1629644736405176,
+      "full_past_lower_bound": 0.011629644736405043,
+      "blind_coefficient": 1.1629644736405176,
+      "refresh_bound": 0.9642794927026941,
+      "refresh_period": 10
+    },
+    {
+      "name": "homogeneous_0.995",
+      "means": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phis": [
+        0.995,
+        0.995,
+        0.995,
+        0.995,
+        0.995
+      ],
+      "stationary_variances": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "innovations": [
+        0.009974999999999956,
+        0.009974999999999956,
+        0.009974999999999956,
+        0.009974999999999956,
+        0.009974999999999956
+      ],
+      "oracle_rate": 1.1629644736405176,
+      "full_past_lower_bound": 0.005814822368202188,
+      "blind_coefficient": 1.1629644736405176,
+      "refresh_bound": 0.8327078622305295,
+      "refresh_period": 14
+    }
+  ],
+  "elapsed_seconds": 243.14093175000002
+}

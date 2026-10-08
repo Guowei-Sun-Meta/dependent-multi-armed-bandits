@@ -167,3 +167,7 @@ A practical study should compare stationary UCB, greedy Kalman predictions, Thom
 For theory, the natural first lower-bound object is the conditional likelihood accumulated across adaptive observation gaps, illustrated by \(I_h\) above. Its information constraints must be coupled to the cost of acting under stale beliefs. Any computational planning approximation should have a separate cumulative error term. Extending to a shared latent state would later connect this direction to cross-arm dependence, but it changes the information structure and requires its own analysis.
 
 Suggested first reading: Predictive Sampling for the value-of-information viewpoint, AR2 for an explicit dependence on persistence and innovation noise, and Ortner et al. for the causal restless comparator and Markov belief representation.
+
+## 8. Follow-up: minimize the full-state linear coefficient
+
+The selected follow-up direction is now the full-current-state comparator: minimize the coefficient of its unavoidable linear regret. The [AR(1) development](predictive_ar1/README.md) specializes Gaussian Predictive Sampling, derives a positive full-past-information lower bound and a constructive refresh-policy upper bound, and compares policies on common simulated trajectories. The causal comparator above remains useful for separating learning from monitoring, while this follow-up deliberately studies the stronger oracle.

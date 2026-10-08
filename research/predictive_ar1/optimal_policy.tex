@@ -1,0 +1,139 @@
+\section{What is the optimal policy?}
+\label{sec:optimal-control}
+For known parameters, minimizing the full-state regret coefficient is equivalent to maximizing causal average reward. Since the states are stationary and exogenous,
+\begin{equation}
+c_\pi=G-\liminf_{T\to\infty}\frac1T\E_\pi\sum_{t=1}^TX_{A_t,t}.
+\label{eq:gain-equivalence}
+\end{equation}
+The current beliefs $b=((m_i,v_i))_{i=1}^K$ are a sufficient state for this control problem. Observing $x$ from arm $i$ produces the next-round belief $\mathcal T_i(b,x)$ given by
+\begin{align}
+m_i'&=\mu_i+\phi_i(x-\mu_i), &v_i'&=q_i,\nonumber\\
+m_j'&=\mu_j+\phi_j(m_j-\mu_j), &v_j'&=\phi_j^2v_j+q_j\quad(j\ne i).
+\label{eq:belief-transition}
+\end{align}
+Thus only the selected arm's next predictive mean is random at this transition. Unselected arms still accumulate uncertainty.
+
+\begin{proposition}[Exact finite-horizon control]
+Let $J_n(b)$ be the largest expected total reward over $n$ remaining rounds from belief $b$. Then $J_0=0$ and
+\begin{equation}
+J_n(b)=\max_i\left\{m_i+\E_{x\sim N(m_i,v_i)}J_{n-1}(\mathcal T_i(b,x))\right\}.
+\label{eq:finite-bellman}
+\end{equation}
+Selecting a maximizing arm at each remaining horizon is optimal for that finite-horizon problem.
+\end{proposition}
+\begin{proof}
+Given the belief and first action $i$, the current expected reward is $m_i$ and the observed reward has distribution $N(m_i,v_i)$. Equation~\eqref{eq:belief-transition} is its complete next-round sufficient statistic. Conditional optimization of the remaining $n-1$ actions followed by maximization over the first action proves the recursion by induction.
+\end{proof}
+This is an exact policy characterization, not a computed solution for the experimental cases. Each action expectation is one-dimensional, but its continuation value depends on the joint belief of every arm. Recursive integration and representation of that joint value are the main computational obstacles.
+
+The information bonus can also be isolated explicitly. Let $b^-$ be the hypothetical next-round belief if no current state were observed: every mean and variance undergo the unselected-arm update in~\eqref{eq:belief-transition}. Then
+\[
+I_{i,n}(b)=\E J_{n-1}(\mathcal T_i(b,X_i))-J_{n-1}(b^-),
+\qquad A\in\argmax_i\{m_i+I_{i,n}(b)\}.
+\]
+Here $I_{i,n}\geq0$: a continuation policy can always ignore the new observation and reproduce the no-observation continuation. Unlike a variance bonus, this information value depends on decision gaps and the opportunity to obtain further observations. For $n=1$ it is zero; for $n=2$ it recovers the exact two-period information value.
+
+For the linear coefficient, the corresponding average-reward optimality equation is
+\begin{equation}
+g+h(b)=\max_i\left\{m_i+\E h(\mathcal T_i(b,X_i))\right\},
+\qquad X_i\sim N(m_i,v_i).
+\label{eq:average-bellman}
+\end{equation}
+Here $h$ measures the future advantage of a belief relative to the average reward $g$. A maximizing selector is average optimal if a solution has the transversality property
+\begin{equation}
+\frac{\E_\pi|h(B_{T+1})|}{T}\longrightarrow0
+\label{eq:transversality}
+\end{equation}
+for all admissible policies from our initial belief. The next section proves this assertion by telescoping. We do not establish existence of such a solution in the unbounded Gaussian belief space. Writing the equation alone is therefore not an average-optimality theorem for an implemented algorithm.
+
+The continuation term is the appropriate information bonus: it values an observation in the context of competitors, their uncertainties, and subsequent observations. Positive persistence alone does not justify a universally optimal independent-arm index. General restless Markov counterexamples already invalidate universal optimality of independent-arm indices~\cite{ortner2014}; those examples do not prove nonexistence of an optimal index for this particular Gaussian family. A Whittle policy would require a separate indexability argument and performance analysis.
+
+\section{Certifying the regret coefficient of a candidate}
+\label{sec:certificate}
+An approximate continuation function can be useful even without solving~\eqref{eq:average-bellman}. For a trial function $h$, define
+\begin{equation}
+D_h(b,i)=m_i+\E h(\mathcal T_i(b,X_i))-h(b),\qquad
+r_h(b)=\max_iD_h(b,i),
+\end{equation}
+and let $\pi_h$ choose a maximizing arm. The residual $r_h$ is an average-reward Bellman residual, rather than an empirical regret estimate.
+
+\begin{proposition}[Residual certificate]
+Suppose $h$ satisfies~\eqref{eq:transversality} for all admissible policies, all expectations above are finite, and
+$\ell\leq r_h(b)\leq u$ on every reachable belief. Then
+\begin{equation}
+G-u\leq c^*\leq c_{\pi_h}\leq G-\ell,\qquad
+c_{\pi_h}-c^*\leq u-\ell.
+\label{eq:certificate}
+\end{equation}
+In particular, an exact constant residual certifies optimality.
+\end{proposition}
+\begin{proof}
+For any policy, the conditional expected reward plus expected change in $h$ is at most $r_h(B_t)\leq u$. Summing gives
+\[
+\E_\pi\sum_{t=1}^TX_{A_t,t}\leq Tu+h(B_1)-\E_\pi h(B_{T+1}).
+\]
+For $\pi_h$ the conditional expression equals $r_h(B_t)\geq\ell$, yielding the reverse inequality with $T\ell$. Divide by $T$, use transversality, and apply~\eqref{eq:gain-equivalence}. Infimizing over policies and subtracting the two bounds proves~\eqref{eq:certificate}.
+\end{proof}
+
+The Gaussian setting also admits a useful weighted version. Write $W(b)=\sum_i|m_i-\mu_i|$. Under stationary exogenous states, for every policy and round,
+\begin{equation}
+\E_\pi W(B_t)\leq\sqrt{2/\pi}\sum_i\sqrt{V_i}=:C_V,
+\label{eq:belief-moment}
+\end{equation}
+by $m_i=\E[X_{i,t}\mid H_t]$ and conditional Jensen's inequality. Consequently $|h(b)|\leq C_0+C_1W(b)$ suffices for transversality. If a globally verified residual bound has the form
+\begin{equation}
+|r_h(b)-g|\leq\epsilon_0+\epsilon_1W(b),
+\end{equation}
+the same telescoping argument gives, with $\epsilon=\epsilon_0+\epsilon_1C_V$,
+\begin{equation}
+G-g-\epsilon\leq c^*\leq c_{\pi_h}\leq G-g+\epsilon,
+\qquad c_{\pi_h}-c^*\leq2\epsilon.
+\end{equation}
+This allows unbounded means while bounding average error. A residual checked only on sampled beliefs or a finite grid is not a global certificate; interpolation, integration errors, and omitted Gaussian tails also need control. No numerical certificate is claimed here.
+
+There is a related conditional improvement guarantee. If a baseline $\pi_0$ has gain $g_0$ and a bias $h_0$ satisfying its policy evaluation equation
+\[
+g_0=\sum_i\pi_0(i\mid b)D_{h_0}(b,i),
+\]
+then $r_{h_0}(b)\geq g_0$. Under the same transversality conditions, greedifying with respect to $h_0$ gives $c_{\pi_{h_0}}\leq G-g_0=c_{\pi_0}$. This suggests evaluating PS's bias and improving its actions, with a separate residual certificate for closeness to the optimum. A fitted bias or a truncated Monte Carlo rollout does not inherit this guarantee without error control. A discounted-return improvement alone also does not certify improvement of our average-reward objective.
+
+\section{A lifetime-weighted information rule and its limit}
+\label{sec:long-kg}
+To test whether a simple long-horizon correction improves the two-period policy, consider common mean $\mu$ and common $\phi\in[0,1)$. Put $C_i=\max_{j\ne i}m_j$, $d_i=|m_i-C_i|$, and define the expected improvement in the largest predictive mean after one exact observation by
+\begin{align}
+\mathrm{KG}_i(b)
+&=\E\max\{C_i,X_i\}-\max_jm_j\nonumber\\
+&=\sqrt{v_i}\varphi\left(\frac{d_i}{\sqrt{v_i}}\right)
+-d_i\Phi\left(-\frac{d_i}{\sqrt{v_i}}\right).
+\label{eq:kg}
+\end{align}
+Knowledge-gradient measurement policies are established in Bayesian information collection~\cite{frazier2008}; their ranking-and-selection guarantees do not apply to this restless reward problem.
+
+Suppose the continuation retains this one observation but ignores every later observation. At lag $s$, all predictive means share the same affine contraction toward $\mu$. The expected improvement in the best predictive mean is therefore exactly $\phi^s\mathrm{KG}_i(b)$. The cumulative improvement is
+\begin{equation}
+\sum_{s=1}^\infty\phi^s\mathrm{KG}_i(b)
+=\frac\phi{1-\phi}\mathrm{KG}_i(b).
+\end{equation}
+This continuation calculation is finite for $\phi<1$ and yields the illustrative action rule
+\begin{equation}
+A_t\in\argmax_i\left\{m_i+\frac\phi{1-\phi}\mathrm{KG}_i(b)\right\}.
+\label{eq:long-kg}
+\end{equation}
+It is deterministic, accounts for decision gaps as well as variance, and has no fitted multiplier. The information term vanishes at $\phi=0$. For common parameters the two-period rule uses $\phi\mathrm{KG}_i$ instead; at $\phi=0.99$ the lifetime multiplier is $99$, compared with $0.99$ for the two-period rule. Predictive mean improvements decay as $\phi^s$, whereas prediction-variance improvements decay as $\phi^{2s}$: their lifetime factors measure different quantities.
+
+Equation~\eqref{eq:long-kg} is not a solution of~\eqref{eq:average-bellman}. Replanning after every observation uses information that the continuation calculation discarded, so it can count benefits that subsequent observations would replace. Heterogeneous means or persistence also break its common-contraction simplification.
+
+The additional comparison reuses the original six homogeneous cases, all 40 independent trajectories per case, and the same burn-in and measured horizon. An exact replay of a saved PS replication verifies that running the new policy separately preserves the common state trajectory. No multiplier is selected from the results.
+\begin{table}[ht]
+\centering
+\caption{Additional common-trajectory comparison. Smaller coefficients are better; positive paired PS minus KG differences favor KG. Intervals are approximate 95\% intervals.}
+\resizebox{\textwidth}{!}{\begin{tabular}{rrrrrr}
+\toprule
+$\phi$ & Greedy & Two-step & PS & Long-horizon KG & PS minus KG\\
+\midrule
+\inputtable{results/policy_improvement/results_table.tex}
+\bottomrule
+\end{tabular}}
+\end{table}
+\input{results/policy_improvement/findings.tex}
+The lifetime rule improves on PS at moderate persistence, but two-period control remains stronger at $\phi=0.9$ and PS remains stronger at $\phi=0.99$ and $0.995$. These results rule out presenting this geometric bonus as a uniformly better policy. They motivate estimating the actual average-reward continuation value, whose information benefit accounts for future refreshes and competing observations.

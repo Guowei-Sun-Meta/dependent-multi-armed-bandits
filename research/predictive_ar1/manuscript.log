@@ -924,10 +924,12 @@ PGFPlots: reading {results/cumulative_plot.csv}
 PGFPlots: reading {results/cumulative_plot.csv}
 PGFPlots: reading {results/cumulative_plot.csv}
 PGFPlots: reading {results/cumulative_plot.csv}
- [5] [6] [7
+ [5] [6] (optimal_policy [7
 
-] (manuscript.aux)
+] [8]
+(results/policy_improvement/results_table.tex)
+(results/policy_improvement/findings.tex)) [9] [10] (manuscript.aux)
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: D22E46F182856BE495C75674172B3D25;1857.
+(rerunfilecheck)             Checksum: 6E2E28BF1D3AEF8B6A387C2C9BC7F667;2663.
  )
-Output written on manuscript.xdv (7 pages, 256988 bytes).
+Output written on manuscript.xdv (10 pages, 366884 bytes).

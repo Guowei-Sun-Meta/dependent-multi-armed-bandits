@@ -15,13 +15,13 @@
 \newcommand{\argmax}{\operatorname*{arg\,max}}
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
-\title{Predictive Sampling for Restless AR(1) Rewards:\\Reducing the Coefficient of Full-State Oracle Regret}
+\title{Predictive Control for Restless AR(1) Rewards:\\Reducing the Coefficient of Full-State Oracle Regret}
 \author{Working research development}
 \date{8 October 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-Observing a temporally correlated arm supplies both a reward and information about future rewards. We study independent, known-parameter Gaussian AR(1) arms evolving in calendar time, where the learner observes one current state and an oracle observes all current states. We specialize existing Predictive Sampling to an explicit Gaussian score that excludes information erased by future innovations. A full-past-information observer gives a positive linear regret lower bound; a periodic probing policy gives a constructive upper bound. For homogeneous arms at fixed stationary variance, these bounds imply that the optimal coefficient tends to zero as persistence tends to one, while leaving unmatched persistence dependence. Reproducible simulations compare predictive sampling, state-posterior Thompson sampling, greedy predictions, two-period control, and periodic probing. Predictive sampling improves the measured coefficient in highly persistent cases and a heterogeneous white-noise case, while greedy predictions perform better at moderate persistence. These are known-model state-tracking results, rather than parameter-learning or optimal-policy guarantees.
+Observing a temporally correlated arm supplies both a reward and information about future rewards. We study independent, known-parameter Gaussian AR(1) arms evolving in calendar time, where the learner observes one current state and an oracle observes all current states. We specialize existing Predictive Sampling to an explicit Gaussian score that excludes information erased by future innovations. A full-past-information observer gives a positive linear regret lower bound; a periodic probing policy gives a constructive upper bound. For homogeneous arms at fixed stationary variance, these imply that the optimal coefficient tends to zero as persistence tends to one, with unmatched persistence dependence. We derive exact finite-horizon belief control and a conditional average-reward Bellman characterization, together with a residual certificate for candidate policies. Reproducible comparisons show that Predictive Sampling is strongest among the tested policies in highly persistent cases, while shorter-horizon control performs better at moderate persistence. A derived lifetime-weighted knowledge-gradient rule improves on Predictive Sampling at moderate persistence but loses at high persistence. The certificate is a verification framework; no implemented policy is certified optimal and parameters are supplied.
 \end{abstract}
 
 \section{Model, comparator, and objective}
@@ -234,11 +234,13 @@ legend style={at={(0.5,-0.38)},anchor=north,legend columns=3,font=\small},grid=m
 The heterogeneous case has four persistent zero-mean arms with $\phi=0.99,V=1$ and a white-noise arm with $\mu=0.2,\phi=0,V=4$. Greedy stays on the white-noise arm; PS excludes its unretained uncertainty. Complete paired and horizon comparisons are in the generated research note.
 
 \clearpage
+\input{optimal_policy}
 \section{Scope and next theoretical target}
-The study formalizes a full-state linear-coefficient objective, an exact PS specialization, an innovation lower bound, and a feasible persistence-sensitive upper bound. It does not establish that PS minimizes the coefficient, match the persistence exponents, or handle unknown parameters and noisy observations. The most immediate theoretical target is the average reward of the controlled Gaussian belief process under PS or a stronger long-horizon policy. A stationary belief law, if established, would express the coefficient as the average conditional oracle gap under that law. Improving the probing upper bound and deriving lower bounds for sparse monitoring would distinguish the cost of hidden arms from the cost of fresh innovations.
+The study formalizes a full-state linear-coefficient objective, an exact PS specialization, an innovation lower bound, a feasible persistence-sensitive upper bound, and exact finite-horizon belief control. It also supplies conditional bias-based policy improvement and a Bellman-residual route to certifying an average coefficient. It does not compute an optimal average-reward bias, certify PS or the lifetime rule, match the persistence exponents, or handle unknown parameters and noisy observations. The immediate computational target is to evaluate PS's average-reward continuation value for a small number of arms, improve its action choices, and bound the residual including Gaussian tails. The lifetime-rule comparison shows why a large persistence multiplier alone is insufficient. Improving the probing upper bound and deriving lower bounds for sparse monitoring would distinguish hidden-arm costs from fresh-innovation costs.
 
 \begin{thebibliography}{9}
 \bibitem{liu2023} Y. Liu, B. Van Roy, and K. Xu. Nonstationary Bandit Learning via Predictive Sampling. AISTATS, PMLR 206:6215--6244, 2023. \url{https://proceedings.mlr.press/v206/liu23e.html}.
 \bibitem{ortner2014} R. Ortner, D. Ryabko, P. Auer, and R. Munos. Regret bounds for restless Markov bandits. Theoretical Computer Science 558:62--76, 2014. \url{https://daniil.ryabko.net/mabajr.pdf}.
+\bibitem{frazier2008} P. I. Frazier, W. B. Powell, and S. Dayanik. A Knowledge-Gradient Policy for Sequential Information Collection. SIAM Journal on Control and Optimization 47(5):2410--2439, 2008. \url{https://doi.org/10.1137/070693424}.
 \end{thebibliography}
 \end{document}

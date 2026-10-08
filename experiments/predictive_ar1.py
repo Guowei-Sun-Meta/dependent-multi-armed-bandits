@@ -154,6 +154,16 @@ class BeliefPolicy:
                 sd = tables[i]["future_sd"][ages[i]]
                 scores.append(m[i] + competitor
                               + expected_positive(projected[i] - competitor, sd))
+        elif self.name == "long_kg":
+            if len(set(self.phis)) != 1 or len(set(self.means)) != 1 or self.phis[0] < 0:
+                raise ValueError("The closed-form long-horizon KG requires common nonnegative persistence and means.")
+            lifetime = self.phis[0] / (1 - self.phis[0])
+            scores = []
+            for i in range(self.k):
+                competitor = max(m[j] for j in range(self.k) if j != i)
+                gap = abs(m[i] - competitor)
+                information_value = expected_positive(-gap, tables[i]["ts_sd"][ages[i]])
+                scores.append(m[i] + lifetime * information_value)
         else:
             raise ValueError(self.name)
         # Fixed ordering is deterministic, non-anticipating tie-breaking.
@@ -167,15 +177,15 @@ class BeliefPolicy:
             self.ages[i] = 1 if i == arm else (self.ages[i] + 1 if self.ages[i] else 0)
 
 
-def simulate_run(case, horizon, burn, run):
+def simulate_run(case, horizon, burn, run, policy_names=POLICIES):
     seed = 7919 * (run + 1) + 20261008
     environment = random.Random(seed)
     means, phis = case["means"], case["phis"]
     states = [mu + math.sqrt(v) * environment.gauss(0, 1)
               for mu, v in zip(means, case["stationary_variances"])]
     innovation_sds = [math.sqrt(q) for q in case["innovations"]]
-    policies = {name: BeliefPolicy(name, case, seed + 100_003) for name in POLICIES}
-    names = POLICIES + ("past_state_genie",)
+    policies = {name: BeliefPolicy(name, case, seed + 100_003) for name in policy_names}
+    names = policy_names + ("past_state_genie",)
     regret, tail, reward_sum = [{name: 0.0 for name in names} for _ in range(3)]
     measured_counts = {name: [0] * len(means) for name in names}
     checkpoints = sorted({min(horizon, h) for h in (1000, 2500, 5000, 10000, 20000, horizon)})
@@ -223,11 +233,11 @@ def simulate_run(case, horizon, burn, run):
     return rows, curves
 
 
-def run_case(case, horizon, burn, runs):
+def run_case(case, horizon, burn, runs, policy_names=POLICIES):
     prepared = prepare_case(case, horizon, burn)
     rows, curves = [], []
     for run in range(runs):
-        a, b = simulate_run(prepared, horizon, burn, run)
+        a, b = simulate_run(prepared, horizon, burn, run, policy_names)
         rows.extend(a)
         curves.extend(b)
     metadata = {key: value for key, value in prepared.items() if key != "lookup"}

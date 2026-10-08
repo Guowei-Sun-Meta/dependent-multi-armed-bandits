@@ -1,6 +1,6 @@
-# Predictive sampling for restless AR(1) rewards
+# Predictive control for restless AR(1) rewards
 
-Working development, 8 October 2026. The objective is to reduce the coefficient of expected regret against an oracle observing every arm's current state. The policy below specializes published Predictive Sampling; the elementary bounds and experiments here do not establish a new optimal-regret algorithm or publication novelty.
+Working development, 8 October 2026. The objective is to reduce the coefficient of expected regret against an oracle observing every arm's current state. We specialize published Predictive Sampling, derive exact finite-horizon belief control, and give a conditional average-reward certificate. The experiments do not establish an optimal policy or publication novelty.
 
 ## Model and observation timing
 
@@ -175,8 +175,114 @@ Results are generated in [results/findings.md](results/findings.md), with raw re
 python3 experiments/predictive_ar1.py --verify
 python3 experiments/predictive_ar1.py --runs 40 --horizon 30000 --burn 5000 --workers 4
 python3 experiments/render_predictive_ar1.py
+python3 experiments/ar1_policy_improvement.py --verify
+python3 experiments/ar1_policy_improvement.py --workers 4
+# Regenerate the additional comparison without rerunning simulation:
+python3 experiments/ar1_policy_improvement.py --render-only
 cd research/predictive_ar1
 /Users/guoweisun/.local/bin/tectonic --only-cached --keep-logs manuscript.tex
 ```
 
 For homogeneous zero-mean arms, multiplying all stationary and innovation variances by \(a^2\) multiplies the coefficients of these scale-equivariant policies by \(a\), without changing their decisions on correspondingly scaled trajectories. The strong-persistence, innovation-standard-deviation-0.01 example can therefore be obtained from the unit-stationary-variance case by multiplying its coefficients by \(\sqrt{10^{-4}/(1-0.99^2)}\). This is an exact scaling calculation, not an additional independent experiment.
+
+## The best policy: exact control and what remains unresolved
+
+For known parameters, the sufficient control state is the complete vector of predictive means and variances \(b=((m_i,v_i))_{i=1}^K\). Pulling arm \(i\) and observing \(x\sim N(m_i,v_i)\) produces the next belief \(\mathcal T_i(b,x)\):
+
+\[
+(m_i',v_i')=(\mu_i+\phi_i(x-\mu_i),q_i),\qquad
+(m_j',v_j')=(\mu_j+\phi_j(m_j-\mu_j),\phi_j^2v_j+q_j),\ j\ne i.
+\]
+
+Thus the exact finite-horizon optimal policy comes from
+
+\[
+J_0(b)=0,\qquad
+J_n(b)=\max_i\{m_i+\mathbb E J_{n-1}(\mathcal T_i(b,X_i))\}.
+\]
+
+Choose a maximizing action at every remaining horizon. The formula is an exact optimality characterization, rather than a numerical solution for the five-arm cases. Each action requires a one-dimensional Gaussian integral, but the continuation value depends on every arm's joint belief.
+
+For a direct information-value interpretation, let \(b^-\) be the hypothetical next belief with no current observation, obtained by applying the unselected-arm update to all arms. The exact finite-horizon information bonus is \(I_{i,n}=\mathbb E J_{n-1}(\mathcal T_i(b,X_i))-J_{n-1}(b^-)\), and the optimal score is \(m_i+I_{i,n}\). This bonus is nonnegative because a continuation policy can ignore the observation. It depends on decision gaps and subsequent refreshes; it is zero with one round remaining and gives the exact two-period information value with two rounds remaining.
+
+The linear coefficient instead requires average-reward control. Because the oracle's rate \(G\) is independent of our actions,
+
+\[
+c_\pi=G-\liminf_{T\to\infty}\frac1T\mathbb E_\pi\sum_{t=1}^T X_{A_t,t}.
+\]
+
+The corresponding Bellman equation is
+
+\[
+g+h(b)=\max_i\{m_i+\mathbb E h(\mathcal T_i(b,X_i))\}.
+\]
+
+If a solution satisfies \(\mathbb E_\pi|h(B_{T+1})|/T\to0\) for all admissible policies from our initial belief, choosing a maximizing action is average optimal and \(c^*=G-g\). The continuation term accounts for information that changes future allocation, including later refreshes. We have not proved existence or computed such a solution for the unbounded Gaussian belief space. Predictive Sampling, two-step control, and the new lifetime rule are approximations with different empirical strengths.
+
+General restless Markov examples show that independent-arm indices need not be optimal. This does not prove an impossibility theorem for our restricted Gaussian family, but it prevents invoking a universal index theorem here. [Ortner et al., Theorem 4](https://daniil.ryabko.net/mabajr.pdf). A Whittle approximation would require its own indexability and performance analysis.
+
+## A certificate for how close a candidate is to optimal
+
+For any trial continuation function \(h\), define
+
+\[
+D_h(b,i)=m_i+\mathbb E h(\mathcal T_i(b,X_i))-h(b),\qquad
+r_h(b)=\max_iD_h(b,i),\quad \pi_h(b)\in\arg\max_iD_h(b,i).
+\]
+
+If \(\ell\le r_h(b)\le u\) on all reachable beliefs, expectations are finite, and the transversality condition above holds, then
+
+\[
+G-u\le c^*\le c_{\pi_h}\le G-\ell,\qquad
+c_{\pi_h}-c^*\le u-\ell.
+\]
+
+Proof: under any policy, conditional expected reward plus the expected change in \(h\) is at most \(u\). Under \(\pi_h\), it is at least \(\ell\). Sum over rounds, telescope the changes in \(h\), and divide by the horizon. Transversality removes the terminal contribution. A constant residual certifies optimality.
+
+Unbounded Gaussian means admit a weighted version. Conditional Jensen's inequality and stationary states give a policy-independent moment bound
+
+\[
+\mathbb E_\pi\sum_i|m_i-\mu_i|\le C_V:=\sqrt{2/\pi}\sum_i\sqrt{V_i}.
+\]
+
+Linear growth \(|h(b)|\le C_0+C_1\sum_i|m_i-\mu_i|\) therefore suffices for transversality. If a globally verified bound is
+
+\[
+|r_h(b)-g|\le\epsilon_0+\epsilon_1\sum_i|m_i-\mu_i|,
+\]
+
+put \(\epsilon=\epsilon_0+\epsilon_1C_V\). Then \(G-g-\epsilon\le c^*\le c_{\pi_h}\le G-g+\epsilon\), and the candidate's coefficient is within \(2\epsilon\) of optimal. We have not computed such a global residual bound. A sampled grid alone cannot certify it; numerical integration, interpolation, and Gaussian tails must also be controlled.
+
+This also supplies a conditional route to improving PS. If its constant gain \(g_0\) and bias \(h_0\) satisfy the policy evaluation equation \(g_0=\sum_i\pi_0(i\mid b)D_{h_0}(b,i)\), then maximization gives \(r_{h_0}(b)\ge g_0\). Under transversality, greedifying with respect to this bias cannot increase the average regret coefficient. Estimated biases and truncated rollouts need separate error bounds; discounted improvement alone does not certify an average-reward improvement.
+
+## Does a long information lifetime alone give a better policy?
+
+For common means and common nonnegative persistence \(\phi\), let \(C_i=\max_{j\ne i}m_j\), \(d_i=|m_i-C_i|\), and define
+
+\[
+\mathrm{KG}_i(b)=\mathbb E\max(C_i,X_i)-\max_jm_j
+=\sqrt{v_i}\varphi(d_i/\sqrt{v_i})-d_i\Phi(-d_i/\sqrt{v_i}).
+\]
+
+This values uncertainty according to whether resolving it can change the selected arm. Knowledge-gradient policies are established in Bayesian information collection; their ranking-and-selection optimality results do not establish optimality for restless reward allocation. [Frazier, Powell, and Dayanik, 2008](https://doi.org/10.1137/070693424).
+
+If we retain one new observation and ignore all subsequent observations in the continuation calculation, the improvement in the best predictive mean \(s\) rounds later is exactly \(\phi^s\mathrm{KG}_i\). Summing its future benefits gives the candidate
+
+\[
+A_t\in\arg\max_i\left\{m_i+\frac\phi{1-\phi}\mathrm{KG}_i(b)\right\}.
+\]
+
+The multiplier is derived before simulation, with no fitted parameter. At \(\phi=0\) it becomes greedy; at \(\phi=0.99\) the multiplier is 99. Two-period control uses only \(\phi\mathrm{KG}_i\). This information value is in reward units and decays as \(\phi^s\), whereas the earlier prediction-error reduction decays as \(\phi^{2s}\).
+
+Replanning this rule uses future feedback that its continuation calculation ignored. Its accumulated bonus can therefore count benefits that later observations replace. The geometric formula is exact for that one-observation calculation, but the resulting repeated policy is an approximation. Heterogeneous means or persistence require another calculation.
+
+The [additional experiment](../../experiments/ar1_policy_improvement.py) reuses the original 40 trajectories per homogeneous case, with 5,000 burn-in and 30,000 measured rounds. It verifies an exact replay of a saved PS replication before comparing against the baseline files. [Complete results and paired intervals](results/policy_improvement/findings.md).
+
+| Persistence | Greedy | Two-step | Predictive Sampling | Lifetime KG |
+|---|---:|---:|---:|---:|
+| 0.5 | 0.8926 | 0.8927 | 1.0203 | 0.8932 |
+| 0.9 | 0.4613 | 0.4334 | 0.5669 | 0.4574 |
+| 0.99 | 0.2687 | 0.1997 | 0.1495 | 0.1659 |
+| 0.995 | 0.2566 | 0.1795 | 0.0951 | 0.1171 |
+
+These are finite-horizon regret-per-round estimates at stationary variance one. Lifetime KG beats PS at moderate persistence, but PS remains strongest among the tested policies at high persistence. Two-step control is strongest at 0.9; at 0.5 greedy and two-step are essentially tied. No candidate is uniformly best or certified optimal. The next computational target is the actual average-reward bias and its residual, rather than another lifetime multiplier.

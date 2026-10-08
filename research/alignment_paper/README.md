@@ -1,51 +1,60 @@
 # Graph Alignment and Cumulative Regret
 
-A full working manuscript extending the similarity selection idea to cumulative-regret bandits. The draft includes a model, algorithm, proved finite-time bounds, an explicit information lower bound, experiments, and references. Its novelty and proofs still need independent review.
+The revised paper is **Graph Alignment and Cumulative Regret: Resistance Geometry and Spectral Pooling**. It develops graph-specific information calculations, a finite-time policy, certified graph-error bounds, and reproducible experiments. The proofs and publication novelty still require independent review.
 
 - [Read the manuscript PDF](manuscript.pdf).
-- [Edit the LaTeX source](manuscript.tex).
-- [Inspect aggregate results](results/summary.csv) or [run-level results](results/runs.csv).
-- [Inspect the experiment metadata](results/metadata.json), including actual graphs and the certificates supplied to the policies.
-- [Run the experiment code](../../experiments/alignment_regret.py).
+- [Edit the main LaTeX source](manuscript.tex).
+- [Inspect the information and geometry proofs](geometry_information.tex).
+- [Inspect the algorithm and regret proofs](geometry_policy.tex).
+- [Read the novelty assessment and revision update](novelty_audit.md).
+- [Inspect the main experiment results](results/geometry/summary.csv) and [metadata](results/geometry/metadata.json).
+- [Inspect the supplementary certificate experiments](results/summary.csv).
 
-The central distinction is between preserving the reward ranking and giving the learner reliable bounds on reward differences. Ranking preservation alone does not guarantee lower regret. With a valid graph-energy certificate, however, observations can rule out a whole group of similar suboptimal arms.
+The main improvement is a result that component widths cannot express. A path with edge weights `(m-1)/2` and a clique with edge weights `1/m` both have resistance diameter two. Give both the same homogeneous rewards and the same positive energy radius equal to their gap from the best singleton. The clique permits every arm to become optimal independently; an average of the path's endpoints constrains every interior reward.
 
-For a component with gap \(\Gamma_c\) from the optimum and certified reward diameter \(\varepsilon_c<\Gamma_c\), the proposed policy has component regret bounded, with high probability, by
+The paper establishes an information separation growing with `m`, and a concrete policy that realizes the path's improved dependence on arm count. This compares two graph-energy model classes and does not establish superiority over all spectral algorithms.
 
-\[
-(\Gamma_c+\varepsilon_c)
-\left(1+\frac{8\sigma^2\log(2(K+M)T/\delta)}{(\Gamma_c-\varepsilon_c)^2}\right).
-\]
-
-Its bound also takes the minimum with an ordinary arm-wise UCB bound. Tightening a valid diameter certificate improves this guarantee. The guarantee does not imply that realized regret must decrease on every run when the certificate changes.
-
-The paper derives a more precise information comparison for a homogeneous suboptimal clique of size \(m\), edge weight \(w\), gap \(\Gamma\), and supplied energy budget \(S^2\). Define
+For a fixed observation design `p`, the useful graph quantity is
 
 \[
-q=\frac{S}{\Gamma\sqrt{w(m-1)}}.
+\kappa_L(p)=\max_i\sqrt{(e_i-p)^\top L^\dagger(e_i-p)},\qquad
+\rho_L=\min_{p\ge0,\,\mathbf1^\top p=1}\kappa_L(p).
 \]
 
-The clique's contribution to the structured Gaussian information lower bound is
+The radius is the smallest enclosing ball in the resistance embedding. Its computation is equivalent to the established maximum graph variance problem, credited to prior work. We connect it to the first-order increase in information cost when a valid energy certificate is loosened:
 
 \[
-\frac{2\sigma^2m}{\Gamma\{1+(m-1)(1-q)_+^2\}}.
+\frac{C_{L,S}}{2\sigma^2/\Gamma}
+=1+2(S/\Gamma)\rho_L+O((S/\Gamma)^2D),
 \]
 
-Relative to the classical unstructured information constant, the reduction factor is therefore \(1+(m-1)(1-q)_+^2\). At exact similarity it is \(m\); when enough mismatch is allowed to make a single arm optimal independently of its neighbors, it returns to one. This is an exact solution of a lower-bound optimization for that specific graph family, **not** a claim that the proposed policy attains the constant for all positive \(S\).
+where `D` is resistance diameter and the component's true means are homogeneous. A general information design and a finite-strength spectral resolvent oracle describe the underlying lower-bound program. The expansion is not the achieved regret coefficient of the proposed policy.
 
-With exact equality within every component, classical optimal algorithms on component representatives attain the matching asymptotic constant. The bounded-reward minimax rate becomes \(\Theta(\sqrt{MT})\) for \(2\le M\le T\), where \(M\) is the number of components.
+The new algorithm, GDE-UCB, samples a fixed resistance design in doubling stages, eliminates components using valid bounds, and falls back to ordinary arm UCB. Its regret bound charges exploration and integer rounding. On the normalized path at `S=Γ`, a sufficient horizon permits rejection using only the two endpoints, with
 
-The experiment used 25 arms, four true components, Gaussian noise with \(\sigma=0.15\), 20,000 rounds, and 40 independent runs. Mean final regret was 100.02 for ordinary UCB, 28.65 for a configured regularized spectral baseline, and 12.22 for pooling with exact certificates. Looser certificates and incorrectly grouped arms removed some or all of the benefit. These are controlled synthetic results with supplied certificates; graph learning was not evaluated.
+\[
+R_T\le1024\sigma^2\ell/\Gamma+4\Gamma+\delta T,
+\quad \ell=\log(2(K+M)T/\delta).
+\]
 
-The literature includes close competitors: [Spectral bandits (JMLR 2020)](https://www.jmlr.org/papers/v21/16-529.html), [clustered Thompson sampling (IJCAI 2021)](https://www.ijcai.org/proceedings/2021/305), and [Clus-UCB (2025 preprint)](https://arxiv.org/abs/2508.02909). The manuscript explicitly acknowledges their overlap. A publication claim would require a stronger novelty assessment, approximate-alignment optimality analysis, and broader comparisons.
+The corresponding clique class has an information lower-bound coefficient `2σ²m/Γ`. These statements separate arm-count dependence; the constants do not match, and the algorithm is not proved information-optimal.
 
-Reproduce the actual experiment from the project root:
+If an estimated Laplacian satisfies `(1-η)L ≼ L_hat ≼ (1+η)L` on the constant-free subspace, with `η<1`, inflating a valid reference energy radius to `sqrt(1+η) S` yields a valid estimated-graph certificate. Its bias radius is at most `S ρ_L sqrt((1+η)/(1-η))`. The paper also sandwiches the information constants. This requires a certified graph comparison, not a graph learned for free.
+
+The main experiment uses component sizes 16, 64, and 256, an optimal singleton of mean 0.8, homogeneous suboptimal mean 0.6, fixed supplied `S=0.2`, Gaussian noise `σ=0.05`, horizon 20,000, and 40 independent replications. Comparators are ordinary UCB, diameter pooling, and an explicitly specified Gaussian width-profile analogue motivated by Clus-UCB. Small-instance overhead and poor clique performance are reported alongside the path benefit. A hidden-peak stress test demonstrates linear loss under an invalid zero-energy certificate. Graph learning is not evaluated.
+
+The original SP-UCB analysis and experiments remain as supplementary material. Closest prior work includes spectral and clustered bandits, structured information lower bounds, GRUB's pure-exploration geometry, maximum graph variance, and misspecified kernel and linear bandits. The contribution boundary is narrower than a first study of graph correctness.
+
+Reproduce from the project root:
 
 ```sh
+python3 experiments/resistance_geometry.py --verify
+python3 experiments/resistance_geometry.py --runs 40 --horizon 20000
+python3 experiments/render_geometry_results.py
 python3 experiments/alignment_regret.py --verify
 python3 experiments/alignment_regret.py --runs 40 --horizon 20000
 cd research/alignment_paper
 tectonic --only-cached --keep-logs manuscript.tex
 ```
 
-The Python experiment uses only the standard library. PGFPlots renders figures directly from its CSV output. If TeX resources are not cached on another machine, omit `--only-cached` to let Tectonic obtain its support files.
+Both experiment scripts use only Python's standard library. Tables and experimental prose are rendered directly from saved CSVs. PGFPlots renders the analytical and empirical figures. If TeX resources are not cached elsewhere, omit `--only-cached` to obtain support files.

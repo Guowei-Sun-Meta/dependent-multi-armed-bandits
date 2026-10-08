@@ -26,19 +26,19 @@
 \newcommand{\argmax}{\operatorname*{arg\,max}}
 \newcommand{\argmin}{\operatorname*{arg\,min}}
 \newcommand{\pos}[1]{\left(#1\right)_+}
-\title{Graph Alignment and Cumulative Regret:\\A Spectral Pooling Analysis for Stochastic Bandits}
+\title{Graph Alignment and Cumulative Regret:\\Resistance Geometry and Spectral Pooling}
 \author{Working research manuscript}
 \date{8 October 2026}
 \begin{document}
 \maketitle
 \begin{center}\small
-Status: complete working draft with proofs and reproducible synthetic experiments.\\
+Status: revised working draft with proofs and reproducible synthetic experiments.\\
 The results below have not undergone independent mathematical review.\\
 Novelty relative to spectral and clustered bandit research remains to be established.
 \end{center}
 
 \begin{abstract}
-Similarity selection indices use graph smoothing to improve the comparison of stochastic alternatives. Extending this idea to cumulative-regret bandits requires accounting for the cost of every observation and for bias introduced by the graph. We distinguish ordinal alignment, which preserves a ranking, from quantitative alignment, which restricts plausible reward differences. We construct a count-weighted spectral pooling policy and prove a finite-time regret bound controlled by within-component reward uncertainty relative to the component's gap from the optimum. Effective resistance converts supplied graph-energy bounds into the required uncertainty certificates. We also specialize the established structured-bandit information lower bound to graph-energy classes. For homogeneous suboptimal cliques, its value has a closed form: relative to the unstructured Gaussian constant, the exploration requirement falls by a factor $1+(m-1)(1-q)_+^2$, where $m$ is clique size and $q$ is normalized alignment uncertainty. Exact similarity reduces the problem to one arm per component. Synthetic experiments illustrate the benefit and its loss under loose certificates and corrupted edges. These results provide a precise research formulation and a tractable analysis; they do not establish novelty, optimality of the proposed policy under approximate alignment, or a guarantee for graphs learned online.
+Similarity graphs restrict which reward vectors a stochastic bandit learner must distinguish. We study how the strength and geometry of a supplied graph-energy certificate change cumulative regret. Component diameters alone are insufficient: normalized paths and cliques with identical arm counts, means, energy budgets, and resistance diameters have information costs differing by a factor growing with the number of arms. We express homogeneous-component information complexity as a graph-specific experimental design and connect its first-order sensitivity to the smallest enclosing ball in the resistance embedding. A resolvent oracle links this calculation to finite-strength spectral smoothing. We then construct a capped graph-design elimination policy with UCB fallback and prove a finite-time regret bound. For the normalized path, endpoint observations yield a logarithmic regret bound without linear dependence on component size, whereas the corresponding clique class requires a linear arm-count coefficient. Certified Laplacian perturbations give explicit inflation factors for bias and information complexity. Reproducible simulations include width-based comparators, small-instance overhead, and failure under an invalid certificate. The results require trusted quantitative side information; they do not establish optimal leading constants for the proposed policy or solve unrestricted online graph validation.
 \end{abstract}
 
 \section{Introduction}
@@ -48,9 +48,11 @@ For classical stationary stochastic bandits, the principal targets are establish
 
 The phrase ``better alignment'' needs care. A graph can preserve the ordering of all means while providing no improvement in the information needed to distinguish them. Conversely, a graph may accurately identify several groups of nearly equivalent suboptimal alternatives, allowing a whole group to be rejected after a small pooled sample. Its usefulness depends on its geometry, the amount of reward variation allowed within it, and the gaps between groups. No scalar measure of visual resemblance or ranking agreement guarantees monotone regret improvement for arbitrary algorithms and graphs.
 
-We give a concrete answer in a graph model with supplied local smoothness certificates. Our analysis has four parts. First, a rank-preserving example shows why ordinal alignment alone is insufficient. Second, a count-weighted limit of the spectral index produces pooled component estimates. Intersecting their optimistic bounds with ordinary arm bounds yields a policy with both a classical regret guarantee and a stronger component guarantee when alignment uncertainty is small. Third, effective resistance links these uncertainty bounds to graph energy. Fourth, a closed-form information lower bound for homogeneous cliques describes a continuous transition from independent-arm exploration to one exploration task per component.
+Our principal result shows why the full graph geometry matters. A complete graph with edge weights $1/m$ and a path with edge weights $(m-1)/2$ both have resistance diameter two. At homogeneous suboptimal means and supplied energy radius equal to the gap, every clique arm can independently become optimal within the model class. The path excludes these independent deviations: an average of its endpoints controls every interior mean. The clique requires an information coefficient proportional to $m$, while a concrete endpoint-based policy on the path has no linear dependence on $m$. This is a separation between graph-energy classes with identical diameter summaries, not a claim that spectral bandits or graph-aware exploration are new.
 
-The distinction between a bound and an achieved performance improvement remains explicit throughout. The proposed policy has a proved finite-time upper bound. The clique calculation gives the exact value of a structured information optimization problem, and hence a regret lower bound. We prove matching asymptotic attainability only at the exact-similarity endpoint, using a classical optimal algorithm on components. We do not prove that our pooling policy achieves the clique information constant for positive alignment uncertainty.
+We develop the result in three steps. First, we express the information constant as an experimental design over least informative graph-energy alternatives. A finite-strength resolvent evaluates its inner optimization. Second, we show that the first-order cost of loosening alignment is governed by the minimum enclosing radius in the resistance embedding, equivalently an established maximum graph variance quantity. Third, a capped graph-design elimination algorithm uses this geometry and falls back to ordinary arm exploration on competitive components. We prove its regret bound, the achieved path separation, and a quantitative comparison under certified Laplacian perturbations. A simpler diameter-based pooling policy remains as a baseline and clarifies the connection to the original selection index.
+
+The distinctions among results remain explicit. The information design gives the exact value of a lower-bound program for homogeneous components. The radius expansion describes that program's local sensitivity. The proposed policy achieves the path's improved arm-count dependence with conservative constants; it is not proved to attain the information constant for positive uncertainty. A separate standard lower-bound argument explains why unrestricted graph validation cannot preserve the reduced logarithmic constant for free.
 
 \section{Related research and contribution boundary}
 The original spectral selection index minimizes a squared estimation term plus a graph-Laplacian penalty~\cite{sun2019}. Subsequent work develops sequential allocation for selecting the best alternative and permits updating similarity information~\cite{zhou2024}. Those allocation objectives differ from cumulative reward: a positive limiting sampling fraction assigned to a suboptimal arm produces linear cumulative regret. We retain the graph estimator's interpretation while changing the allocation objective.
@@ -59,7 +61,11 @@ Graph-smooth cumulative-regret bandits already appear in SpectralUCB and related
 
 Clustered bandits are also established. Carlsson, Dubhashi, and Johansson~\cite{carlsson2021} analyze hierarchical Thompson sampling and show how clustering quality affects regret under dominance assumptions. Gore and Chaporkar's Clus-UCB preprint~\cite{gore2025} directly studies known clusters with bounded mean differences, derives an information lower bound, and proposes an index that shares observations within clusters. This is a close comparator for our pooling analysis. The preprint is cited as such; no publication status is assumed.
 
-Our lower-bound starting point is the structured-bandit change-of-measure program of Combes, Magureanu, and Proutiere~\cite{combes2017}. Our explicit homogeneous-clique expression is a specialization to a Gaussian graph-energy class. The finite-time pooling argument is an elementary construction that makes the dependence on a valid alignment certificate transparent. Neither is presented here as an established new contribution to the literature. The candidate research contribution is a joint treatment of ordinal alignment, quantitative graph geometry, cumulative regret, and the cost of obtaining trustworthy graph information. A submission would require a more exhaustive novelty audit and stronger comparisons.
+Our lower-bound starting point is the structured-bandit change-of-measure program of Combes, Magureanu, and Proutiere~\cite{combes2017}. The maximum graph variance construction underlying our resistance design is established by Devriendt, Martin-Gutierrez, and Lambiotte~\cite{devriendt2022}. Graph-aware pure exploration and resistance-based influence measures also appear in GRUB~\cite{thaker2022}. We do not claim to introduce experimental design, resistance geometry, or eliminating unsampled graph arms. The candidate contributions are the graph-energy information sensitivity, its explicit separation from diameter compression, and the accompanying cumulative-regret analysis and certified perturbation comparison.
+
+The clique formula needs particularly careful positioning. For homogeneous clusters, Clus-UCB's information expression has the form $m\Gamma/[d+(m-1)b]$. Substituting Gaussian divergences gives the same algebraic shape as our clique constant with effective width $S/\sqrt{w(m-1)}$. This is our comparison, not a Gaussian theorem proved in that Bernoulli paper. It motivates making the general-graph separation, rather than the clique interpolation, the central result. We inspected Clus-UCB v2, including its discussion of incorrect widths~\cite{gore2025}.
+
+Model misspecification and unknown error are established topics in kernelized bandits~\cite{bogunovic2021}. Gap-adjusted approximation error~\cite{liu2023} and graph-specific residual and eigenspace perturbation bounds~\cite{mondal2026} further constrain broad novelty claims. Our perturbation result assumes a certified comparison to a reference graph. We do not claim to learn that comparison from unrestricted selected-arm feedback. Independent mathematical review and a broader literature comparison remain necessary before asserting publication priority.
 
 Similarity graphs must also be distinguished from feedback graphs. In our setting, a pull reveals only one reward. An edge restricts the possible means; it does not supply observations of adjacent arms. Observation noise is independent in the experiments. Dependence of the unknown means through a model class is sufficient for information sharing.
 
@@ -290,6 +296,8 @@ For completeness, the change-of-measure reasoning is as follows. Comparing $\mu$
 $\sum_i\E_\mu[n_i(T)](\mu_i-\nu_i)^2/(2\sigma^2)$.
 Consider the event that the original best arm is played at least $T/2$ times. Uniform efficiency makes its probability approach one under $\mu$ and at most $o(T^{-1+a})$ under $\nu$, for every $a>0$. The binary KL divergence of this event is consequently at least $(1-o(1))\log T$. This gives each information constraint; normalizing sample counts and passing to a finite convergent subsequence of any bounded-cost allocation gives \eqref{eq:lower}. If normalized regret is unbounded, the inequality is immediate.
 
+\input{geometry_information.tex}
+
 \subsection{A closed-form answer for homogeneous cliques}
 The general program is difficult. The following solvable graph family gives a quantitative answer to the motivating question. The optimal component is a singleton. Each other component $c$ is a clique of $m_c\ge2$ arms, with common edge weight $w_c>0$. At the true instance its arms all have mean $a_c<\mu^\star$, so $\Gamma_c=\mu^\star-a_c$. Alternatives satisfy the energy certificate $S_c$ but need not be homogeneous. Define
 \begin{equation}
@@ -339,23 +347,7 @@ For a clique, Lemma~\ref{lem:resistance} gives
 \end{equation}
 before clipping at one. Combining this with Theorem~\ref{thm:upper} yields an explicit attainable upper bound in a strong-alignment regime. The information expression remains finite near $q_c=1$, whereas the pooled-only bound can become loose; its intersection with $A_c$ retains the classical guarantee. The different constants and thresholds expose the gap between the simple policy and an information-optimal allocation.
 
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}
-\begin{axis}[width=.88\linewidth,height=6cm,xlabel={Normalized certificate uncertainty $q$},
- ylabel={Reduction factor in information constant},xmin=0,xmax=1.5,ymin=0,
- grid=major,legend pos=north east]
-\addplot[blue,thick] table[x=alignment_ratio,y=gain_m2,col sep=comma]{results/lower_bound_curve.csv};
-\addlegendentry{$m=2$}
-\addplot[red,thick] table[x=alignment_ratio,y=gain_m8,col sep=comma]{results/lower_bound_curve.csv};
-\addlegendentry{$m=8$}
-\addplot[teal,thick] table[x=alignment_ratio,y=gain_m32,col sep=comma]{results/lower_bound_curve.csv};
-\addlegendentry{$m=32$}
-\end{axis}
-\end{tikzpicture}
-\caption{The explicit factor $1+(m-1)(1-q)_+^2$ from Theorem~\ref{thm:clique}. This is an analytical information-complexity comparison, not an empirical regret curve or an optimality claim for SP-UCB.}
-\label{fig:lower}
-\end{figure}
+
 
 \subsection{The exact-alignment endpoint is achievable}
 If every $S_c=0$, connectedness forces a constant mean on each component. Selecting any representative reduces the problem to an ordinary $M$-armed bandit. In the Gaussian case with a unique best component, a classical asymptotically optimal algorithm on these representatives achieves
@@ -367,6 +359,8 @@ If every $S_c=0$, connectedness forces a constant mean on each component. Select
 The corresponding change-of-measure lower bound shifts all arms in a component together, and matches this expression. The reduction is thus attainable, independently of SP-UCB's conservative confidence constants. For bounded reward classes with $2\le M\le T$, the exact-component minimax rate is $\Theta(\sqrt{MT})$: a representative-based minimax policy supplies the upper bound, and a Bernoulli subclass with arbitrary component means supplies the lower bound~\cite{audibert2010,lattimore2020}. For $M=1$, regret is zero.
 
 This endpoint concerns exact equality of the means. Approximate similarity leaves a separate task of identifying the best member of a competitive component. The $A_c$ term for optimal components in Theorem~\ref{thm:upper} makes that cost explicit.
+
+\input{geometry_policy.tex}
 
 \section{Constructing a graph with a valid certificate}
 There are three distinct quantities: the constructed graph, its actual agreement with unknown rewards, and the certificate supplied to the learner. Our guarantees concern their justified relationship, not a retrospective oracle score alone.
@@ -390,7 +384,21 @@ Our theorem does not cover a graph or partition that changes during exploitation
 \paragraph{Ordinal side information.}
 If prior information only guarantees a rank-preserving filter, it does not imply \eqref{eq:energy} with a small known $S_c$. An ordinal model and a graph-energy model are distinct restricted classes. Translating a particular aligned-graph definition into a regret reduction requires identifying what alternatives it excludes and how much information remains necessary to reject them.
 
-\section{Reproducible synthetic experiments}
+\input{geometry_experiments.tex}
+
+\section{Discussion and remaining limits}
+The graph's value is the information it excludes about competing reward vectors. A diameter certificate provides a simple sufficient condition for sharing observations, but it is not a sufficient statistic for that information. The path--clique separation demonstrates a factor growing with component size at identical diameter and supplied energy. The resistance radius provides an interpretable local sensitivity parameter, while the full information design captures behavior beyond the local regime.
+
+The algorithmic separation is attained under quantitative side information. Endpoint sampling rejects a homogeneous normalized path without exploring its interior, and ordinary UCB fallback handles a heterogeneous surviving component. This gives an implementable logarithmic guarantee with conservative constants. It does not give an information-optimal policy for every graph, a minimax-optimal bound, or empirical superiority over all spectral methods. The capped design can be expensive on small instances and on graphs requiring broad support.
+
+Graph correctness has two distinct roles. A valid certificate determines the model class; its precision determines how much information transfer is useful. A certified Laplacian perturbation can be charged through Proposition~\ref{prop:perturb}. A false certificate can invalidate optimism and yield linear regret, as the stress experiment shows. The unrestricted lower bound in Proposition~\ref{prop:untrusted} explains why learning an arbitrary graph's validity cannot preserve the smaller structured logarithmic constant for free.
+
+The most consequential remaining questions are precise. One is a computationally tractable policy attaining the general program \eqref{eq:info} for nonhomogeneous graph-energy instances, with the regularity and boundary conditions needed by structured-bandit allocation tracking. Another is a finite-strength spectral-index regret theorem that accounts for adaptive counts and comparison bias. A third is a restricted model of uncertain graph information with a proved price for validation or repair. The present resolvent connection and certified perturbation comparison supply tools for these questions, not their complete solution.
+
+The evidence supports a graph-specific theoretical contribution and a reproducible demonstration of its regime. It does not establish priority for each specialized theorem. Closest comparisons include spectral bandits, clustered bandits, GRUB's pure-exploration geometry, and misspecified kernel and linear models. A submission should be evaluated against those alternatives, with application data and tuned graph-aware baselines supplementing the controlled experiments.
+
+\appendix
+\section{Supplementary certificate and graph-corruption experiments}
 \subsection{Protocol}
 The accompanying standard-library Python implementation runs 40 independent macro-replications with horizon $T=20{,}000$ and Gaussian observation noise $\sigma=0.15$. There are 25 arms: one with mean $0.8$, and three groups of eight arms with means $0.65$, $0.5$, and $0.35$. The optimal arm is a singleton. Clique edge weights are $1/m$, so each nonzero component Laplacian eigenvalue equals one. Policies share per-arm noise streams indexed by pull number within a replication; this coupling does not give any policy extra observations. Different macro-replications use independent seeds.
 
@@ -462,22 +470,16 @@ The implementation checks ordinary-arm and pooled-noise confidence coverage, and
 \subsection{Scope of the numerical evidence}
 The experiments use a favorable family with an isolated optimal arm and homogeneous true suboptimal groups. They assess certificates and graph corruption in a controlled setting. They do not include online graph learning, near-tied heterogeneous optimal components, temporal dependence, real applications, or a full tuning study. Clus-UCB and hierarchical Thompson sampling are close competitors whose implementation and careful comparison would be needed before an empirical superiority claim. The manuscript makes no such claim.
 
-\section{Discussion and next theoretical targets}
-The main answer is conditional but precise. Better graph information reduces regret when it restricts reward variation enough to let observations rule out multiple alternatives together. For the pooled policy, the useful scale is $\varepsilon_c/\Gamma_c$; for homogeneous graph-energy cliques, the information reduction is exactly the factor in \eqref{eq:alignmentratio}. At perfect alignment, arm-level exploration is replaced by component-level exploration. A heterogeneous optimal component still requires identifying its best member.
-
-Several limitations remain substantive. The finite-time policy uses the infinite-smoothing limit, so the analysis does not establish a regret theorem for the original fixed-strength selection index on every ordinally aligned graph. The resistance diameter compresses graph geometry into one conservative bound and may lose useful local information. The clique lower bound gives the optimal value of an information program, while SP-UCB is not proved to attain it for positive certificates. Finally, certificate construction can itself incur exploration regret.
-
-The strongest next steps are therefore mathematical. One is to design an allocation tracking \eqref{eq:info} under graph-energy constraints and prove its asymptotic attainability, including continuity and boundary cases required by the general structured-bandit framework. Another is to retain finite-strength smoothing and pairwise comparison cancellation, using confidence bounds appropriate to adaptively sampled observations. A third is to analyze a graph inferred from a pilot or a prespecified family while charging its construction cost. These are research targets, not completed results hidden behind the present theorems.
-
-For practical graph construction, the desired objective is information transfer that is cheap enough to use and accurate enough to trust. Reward ranking alone does not characterize this objective. Combining a quantitative uncertainty certificate with graph geometry gives a route from the similarity selection idea to a cumulative-regret analysis that can be compared against sharp classical bounds.
-
-\appendix
 \section{Reproducibility and numerical implementation}
-All experimental observations and results are generated by
-\texttt{experiments/alignment\_regret.py}. The program requires only Python's standard library. From the project root:
+The main geometry experiment is generated by
+\texttt{experiments/resistance\_geometry.py}; supplementary experiments use
+\texttt{experiments/alignment\_regret.py}. Both require only Python's standard library. From the project root:
 \begin{verbatim}
 python3 experiments/alignment_regret.py --verify
 python3 experiments/alignment_regret.py --runs 40 --horizon 20000
+python3 experiments/resistance_geometry.py --verify
+python3 experiments/resistance_geometry.py --runs 40 --horizon 20000
+python3 experiments/render_geometry_results.py
 cd research/alignment_paper
 tectonic --only-cached --keep-logs manuscript.tex
 \end{verbatim}
@@ -529,8 +531,8 @@ IJCAI, pp. 2212--2218, 2021.
 
 \bibitem{gore2025} A. Gore and P. Chaporkar.
 \emph{Clus-UCB: A Near-Optimal Algorithm for Clustered Bandits}.
-arXiv:2508.02909, 2025, preprint; the version inspected was v1.
-\href{https://arxiv.org/abs/2508.02909}{Author preprint}.
+arXiv:2508.02909, 2025, preprint; the version inspected was v2.
+\href{https://arxiv.org/html/2508.02909v2}{Author preprint, v2}.
 
 \bibitem{combes2017} R. Combes, S. Magureanu, and A. Proutiere.
 \emph{Minimal Exploration in Structured Stochastic Bandits}.
@@ -556,5 +558,32 @@ Cambridge University Press, 2020, Chapters 9, 15, and 16.
 \emph{Improved Algorithms for Linear Stochastic Bandits}.
 Advances in Neural Information Processing Systems 24, 2011.
 \href{https://proceedings.neurips.cc/paper_files/paper/2011/hash/e1d5be1c7f2f456670de3d53c7b54f4a-Abstract.html}{Proceedings}.
+
+\bibitem{devriendt2022} K. Devriendt, S. Martin-Gutierrez, and R. Lambiotte.
+\emph{Variance and Covariance of Distributions on Graphs}.
+SIAM Review 64(2):343--359, 2022.
+\href{https://doi.org/10.1137/20M1361328}{DOI: 10.1137/20M1361328}.
+
+\bibitem{thaker2022} P. Thaker, M. Malu, N. Rao, and G. Dasarathy.
+\emph{Maximizing and Satisficing in Multi-armed Bandits with Graph Information}.
+Advances in Neural Information Processing Systems 35, 2022.
+\href{https://papers.neurips.cc/paper_files/paper/2022/hash/0d561979f0f4bc6127cfcfe9c46ee205-Abstract-Conference.html}{Proceedings}.
+
+\bibitem{bogunovic2021} I. Bogunovic and A. Krause.
+\emph{Misspecified Gaussian Process Bandit Optimization}.
+Advances in Neural Information Processing Systems 34, 2021.
+\href{https://papers.neurips.cc/paper_files/paper/2021/hash/177db6acfe388526a4c7bff88e1feb15-Abstract.html}{Proceedings}.
+
+\bibitem{liu2023} C. Liu, M. Yin, and Y.-X. Wang.
+\emph{No-Regret Linear Bandits beyond Realizability}.
+UAI, PMLR 216:1294--1303, 2023.
+\href{https://proceedings.mlr.press/v216/liu23c.html}{Proceedings}.
+
+\bibitem{mondal2026} J. J. Mondal, I. F. Shihab, and A. Sharma.
+\emph{Graph Dimensionality Reduction for Contextual Bandits:
+Structure-Specific Regret Bounds under Approximate Smoothness and Noisy Eigenspaces}.
+arXiv:2606.27917, June 2026, preprint; v1 inspected.
+\href{https://arxiv.org/html/2606.27917v1}{Author preprint}.
+
 \end{thebibliography}
 \end{document}

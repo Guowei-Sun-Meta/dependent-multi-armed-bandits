@@ -1,0 +1,560 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,booktabs,array}
+\usepackage{fontspec}
+\setmainfont{texgyrepagella-regular.otf}[
+ BoldFont=texgyrepagella-bold.otf,
+ ItalicFont=texgyrepagella-italic.otf,
+ BoldItalicFont=texgyrepagella-bolditalic.otf]
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+\usepackage{graphicx,xcolor,pgfplots}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\pgfplotsset{compat=1.18}
+\emergencystretch=2em
+\makeatletter\let\inputtable\@@input\makeatother
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newenvironment{proof}{\par\noindent\textit{Proof.}\ }{\unskip\nobreak\hfill\penalty50\hskip1em\null\nobreak\hfill$\mdlgwhtsquare$\par\medskip}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\one}{\symbf{1}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\pos}[1]{\left(#1\right)_+}
+\title{Graph Alignment and Cumulative Regret:\\A Spectral Pooling Analysis for Stochastic Bandits}
+\author{Working research manuscript}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{center}\small
+Status: complete working draft with proofs and reproducible synthetic experiments.\\
+The results below have not undergone independent mathematical review.\\
+Novelty relative to spectral and clustered bandit research remains to be established.
+\end{center}
+
+\begin{abstract}
+Similarity selection indices use graph smoothing to improve the comparison of stochastic alternatives. Extending this idea to cumulative-regret bandits requires accounting for the cost of every observation and for bias introduced by the graph. We distinguish ordinal alignment, which preserves a ranking, from quantitative alignment, which restricts plausible reward differences. We construct a count-weighted spectral pooling policy and prove a finite-time regret bound controlled by within-component reward uncertainty relative to the component's gap from the optimum. Effective resistance converts supplied graph-energy bounds into the required uncertainty certificates. We also specialize the established structured-bandit information lower bound to graph-energy classes. For homogeneous suboptimal cliques, its value has a closed form: relative to the unstructured Gaussian constant, the exploration requirement falls by a factor $1+(m-1)(1-q)_+^2$, where $m$ is clique size and $q$ is normalized alignment uncertainty. Exact similarity reduces the problem to one arm per component. Synthetic experiments illustrate the benefit and its loss under loose certificates and corrupted edges. These results provide a precise research formulation and a tractable analysis; they do not establish novelty, optimality of the proposed policy under approximate alignment, or a guarantee for graphs learned online.
+\end{abstract}
+
+\section{Introduction}
+Consider a finite collection of stochastic alternatives with unknown mean rewards. A similarity graph can express prior information that two alternatives should perform similarly. An observation at one alternative can then inform estimates at another without directly observing its reward. The similarity selection index introduced by Sun, Li, and Fu~\cite{sun2019}, and developed by Zhou, Fu, and Ryzhov~\cite{zhou2024}, formalizes this intuition through Laplacian smoothing. Their objective is final selection. The present question is how such information changes the cumulative regret of sequential decisions.
+
+For classical stationary stochastic bandits, the principal targets are established. Worst-case expected regret for bounded rewards has optimal order $\sqrt{KT}$, and fixed-instance asymptotic lower bounds admit matching algorithms for important distribution families~\cite{audibert2010,garivier2011,lattimore2020}. Consequently, a graph-based algorithm must be assessed against a restricted class of reward vectors that encodes what the graph tells the learner. A lower regret bound is possible because fewer alternative environments remain plausible, rather than because smoothing creates additional observations.
+
+The phrase ``better alignment'' needs care. A graph can preserve the ordering of all means while providing no improvement in the information needed to distinguish them. Conversely, a graph may accurately identify several groups of nearly equivalent suboptimal alternatives, allowing a whole group to be rejected after a small pooled sample. Its usefulness depends on its geometry, the amount of reward variation allowed within it, and the gaps between groups. No scalar measure of visual resemblance or ranking agreement guarantees monotone regret improvement for arbitrary algorithms and graphs.
+
+We give a concrete answer in a graph model with supplied local smoothness certificates. Our analysis has four parts. First, a rank-preserving example shows why ordinal alignment alone is insufficient. Second, a count-weighted limit of the spectral index produces pooled component estimates. Intersecting their optimistic bounds with ordinary arm bounds yields a policy with both a classical regret guarantee and a stronger component guarantee when alignment uncertainty is small. Third, effective resistance links these uncertainty bounds to graph energy. Fourth, a closed-form information lower bound for homogeneous cliques describes a continuous transition from independent-arm exploration to one exploration task per component.
+
+The distinction between a bound and an achieved performance improvement remains explicit throughout. The proposed policy has a proved finite-time upper bound. The clique calculation gives the exact value of a structured information optimization problem, and hence a regret lower bound. We prove matching asymptotic attainability only at the exact-similarity endpoint, using a classical optimal algorithm on components. We do not prove that our pooling policy achieves the clique information constant for positive alignment uncertainty.
+
+\section{Related research and contribution boundary}
+The original spectral selection index minimizes a squared estimation term plus a graph-Laplacian penalty~\cite{sun2019}. Subsequent work develops sequential allocation for selecting the best alternative and permits updating similarity information~\cite{zhou2024}. Those allocation objectives differ from cumulative reward: a positive limiting sampling fraction assigned to a suboptimal arm produces linear cumulative regret. We retain the graph estimator's interpretation while changing the allocation objective.
+
+Graph-smooth cumulative-regret bandits already appear in SpectralUCB and related algorithms~\cite{valko2014,kocak2020}. They use graph spectral structure to reduce effective statistical complexity. We therefore do not claim that graph arms, Laplacian regularization, or a spectral confidence index constitute a new problem or algorithmic principle.
+
+Clustered bandits are also established. Carlsson, Dubhashi, and Johansson~\cite{carlsson2021} analyze hierarchical Thompson sampling and show how clustering quality affects regret under dominance assumptions. Gore and Chaporkar's Clus-UCB preprint~\cite{gore2025} directly studies known clusters with bounded mean differences, derives an information lower bound, and proposes an index that shares observations within clusters. This is a close comparator for our pooling analysis. The preprint is cited as such; no publication status is assumed.
+
+Our lower-bound starting point is the structured-bandit change-of-measure program of Combes, Magureanu, and Proutiere~\cite{combes2017}. Our explicit homogeneous-clique expression is a specialization to a Gaussian graph-energy class. The finite-time pooling argument is an elementary construction that makes the dependence on a valid alignment certificate transparent. Neither is presented here as an established new contribution to the literature. The candidate research contribution is a joint treatment of ordinal alignment, quantitative graph geometry, cumulative regret, and the cost of obtaining trustworthy graph information. A submission would require a more exhaustive novelty audit and stronger comparisons.
+
+Similarity graphs must also be distinguished from feedback graphs. In our setting, a pull reveals only one reward. An edge restricts the possible means; it does not supply observations of adjacent arms. Observation noise is independent in the experiments. Dependence of the unknown means through a model class is sufficient for information sharing.
+
+\section{Model and definitions of alignment}
+\subsection{Bandit observations}
+There are $K$ arms. At time $t$, an adapted policy selects $A_t$ and observes
+\begin{equation}
+ Y_t=\mu_{A_t}+\xi_t,\qquad \mu\in[0,1]^K.
+ \label{eq:model}
+\end{equation}
+Conditional on the past and the chosen arm, the noise has zero mean and satisfies
+$\E[\exp(u\xi_t)\mid\mathcal F_{t-1},A_t]\le\exp(u^2\sigma^2/2)$ for every $u\in\R$.
+Independent iid arm streams with common known sub-Gaussian proxy $\sigma$ suffice. Our lower bounds specialize to independent $N(\mu_i,\sigma^2)$ rewards with known variance. Define
+\begin{equation}
+ \mu^\star=\max_i\mu_i,\quad \Delta_i=\mu^\star-\mu_i,
+ \quad \mathcal R_T=\sum_{t=1}^T\Delta_{A_t},\quad
+ R_T=\E[\mathcal R_T].
+\end{equation}
+All regret is measured with the original means, even when the selection index is smoothed.
+
+\subsection{Ordinal alignment}
+Let $W$ be symmetric with nonnegative off-diagonal weights, write $\one$ for the all-ones vector, and let
+$L=\diag(W\one)-W$. Write
+\begin{equation}
+ Q_\lambda=(I+\lambda L)^{-1},\qquad z_\lambda=Q_\lambda\bar Y.
+ \label{eq:sindex}
+\end{equation}
+We call a filter ordinally aligned at $\mu$ when $Q_\lambda\mu$ preserves its strict reward comparisons. This describes the order-preservation property relevant here. It does not replace the specific structural definitions of an aligned graph used in the earlier selection literature. In particular, the original WSC definition includes equal-degree and reward-distance conditions, while the later dissertation relaxes the structural condition~\cite{sun2019,zhou2023}.
+
+\begin{proposition}[Order preservation need not improve a comparison]
+For the complete graph with common edge weight $w>0$,
+\begin{equation}
+ Q_\lambda=qI+(1-q)\frac{\one\one^\top}{K},\qquad
+ q=(1+\lambda wK)^{-1}.
+\end{equation}
+For every vector $y$, $z_i-z_j=q(y_i-y_j)$. Thus the smoothed and raw sample means select exactly the same maximizer. With independent Gaussian sample means based on equal fixed counts $n$, both the true pairwise gap and its standard deviation are multiplied by $q$, leaving the signal-to-noise ratio unchanged.
+\label{prop:ordinal}
+\end{proposition}
+\begin{proof}
+The complete-graph Laplacian is $w(KI-\one\one^\top)$. Its eigenvalue is zero on constants and $wK$ on their orthogonal complement. Inverting on these two subspaces gives the displayed expression. Pairwise differences remove the common-average term. Their raw variance is $2\sigma^2/n$, and their filtered variance is $q^2 2\sigma^2/n$.
+\end{proof}
+This example shows the limitation of rank preservation as a performance claim. It does not claim that every algorithm using a complete graph behaves identically to UCB.
+
+\subsection{Quantitative alignment through graph energy}
+Choose a fixed partition $\mathcal P=\{C_1,\ldots,C_M\}$ of the arms. A graph may already have these connected components, or a partition may be constructed and cross-partition edges removed. Let $L_c$ denote the resulting connected component Laplacian; singletons are permitted. Removing edges is part of the model construction, not an assumption that a connected original graph has zero cross edges.
+
+The learner is supplied with valid local certificates
+\begin{equation}
+ \mu_c^\top L_c\mu_c\le S_c^2.
+ \label{eq:energy}
+\end{equation}
+The corresponding model class is
+\begin{equation}
+ \mathcal M_{\mathcal P,L,S}=\{\nu\in[0,1]^K:
+       \nu_c^\top L_c\nu_c\le S_c^2\ \text{for all }c\}.
+ \label{eq:class}
+\end{equation}
+The certificates are prior information available to the policy. Their true values cannot silently be computed from unknown rewards during a real deployment.
+
+For a connected component, define effective resistance
+$r_{ij}^{\rm eff}=(e_i-e_j)^\top L_c^\dagger(e_i-e_j)$ and resistance diameter
+$D_c^{\rm eff}=\max_{i,j\in C_c}r_{ij}^{\rm eff}$. Use $D_c^{\rm eff}=0$ for a singleton.
+
+\begin{lemma}[Energy certifies reward diameter]
+If \eqref{eq:energy} holds, then
+\begin{equation}
+ |\mu_i-\mu_j|\le S_c\sqrt{r_{ij}^{\rm eff}},\qquad
+ \max_{i\in C_c}\mu_i-\min_{i\in C_c}\mu_i
+ \le\varepsilon_c:=\min\{1,S_c\sqrt{D_c^{\rm eff}}\}.
+ \label{eq:width}
+\end{equation}
+\label{lem:resistance}
+\end{lemma}
+\begin{proof}
+The vector $e_i-e_j$ is orthogonal to constants. On this subspace, factor its inner product with $\mu_c$ through $L_c^{\dagger/2}$ and $L_c^{1/2}$. Cauchy--Schwarz gives
+$|(e_i-e_j)^\top\mu_c|^2\le
+((e_i-e_j)^\top L_c^\dagger(e_i-e_j))(\mu_c^\top L_c\mu_c)$.
+Bounded means additionally give diameter at most one.
+\end{proof}
+The product $S_c\sqrt{D_c^{\rm eff}}$ is invariant to a common rescaling of all component weights, provided the energy certificate is rescaled consistently. Shrinking weights without changing the information they represent is therefore not a substantive improvement in alignment.
+
+Let $v_c=\max_{i\in C_c}\mu_i$, $\Gamma_c=\mu^\star-v_c$, and
+$\mathcal O=\{c:\Gamma_c=0\}$. The relevant dimensionless uncertainty for rejecting a suboptimal component is $\varepsilon_c/\Gamma_c$. Neither $\Gamma_c$ nor this ratio is an algorithm input.
+
+\section{From the spectral index to a pooling policy}
+\subsection{Count-weighted spectral pooling}
+Let $n_i$ and $\bar Y_i$ denote observed counts and sample means. The count-weighted analogue of the selection index solves
+\begin{equation}
+ \widehat f_\lambda\in\argmin_f
+       \sum_{i:n_i>0}n_i(f_i-\bar Y_i)^2+\lambda f^\top Lf,
+ \label{eq:weighted}
+\end{equation}
+where $L$ is the block-diagonal Laplacian of the chosen partition. After every component has an observation, the solution is unique: a vector in the null spaces of both $\diag(n_i)$ and $L$ must vanish on every component. As $\lambda\to\infty$, nonconstant component modes are suppressed. Minimizing the remaining squared-error objective over constants gives
+\begin{equation}
+ \widehat f_{\infty,i}=\widehat p_c
+ =\frac{\sum_{s:A_s\in C_c}Y_s}{N_c},\qquad i\in C_c,
+ \quad N_c=\sum_{i\in C_c}n_i.
+ \label{eq:pool}
+\end{equation}
+This is a spectral pooling limit. It weights observations by counts; it is not the unweighted average of available arm averages. For unequal counts it differs from applying a fixed $Q_\lambda$ to the raw means. We do not invoke the earlier order-preservation theorem for this modified estimator.
+
+The conditional mean of the pooled observation sequence is the average of the actual means of the sampled arms. Because selection is adaptive, $\widehat p_c$ is not an iid estimate of a fixed component mean when its arms differ. The component diameter certificate controls this drift.
+
+\subsection{Algorithm}
+Assume horizon $T\ge M$ and confidence level $\delta\in(0,1)$. Put
+\begin{equation}
+ \ell=\log\frac{2(K+M)T}{\delta},\qquad
+ b(n)=\sigma\sqrt{\frac{2\ell}{n}},\quad b(0)=+\infty.
+ \label{eq:radius}
+\end{equation}
+For an unsampled arm set $u_i=+\infty$; otherwise set
+$u_i=\bar Y_i+b(n_i)$. Define
+\begin{equation}
+ i_c\in\argmax_{i\in C_c}u_i,\qquad
+ U_c=\min\{u_{i_c},\widehat p_c+b(N_c)+\varepsilon_c\}.
+ \label{eq:index}
+\end{equation}
+The policy, called spectral pooling UCB (SP-UCB) in this draft, is:
+\begin{enumerate}
+ \item Pull one predetermined representative of each component.
+ \item At subsequent rounds select $c_t\in\argmax_c U_c$.
+ \item Pull $A_t=i_{c_t}$ and update its arm and component statistics.
+\end{enumerate}
+Tie breaking uses a fixed arm ordering. There is no all-arm initialization requirement: a clearly suboptimal component can be rejected before all its members are sampled. An uncertain optimal component retains ordinary arm exploration through $i_c$.
+
+The minimum in \eqref{eq:index} combines two valid bounds on the same target $v_c$. Its validity depends on the supplied certificate. Taking a minimum with an ordinary UCB is not protection against a false graph assertion.
+
+\subsection{Confidence under adaptive pooling}
+For the $n$th observation from component $c$, let $B_{c,n}$ be the average of the means of the $n$ arms actually pulled there, including repetitions. A uniform event $\mathcal E$ is
+\begin{equation}
+ |\bar Y_i-\mu_i|\le b(n_i),\qquad
+ |\widehat p_c-B_{c,N_c}|\le b(N_c)
+ \label{eq:event}
+\end{equation}
+for all nonzero arm and component counts through $T$.
+
+\begin{lemma}[Uniform confidence]
+Under \eqref{eq:model}, $\Prob(\mathcal E)\ge1-\delta$. On this event, every $U_c$ in \eqref{eq:index} is an upper bound on $v_c$.
+\label{lem:confidence}
+\end{lemma}
+\begin{proof}
+For a fixed arm or component, the selected-noise sum $Z_t$ and count $N_t$ give the exponential supermartingale
+$\exp(uZ_t-u^2\sigma^2N_t/2)$. Stop it at the $n$th corresponding pull or at $T$. On the event that the $n$th pull occurs, the upper-tail probability for $Z\ge nb(n)$ is at most $e^{-\ell}$, using $u=b(n)/\sigma^2$. Apply the same argument to the lower tail. A union bound over $K+M$ processes and $n=1,\ldots,T$ gives failure probability at most $2(K+M)Te^{-\ell}=\delta$. This argument does not treat a stopped sample average as Gaussian.
+
+For a component, $v_c-\varepsilon_c\le B_{c,N_c}\le v_c$. Thus $\widehat p_c+b(N_c)+\varepsilon_c\ge v_c$ on $\mathcal E$. The largest ordinary arm upper bound also exceeds $v_c$. Their minimum remains an upper bound.
+\end{proof}
+
+\subsection{Finite-time regret}
+Define the ordinary component bound
+\begin{equation}
+ A_c=\sum_{i\in C_c:\Delta_i>0}
+        \left(\Delta_i+\frac{8\sigma^2\ell}{\Delta_i}\right).
+ \label{eq:Ac}
+\end{equation}
+For suboptimal components define
+\begin{equation}
+ H_c=\begin{cases}
+ (\Gamma_c+\varepsilon_c)
+ \left(1+\dfrac{8\sigma^2\ell}{(\Gamma_c-\varepsilon_c)^2}\right),
+       &\varepsilon_c<\Gamma_c,\\
+ +\infty,&\varepsilon_c\ge\Gamma_c.
+ \end{cases}
+ \label{eq:Hc}
+\end{equation}
+
+\begin{theorem}[Alignment-sensitive finite-time guarantee]
+If the graph-derived or directly supplied diameter certificates are valid, SP-UCB satisfies, on $\mathcal E$,
+\begin{equation}
+ \mathcal R_T\le
+     \sum_{c\in\mathcal O}A_c+
+     \sum_{c\notin\mathcal O}\min\{A_c,H_c\}.
+ \label{eq:regret}
+\end{equation}
+Consequently, expected regret is at most the right side plus $\delta T$.
+\label{thm:upper}
+\end{theorem}
+\begin{proof}
+At any post-initialization round selecting arm $i$ in component $c$, optimism of an optimal component gives
+$\mu^\star\le U_c\le u_i\le\mu_i+2b(n_i)$ whenever $n_i>0$.
+Thus a suboptimal arm can be selected with a positive pre-pull count only if
+$n_i\le8\sigma^2\ell/\Delta_i^2$.
+Its first pull, including a possible initialization pull, contributes the extra one. Therefore
+$n_i(T)\le1+8\sigma^2\ell/\Delta_i^2$, yielding $A_c$.
+
+The pooled index also gives
+$\mu^\star\le U_c\le v_c+2b(N_c)+\varepsilon_c$.
+If $\Gamma_c>\varepsilon_c$, a component can be selected only with
+$N_c\le8\sigma^2\ell/(\Gamma_c-\varepsilon_c)^2$ beforehand, except for its first initialization pull. Hence
+$N_c(T)\le1+8\sigma^2\ell/(\Gamma_c-\varepsilon_c)^2$.
+Each such pull has regret at most $\Gamma_c+\varepsilon_c$, giving $H_c$.
+Both bounds hold simultaneously, so take their minimum. On the failure event, bounded means give $\mathcal R_T\le T$.
+\end{proof}
+
+\begin{corollary}[Improved certificates tighten the component guarantee]
+For a fixed partition and reward vector, $H_c$ is increasing in $\varepsilon_c$ on $[0,\Gamma_c)$. Thus tightening a valid certificate cannot worsen the bound in \eqref{eq:regret}. If $\varepsilon_c=0$, every arm in that component has gap $\Gamma_c$, and the leading logarithmic terms of $A_c$ and $H_c$ differ by a factor $|C_c|$.
+\end{corollary}
+\begin{proof}
+The derivative of $(\Gamma+\varepsilon)/(\Gamma-\varepsilon)^2$ is
+$(3\Gamma+\varepsilon)/(\Gamma-\varepsilon)^3>0$; the nonlogarithmic term is increasing as well. At zero width, $A_c=|C_c|\Gamma_c+8\sigma^2\ell|C_c|/\Gamma_c$, whereas $H_c=\Gamma_c+8\sigma^2\ell/\Gamma_c$.
+\end{proof}
+This is monotonicity of a proved upper bound, not a pathwise ordering between two policies with different certificates. Changing the partition also changes component gaps and the number of components; no universal monotonicity assertion follows from reducing an empirical graph-error score.
+
+\section{How alignment changes the information lower bound}
+\subsection{General graph classes}
+For this section assume Gaussian rewards with known common variance $\sigma^2$, a unique optimal arm $i^\star$, and $\mu^\star<1$. An algorithm is uniformly efficient on a class if its regret is $o(T^a)$ for every $a>0$ at every member of that class. Define confusing alternatives
+\begin{equation}
+ \mathcal B(\mu)=\{\nu\in\mathcal M_{\mathcal P,L,S}:
+       \nu_{i^\star}=\mu^\star,\ \max_j\nu_j>\mu^\star\}.
+\end{equation}
+The established structured-bandit information principle~\cite{combes2017} yields the program
+\begin{align}
+ C_{L,S}(\mu)=\inf_{x_i\ge0}\quad&\sum_{i\ne i^\star}x_i\Delta_i,\label{eq:info}\\
+ \text{subject to}\quad&
+ \sum_{i\ne i^\star}x_i\frac{(\mu_i-\nu_i)^2}{2\sigma^2}\ge1
+       \quad\text{for every }\nu\in\mathcal B(\mu).\nonumber
+\end{align}
+In particular,
+\begin{equation}
+ \liminf_{T\to\infty}\frac{R_T}{\log T}\ge C_{L,S}(\mu).
+ \label{eq:lower}
+\end{equation}
+The normalization $x_i$ represents the number of samples of arm $i$ per unit $\log T$. Alternatives agreeing on the optimal arm cannot be rejected by cost-free optimal-arm observations alone.
+
+The following monotonicity is a property of the information available, independent of a particular algorithm. If two supplied classes contain the true vector and
+$\mathcal M_1\subseteq\mathcal M_2$, then $C_{\mathcal M_1}(\mu)\le C_{\mathcal M_2}(\mu)$. The first class has fewer alternative constraints in \eqref{eq:info}. Decreasing valid $S_c$ with $L_c$ fixed gives this nesting. Arbitrarily changing graph edges does not necessarily do so.
+
+For completeness, the change-of-measure reasoning is as follows. Comparing $\mu$ with a confusing $\nu$, the KL divergence of histories is
+$\sum_i\E_\mu[n_i(T)](\mu_i-\nu_i)^2/(2\sigma^2)$.
+Consider the event that the original best arm is played at least $T/2$ times. Uniform efficiency makes its probability approach one under $\mu$ and at most $o(T^{-1+a})$ under $\nu$, for every $a>0$. The binary KL divergence of this event is consequently at least $(1-o(1))\log T$. This gives each information constraint; normalizing sample counts and passing to a finite convergent subsequence of any bounded-cost allocation gives \eqref{eq:lower}. If normalized regret is unbounded, the inequality is immediate.
+
+\subsection{A closed-form answer for homogeneous cliques}
+The general program is difficult. The following solvable graph family gives a quantitative answer to the motivating question. The optimal component is a singleton. Each other component $c$ is a clique of $m_c\ge2$ arms, with common edge weight $w_c>0$. At the true instance its arms all have mean $a_c<\mu^\star$, so $\Gamma_c=\mu^\star-a_c$. Alternatives satisfy the energy certificate $S_c$ but need not be homogeneous. Define
+\begin{equation}
+ q_c=\frac{S_c}{\Gamma_c\sqrt{w_c(m_c-1)}},\qquad
+ g_c=1+(m_c-1)\pos{1-q_c}^2.
+ \label{eq:alignmentratio}
+\end{equation}
+
+\begin{theorem}[Clique information constant]
+For the graph-energy class just described, the value of \eqref{eq:info} is
+\begin{equation}
+ C_{L,S}(\mu)=\sum_{c\ne c^\star}
+ \frac{2\sigma^2 m_c\Gamma_c}
+ {\Gamma_c^2+(m_c-1)
+       \pos{\Gamma_c-S_c/\sqrt{w_c(m_c-1)}}^2}
+ =\sum_{c\ne c^\star}\frac{2\sigma^2m_c}{\Gamma_c g_c}.
+ \label{eq:cliqueconstant}
+\end{equation}
+Thus $g_c$ is the reduction factor relative to that component's unstructured Gaussian information constant $2\sigma^2m_c/\Gamma_c$.
+\label{thm:clique}
+\end{theorem}
+\begin{proof}
+Constraints separate by suboptimal component: alternatives raising a single component must be rejected, and any alternative raising multiple components contains at least one such information requirement. The true means, graph, and regret coefficients in a component are invariant to permutations of its arms. Averaging any feasible allocation over permutations preserves feasibility and cost, because each information constraint is linear in the allocation and the full alternative set is invariant. Hence an optimal component allocation can be uniform, $x_i=X/m$.
+
+Fix an arm that an alternative raises above $\mu^\star$. At the infimum it is raised to $\mu^\star$, a movement $\Gamma$. The boundary is sufficient: scaling a nonnegative displacement toward the true constant vector reduces both its information cost and its graph energy. Displacements can first be clipped to $[0,\Gamma]$, which does not increase energy or squared distance. By convexity and symmetry, the other $m-1$ movements may be equal to $h$. The energy constraint is then
+\begin{equation}
+ w(m-1)(\Gamma-h)^2\le S^2,
+\end{equation}
+and the smallest squared distance occurs at
+$h=\pos{\Gamma-S/\sqrt{w(m-1)}}$.
+The infimal information per unit total allocation is
+$[\Gamma^2+(m-1)h^2]/(2\sigma^2m)$.
+Strictly improving alternatives approach this boundary continuously; when $S=0$, raise every arm in the component by the same amount instead. Since $\mu^\star<1$, the approximating alternatives remain in the mean domain. The smallest feasible $X$ is the reciprocal of this information rate. Multiplying by the common regret coefficient $\Gamma$ proves the result.
+\end{proof}
+
+At $q_c=0$, $g_c=m_c$ and the information cost becomes $2\sigma^2/\Gamma_c$: the clique behaves like one arm. For $q_c>1$, an individual arm can plausibly exceed the optimum while its peers retain their true means. At $q_c=1$ the same information constant follows by a limiting alternative with arbitrarily small peer changes. Thus $g_c=1$ for $q_c\ge1$, and the unstructured constant returns. The transition is continuous and depends on uncertainty relative to the reward gap.
+
+For $m=8$, values $q=0,0.25,0.5,0.75,1$ give factors $8,4.9375,2.75,1.4375,1$. These are ratios of information lower-bound constants. They are not asserted finite-horizon speedups of SP-UCB.
+
+The actual graph energy at the homogeneous true instance is zero even when a positive $S_c$ is supplied. In this theorem, $S_c$ measures how much mismatch the learner must allow, not the observed graph error. A true graph and a graph with a trustworthy tight certificate convey different amounts of information than the same graph with no certified relationship to rewards.
+
+For a clique, Lemma~\ref{lem:resistance} gives
+\begin{equation}
+ \varepsilon_c\le S_c\sqrt{\frac{2}{w_cm_c}}
+ =\Gamma_c q_c\sqrt{\frac{2(m_c-1)}{m_c}},
+ \label{eq:cliquewidth}
+\end{equation}
+before clipping at one. Combining this with Theorem~\ref{thm:upper} yields an explicit attainable upper bound in a strong-alignment regime. The information expression remains finite near $q_c=1$, whereas the pooled-only bound can become loose; its intersection with $A_c$ retains the classical guarantee. The different constants and thresholds expose the gap between the simple policy and an information-optimal allocation.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.88\linewidth,height=6cm,xlabel={Normalized certificate uncertainty $q$},
+ ylabel={Reduction factor in information constant},xmin=0,xmax=1.5,ymin=0,
+ grid=major,legend pos=north east]
+\addplot[blue,thick] table[x=alignment_ratio,y=gain_m2,col sep=comma]{results/lower_bound_curve.csv};
+\addlegendentry{$m=2$}
+\addplot[red,thick] table[x=alignment_ratio,y=gain_m8,col sep=comma]{results/lower_bound_curve.csv};
+\addlegendentry{$m=8$}
+\addplot[teal,thick] table[x=alignment_ratio,y=gain_m32,col sep=comma]{results/lower_bound_curve.csv};
+\addlegendentry{$m=32$}
+\end{axis}
+\end{tikzpicture}
+\caption{The explicit factor $1+(m-1)(1-q)_+^2$ from Theorem~\ref{thm:clique}. This is an analytical information-complexity comparison, not an empirical regret curve or an optimality claim for SP-UCB.}
+\label{fig:lower}
+\end{figure}
+
+\subsection{The exact-alignment endpoint is achievable}
+If every $S_c=0$, connectedness forces a constant mean on each component. Selecting any representative reduces the problem to an ordinary $M$-armed bandit. In the Gaussian case with a unique best component, a classical asymptotically optimal algorithm on these representatives achieves
+\begin{equation}
+ R_T=\left(\sum_{c\ne c^\star}\frac{2\sigma^2}{\Gamma_c}\right)\log T
+      +o(\log T).
+ \label{eq:exact}
+\end{equation}
+The corresponding change-of-measure lower bound shifts all arms in a component together, and matches this expression. The reduction is thus attainable, independently of SP-UCB's conservative confidence constants. For bounded reward classes with $2\le M\le T$, the exact-component minimax rate is $\Theta(\sqrt{MT})$: a representative-based minimax policy supplies the upper bound, and a Bernoulli subclass with arbitrary component means supplies the lower bound~\cite{audibert2010,lattimore2020}. For $M=1$, regret is zero.
+
+This endpoint concerns exact equality of the means. Approximate similarity leaves a separate task of identifying the best member of a competitive component. The $A_c$ term for optimal components in Theorem~\ref{thm:upper} makes that cost explicit.
+
+\section{Constructing a graph with a valid certificate}
+There are three distinct quantities: the constructed graph, its actual agreement with unknown rewards, and the certificate supplied to the learner. Our guarantees concern their justified relationship, not a retrospective oracle score alone.
+
+\paragraph{Known reward continuity.}
+Suppose arm features $x_i$ have a known metric $d$ and reward continuity bound
+$|\mu_i-\mu_j|\le H d(x_i,x_j)$ with known $H$. Any proposed component has the valid certificate
+\begin{equation}
+ S_c^2=H^2\sum_{i<j\in C_c}w_{ij}d(x_i,x_j)^2.
+\end{equation}
+A direct diameter certificate $\varepsilon_c\le H\max_{i,j\in C_c}d(x_i,x_j)$ is also available. Graph construction should balance having few components against creating components with a diameter small relative to their reward gaps. Since the gaps are unknown, using them in the construction would require a separate adaptive analysis.
+
+\paragraph{Pilot observations.}
+Uniform raw confidence intervals give
+$|\mu_i-\mu_j|\le|\bar Y_i-\bar Y_j|+b(n_i)+b(n_j)$.
+Thus one can obtain simultaneous edge-difference or diameter bounds, build a partition from a pilot phase, and freeze it. Restarting the main policy on fresh observations permits conditioning on that fixed partition, adding the pilot regret and its certificate failure probability. This does not assume that data-dependent pooled histories are automatically unbiased. A pilot of $n_0$ pulls per arm can cost as much as $Kn_0$ regret, potentially consuming the savings that pooling seeks to provide.
+
+\paragraph{Graphs updated online.}
+Our theorem does not cover a graph or partition that changes during exploitation. The confidence event for a fixed component does not automatically cover arbitrary subsets selected from the same reward history. A finite prespecified family can be covered simultaneously, with an appropriate union penalty; a general learned graph needs a dedicated adaptive guarantee. Including raw bounds in a minimum does not remove this issue.
+
+\paragraph{Ordinal side information.}
+If prior information only guarantees a rank-preserving filter, it does not imply \eqref{eq:energy} with a small known $S_c$. An ordinal model and a graph-energy model are distinct restricted classes. Translating a particular aligned-graph definition into a regret reduction requires identifying what alternatives it excludes and how much information remains necessary to reject them.
+
+\section{Reproducible synthetic experiments}
+\subsection{Protocol}
+The accompanying standard-library Python implementation runs 40 independent macro-replications with horizon $T=20{,}000$ and Gaussian observation noise $\sigma=0.15$. There are 25 arms: one with mean $0.8$, and three groups of eight arms with means $0.65$, $0.5$, and $0.35$. The optimal arm is a singleton. Clique edge weights are $1/m$, so each nonzero component Laplacian eigenvalue equals one. Policies share per-arm noise streams indexed by pull number within a replication; this coupling does not give any policy extra observations. Different macro-replications use independent seeds.
+
+Ordinary UCB and SP-UCB use \eqref{eq:radius}, with $\delta=1/T$. The regularized spectral baseline is described below. Results report realized pseudo-regret, averaged over replications. The interval half-width is $1.96$ times the across-run standard error; it is an approximate normal confidence interval for a simulation mean. Raw observations are Gaussian, while the regret variable remains bounded by $T$ because the means lie in $[0,1]$.
+
+\subsection{Certificate sensitivity with fixed graph and rewards}
+The first experiment leaves the graph and true rewards fixed and supplies SP-UCB with diameter bounds $\varepsilon=0,0.05,0.1,0.2,0.4$ on each suboptimal component. All are valid because those true components are homogeneous. This intervention measures the value of more precise side information, not a change in actual graph alignment or a learned certificate.
+
+The graph-regularized baseline uses
+\begin{equation}
+ V_t=\diag(n_i(t))+V_0,\quad V_0=\eta I+\lambda L,\quad
+ \widehat\mu_t=V_t^{-1}\sum_{s<t}e_{A_s}Y_s,
+\end{equation}
+and selects the largest
+\begin{equation}
+ \widehat\mu_{t,i}+\beta_t\sqrt{(V_t^{-1})_{ii}},\quad
+ \beta_t=\sigma\sqrt{\log\frac{\det V_t}{\det V_0}+2\log\frac1\delta}
+       +\sqrt{\eta K+\lambda\sum_cS_c^2}.
+\end{equation}
+This is a regularized SpectralUCB-style baseline, using the usual self-normalized linear confidence construction~\cite{kocak2020,abbasi2011}. Here $\eta=0.01$, $\lambda=1000$, and the exact energy certificate is zero. It is a single fixed configuration, not a tuned reproduction of every published spectral algorithm. The prior-norm term is valid because $\|\mu\|^2\le K$ and the supplied energies are valid. This baseline already exploits graph information, so outperforming ordinary UCB alone would not establish superiority over existing graph methods.
+
+\subsection{Corrupted graph construction}
+The second experiment exchanges 0, 1, 2, or 4 members of the highest and lowest suboptimal groups, keeping group sizes eight and the optimal singleton intact. It then builds cliques on the resulting memberships. The graph therefore increasingly joins arms with different means. Each policy receives an explicitly \emph{oracle-supplied} energy certificate computed from the true synthetic means, converted to a diameter bound by Lemma~\ref{lem:resistance}. This separates the cost of incorrect edges from the separate problem of certifying their error. It gives no evidence that such a certificate can be inferred cheaply from selected-arm feedback.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{llrr}
+\toprule
+Experiment & Policy/condition & Mean regret & 95\% half-width\\
+\midrule
+\inputtable results/results_table.tex
+\bottomrule
+\end{tabular}
+\caption{Results at $T=20{,}000$ across 40 macro-replications. Widths in the certificate experiment are supplied diameter bounds. Swap counts in the graph experiment change component memberships; true energy is then supplied as an oracle certificate.}
+\label{tab:results}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.93\linewidth,height=7cm,xmode=log,
+ xlabel={Horizon},ylabel={Mean cumulative pseudo-regret},grid=major,
+ legend pos=north west,legend style={font=\small}]
+\addplot[black,thick,mark=*,error bars/.cd,y dir=both,y explicit] table[x=t,y=ucb,y error expr={1.96*\thisrow{ucb_se}},col sep=comma]{results/certificate_curves.csv};
+\addlegendentry{Ordinary UCB}
+\addplot[teal,thick,mark=triangle*,error bars/.cd,y dir=both,y explicit] table[x=t,y=spectral_ucb,y error expr={1.96*\thisrow{spectral_ucb_se}},col sep=comma]{results/certificate_curves.csv};
+\addlegendentry{Spectral baseline, exact certificate}
+\addplot[blue,thick,mark=square*,error bars/.cd,y dir=both,y explicit] table[x=t,y=pool_eps_0.0,y error expr={1.96*\thisrow{pool_eps_0.0_se}},col sep=comma]{results/certificate_curves.csv};
+\addlegendentry{SP-UCB, $\varepsilon=0$}
+\addplot[red,thick,mark=diamond*,error bars/.cd,y dir=both,y explicit] table[x=t,y=pool_eps_0.1,y error expr={1.96*\thisrow{pool_eps_0.1_se}},col sep=comma]{results/certificate_curves.csv};
+\addlegendentry{SP-UCB, $\varepsilon=0.1$}
+\addplot[orange,thick,mark=+,error bars/.cd,y dir=both,y explicit] table[x=t,y=pool_eps_0.2,y error expr={1.96*\thisrow{pool_eps_0.2_se}},col sep=comma]{results/certificate_curves.csv};
+\addlegendentry{SP-UCB, $\varepsilon=0.2$}
+\end{axis}
+\end{tikzpicture}
+\caption{Certificate sensitivity with a fixed exactly homogeneous graph. Curves average 40 replications; error bars show $1.96$ standard errors. The $\varepsilon=0.4$ final value equals the ordinary-UCB value in this experiment and is omitted for clarity. Final uncertainty estimates appear in Table~\ref{tab:results}; full per-checkpoint standard errors are provided in the CSV data.}
+\label{fig:empirical}
+\end{figure}
+
+\subsection{Findings and their interpretation}
+With exact certificates, SP-UCB's average final regret is $12.22$, compared with $100.02$ for ordinary UCB and $28.65$ for the configured spectral baseline. The observed ordinary-UCB/SP-UCB ratio is approximately $8.18$, consistent with rejecting groups of eight equivalent suboptimal arms. It is a finite-horizon observation, not a theorem about an eightfold reduction for arbitrary graphs.
+
+As the supplied width becomes looser, average SP-UCB regret increases to $21.07$, $54.25$, $83.08$, and $100.02$. This supports the qualitative certificate dependence in Theorem~\ref{thm:upper}. It does not show that its constants are tight or that empirical regret is monotone in every instance.
+
+Exchanging even one high/low member raises mean regret to $75.37$. Further exchanges give the same final summary in this construction. The supplied width of both affected components is then large enough that pooling offers no useful rejection bound, while the unchanged middle component still benefits. This plateau is informative: graph-error severity and regret need not have a smooth one-to-one relationship. Once the relevant alignment threshold is crossed, additional edge corruption may have little effect on this particular index.
+
+The implementation checks ordinary-arm and pooled-noise confidence coverage, and verifies the arm and component pull-count implications on covered paths. Analytical checks confirm rank cancellation for uniform complete graphs, the clique least-informative alternative, endpoint constants, and the energy-to-width certificates for corrupted partitions. These checks support implementation consistency; they are not a substitute for mathematical peer review.
+
+\subsection{Scope of the numerical evidence}
+The experiments use a favorable family with an isolated optimal arm and homogeneous true suboptimal groups. They assess certificates and graph corruption in a controlled setting. They do not include online graph learning, near-tied heterogeneous optimal components, temporal dependence, real applications, or a full tuning study. Clus-UCB and hierarchical Thompson sampling are close competitors whose implementation and careful comparison would be needed before an empirical superiority claim. The manuscript makes no such claim.
+
+\section{Discussion and next theoretical targets}
+The main answer is conditional but precise. Better graph information reduces regret when it restricts reward variation enough to let observations rule out multiple alternatives together. For the pooled policy, the useful scale is $\varepsilon_c/\Gamma_c$; for homogeneous graph-energy cliques, the information reduction is exactly the factor in \eqref{eq:alignmentratio}. At perfect alignment, arm-level exploration is replaced by component-level exploration. A heterogeneous optimal component still requires identifying its best member.
+
+Several limitations remain substantive. The finite-time policy uses the infinite-smoothing limit, so the analysis does not establish a regret theorem for the original fixed-strength selection index on every ordinally aligned graph. The resistance diameter compresses graph geometry into one conservative bound and may lose useful local information. The clique lower bound gives the optimal value of an information program, while SP-UCB is not proved to attain it for positive certificates. Finally, certificate construction can itself incur exploration regret.
+
+The strongest next steps are therefore mathematical. One is to design an allocation tracking \eqref{eq:info} under graph-energy constraints and prove its asymptotic attainability, including continuity and boundary cases required by the general structured-bandit framework. Another is to retain finite-strength smoothing and pairwise comparison cancellation, using confidence bounds appropriate to adaptively sampled observations. A third is to analyze a graph inferred from a pilot or a prespecified family while charging its construction cost. These are research targets, not completed results hidden behind the present theorems.
+
+For practical graph construction, the desired objective is information transfer that is cheap enough to use and accurate enough to trust. Reward ranking alone does not characterize this objective. Combining a quantitative uncertainty certificate with graph geometry gives a route from the similarity selection idea to a cumulative-regret analysis that can be compared against sharp classical bounds.
+
+\appendix
+\section{Reproducibility and numerical implementation}
+All experimental observations and results are generated by
+\texttt{experiments/alignment\_regret.py}. The program requires only Python's standard library. From the project root:
+\begin{verbatim}
+python3 experiments/alignment_regret.py --verify
+python3 experiments/alignment_regret.py --runs 40 --horizon 20000
+cd research/alignment_paper
+tectonic --only-cached --keep-logs manuscript.tex
+\end{verbatim}
+The output directory includes per-replication regrets and counts, aggregate means and standard errors, curves at recorded checkpoints, the analytical lower-bound curve, and metadata specifying seeds, mean vectors, graph memberships, certificates, policy parameters, and a SHA-256 hash of the experiment source. The figures use PGFPlots directly on these CSV files. Results in the manuscript are actual generated values; no simulation tables are manually fabricated.
+
+For the spectral baseline, a clique's regularized design matrix is
+$V_c=\diag(d_i)-a\one\one^\top$, where $d_i=n_i+\eta+\lambda$ and $a=\lambda/m$ under edge weights $1/m$. Let $h_i=1/d_i$ and $b=a/(1-a\sum_i h_i)$. Then
+\begin{equation}
+ V_c^{-1}=\diag(h_i)+b hh^\top,\qquad
+ \log\det V_c=\sum_i\log d_i+\log(1-a\sum_i h_i).
+\end{equation}
+These identities avoid an external numerical dependency and a dense matrix inverse at each step. The same expression covers a singleton, where the graph penalty cancels and $V_c=n_i+\eta$.
+
+\section{A sharper distinction between uncertainty and actual error}
+Let $S_c^{\rm true}=\sqrt{\mu_c^\top L_c\mu_c}$. A valid supplied bound must satisfy $S_c\ge S_c^{\rm true}$. The true quantity evaluates a graph retrospectively; the supplied bound determines the alternatives the policy must consider. Tightening $S_c$ without violating validity reduces an information class. Changing $L_c$ can improve or worsen both $S_c^{\rm true}$ and effective resistance. The comparison is not determined by one of these quantities alone.
+
+For example, adding a strong edge between substantially different means increases graph energy. Increasing all weights, in contrast, increases energy and decreases resistance by inverse factors, without changing the certified width when the certificate is rescaled consistently. A graph-quality evaluation should therefore report component sizes, gap scales, true diagnostic energy, supplied certificate size, and the resulting reward-diameter bound. Only the latter information available before a decision can justify its confidence interval.
+
+\begin{thebibliography}{99}
+\bibitem{sun2019} G. Sun, Y. Li, and M. C. Fu.
+\emph{A Spectral Index for Selecting the Best Alternative}.
+Winter Simulation Conference, pp. 3404--3415, 2019.
+\href{https://www.informs-sim.org/wsc19papers/422.pdf}{Public proceedings PDF}.
+
+\bibitem{zhou2024} Y. Zhou, M. C. Fu, and I. O. Ryzhov.
+\emph{Sequential Learning with a Similarity Selection Index}.
+Operations Research 72(6):2526--2542, 2024; first published online 2023.
+\href{https://pubsonline.informs.org/doi/abs/10.1287/opre.2023.2478}{DOI: 10.1287/opre.2023.2478}.
+
+\bibitem{zhou2023} Y. Zhou.
+\emph{Simulation Optimization: Efficient Selection and Dynamic Programming}.
+Ph.D. dissertation, University of Maryland, 2023, Chapter 2.
+\href{https://drum.lib.umd.edu/items/b2a3657a-ca7c-4e1e-a132-af8a5e12f6f2}{University repository}.
+
+\bibitem{valko2014} M. Valko, R. Munos, B. Kveton, and T. Kocak.
+\emph{Spectral Bandits for Smooth Graph Functions}.
+ICML, PMLR 32(2):46--54, 2014.
+\href{https://proceedings.mlr.press/v32/valko14.html}{Proceedings}.
+
+\bibitem{kocak2020} T. Kocak, R. Munos, B. Kveton, S. Agrawal, and M. Valko.
+\emph{Spectral bandits}.
+JMLR 21(218):1--44, 2020.
+\href{https://www.jmlr.org/papers/v21/16-529.html}{Journal article}.
+
+\bibitem{carlsson2021} E. Carlsson, D. Dubhashi, and F. D. Johansson.
+\emph{Thompson Sampling for Bandits with Clustered Arms}.
+IJCAI, pp. 2212--2218, 2021.
+\href{https://www.ijcai.org/proceedings/2021/305}{Proceedings}.
+
+\bibitem{gore2025} A. Gore and P. Chaporkar.
+\emph{Clus-UCB: A Near-Optimal Algorithm for Clustered Bandits}.
+arXiv:2508.02909, 2025, preprint; the version inspected was v1.
+\href{https://arxiv.org/abs/2508.02909}{Author preprint}.
+
+\bibitem{combes2017} R. Combes, S. Magureanu, and A. Proutiere.
+\emph{Minimal Exploration in Structured Stochastic Bandits}.
+Advances in Neural Information Processing Systems 30, 2017.
+\href{https://papers.nips.cc/paper_files/paper/2017/hash/e19347e1c3ca0c0b97de5fb3b690855a-Abstract.html}{Proceedings}.
+
+\bibitem{audibert2010} J.-Y. Audibert and S. Bubeck.
+\emph{Regret Bounds and Minimax Policies under Partial Monitoring}.
+JMLR 11(94):2785--2836, 2010.
+\href{https://www.jmlr.org/papers/v11/audibert10a.html}{Journal article}.
+
+\bibitem{garivier2011} A. Garivier and O. Cappe.
+\emph{The KL-UCB Algorithm for Bounded Stochastic Bandits and Beyond}.
+COLT, PMLR 19:359--376, 2011.
+\href{https://proceedings.mlr.press/v19/garivier11a.html}{Proceedings}.
+
+\bibitem{lattimore2020} T. Lattimore and C. Szepesvari.
+\emph{Bandit Algorithms}.
+Cambridge University Press, 2020, Chapters 9, 15, and 16.
+\href{https://tor-lattimore.com/downloads/book/book.pdf}{Author-hosted online edition}.
+
+\bibitem{abbasi2011} Y. Abbasi-Yadkori, D. Pal, and C. Szepesvari.
+\emph{Improved Algorithms for Linear Stochastic Bandits}.
+Advances in Neural Information Processing Systems 24, 2011.
+\href{https://proceedings.neurips.cc/paper_files/paper/2011/hash/e1d5be1c7f2f456670de3d53c7b54f4a-Abstract.html}{Proceedings}.
+\end{thebibliography}
+\end{document}

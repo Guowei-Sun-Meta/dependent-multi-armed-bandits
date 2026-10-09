@@ -69,7 +69,7 @@ def choice_quality(M: np.ndarray, S: np.ndarray) -> dict[str, float]:
     }
 
 
-def score(name: str, M: np.ndarray, rng: np.random.Generator, k: int) -> tuple[dict, np.ndarray]:
+def score(name: str, M: np.ndarray, rng: np.random.Generator, k: int, quick: bool = False) -> tuple[dict, np.ndarray]:
     W = load_graph(name, k)
     L = scaled_laplacian(W)
     axis = "I2I" if name.startswith("I-") else "U2U"
@@ -99,7 +99,7 @@ def score(name: str, M: np.ndarray, rng: np.random.Generator, k: int) -> tuple[d
         "random_pair_corr_dc": rand_dc,
     }
     eye = sp.identity(W.shape[0], format="csc")
-    for lam in LAMBDAS:
+    for lam in () if quick else LAMBDAS:
         lu = splu((eye + lam * L).tocsc())
         Xs = lu.solve(np.asfortranarray(X))
         S = Xs.T if axis == "I2I" else Xs
@@ -108,17 +108,19 @@ def score(name: str, M: np.ndarray, rng: np.random.Generator, k: int) -> tuple[d
     return row, q
 
 
-def main(model: str, k: int) -> pd.DataFrame:
+def main(model: str, k: int, quick: bool = False) -> pd.DataFrame:
     rng = np.random.default_rng(SEED)
     _, _, M = load_eval(model)
     M = M.astype(np.float64)
     M = np.where(np.isnan(M), np.nanmean(M, axis=1, keepdims=True), M)  # 0.4% blocked pairs
     rows, signals = [], []
     for name in graph_names(k):
-        row, q = score(name, M, rng, k)
+        if quick and name.endswith("~er"):
+            continue
+        row, q = score(name, M, rng, k, quick)
         rows.append(row)
         signals.append(pd.DataFrame({"graph": row["graph"], "null": row["null"], "quotient": q}))
-        print(f"{name:22s} quotient={row['quotient_median']:.3f} top1@1={row['top1_kept@1']:.3f}", flush=True)
+        print(f"{name:22s} quotient={row['quotient_median']:.3f}", flush=True)
     out = pd.DataFrame(rows).sort_values(["axis", "graph", "null"])
     out.to_csv(RESULTS / f"alignment_summary_{model}_k{k}.csv", index=False)
     pd.concat(signals).to_csv(RESULTS / f"alignment_signals_{model}_k{k}.csv.gz", index=False)
@@ -129,5 +131,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="R1", choices=["R1", "R2", "R3"])
     ap.add_argument("--k", type=int, default=K_DEFAULT)
+    ap.add_argument("--quick", action="store_true", help="skip the smoothing tests and Erdos-Renyi nulls")
     args = ap.parse_args()
-    main(args.model, args.k)
+    main(args.model, args.k, args.quick)

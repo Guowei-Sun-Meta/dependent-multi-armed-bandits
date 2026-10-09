@@ -35,6 +35,7 @@ RESULTS = ROOT / "research" / "st_toy" / "results"
 SEED = 20261009
 N, COMP, R_OBS, EPS = 20, 4, 0.1, 0.1
 POLICIES = ("ucb_iid", "sp_ucb_iid", "sp_ucb_emp", "ucb_st", "sp_ucb_st")
+ELIM_POLICIES = ("se_iid", "se_st")
 BATCHES = (1, 25)
 PHIS = (0.0, 0.5, 0.9, 0.97)
 CONFIGS = ("independent", "correlated")
@@ -118,6 +119,8 @@ def run(args):
     reg = np.zeros(T)
     viol_rounds = 0
     st = InnovationRegression(phi, q * C, C, alpha=1.0 / N) if policy.endswith("_st") else None
+    if policy.startswith("se_"):
+        return run_elimination(policy, config, phi, seed, T, batch, mu, labels, members, Y, st, sigma2, ell, delta, t0)
     for t in range(T):
         if policy.endswith("_iid"):
             b = lambda x: np.sqrt(2 * sigma2 * ell / np.maximum(x, 1))  # noqa: E731
@@ -176,6 +179,60 @@ def run(args):
     return row
 
 
+def run_elimination(policy, config, phi, seed, T, batch, mu, labels, members, Y, st, sigma2, ell, delta, t0):
+    """Certified successive elimination with component pooling: an irrevocable decision.
+    Arms and whole components are eliminated when their upper bound falls below the best
+    lower bound. Eliminating the best arm makes mean regret grow linearly."""
+    active = np.ones(N, bool)
+    n, s = np.zeros(N), np.zeros(N)
+    Nc, Sc = np.zeros(COMP), np.zeros(COMP)
+    reg = np.zeros(T)
+    best = int(np.argmax(mu))
+    best_out_at = -1
+    a = 0
+    for t in range(T):
+        if t % batch == 0:
+            if policy == "se_iid":
+                rad = np.sqrt(2 * sigma2 * ell / np.maximum(n, 1))
+                lo = np.where(n > 0, s / np.maximum(n, 1) - rad, -np.inf)
+                hi = np.where(n > 0, s / np.maximum(n, 1) + rad, np.inf)
+                pool = np.where(Nc > 0, Sc / np.maximum(Nc, 1) + np.sqrt(2 * sigma2 * ell / np.maximum(Nc, 1)) + EPS, np.inf)
+            else:
+                mu_hat, Jinv, beta = st.estimate(delta, np.sqrt(N))
+                sd = np.sqrt(np.maximum(np.diag(Jinv), 0))
+                lo, hi = mu_hat - beta * sd, mu_hat + beta * sd
+                pool = np.empty(COMP)
+                for c, m in enumerate(members):
+                    w = np.full(len(m), 1 / len(m))
+                    pool[c] = w @ mu_hat[m] + beta * np.sqrt(w @ Jinv[np.ix_(m, m)] @ w) + EPS
+            best_lo = lo[active].max()
+            for c, m in enumerate(members):
+                if min(hi[m].max(), pool[c]) < best_lo:
+                    active[m] = False
+            active &= ~(hi < best_lo)
+            if not active.any():
+                active[int(np.argmax(hi))] = True
+            if not active[best] and best_out_at < 0:
+                best_out_at = t
+            cand = np.flatnonzero(active)
+            a = int(cand[np.argmin(n[cand])])
+        y = Y[t, a]
+        n[a] += 1
+        s[a] += y
+        Nc[labels[a]] += 1
+        Sc[labels[a]] += y
+        if st is not None:
+            st.observe(a, y)
+        reg[t] = mu[best] - mu[a]
+    row = {"config": config, "phi": phi, "seed": seed, "policy": policy, "batch": batch, "regret": float(reg.sum()),
+           "best_eliminated": best_out_at >= 0, "best_eliminated_at": best_out_at,
+           "regret_last_1000": float(reg[-1000:].sum()), "active_at_end": int(active.sum()),
+           "seconds": round(time.time() - t0, 1)}
+    print(f"{config} phi={phi} b={batch} seed={seed} {policy}: regret={row['regret']:.1f} "
+          f"best_out={row['best_eliminated']}", flush=True)
+    return row
+
+
 def verify():
     """B2 formula and the innovation regression against dense GLS on a tiny case."""
     phi, V, n = 0.9, 1.0, 400
@@ -206,7 +263,8 @@ def verify():
 
 def main(seeds, T, jobs, tag=""):
     RESULTS.mkdir(parents=True, exist_ok=True)
-    tasks = [(c, phi, s, p, T, b) for c in CONFIGS for phi in PHIS for s in range(seeds) for p in POLICIES
+    pols = ELIM_POLICIES if tag.startswith("_elim") else POLICIES
+    tasks = [(c, phi, s, p, T, b) for c in CONFIGS for phi in PHIS for s in range(seeds) for p in pols
              for b in BATCHES]
     tasks.sort(key=lambda x: not x[3].endswith("_st"))
     with ProcessPoolExecutor(jobs) as ex:

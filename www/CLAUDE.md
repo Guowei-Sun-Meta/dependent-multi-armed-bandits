@@ -15,6 +15,14 @@ We propose a WWW paper with two parts:
 
 Temporal dependence and non-graph structured bandits (linear, unimodal, Lipschitz) are out of scope for this paper.
 
+## Progress (9 October 2026)
+
+The full results are in [research/kuairec_graphs/README.md](../research/kuairec_graphs/README.md), and the repo-wide context is in the root [CLAUDE.md](../CLAUDE.md). What changes in the paper's framing:
+
+- **User graphs:** use co-engagement (U-coeng) and factorization (U-mf) on KuaiRec. KuaiRec's social graph has only 47 edges among evaluation users, so the social condition moves to Last.fm.
+- **Headline empirical result:** uncertified graph pooling helps most users but produces heavy-tailed failures. Oracle-certified pooling halves UCB1's regret without them. Most gains on item graphs come from shrinkage, not structure: rewired graphs do as well.
+- **Method gap:** the energy certificate from the theory is too loose on real graphs (energy-to-gap ratio about 5). The paper therefore needs a practical certificate. The candidate is a **calibrated certificate** estimated from held-out users, which needs its own validity statement (a new T6, alongside T4 and T5).
+
 ## Motivation and gap
 
 Graph bandits in recommendation come in two lines, and both take the graph as given:

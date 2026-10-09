@@ -108,6 +108,15 @@ Per-instance diagnostics on the 300-video graphs:
 | I-tag | 0.974 | 5.4 | 0.65 | 0.29 |
 | I-coeng | 1.038 | 5.7 | 0.71 | 0.18 |
 
+### Sensitivity to the reward definition (R3)
+
+R3 counts a watch ratio above 2 as a like (mean 1) and everything else as 0.1. Under R3:
+
+- **User-graph rankings are unchanged.** U-coeng is still the smoothest user graph (quotient 0.643 against 0.649 under R1). U-coeng-idf, U-coauthor and U-mf keep their order.
+- **Item graphs look less smooth.** I-mf moves from 0.756 to 0.885; I-tag and I-coauthor move to about 1.0. Likes are sparse, so a video's like pattern is noisier than its watch time.
+- **Personal-taste correlations rise everywhere**, for example U-coeng from 0.020 to 0.067, because liking is more personal than watch time. The order across graphs is similar.
+- **Overall agreement:** the rank correlation of quotients between R1 and R3 is 0.80 across the 16 graphs. Full results are in [alignment_summary_R3_k10.csv](results/alignment_summary_R3_k10.csv).
+
 ## Caveats
 
 - **UCB-style methods are handicapped.** They use the Bernoulli-valid noise bound σ = 0.5 while true means average about 0.18, so they explore far more than Thompson sampling. Compare them within families. A KL-UCB baseline and a variance-adaptive SP-UCB are the fair next step.
@@ -122,7 +131,7 @@ Per-instance diagnostics on the 300-video graphs:
 1. **Add a graph-free shrinkage baseline**, shrinking toward the user's running mean, to confirm that Spectral TS's gain is shrinkage. Add KL-UCB.
 2. **Tighten certificates.** Estimate the energy bound on the partition from warm-up data, and test a data-driven certificate between the oracle and energy bounds.
 3. **Run Setting B** (user graphs, cold users) with U-coeng, U-mf and U-coauthor against nulls. Phase 1 predicts small gains beyond shrinkage toward the population.
-4. **Check sensitivity** to R2 and R3, and to more video subsets per user.
+4. **Check sensitivity** to R2, and to more video subsets per user.
 
 ## Reproduce
 

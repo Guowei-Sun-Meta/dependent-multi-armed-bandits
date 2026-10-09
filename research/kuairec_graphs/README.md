@@ -117,6 +117,32 @@ R3 counts a watch ratio above 2 as a like (mean 1) and everything else as 0.1. U
 - **Personal-taste correlations rise everywhere**, for example U-coeng from 0.020 to 0.067, because liking is more personal than watch time. The order across graphs is similar.
 - **Overall agreement:** the rank correlation of quotients between R1 and R3 is 0.80 across the 16 graphs. Full results are in [alignment_summary_R3_k10.csv](results/alignment_summary_R3_k10.csv).
 
+## Setting B: pooling across users with user graphs
+
+The protocol:
+- 8 instances, each with 300 test users and 100 videos. Users arrive uniformly at random over T = 100,000 rounds: about 333 rounds per user, or 3.3 per user–video pair. This is the cold-user regime.
+- Rewards are Bernoulli with R1 means.
+- The full table is in [setting_b_table.md](results/setting_b_table.md).
+
+| Policy | Graph | Regret ratio to per-user TS (mean over instances) |
+| --- | --- | ---: |
+| Gaussian TS pooled over users, λ = 10 | Complete graph (shrink toward the population) | 0.726 |
+| Same | U-mf | 0.741 |
+| Same | U-coeng rewired | 0.745 |
+| Same | U-coauthor | 0.746 |
+| Same | U-coeng | 0.759 |
+| Same | U-geo | 0.893 |
+| Global TS (one posterior per video for all users) | none | 0.929 |
+| SP-KLUCB over user clusters, oracle certificate | U-coauthor / U-mf / U-coeng | 0.934–0.938 |
+| SP-KLUCB, calibrated certificate (90th or 50th percentile) | any | 0.97–0.98 |
+| SP-KLUCB, no certificate | any | 1.37–1.39 |
+
+**Reading.** As on the item side, shrinkage drives the gain, not the graph's structure:
+
+- Shrinking each video's estimate toward the population mean (the complete graph) beats every real user graph, and the rewired co-engagement graph matches the real one.
+- Location helps least.
+- Pooling over user clusters without a certificate is 39% worse than not pooling. With an oracle certificate it is about 6% better. Calibrated certificates are too wide to help at this horizon.
+
 ## Caveats
 
 - **UCB-style methods are handicapped.** They use the Bernoulli-valid noise bound σ = 0.5 while true means average about 0.18, so they explore far more than Thompson sampling. Compare them within families. A KL-UCB baseline and a variance-adaptive SP-UCB are the fair next step.

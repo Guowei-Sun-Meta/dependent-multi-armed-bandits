@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath,booktabs,fontspec,unicode-math,graphicx,pgfplots,longtable}
+\usepackage{amsmath,booktabs,fontspec,unicode-math,graphicx,pgfplots}
 \setmainfont{texgyrepagella-regular.otf}[BoldFont=texgyrepagella-bold.otf,ItalicFont=texgyrepagella-italic.otf]
 \setmathfont{latinmodern-math.otf}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
@@ -8,7 +8,6 @@
 \emergencystretch=2em
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newenvironment{proof}{\par\noindent\textit{Proof.}\ }{\hfill$\mdlgwhtsquare$\par\medskip}
 \newcommand{\E}{\mathbb E}
@@ -19,598 +18,486 @@
 \newcommand{\argmax}{\operatorname*{arg\,max}}
 \newcommand{\argmin}{\operatorname*{arg\,min}}
 \newcommand{\one}{\mathbf1}
-\newcommand{\cij}{c_{ij}}
-\title{Selecting Persistent Graph Means\\under Spatially Correlated AR(1) Fluctuations:\\Estimation, Adaptive Confidence, and Sampling}
+\title{Fixed Graph-Smooth Means with Spatially Correlated\\Heterogeneous Autoregressive Rewards:\\Estimation, Prediction, and Sequential Selection}
 \author{Working research manuscript}
 \date{9 October 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-We study expensive sequential measurement of a spatial field $f_t=\mu+z_t$, where the permanent mean $\mu$ is smooth on a supplied graph and the residual satisfies a stationary Gaussian AR(1) model with spatial covariance. The primary objective is to select the largest permanent mean, rather than the largest instantaneous state. We distinguish a trusted graph-energy constraint from a Gaussian graph prior. Graph-regularized generalized least squares yields an explicit fixed-design contrast bias and variance; a constrained estimator enforces the energy radius through a scalar dual search. An affine Kalman innovation representation converts adaptive observations into predictable linear measurements of $\mu$. This gives exact Bayesian updates, an all-time frequentist confidence bound by established self-normalized concentration, and a correct stopping rule under supplied norm and energy bounds. Sampling is directed toward permanent-mean comparisons through a contrast-variance rule or a knowledge-gradient rule. For two locations and two observations, we prove an optimal Bayesian selection design and derive its PCS in closed form. A full-field benchmark exhibits graph-mode shrinkage and temporal effective sample size. Simulations separate mean-prior mismatch from temporal mismatch and report estimation error, opportunity loss, and recommendation accuracy. The framework integrates established graph, Gaussian, and experimental-design tools; it makes no first-combination claim or general fixed-budget optimality claim.
+We study sequential measurement of arms whose fixed unknown means are graph-smooth and whose deviations follow heterogeneous stable AR($p_i$) processes. Spatial dependence is carried by the joint distribution of contemporaneous innovations; it is distinct from a deterministic smoothness restriction on the means. No random mean population or Gaussian mean prior is assumed. A joint companion state determines the stationary covariance and the generally nonseparable node-time likelihood. Graph-regularized generalized least squares gives explicit fixed-design bias and variance, while an energy-constrained estimator enforces a supplied mean-smoothness radius. An affine conditional-state filter turns adaptive observations into predictable Gaussian linear experiments about the fixed means. Established self-normalized concentration then yields simultaneous confidence and a correct stopping rule under supplied bounds. We derive permanent-contrast sampling scores, future-state information gains, a general full-field information identity, and a fixed-mean AR(2) example in which block sampling strictly improves PCS over alternating sampling. Experiments hold each mean vector fixed and compare policies under order-two, oscillatory, and heterogeneous order-two/order-three dynamics. The framework specializes established graph and linear Gaussian methods; general optimal allocation and publication priority for the specialized results remain unresolved.
 \end{abstract}
 
 \section{Introduction}
-Suppose a business must choose a location using costly traffic measurements. A reading can be high because the location has a high persistent mean, because a neighborhood is temporarily busy, or because the measurement is noisy. The second mechanism has spatial and temporal dependence: a local traffic surge can affect neighboring locations and persist into subsequent periods. The first mechanism is also spatially structured: economically similar locations can have similar long-run traffic. A useful sampling model should distinguish these mechanisms and tie its information criterion to the eventual business decision.
+Choosing a business location using costly traffic measurements requires distinguishing permanent location quality from shared, persistent traffic fluctuations. A reading at one location can reveal a neighborhood shock and help forecast another location, even though both locations have fixed long-run means. General autoregressive dynamics also permit delayed and oscillatory dependence: an observation can be uninformative one period ahead and informative two periods ahead. A single persistence coefficient cannot capture that distinction.
 
-We use the tractable model
+We use fixed unknown constants $\mu_i$ and the model
 \begin{equation}
-f_t=\mu+z_t,\qquad z_{t+1}=\phi z_t+\varepsilon_{t+1},\qquad
-\varepsilon_t\sim N(0,(1-\phi^2)K_z),\qquad |\phi|<1.
-\label{eq:model-intro}
+\boxed{X_{i,t}-\mu_i
+=\sum_{k=1}^{p_i}a_{i,k}(X_{i,t-k}-\mu_i)+\eta_{i,t},
+\qquad \eta_t\stackrel{\mathrm{iid}}{\sim}N(0,Q_G).}
+\label{eq:model}
 \end{equation}
-The permanent mean is graph-smooth, and $K_z$ describes the spatial covariance of transient fluctuations. A learner measures one selected coordinate each calendar round. Our primary objectives are probability of correct selection (PCS) and expected opportunity loss for the largest coordinate of $\mu$. Ongoing reward is a related but different objective.
+The AR polynomials are stable, the orders and coefficients are known, and $Q_G$ is a known positive definite covariance across locations. At each calendar time one chosen location is measured; all locations evolve whether measured or not. The mean vector is deterministic and may obey a supplied graph-energy bound.
 
-The main estimation question is concrete: how can a graph meaningfully constrain $\mu$ when the observations are not iid? The appropriate data fit uses the covariance of the observed AR trajectory. A Laplacian penalty then regularizes spatial differences in the permanent mean. A hard energy constraint literally enforces smoothness; a fixed penalty or Gaussian prior encourages it. The difference matters for uncertainty: excessive shrinkage can reduce reported variance while introducing a ranking error.
+This formulation keeps two spatial mechanisms separate. Correlated innovations explain shared transient deviations. A mean-energy restriction explains why neighboring permanent means should be similar. The first assumption alone does not imply the second. A covariance for $\eta_t$ does not make the fixed $\mu_i$ random or force them to be close.
 
-This manuscript develops three complementary results. First, it gives exact graph-regularized likelihood formulas with a supplied-radius bound on smoothing bias. Second, it derives a predictable innovation regression for adaptive measurement, yielding valid confidence and stopping by established martingale tools. Third, it obtains closed-form two-location selection and shrinkage results that expose the interaction of graph smoothness, spatial fluctuation correlation, and persistence. The experiments test this permanent-mean formulation, rather than importing the earlier known-mean state-tracking experiment as evidence for mean selection.
+The paper develops likelihood-correct graph estimation, adaptive confidence, sampling directed toward mean comparisons, and forecast information that depends on full impulse responses. The main terminal objective is selecting the largest permanent mean. Cumulative reward against a full-current-state oracle is included as a separate objective with a different information limit.
 
-\subsection{Relation to existing research and contribution boundary}
-Graph-smooth bandits are established. Spectral bandits~\cite{valko2014} exploit smooth payoff functions on graphs; GRUB~\cite{thaker2022} uses graph information for maximizing and satisficing in pure exploration. Thus graph regularization, inference at unsampled nodes, and graph-informed selection are not introduced here.
+\subsection{Existing research and contribution boundary}
+Spectral bandits~\cite{valko2014} and graph pure exploration~\cite{thaker2022} already exploit graph-smooth fixed means. Our mean-energy assumption follows that tradition; replacing independent noise with correlated AR observation error changes the trajectory likelihood and the information supplied by a schedule.
 
-Time-varying GP bandits~\cite{bogunovic2016} are a particularly close predecessor: a spatial GP evolves under a Markov recurrence with coefficient $\sqrt{1-\epsilon}$, giving a separable spatial--temporal covariance. Our residual process is its finite-domain specialization for nonnegative $\phi$ and a graph kernel. Its objective is to track an instantaneous maximizer; ours estimates and selects an additional unknown permanent component. With a Gaussian mean prior our complete covariance is additive,
+Time-varying Gaussian-process bandits~\cite{bogunovic2016} already combine spatial dependence with temporal evolution, and shared linear Gaussian bandits~\cite{gornet2024} already use one action's observations to predict another action's future rewards. General AR processes are finite-dimensional linear Gaussian systems after stacking lags. Kalman inference and that representation are established tools. Latent-AR bandits~\cite{trella2025} further study shared temporal drivers and parameter learning.
+
+Graph ARMA estimation~\cite{guneyi2024} studies joint temporal and graph correlations for reconstruction. Our heterogeneous per-node AR coefficients need not be graph filters or share a graph Fourier eigenbasis. Spatial correlation is placed in the innovation covariance, while adaptive selection and comparison of fixed means are the decision tasks.
+
+Correlated-normal knowledge gradient~\cite{frazier2009} uses Gaussian beliefs on means for final recommendations. A fixed physical parameter can be assigned a Bayesian belief, but this paper deliberately assumes no mean prior and reports repeated-noise PCS at fixed truths. Our contrast rule uses regularized likelihood information, whose inverse is not interpreted as a mean-prior posterior covariance. Self-normalized concentration~\cite{abbasi2011} and best-arm change of measure~\cite{combes2017,garivier2016} supply the confidence and lower-bound arguments.
+
+The contribution is a self-contained specialization connecting fixed graph-smooth means, correlated innovations, heterogeneous AR schedules, and adaptive information. We prove the stated estimation, confidence, information, and schedule-comparison results. We do not claim the first combination of spatial and temporal bandits, a generally optimal policy, matching sample complexity, learned graph validity, or unknown-dynamics guarantees.
+
+\section{Fixed means and spatially correlated innovations}
+There are $N$ arms and a supplied connected weighted graph with Laplacian $L$. Write $z_{i,t}=X_{i,t}-\mu_i$. The scalar polynomial
+\[
+A_i(s)=1-\sum_{k=1}^{p_i}a_{i,k}s^k
+\]
+has no zero in the closed unit disk, ensuring a causal stationary solution. Define $c_i=A_i(1)=1-\sum_k a_{i,k}\ne0$. In raw coordinates,
 \begin{equation}
-K_f((i,t),(j,s))=(K_\mu)_{ij}+\phi^{|t-s|}(K_z)_{ij}.
-\label{eq:additive-kernel}
+X_{i,t}=c_i\mu_i+\sum_k a_{i,k}X_{i,t-k}+\eta_{i,t}.
 \end{equation}
-An additive static--dynamic kernel is a familiar Gaussian-model construction, not a claim of model novelty. Contextual GP bandits~\cite{krause2011} already provide composite-kernel machinery.
+Thus $\mu_i$ is the long-run mean; $c_i\mu_i$ is the AR intercept.
 
-Shared linear Gaussian bandits~\cite{gornet2024} use observations of one action to predict future rewards of another. Latent-AR bandits~\cite{trella2025} model common autoregressive drivers and learn prediction parameters. Our augmented state falls within a linear Gaussian framework; exact Kalman inference is inherited. We keep dynamics known to study selection and graph regularization without additional parameter-learning uncertainty.
-
-Correlated-normal knowledge gradient~\cite{frazier2009} is also directly relevant. It maximizes the expected value of the final recommendation under correlated mean beliefs and independent measurement errors. Here the residual measurement errors have AR dependence. Whitening them produces history-dependent measurement vectors, allowing the same one-measurement value calculation. We therefore credit the knowledge-gradient construction and its affine-envelope computation.
-
-Self-normalized linear confidence~\cite{abbasi2011} supplies the adaptive concentration argument after whitening. Structured information and best-arm lower bounds~\cite{combes2017,garivier2016} supply the change-of-measure principle. Candidate-prior elimination in time-varying GP bandits~\cite{ziomek2025} already addresses uncertain priors; our supplied graph certificate does not solve learning or validating an arbitrary graph. Graph ARMA work~\cite{guneyi2024} establishes broader spectral temporal modeling.
-
-Accordingly, our present contribution is a self-contained integration with explicit permanent-mean estimation, adaptive likelihood information, contrast-specific confidence, and specialized exact designs. Publication priority for these specializations is not established. General optimal allocation, matching bounds, learned graph validity, unknown temporal dynamics, and real traffic validation remain outside the results.
-
-\section{Model and decision targets}
-There are $N\ge2$ locations and a supplied connected, undirected weighted graph with Laplacian $L$. Connectivity is used for the constant-mode and resistance statements; a proper prior can also handle disconnected graphs component by component. The stationary initialization is $z_1\sim N(0,K_z)$, independent of all innovations. The known spatial covariance $K_z$ is positive definite, and all coordinates evolve regardless of which location is measured.
-
-At time $t$, before seeing $f_t$, choose $a_t\in\{1,\ldots,N\}$ and observe
+Innovation vectors are independent over time, but their coordinates can be correlated:
 \begin{equation}
-Y_t=\mu_{a_t}+z_{a_t,t}+\xi_t,\qquad
-\xi_t\stackrel{\mathrm{iid}}\sim N(0,r),\quad r\ge0.
-\label{eq:observation}
+\Cov(\eta_{i,t},\eta_{j,s})=(Q_G)_{ij}\one\{t=s\}.
 \end{equation}
-Actions are non-anticipating and may use independent policy randomization. Conditional on a fixed $\mu$,
+A candidate graph covariance is $(\alpha_\eta I+\lambda_\eta L)^{-1}$, with $\alpha_\eta>0$, possibly rescaled to specified innovation variances. This models the shocks. It is not a distribution for $\mu$ or a hard energy bound on every shock realization. A mean graph and an innovation graph may differ; a common supplied graph is a substantive assumption.
+
+The fixed mean may satisfy
 \begin{equation}
-\Cov(Y_t,Y_s\mid a_{1:T}\text{ fixed},\mu)
-=(K_z)_{a_t,a_s}\phi^{|t-s|}+r\one\{t=s\}.
+\mathcal M(S,B)=\{\mu:\mu^\top L\mu\le S^2,\ \|\mu\|_2\le B\}.
+\label{eq:mean-class}
 \end{equation}
-This expression defines a fixed-design covariance; conditioning a frequentist experiment on adaptively chosen actions does not generally preserve its fixed-design Gaussian observation law.
+The energy $\mu^\top L\mu=\sum_{\{i,j\}\in E}w_{ij}(\mu_i-\mu_j)^2$ constrains neighboring permanent differences. It does not assert a random covariance among fixed constants. The norm bound is used with a proper regularizer in the adaptive confidence theorem. A known common baseline can be subtracted without changing rankings or energy.
 
-We use two alternative interpretations of mean smoothness:
-\begin{align}
-\mathcal M(S,B)&=\{\mu:\mu^\top L\mu\le S^2,\ \|\mu\|_2\le B\},
-\label{eq:mean-class}\\
-\mu&\sim N(0,H^{-1}),\qquad H=\alpha I+\lambda L,
-\quad \alpha>0,\ \lambda\ge0.
-\label{eq:mean-prior}
-\end{align}
-The norm bound is needed for the frequentist confidence theorem with a proper regularizer. The mean-energy constraint alone allows an arbitrary common offset. One may subtract a known constant baseline before applying the model; this does not change rankings or energy.
-
-For a unique best mean $b^*=\argmax_i\mu_i$, fixed-parameter PCS is $\Pr_\mu(\widehat b_T=b^*)$. Bayesian PCS averages this event over a mean prior. Expected opportunity loss is
+Choose a non-anticipating action $a_t$, then observe
 \begin{equation}
-\mathcal L_T=\E[\max_i\mu_i-\mu_{\widehat b_T}].
-\label{eq:eoc}
+Y_t=X_{a_t,t}+\xi_t,\qquad \xi_t\stackrel{\mathrm{iid}}{\sim}N(0,r),\quad r\ge0,
 \end{equation}
-A largest-posterior-mean recommendation minimizes conditional opportunity loss; it need not maximize conditional PCS with many arms.
-
-The graph for permanent means and the covariance of transient noise have different roles. They may use the same candidate graph but need not have the same strength or even the same geometry. A graph-smooth mean does not force neighboring transient deviations to be correlated. Conversely, shared traffic fluctuations do not prove that neighboring permanent means are similar. We assume $K_z$ and $\phi$ known in all stated confidence results.
-
-\section{Using graph smoothness to estimate the permanent mean}
-\subsection{Generalized least squares and the graph penalty}
-For a fixed sequence of $T$ measurements, let $M\in\mathbb R^{T\times N}$ have row $t$ equal to $e_{a_t}^\top$. Let $\Xi$ have entries
+with independent sensor noise. For a unique best mean $b^*=\argmax_i\mu_i$, define
 \begin{equation}
-\Xi_{ts}=(K_z)_{a_t,a_s}\phi^{|t-s|}+r\one\{t=s\}.
+\PCS_\mu(T)=\Pr_\mu(\widehat b_T=b^*),\qquad
+\mathcal L_\mu(T)=\E_\mu[\mu_{b^*}-\mu_{\widehat b_T}].
+\label{eq:target}
+\end{equation}
+Expectations are over observations and policy randomization at the same fixed $\mu$, not a mean prior.
+
+\section{Joint lag state and nonseparable covariance}
+Let $d=\sum_i p_i$. Stack each arm's centered current state and its $p_i-1$ lags into $s_t\in\mathbb R^d$. Let $F$ contain the AR companion blocks, $E\in\mathbb R^{d\times N}$ insert innovations into their first coordinates, and $C=E^\top$ select current coordinates. Then
+\begin{equation}
+s_{t+1}=Fs_t+E\eta_{t+1},\qquad z_t=Cs_t,\qquad X_t=\mu+Cs_t.
+\label{eq:state}
+\end{equation}
+Although $F$ is block diagonal, $EQ_GE^\top$ couples arm-state covariances. Initialize $s_1\sim N(0,\Gamma)$, where
+\begin{equation}
+\Gamma=F\Gamma F^\top+EQ_GE^\top
+=\sum_{h\ge0}F^hEQ_GE^\top(F^\top)^h.
+\label{eq:lyapunov}
+\end{equation}
+Stability ensures convergence; positive definite innovations and the companion insertion structure make $\Gamma$ positive definite.
+
+Define
+\begin{equation}
+G_h=CF^h\Gamma C^\top,\qquad h\ge0.
+\label{eq:lags}
+\end{equation}
+For $t\ge s$, $\Cov(z_t,z_s)=G_{t-s}$; reverse-time covariance is its transpose. Heterogeneous $G_h$ need not be symmetric or equal a scalar temporal factor times a fixed spatial covariance.
+
+If $z_{i,t}=\sum_{k\ge0}\psi_i(k)\eta_{i,t-k}$, then
+\begin{equation}
+\boxed{(G_h)_{ij}=(Q_G)_{ij}\sum_{k\ge0}\psi_i(k+h)\psi_j(k).}
+\label{eq:impulses}
+\end{equation}
+The innovation distribution supplies spatial coupling; the arms' filters determine its lag profile. Only additional homogeneous-filter assumptions produce a separable covariance.
+
+For a fixed schedule, let $M$ have rows $e_{a_t}^\top$. Its observation covariance is
+\begin{equation}
+\Xi_{ts}=
+\begin{cases}
+(G_{t-s})_{a_t,a_s},&t\ge s,\\
+(G_{s-t})_{a_s,a_t},&t<s,
+\end{cases}
+\quad{}+r\one\{t=s\}.
 \label{eq:xi}
 \end{equation}
-Write
-\begin{equation}
-\mathcal I=M^\top\Xi^{-1}M,\qquad q=M^\top\Xi^{-1}Y.
-\label{eq:information}
-\end{equation}
-The matrix $\mathcal I$ need not be diagonal: temporal and cross-location noise correlations alter the information supplied by the complete measurement sequence.
+Thus $Y\sim N(M\mu,\Xi)$ for a fixed design. Conditioning repeated-sampling distributions on adaptive actions does not generally preserve that fixed-design Gaussian law.
 
-For a deterministic penalty $H\succeq0$ with $J=\mathcal I+H\succ0$, the regularized estimator is
+\section{Estimating the fixed mean using spatial smoothness}
+Set $\mathcal I=M^\top\Xi^{-1}M$ and $q=M^\top\Xi^{-1}Y$. For a deterministic regularizer $H\succeq0$ with $J=\mathcal I+H\succ0$,
 \begin{equation}
-\widehat\mu_H=\argmin_\nu\left\{\frac12(Y-M\nu)^\top\Xi^{-1}(Y-M\nu)
-+\frac12\nu^\top H\nu\right\}=J^{-1}q.
+\boxed{\widehat\mu_H
+=\argmin_\nu\left\{\tfrac12(Y-M\nu)^\top\Xi^{-1}(Y-M\nu)
++\tfrac12\nu^\top H\nu\right\}=J^{-1}q.}
 \label{eq:ridge}
 \end{equation}
-For $H=\lambda L$, the penalty equals
-\begin{equation}
-\nu^\top L\nu=\sum_{\{i,j\}\in E}w_{ij}(\nu_i-\nu_j)^2.
-\end{equation}
-It penalizes large neighboring differences while leaving a common offset unpenalized. With at least one observation and a connected graph, $\mathcal I+\lambda L$ is positive definite for $\lambda>0$: only a constant vector can lie in the null space of $L$, and $M\one\ne0$ rules out that vector in the null space of $\mathcal I$.
-
-The estimator balances a covariance-weighted fit with graph disagreement. It is generally incorrect to average observations arm by arm, treat the averages as equally precise, and apply an unweighted smoother. A supplied graph restriction also does not create additional observed rewards at neighboring locations.
+With $H=\lambda L$, spatial differences are penalized and a common offset is unpenalized. Connectivity and at least one observation make $J$ positive definite for $\lambda>0$. For adaptive confidence we use $H=\alpha I+\lambda L$, $\alpha>0$. Here $J^{-1}$ is an inverse regularized information matrix, not a declared covariance of a random mean.
 
 \begin{proposition}[Fixed-design bias and variance]
-For deterministic $H$ and a fixed observation design,
+For deterministic $H$ and a fixed design,
 \begin{equation}
 \E_\mu\widehat\mu_H-\mu=-J^{-1}H\mu,\qquad
 \Var_\mu(\widehat\mu_H)=J^{-1}\mathcal I J^{-1}.
 \label{eq:bias-var}
 \end{equation}
-For $H=\lambda L$ and any contrast $c$,
+For a contrast $v$, $H=\lambda L$, and $\mu^\top L\mu\le S^2$,
 \begin{equation}
-|\E_\mu c^\top\widehat\mu_H-c^\top\mu|
-\le \lambda S\sqrt{c^\top J^{-1}LJ^{-1}c}
-\quad\text{when }\mu^\top L\mu\le S^2.
+|v^\top(\E_\mu\widehat\mu_H-\mu)|
+\le\lambda S\sqrt{v^\top J^{-1}LJ^{-1}v}.
 \label{eq:bias-bound}
 \end{equation}
-Consequently, with probability at least $1-\delta$,
-\begin{align}
-|c^\top(\widehat\mu_H-\mu)|\le{}&
-\lambda S\sqrt{c^\top J^{-1}LJ^{-1}c}\nonumber\\
-&+\Phi^{-1}(1-\delta/2)
-\sqrt{c^\top J^{-1}\mathcal I J^{-1}c}.
-\label{eq:fixed-contrast-width}
-\end{align}
+A fixed-design $1-\delta$ contrast width is this bias allowance plus
+$\Phi^{-1}(1-\delta/2)\sqrt{v^\top J^{-1}\mathcal I J^{-1}v}$.
 \end{proposition}
 \begin{proof}
-The score equals $q=\mathcal I\mu+M^\top\Xi^{-1}\epsilon$, with $\epsilon\sim N(0,\Xi)$. Substitution gives~\eqref{eq:bias-var}. For the graph bias, Cauchy--Schwarz applied to $L^{1/2}\mu$ and $L^{1/2}J^{-1}c$ gives~\eqref{eq:bias-bound}. The remaining centered contrast is Gaussian with the stated variance; its two-sided tail gives~\eqref{eq:fixed-contrast-width}.
+The score is $\mathcal I\mu+M^\top\Xi^{-1}\epsilon$, with $\epsilon\sim N(0,\Xi)$. Substitution gives the estimator law. Graph bias is bounded by Cauchy--Schwarz for $L^{1/2}\mu$ and $L^{1/2}J^{-1}v$.
 \end{proof}
+Pairs use $v=e_i-e_j$. Smoothness bounds bias; it does not guarantee every smoothed ranking improves. A data-tuned penalty needs its own uncertainty argument.
 
-The first term is essential. Infinite smoothing does not make a nonconstant mean exactly known. Pairwise guarantees use $c=e_i-e_j$ and a union bound if several contrasts are examined. A penalty chosen after looking at the data does not inherit this deterministic-penalty fixed-design statement without a uniform argument or explicit tuning correction.
-
-\subsection{Literal enforcement by a hard energy constraint}
-\begin{proposition}[Constrained mean estimate]
-Suppose $S>0$, $L$ is connected, and at least one observation is made. A constrained likelihood estimate
+\subsection{Literal enforcement of a supplied energy radius}
+The constrained estimator is
 \begin{equation}
 \widehat\mu_S\in\argmin_{\nu^\top L\nu\le S^2}
-\frac12(Y-M\nu)^\top\Xi^{-1}(Y-M\nu)
-\label{eq:constrained}
+\tfrac12(Y-M\nu)^\top\Xi^{-1}(Y-M\nu).
 \end{equation}
-obeys the supplied energy radius. When no unconstrained likelihood minimizer is feasible, its solution has the form
+For $S>0$, connected $L$, and at least one observation, a minimizer exists. The energy controls centered vectors; the observed fit controls the constant direction. Constant vectors satisfy Slater's condition. If no unconstrained minimizer is feasible, KKT gives
 \begin{equation}
-\widehat\mu_S=(\mathcal I+\lambda_*L)^{-1}q,
-\qquad \widehat\mu_S^\top L\widehat\mu_S=S^2,
-\quad\lambda_*>0.
+\widehat\mu_S=(\mathcal I+\lambda_*L)^{-1}q,\qquad
+\widehat\mu_S^\top L\widehat\mu_S=S^2,\quad\lambda_*>0.
 \end{equation}
-The multiplier can be obtained by scalar search. An unconstrained solution already satisfying the bound is feasible with multiplier zero.
-\end{proposition}
-\begin{proof}
-The problem is convex; constant vectors satisfy the energy inequality strictly. The energy bound limits centered vectors through the positive spectral gap of $L$, and observing a coordinate makes the fit coercive in the constant direction. A minimizer exists, and Slater's condition gives the KKT equation $(\mathcal I+\lambda_*L)\widehat\mu_S=q$. For a positive multiplier this matrix is invertible. Writing $\nu_\lambda=(\mathcal I+\lambda L)^{-1}q$ gives
+Writing $\nu_\lambda=(\mathcal I+\lambda L)^{-1}q$ gives
 \[
 \frac{d}{d\lambda}(\nu_\lambda^\top L\nu_\lambda)
 =-2\nu_\lambda^\top L(\mathcal I+\lambda L)^{-1}L\nu_\lambda\le0.
 \]
-The energy tends to zero as the multiplier increases, enabling a bracketed search for an active positive radius.
-\end{proof}
-If $S=0$, all means are constant on a connected graph and every location ties. The constrained estimator is useful for enforcement, but its data-dependent multiplier is not automatically covered by~\eqref{eq:fixed-contrast-width}. The adaptive confidence result below instead uses a fixed proper regularizer.
+A scalar bracketed search finds the active multiplier. A feasible unconstrained solution uses multiplier zero. This enforces the estimate's radius; it does not verify the radius at the truth. Its data-dependent multiplier is not automatically covered by the fixed-penalty Gaussian width.
 
-\subsection{Gaussian graph beliefs and their interpretation}
-Under~\eqref{eq:mean-prior}, the fixed-design posterior is exactly
+Effective resistance also gives $|\mu_i-\mu_j|\le S\sqrt{(e_i-e_j)^\top L^\dagger(e_i-e_j)}$. This restriction on fixed means is independent of innovation correlation.
+
+\section{Adaptive likelihood through a conditional lag-state filter}
+Before decision $t$, conditional on a fixed candidate $\mu$, write
 \begin{equation}
-\mu\mid Y\sim N(J^{-1}q,J^{-1}),\qquad J=H+\mathcal I.
-\label{eq:posterior}
+s_t\mid\mu,\mathcal H_t\sim N(g_t+D_t\mu,P_t).
 \end{equation}
-The posterior covariance is not the frequentist sampling covariance in~\eqref{eq:bias-var}. One quantifies prior-averaged remaining uncertainty; the other quantifies random estimation noise at a fixed mean, which also has shrinkage bias.
-
-If $L=U\operatorname{diag}(\ell_k)U^\top$, the prior mode variance is $(\alpha+\lambda\ell_k)^{-1}$. High-frequency graph differences are discouraged more strongly than low-frequency differences. A positive $\alpha$ makes the constant mode proper; a Laplacian pseudoinverse alone omits an unknown global level. The prior does not literally impose $\mu^\top L\mu\le S^2$. For its centered Gaussian mean,
+Initialize $g_1=0$, $D_1=0$, and $P_1=\Gamma$. For $\ell_a=C^\top e_a$, define
 \begin{equation}
-\mu^\top L\mu\overset{d}=\sum_k
-\frac{\ell_k}{\alpha+\lambda\ell_k}G_k^2,
-\qquad G_k\stackrel{\mathrm{iid}}\sim N(0,1),
-\label{eq:energy-law}
-\end{equation}
-so a desired high-probability radius can be calibrated from this weighted chi-square law. Its expectation is $\operatorname{tr}(LH^{-1})$, not a hard bound.
-
-\section{Adaptive observations as predictable linear experiments}
-The preceding likelihood can be implemented without growing a $T\times T$ covariance matrix. More importantly, the implementation supplies a valid adaptive noise model.
-
-Before decision $t$, conditional on a fixed candidate mean and history, write
-\begin{equation}
-z_t\mid\mu,\mathcal H_t\sim N(g_t+D_t\mu,P_t).
-\label{eq:affine-filter}
-\end{equation}
-Initialize $g_1=0$, $D_1=0$, and $P_1=K_z$. For candidate action $a$ define
-\begin{equation}
-v_{t,a}=e_a+D_t^\top e_a,\qquad
-d_{t,a}=e_a^\top P_te_a+r,\qquad
+v_{t,a}=e_a+D_t^\top\ell_a,\quad
+d_{t,a}=\ell_a^\top P_t\ell_a+r,\quad
 u_{t,a}=v_{t,a}/\sqrt{d_{t,a}}.
-\label{eq:adaptive-vector}
+\label{eq:experiment}
 \end{equation}
-The vector $v_{t,a}$ includes the dependence of previous noise reconstructions on the unknown mean; it need not be a coordinate vector.
-
-\begin{theorem}[Innovation regression]
-For the chosen action, set
+\begin{theorem}[Predictable innovation experiments]
+The chosen observation gives
 \begin{equation}
-R_t=\frac{Y_t-e_{a_t}^\top g_t}{\sqrt{d_{t,a_t}}}.
-\end{equation}
-Then
-\begin{equation}
-\boxed{R_t=u_t^\top\mu+\eta_t,\qquad
-\eta_t\mid\mathcal H_t,a_t,\mu\sim N(0,1),\quad u_t=u_{t,a_t}.}
+\boxed{R_t=\frac{Y_t-\ell_{a_t}^\top g_t}{\sqrt{d_{t,a_t}}}
+=u_t^\top\mu+\epsilon_t,\qquad
+\epsilon_t\mid\mathcal H_t,a_t,\mu\sim N(0,1).}
 \label{eq:regression}
 \end{equation}
-The measurement vector $u_t$ is predictable. Exact recursive updates, with $k_t=P_te_{a_t}/d_{t,a_t}$, are
+Its vector $u_t=u_{t,a_t}$ is predictable. With $k_t=P_t\ell_{a_t}/d_{t,a_t}$,
 \begin{align}
-g_t^+&=g_t+k_t(Y_t-e_{a_t}^\top g_t),&
+g_t^+&=g_t+k_t(Y_t-\ell_{a_t}^\top g_t),&
 D_t^+&=D_t-k_tv_{t,a_t}^\top,\nonumber\\
-P_t^+&=P_t-P_te_{a_t}e_{a_t}^\top P_t/d_{t,a_t},&
-(g_{t+1},D_{t+1},P_{t+1})&=(\phi g_t^+,\phi D_t^+,\phi^2P_t^++Q),
-\label{eq:filter-recursion}
+P_t^+&=P_t-\frac{P_t\ell_{a_t}\ell_{a_t}^\top P_t}{d_{t,a_t}},&
+g_{t+1}&=Fg_t^+,\nonumber\\
+D_{t+1}&=FD_t^+,&P_{t+1}&=FP_t^+F^\top+EQ_GE^\top.
+\label{eq:filter}
 \end{align}
-where $Q=(1-\phi^2)K_z$. The likelihood information and score are
+The online information and score
 \begin{equation}
-\mathcal I_T=\sum_{t=1}^T u_tu_t^\top,\qquad
-q_T=\sum_{t=1}^T u_tR_t.
-\label{eq:online-info}
+\mathcal I_T=\sum_{t\le T}u_tu_t^\top,\qquad q_T=\sum_{t\le T}u_tR_t
+\label{eq:online}
 \end{equation}
-For every completed path, these agree algebraically with~\eqref{eq:information} evaluated at its realized design.
+agree algebraically with the dense likelihood for each recorded path.
 \end{theorem}
 \begin{proof}
-Substitute~\eqref{eq:affine-filter} into the selected observation. Its conditional mean is $e_a^\top g_t+v_{t,a}^\top\mu$ and its conditional variance is $d_{t,a}$. Gaussian conditioning gives~\eqref{eq:filter-recursion}; the mean update separates its observable constant and its coefficient of $\mu$. Propagation preserves this affine form. Normalization gives~\eqref{eq:regression}. Decisions depend only on recorded history and independent randomization, so $u_t$ is known before its innovation. For a realized design the triangular innovation transform whitens~\eqref{eq:xi}; expanding the resulting quadratic likelihood gives~\eqref{eq:online-info} and the batch identities. These are pathwise algebraic identities, not a claim of fixed-design frequentist distributions conditional on random actions.
+The selected conditional mean is $\ell_a^\top g_t+v_{t,a}^\top\mu$ and its variance is $d_{t,a}$. Gaussian conditioning separates the state mean into its observable constant and coefficient of the fixed mean, giving the recursion. Companion propagation preserves the affine form. Its triangular innovation transform whitens the recorded covariance, giving the batch identities. Non-anticipating actions make the normalized design predictable. These pathwise identities do not imply fixed-design sampling laws conditional on adaptive actions.
 \end{proof}
 
-The normalized innovations have a standard Gaussian conditional law, but their design vectors can depend on earlier innovations. Ordinary fixed-design normal confidence is therefore not sufficient for adaptive selection.
+The scalar normalized error $\epsilon_t$ differs from the physical spatial innovation vector $\eta_t$. The latter has covariance $Q_G$ and drives every arm. The former is a selected-measurement residual after conditioning.
 
-Under the Gaussian prior, exact posterior updates are ordinary linear Gaussian regression:
+For $V_t=(H+\mathcal I_{t-1})^{-1}$ and $m_t=V_tq_{t-1}$, efficient estimator updates are
 \begin{align}
-S_t&=(H+\mathcal I_{t-1})^{-1},& M_t&=S_tq_{t-1},\nonumber\\
-S_t^+&=S_t-\frac{S_tu_tu_t^\top S_t}{1+u_t^\top S_tu_t},&
-M_t^+&=M_t+\frac{S_tu_t(R_t-u_t^\top M_t)}{1+u_t^\top S_tu_t}.
-\label{eq:bayes-online}
+V_t^+&=V_t-\frac{V_tu_tu_t^\top V_t}{1+u_t^\top V_tu_t},\nonumber\\
+m_t^+&=m_t+\frac{V_tu_t(R_t-u_t^\top m_t)}{1+u_t^\top V_tu_t}.
+\label{eq:update}
 \end{align}
-The mean posterior remains unchanged under temporal propagation; only the future observation experiment changes. Thus old data continue to inform the permanent mean even after their usefulness for predicting $z_t$ has decayed.
+These are likelihood recursions without a mean prior. Temporal propagation changes future experiments but not accumulated static mean information.
 
-\subsection{What the second reading actually measures}
-For a simple illustration, let two residuals have variance $V$ and spatial correlation $\rho$. After measuring location one, consider measuring location two at the next time. Define
+\subsection{What a correlated second reading measures}
+After measuring location $i$ at time one, consider location $j$ at time two. Let
 \[
-\gamma=\frac{\phi\rho V}{V+r},\qquad
-d_2=V+r-\frac{\phi^2\rho^2V^2}{V+r}.
+\gamma=\frac{(G_1)_{ji}}{(G_0)_{ii}+r},\qquad
+d_2=(G_0)_{jj}+r-\frac{(G_1)_{ji}^2}{(G_0)_{ii}+r}.
 \]
-The second innovation experiment is
-\begin{equation}
-\boxed{\frac{Y_2-\gamma Y_1}{\sqrt{d_2}}
-=\frac{\mu_2-\gamma\mu_1}{\sqrt{d_2}}+\eta_2.}
-\label{eq:two-reading-innovation}
-\end{equation}
-Subtracting the predictable shared fluctuation also subtracts part of the first permanent mean. The correct likelihood therefore updates a weighted mean comparison, rather than treating $Y_2-\gamma Y_1$ as an unbiased reading of $\mu_2$. The graph prior or energy constraint links the two unknown means; the innovation covariance determines how precisely their weighted comparison is observed. If either $\phi$ or $\rho$ is zero, $\gamma=0$ and this transient cross-location effect vanishes, while the mean graph can remain informative.
+Then
+\[
+\frac{Y_2-\gamma Y_1}{\sqrt{d_2}}
+=\frac{\mu_j-\gamma\mu_i}{\sqrt{d_2}}+\epsilon_2.
+\]
+Removing predictable shared noise also subtracts part of the first mean. The likelihood updates a weighted comparison, rather than treating the numerator as an unbiased reading of $\mu_j$. General AR dynamics can have $(G_1)_{ji}=0$ while $(G_2)_{ji}$ is large.
 
-\section{Confidence, graph validity, and a correct stopping rule}
-\begin{theorem}[All-time graph-regularized confidence]
-Let the true mean be fixed in $\mathcal M(S,B)$, and let $H=\alpha I+\lambda L\succ0$ be fixed before collecting data. With known correct $K_z,\phi,r$, define
+\section{Confidence, graph correctness, and stopping}
+\begin{theorem}[All-time confidence at a fixed mean]
+Suppose $\mu\in\mathcal M(S,B)$, $H=\alpha I+\lambda L\succ0$ and the graph are fixed before measurement, and the likelihood uses correct dynamics, $Q_G$, and $r$. Put
 \begin{equation}
-J_T=H+\mathcal I_T,\quad \widehat\mu_T=J_T^{-1}q_T,\quad
-\beta_T(\delta)=\sqrt{\log\frac{\det J_T}{\det H}+2\log\frac1\delta}
+J_T=H+\mathcal I_T,\quad\widehat\mu_T=J_T^{-1}q_T,\quad
+\beta_T=\sqrt{\log\frac{\det J_T}{\det H}+2\log\frac1\delta}
 +\sqrt{\alpha B^2+\lambda S^2}.
 \label{eq:beta}
 \end{equation}
-For any non-anticipating sampling policy, with probability at least $1-\delta$, simultaneously for all $T\ge0$ and all $c\in\mathbb R^N$,
+With probability at least $1-\delta$, for all $T\ge0$ and contrasts $v$ simultaneously,
 \begin{equation}
-\boxed{|c^\top(\widehat\mu_T-\mu)|\le
-\beta_T(\delta)\sqrt{c^\top J_T^{-1}c}.}
-\label{eq:adaptive-confidence}
+\boxed{|v^\top(\widehat\mu_T-\mu)|\le\beta_T\sqrt{v^\top J_T^{-1}v}.}
+\label{eq:confidence}
 \end{equation}
 \end{theorem}
 \begin{proof}
-Let $W_T=\sum_{t\le T}u_t\eta_t$. For deterministic $\theta$, Gaussian innovations make
-$\exp(\theta^\top W_T-\theta^\top\mathcal I_T\theta/2)$ a nonnegative martingale. Mixing $\theta\sim N(0,H^{-1})$ gives
+Let $W_T=\sum_{t\le T}u_t\epsilon_t$. For deterministic $\theta$, the Gaussian exponential
+$\exp\{\theta^\top W_T-\theta^\top\mathcal I_T\theta/2\}$ is a nonnegative martingale. Mixing $\theta$ with the Gaussian integration measure $N(0,H^{-1})$ gives
 \[
-Z_T=\left(\frac{\det H}{\det J_T}\right)^{1/2}
-\exp\{\|W_T\|_{J_T^{-1}}^2/2\}.
+Z_T=\sqrt{\frac{\det H}{\det J_T}}\exp\{\|W_T\|_{J_T^{-1}}^2/2\}.
 \]
-The mixture is a nonnegative martingale starting at one. Its crossing probability above $1/\delta$ is at most $\delta$, by the standard stopping-time inequality. Therefore, uniformly in $T$,
-\[
-\|W_T\|_{J_T^{-1}}\le
-\sqrt{\log(\det J_T/\det H)+2\log(1/\delta)}.
-\]
-This is the Gaussian specialization of established self-normalized concentration~\cite{abbasi2011}. Since $q_T=\mathcal I_T\mu+W_T$,
+This mixing variable is a proof device, not a prior on $\mu$. The martingale crossing inequality bounds $Z_T$ by $1/\delta$ for all times outside an event of probability $\delta$, giving the square-root log-determinant term. This is established self-normalized concentration~\cite{abbasi2011}. Also
 \[
 \widehat\mu_T-\mu=J_T^{-1}W_T-J_T^{-1}H\mu.
 \]
-Using $H\preceq J_T$ gives $\|H\mu\|_{J_T^{-1}}\le\sqrt{\mu^\top H\mu}\le\sqrt{\alpha B^2+\lambda S^2}$. Triangle inequality in the $J_T$ norm and contrast Cauchy--Schwarz give~\eqref{eq:adaptive-confidence}.
+Since $H\preceq J_T$, the regularization contribution in the $J_T$ norm is at most $\sqrt{\mu^\top H\mu}\le\sqrt{\alpha B^2+\lambda S^2}$. Contrast Cauchy--Schwarz completes the proof.
 \end{proof}
 
-\begin{corollary}[Certified recommendation]
-Let $\widehat b_T=\argmax_i\widehat\mu_{i,T}$. Stop only when
+\begin{corollary}[Correct stopped recommendation]
+Recommend $\widehat b_T=\argmax_i\widehat\mu_{i,T}$ and stop only if every $j\ne\widehat b_T$ satisfies
 \begin{equation}
-\widehat\mu_{\widehat b_T,T}-\widehat\mu_{j,T}
->\beta_T\sqrt{(e_{\widehat b_T}-e_j)^\top J_T^{-1}(e_{\widehat b_T}-e_j)}
-\quad\text{for every }j\ne\widehat b_T.
-\label{eq:stop}
+\widehat\mu_{\widehat b_T,T}-\widehat\mu_{j,T}>
+\beta_T\sqrt{(e_{\widehat b_T}-e_j)^\top J_T^{-1}(e_{\widehat b_T}-e_j)}.
+\label{eq:stopping}
 \end{equation}
 The probability of an incorrect stopped recommendation is at most $\delta$.
 \end{corollary}
 \begin{proof}
-On the simultaneous event in~\eqref{eq:adaptive-confidence}, every certified difference is strictly positive at the true mean. The event includes data-dependent contrasts and stopping times.
+On the simultaneous event every certified difference is positive at the truth. The event covers adaptive contrasts and stopping times.
 \end{proof}
-This is a fixed-confidence statement under supplied bounds; it does not establish optimal sample complexity. A fixed-budget recommendation when the certificate has not passed carries no such guarantee.
+A forced terminal decision without a passed certificate has no such guarantee. This is fixed-confidence correctness, rather than finite-budget optimality.
 
-\begin{proposition}[Termination with forced probes]
-Suppose every location has at least $n_T$ observations by time $T$. Let
-\begin{equation}
-v_+=\lambda_{\max}(K_z)\frac{1+|\phi|}{1-|\phi|}+r,
-\quad v_-=\lambda_{\min}(K_z)\frac{1-|\phi|}{1+|\phi|}+r.
-\label{eq:covariance-constants}
-\end{equation}
-For each realized sequence,
-\begin{equation}
-\frac1{v_+}\operatorname{diag}(N_i(T))\preceq\mathcal I_T
-\preceq\frac1{v_-}\operatorname{diag}(N_i(T)).
-\label{eq:info-sandwich}
-\end{equation}
-If forced cyclic probes ensure $n_T\ge cT-O(1)$ for a fixed $c>0$, and the true mean has a positive smallest gap, the stopping rule~\eqref{eq:stop} terminates almost surely. A sufficient condition on its confidence event is
-\begin{equation}
-\Delta_{\min}>2\beta_T\sqrt{2v_+/n_T}.
-\label{eq:termination-condition}
-\end{equation}
-\end{proposition}
-\begin{proof}
-The AR temporal correlation matrix has eigenvalues between $(1-|\phi|)/(1+|\phi|)$ and its reciprocal, as follows from its spectral density. The full node-time covariance is its Kronecker product with $K_z$; selecting one coordinate per time is an orthonormal row selection. Thus $v_-I\preceq\Xi\preceq v_+I$. Applying $M^\top\Xi^{-1}M$ gives~\eqref{eq:info-sandwich}. Pairwise squared widths are at most $2v_+/n_T$. Also
+\subsection{Termination for general stable AR dynamics}
+Let
 \[
-\log\frac{\det J_T}{\det H}
-\le N\log\left(1+\frac{T}{v_-\lambda_{\min}(H)}\right),
+a_{\min}=\min_{i,\omega}|A_i(e^{-{\rm i}\omega})|>0,\qquad
+a_{\max}=\max_{i,\omega}|A_i(e^{-{\rm i}\omega})|<\infty,
 \]
-so widths times $\beta_T$ vanish under linear forced coverage. On the confidence event, a true gap exceeds its estimated gap by at most one width, and~\eqref{eq:termination-condition} ensures every certificate. For any $\delta'>0$ the corresponding all-time estimator bound holds with probability $1-\delta'$; its widths also vanish. Hence the estimates are eventually sufficiently accurate almost surely, and the fixed-$\delta$ stopping rule terminates.
-\end{proof}
-
-\subsection{What a graph-error certificate permits}
-If a reference mean satisfies $\mu^\top L\mu\le S^2$ and an estimated Laplacian obeys
+and
 \begin{equation}
-(1-\eta)L\preceq\widehat L\preceq(1+\eta)L,\qquad0\le\eta<1,
-\label{eq:laplacian-perturbation}
+v_-=\lambda_{\min}(Q_G)/a_{\max}^2+r,\qquad
+v_+=\lambda_{\max}(Q_G)/a_{\min}^2+r.
 \end{equation}
-then $\mu^\top\widehat L\mu\le(1+\eta)S^2$. If $\widehat L$ is fixed before bandit measurement, or supplied by an independent external experiment, using $\widehat H=\alpha I+\lambda\widehat L$ and replacing the deterministic bias allowance by
+The spectral covariance matrix is
 \begin{equation}
-\sqrt{\alpha B^2+\lambda(1+\eta)S^2}
+\mathcal S_z(\omega)=
+\operatorname{diag}(A_i(e^{-{\rm i}\omega})^{-1})Q_G
+\operatorname{diag}(A_i(e^{-{\rm i}\omega})^{-1})^*.
+\label{eq:spectrum}
 \end{equation}
-preserves the confidence theorem, provided the noise filter still uses the correct $K_z,\phi,r$. This is certificate transfer, not learning the certificate. A graph selected from the same adaptive measurements requires a uniform or selection-adjusted argument. Using the same inaccurate graph to fit an inaccurate transient covariance requires an additional likelihood-error analysis; the present proof does not cover that case.
-
-For any pair, effective resistance also gives $|\mu_i-\mu_j|\le S\sqrt{(e_i-e_j)^\top L^\dagger(e_i-e_j)}$. This explains when a mean at an unobserved location can be meaningfully constrained. A small radius can be informative; an invalid radius can exclude the actual best mean.
-
-\section{Sampling for permanent selection}
-\subsection{A contrast-information rule}
-At the Bayesian posterior $(M_t,S_t)$, candidate normalized measurement $u_{t,a}$ reduces the variance of a permanent contrast $c^\top\mu$ by
+Its eigenvalues are bounded by the constants without $r$. Parseval's identity transfers them to finite block covariance; coordinate selection preserves them. For every realized design,
 \begin{equation}
-\boxed{\mathcal G_t(c,a)=
-\frac{(c^\top S_tu_{t,a})^2}{1+u_{t,a}^\top S_tu_{t,a}}.}
-\label{eq:contrast-gain}
+\boxed{\frac1{v_+}\operatorname{diag}(N_i(T))
+\preceq\mathcal I_T\preceq\frac1{v_-}\operatorname{diag}(N_i(T)).}
+\label{eq:information-bounds}
 \end{equation}
-This follows from~\eqref{eq:bayes-online}. It includes mean-graph pooling through $S_t$ and temporal noise reconstruction through $u_{t,a}$. Information about a common shift cancels from $c=e_i-e_j$.
-
-A computationally simple rule chooses the current largest mean, a challenger with the smallest standardized estimated gap, and the action maximizing~\eqref{eq:contrast-gain} for that pair. Forced probes can be interspersed to ensure coverage. The selection of one contrast is a heuristic with many arms: minimizing its variance need not maximize total PCS or minimize opportunity loss.
-
-For two candidates and one measurement left, maximizing~\eqref{eq:contrast-gain} is exactly Bayes-PCS optimal. Conditional on history the scalar difference is Gaussian. Each candidate supplies a Gaussian experiment about that difference, and smaller deterministic posterior variance gives a more informative experiment; the less informative experiment can be generated by adding independent noise. The optimal sign decision therefore has no larger success under the less informative action. This statement presumes a common target time and equal measurement budget, and does not solve a general multi-period allocation.
-
-\subsection{Knowledge gradient for opportunity loss}
-The posterior mean after measuring $a$ has the pre-observation distribution
-\begin{equation}
-M_t^+=M_t+b_{t,a}Z,\qquad
-b_{t,a}=\frac{S_tu_{t,a}}{\sqrt{1+u_{t,a}^\top S_tu_{t,a}}},
-\quad Z\sim N(0,1).
-\end{equation}
-The permanent-mean knowledge-gradient score is
-\begin{equation}
-\boxed{\operatorname{KG}_t(a)=
-\E_Z\max_i\{M_{i,t}+b_{i,t,a}Z\}-\max_iM_{i,t}.}
-\label{eq:kg}
-\end{equation}
-The largest score is optimal with one measurement left for opportunity loss. Indeed, the posterior expectation of $\max_i\mu_i$ is a martingale over the measurement, while the final implemented expected mean is the maximum posterior mean. For more measurements this is a rolling approximation.
-
-The scalar expectation is evaluated exactly through an affine upper envelope, as in correlated knowledge gradient~\cite{frazier2009}. If line $i$ is maximal over $[l_i,r_i]$, its contribution is
+If forced cyclic probes give every arm $n_T\ge cT-O(1)$ observations, pairwise squared widths are at most $2v_+/n_T$. Also
 \[
-M_{i,t}\{\Phi(r_i)-\Phi(l_i)\}
-+b_{i,t,a}\{\varphi(l_i)-\varphi(r_i)\}.
+\log(\det J_T/\det H)\le N\log\{1+T/(v_-\lambda_{\min}(H))\}.
 \]
-The implementation sorts slopes and removes dominated lines. With dense $N\times N$ beliefs, all candidate scores and updates require polynomial work in $N$, with no growing dense observation matrix.
+Thus confidence widths vanish. At a positive smallest gap, the stopping certificate eventually passes. Almost-sure termination follows by applying the estimator bound at arbitrary $\delta'>0$ and letting $\delta'$ decrease to zero. These conservative bounds do not determine optimal schedule-dependent allocation.
 
-\subsection{PCS requires a different terminal decision}
-For $\mu\mid\mathcal H\sim N(M,S)$, define
-\begin{equation}
-p_i=\Pr(\mu_i\ge\mu_j\text{ for all }j\mid\mathcal H).
-\end{equation}
-The Bayes-PCS recommendation maximizes $p_i$, whereas opportunity loss is minimized by maximizing $M_i$. Each $p_i$ is a Gaussian orthant probability of a difference vector, whose covariance entries are
-\begin{equation}
-S_{ii}-S_{ij}-S_{ik}+S_{jk}.
-\end{equation}
-The independent-arm product formula is generally invalid for this correlated posterior. A one-measurement PCS policy maximizes $\E_Y\max_i p_i(\mathcal H,Y,a)$. We derive its two-candidate simplification but do not implement general orthant-based PCS planning in the experiment.
+\subsection{What graph correctness permits}
+Graph correctness means that a supplied graph actually restricts the fixed mean's differences. Usefulness means that the restriction excludes difficult competing mean vectors. It is not a claim of stochastic correlation among fixed constants.
 
-\section{Two locations: exact selection and calibrated shrinkage}
-Let the graph contain one edge of weight $w>0$ and take
-\begin{equation}
-L=w\begin{pmatrix}1&-1\\-1&1\end{pmatrix},\quad
-K_z=V\begin{pmatrix}1&\rho\\\rho&1\end{pmatrix},
-\quad V>0,\quad -1<\rho<1.
-\label{eq:two-arm}
-\end{equation}
-Set $h_-=\alpha+2\lambda w$. Under the graph prior, the permanent difference $D=\mu_1-\mu_2$ has variance $S_0=2/h_-$ and the common mean $C=(\mu_1+\mu_2)/2$ has variance $1/(2\alpha)$; they are independent.
-
-\begin{theorem}[Two-observation permanent-mean PCS optimum]
-Suppose $0\le\phi<1$ and the prior is~\eqref{eq:mean-prior}. For a total budget of two observations at consecutive calendar times, observe either location first and the other location second. This policy is Bayes-PCS optimal among adaptive policies. Let
-\begin{equation}
-v_-=V(1-\rho\phi)+r.
-\end{equation}
-Its posterior difference variance and optimal prior-averaged PCS are
-\begin{equation}
-\boxed{S_{\rm other}=\frac{2}{h_-+1/v_-},\qquad
-\PCS_2^*=\frac12+\frac1\pi\arctan\frac1{\sqrt{h_-v_-}}.}
-\label{eq:two-pcs}
-\end{equation}
-\end{theorem}
-\begin{proof}
-Measuring each location once gives $M=I_2$ and noise covariance
+If an external graph obeys
 \[
-\Xi=\begin{pmatrix}V+r&\rho\phi V\\\rho\phi V&V+r\end{pmatrix}.
+(1-\zeta)L\preceq\widehat L\preceq(1+\zeta)L,\qquad0\le\zeta<1,
 \]
-Its difference eigenvalue is $v_-$. The graph prior shares the two-location constant/difference eigensystem, so the posterior variance of $D$ is $2/(h_-+1/v_-)$. If both observations measure location one, their average has residual variance
-\[
-v_{\rm repeat}=\{V(1+\phi)+r\}/2,
-\]
-and measures $C+D/2$. Their difference contains no mean information and is independent of the average. Thus
+then a truth with energy at most $S^2$ under $L$ has energy at most $(1+\zeta)S^2$ under $\widehat L$. Replacing the penalty by $\alpha I+\lambda\widehat L$ and bias allowance by $\sqrt{\alpha B^2+\lambda(1+\zeta)S^2}$ preserves confidence when the noise likelihood remains correct. The graph must be fixed before measurement or supplied by an independent experiment; same-data graph learning needs a uniform or selection-adjusted argument. Using an incorrect graph to fit $Q_G$ changes the likelihood and is not repaired by enlarging the mean-energy allowance.
+
+\section{Sampling for permanent comparisons and predictions}
+Adding a candidate normalized experiment to $J$ decreases inverse regularized information for contrast $v$ by exactly
 \begin{equation}
-S_{\rm repeat}=
-\left[\frac1{S_0}+\frac1{4\{1/(2\alpha)+v_{\rm repeat}\}}\right]^{-1}.
-\label{eq:repeat}
+\boxed{\mathcal G_t(v,a)=
+\frac{(v^\top V_tu_{t,a})^2}{1+u_{t,a}^\top V_tu_{t,a}}.}
+\label{eq:gain}
 \end{equation}
-The other-location experiment adds precision $1/(2v_-)$ to $D$, and the repeat experiment adds precision $1/[4\{1/(2\alpha)+v_{\rm repeat}\}]$. Their denominator difference is
-\[
-4\{1/(2\alpha)+v_{\rm repeat}\}-2v_-
-=2/\alpha+2V\phi(1+\rho)>0.
-\]
-The first observation has the same distribution for either initial location. After it, the conditional variance of $D$ is common to the possible second actions, and the two final posterior variances are deterministic and ordered as above. The more informative scalar Gaussian experiment is therefore optimal for the conditional sign decision at every first observation value. Adaptivity cannot improve this two-observation design.
+This follows from Sherman--Morrison. It incorporates graph geometry through $V_t$ and spatial-temporal likelihood through $u_{t,a}$. It is not the actual frequentist variance reduction of a biased adaptive estimator.
 
-For a centered scalar Gaussian prior contrast with variance $S_0$ and deterministic posterior variance $S$, the posterior mean has variance $S_0-S$ and correlation $\sqrt{1-S/S_0}$ with $D$. The Gaussian sign-agreement identity yields $1/2+\arcsin\sqrt{1-S/S_0}/\pi$. Substitution gives~\eqref{eq:two-pcs}.
-\end{proof}
+Our implementable rule chooses the largest regularized mean, finds the challenger with the smallest standardized estimated gap, and measures the action maximizing~\eqref{eq:gain} for that pair. Forced probes ensure coverage; the stopping rule supplies a certificate when available. This is a heuristic: a single inverse-information reduction ignores other challengers, the changing determinant term, and future experiments. We assert no general PCS-optimality or finite-horizon regret theorem for it.
 
-The proof even permits negative spatial correlation, but nonnegative temporal persistence is part of this design theorem. Strong negative persistence can make repeat observations especially informative; the displayed comparison specifies when the ordering reverses. The theorem does not extend the two-observation design to arbitrary budgets.
-
-For fixed positive true difference $\Delta$, the unregularized estimate from the other-location design has variance $2v_-$, giving
+Conditional on a fixed $\mu$, measuring action $a$ reduces the variance of a future coordinate $z_{i,t+h}$ by
 \begin{equation}
-\PCS_{\rm fixed\ mean}=\Phi\{\Delta/\sqrt{2v_-}\}.
+\boxed{\Delta_{i,h}(a)=
+\frac{(e_i^\top CF^hP_t\ell_a)^2}{\ell_a^\top P_t\ell_a+r}.}
+\label{eq:prediction-gain}
+\end{equation}
+For a future spatial contrast replace $e_i$ by $e_i-e_j$. Multiple future targets have the corresponding rank-one outer-product reduction. Future innovations are independent and do not change this reduction.
+
+With unknown fixed means, the true conditional expected current field is $\mu+Cg_t+CD_t\mu$. The plug-in forecast substitutes $\widehat\mu_t$. Equation~\eqref{eq:confidence} bounds each linear mean contribution $(e_i+D_t^\top C^\top e_i)^\top(\widehat\mu_t-\mu)$, while $P_t$ describes state uncertainty conditional on $\mu$. These are separate uncertainty sources; $P_t$ alone does not cover mean-estimation error.
+
+General AR prediction depends on $F^h$ and the complete lag-state covariance. Mean selection should value permanent comparisons; a reward policy must also value forecasts at its operating horizon.
+
+\section{Fixed-mean PCS and an exact AR(2) design comparison}
+For a fixed full-rank design, $\widehat\mu_{\rm GLS}\sim N(\mu,\mathcal I_T^{-1})$. PCS for its largest coordinate is a Gaussian orthant probability. If $W=\mathcal I_T^{-1}$, difference covariance between challengers $j,k$ of the true best $b$ is $W_{bb}-W_{bj}-W_{bk}+W_{jk}$. Correlation generally precludes the independent-arm product formula.
+
+For two arms with fixed true gap $\Delta>0$,
+\begin{equation}
+\boxed{\PCS_\mu(T)=\Phi\left(
+\frac{\Delta}{\sqrt{(e_1-e_2)^\top\mathcal I_T^{-1}(e_1-e_2)}}\right).}
 \label{eq:fixed-pcs}
 \end{equation}
-Positive $\rho\phi$ helps this paired permanent-mean comparison by cancelling correlated fluctuations. In contrast, repeated measurements of one arm are more redundant when positive $\phi$ grows. Thus temporal persistence has no universal monotone effect on permanent-mean information.
+This is fixed-truth, fixed-design PCS without a mean prior. Graph ridge also changes the Gaussian numerator through bias; adaptive schedules do not generally admit this fixed-design sampling law.
 
-\begin{proposition}[Minimax linear contrast shrinkage]
-In the same fixed two-location design, suppose $wD^2\le S^2$ with $S>0$. Among estimators $\widehat D_s=s(Y_1-Y_2)$, the worst-case squared-error risk is
+\begin{proposition}[Correlated AR(2) blocks improve selection]
+Let two arms follow
 \begin{equation}
-\sup_{wD^2\le S^2}\E_D(\widehat D_s-D)^2
-=(1-s)^2S^2/w+2s^2v_-.
+z_{i,t}=a z_{i,t-2}+\eta_{i,t},\qquad
+Q_G=V(1-a^2)\begin{pmatrix}1&\rho\\\rho&1\end{pmatrix},
+\quad0<a<1,\quad0\le\rho<1.
+\label{eq:lag-two}
 \end{equation}
-Its minimizer is
+Both stationary marginal variances equal $V$. For four calendar measurements with sensor variance $r$, GLS difference variances are
 \begin{equation}
-\boxed{s^*=\frac{S^2}{S^2+2wv_-},\qquad \lambda^*=1/S^2,}
-\label{eq:minimax-shrink}
+\boxed{\sigma^2_{\rm AABB}=V+r-a\rho V,\qquad
+\sigma^2_{\rm ABAB}=V+r+aV.}
+\label{eq:design-variance}
 \end{equation}
-where $s=(1+2\lambda wv_-)^{-1}$ is the Laplacian-ridge contrast multiplier.
+AABB has strictly larger fixed-mean PCS than ABAB for every $\Delta>0$.
 \end{proposition}
 \begin{proof}
-The contrast observation is $D$ plus centered Gaussian noise of variance $2v_-$. Its squared bias is $(1-s)^2D^2$ and variance is $2s^2v_-$. The maximum bias occurs at the energy boundary. Minimizing the resulting convex quadratic gives~\eqref{eq:minimax-shrink}.
+Odd-lag covariances vanish and $G_{2k}=a^kV\begin{pmatrix}1&\rho\\\rho&1\end{pmatrix}$. In AABB each arm's consecutive readings are independent, while readings two rounds apart on different arms have covariance $a\rho V$. Per-arm averages are GLS estimates, giving difference variance $V+r-a\rho V$. In ABAB each arm's readings have covariance $aV$, while cross-arm reading covariances vanish at odd gaps. GLS again averages each arm, giving variance $V+r+aV$. Equation~\eqref{eq:fixed-pcs} gives the ordering.
 \end{proof}
-This is minimax within the stated linear shrinkage family, not the unrestricted minimax estimator over bounded Gaussian means. Any finite positive $s$ preserves the sign of the observed difference, so its fixed-mean PCS remains~\eqref{eq:fixed-pcs}. Better estimation MSE alone does not establish better selection probability.
+
+For $V=1$, $r=.1$, $a=.8$, $\rho=.6$, and fixed gap $\Delta=.4$, variances are $.62$ and $1.90$, with PCS approximately $.6943$ and $.6142$. The gain combines reduced within-arm redundancy and cancellation of shared shocks at informative lags. It does not establish a universally optimal four-step adaptive policy.
 
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}
-\begin{axis}[width=.82\textwidth,height=5.1cm,xlabel={Temporal persistence $\phi$},ylabel={Two-observation Bayes PCS},xmin=0,xmax=.99,ymin=.66,ymax=.84,legend pos=north west,grid=major]
-\addplot[blue,thick,domain=0:.99,samples=80]{.5+atan(1/sqrt(2*(1+.1)))/180};
-\addlegendentry{$\rho=0$}
-\addplot[teal,thick,domain=0:.99,samples=80]{.5+atan(1/sqrt(2*(1-.5*x+.1)))/180};
-\addlegendentry{$\rho=0.5$}
-\addplot[orange,thick,domain=0:.99,samples=80]{.5+atan(1/sqrt(2*(1-.9*x+.1)))/180};
-\addlegendentry{$\rho=0.9$}
+\begin{axis}[width=.82\textwidth,height=5cm,xlabel={Spatial innovation correlation $\rho$},
+ylabel={Fixed-mean PCS},xmin=0,xmax=.95,ymin=.59,ymax=.76,
+legend pos=north west,grid=major]
+\addplot[blue,thick,domain=0:.95,samples=80]
+{.5*(1+erf(.4/sqrt(2*(1.1-.8*x))))};
+\addlegendentry{AABB}
+\addplot[orange,thick,domain=0:.95,samples=80]
+{.5*(1+erf(.4/sqrt(2*1.9)))};
+\addlegendentry{ABAB}
 \end{axis}
 \end{tikzpicture}
-\caption{Exact two-observation permanent-mean PCS at $V=1$, $r=0.1$, $\alpha=1$, and $\lambda w=0.5$. Positive cross-location persistence helps a paired contrast. This is not a general monotonicity claim for longer-horizon learning or a fixed-gap comparison across different mean priors.}
-\label{fig:two-pcs}
+\caption{Exact fixed-mean GLS selection for the lag-two process at $V=1$, $r=.1$, $a=.8$, and $\Delta=.4$. Correlated innovations further help the block comparison; alternating samples do not access cross-arm correlation at even lags.}
+\label{fig:pcs}
 \end{figure}
 
-\section{Graph modes and the cost of temporal redundancy}
-\begin{proposition}[Full-field benchmark]
-Suppose all locations are observed exactly at each of $n$ consecutive times, with $r=0$. This is a stronger feedback benchmark costing $Nn$ scalar measurements. Then
+Two readings of different arms at consecutive times have raw difference variance $(G_0)_{11}+(G_0)_{22}+2r-2(G_1)_{21}$. General AR coefficients determine it, without a universal scalar persistence replacement.
+
+\section{Full-field information and long-run covariance}
+A stronger feedback benchmark measures every arm exactly each calendar time, costing $Nn$ scalar readings. Put $p=\max_i p_i$, pad coefficients to order $p$, and write $D_c=\operatorname{diag}(c_i)$.
+
+\begin{proposition}[General full-field information]
+For $n\ge p$ noiseless full fields, let $\mathcal I_p$ be the stationary mean information in the first $p$ fields. Then
 \begin{equation}
-\mathcal I_n=a_nK_z^{-1},\qquad
-\boxed{a_n=\frac{n(1-\phi)+2\phi}{1+\phi}.}
-\label{eq:full-field-info}
+\boxed{\mathcal I_n=\mathcal I_p+(n-p)D_cQ_G^{-1}D_c.}
+\label{eq:full-field}
 \end{equation}
-If $K_z=U\operatorname{diag}(k_j)U^\top$ shares the Laplacian eigensystem, posterior graph-mode variances are
+The long-run covariance of the sample-mean field is
 \begin{equation}
-\boxed{s_j^2=\{a_n/k_j+\alpha+\lambda\ell_j\}^{-1}.}
-\label{eq:mode-posterior}
-\end{equation}
-For unanchored Laplacian ridge ($\alpha=0$), with $\theta_j=(U^\top\mu)_j$, mode MSE is
-\begin{equation}
-\left(\frac{\lambda\ell_j}{a_n/k_j+\lambda\ell_j}\right)^2\theta_j^2
-+\frac{a_n/k_j}{(a_n/k_j+\lambda\ell_j)^2}.
-\label{eq:mode-risk}
+\boxed{\mathcal K_{\rm LR}=D_c^{-1}Q_GD_c^{-1}.}
+\label{eq:long-run}
 \end{equation}
 \end{proposition}
 \begin{proof}
-The full observation covariance is $R_n(\phi)\otimes K_z$ and its mean design is $\one_n\otimes I$. Thus information is $(\one_n^\top R_n^{-1}\one_n)K_z^{-1}$. The tridiagonal inverse AR correlation matrix gives~\eqref{eq:full-field-info}, including $a_1=1$. Simultaneous diagonalization gives~\eqref{eq:mode-posterior} and the fixed-design bias/variance formula gives~\eqref{eq:mode-risk}.
+After the initial $p$ fields, the innovation transform is
+\[
+X_t-\sum_{k=1}^p\operatorname{diag}(a_{i,k})X_{t-k}=D_c\mu+\eta_t.
+\]
+It has parameter-independent triangular Jacobian. Innovations are independent of the initial fields and of each other, so each adds information $D_cQ_G^{-1}D_c$. Evaluating the spectral covariance at zero frequency gives the long-run covariance; stable AR covariance sequences are absolutely summable.
 \end{proof}
 
-For $\phi\uparrow1$ with fixed $n$ and fixed stationary variance, $a_n\to1$: a nearly constant transient field is difficult to distinguish from a permanent mean. For fixed $\phi<1$ and large $n$, information grows at rate $(1-\phi)/(1+\phi)$. Good short-term prediction can coexist with slow permanent-mean estimation. At the excluded boundary $\phi=1$, repeated noiseless observation of $\mu+z_1$ does not separately identify the two components.
+The identity permits different orders without a separable temporal kernel. For common coefficients, $D_c=cI$. If additionally $Q_G$ shares $L$'s eigenvectors, asymptotic information in graph mode $k$ is $nc^2/q_k$, and a Laplacian penalty adds $\lambda\ell_k$. Under heterogeneity these matrices generally do not commute.
 
-Pairwise posterior variance is
-\begin{equation}
-\Var(\mu_i-\mu_j\mid Y)=\sum_k(U_{ik}-U_{jk})^2s_k^2.
-\end{equation}
-The constant graph mode cancels. Spatial smoothness is meaningful for selection when it constrains modes distinguishing competing locations, rather than merely reducing uncertainty about a global level.
+Small $c_i$ makes permanent-mean estimation difficult even when recent data predict near-future rewards well. In the lag-two example, $c_i=1-a$ and long-run marginal variance is $V(1+a)/(1-a)$, although lag-one prediction gain vanishes.
 
-When $\phi=0$ and only one coordinate is observed per calendar round, off-diagonal entries of $K_z$ disappear from~\eqref{eq:xi}. If its diagonal is fixed, $\mathcal I$ is simply the diagonal count matrix divided by the marginal observation variance. The permanent mean graph can still help through $H$; transient spatial correlation contributes no cross-time mean information in this control case.
-
-\section{Information limits and the distinction from tracking regret}
-For a fixed design, any two deterministic means have likelihood divergence
-\begin{equation}
-\KL(P_\mu,P_\nu)=\tfrac12(\mu-\nu)^\top\mathcal I_T(\mu-\nu).
-\end{equation}
-For a non-anticipating policy with finite horizon, chain rule and~\eqref{eq:regression} instead give
+\section{Information limits and the reward comparator}
+For fixed means $\mu,\nu$ under a finite-horizon non-anticipating policy,
 \begin{equation}
 \boxed{\KL(P_\mu^{\pi,T},P_\nu^{\pi,T})
 =\tfrac12\E_\mu[(\mu-\nu)^\top\mathcal I_T(\mu-\nu)].}
-\label{eq:adaptive-kl}
+\label{eq:kl}
 \end{equation}
-The action probabilities cancel, and each conditional Gaussian divergence equals $(u_t^\top(\mu-\nu))^2/2$. If a recommendation is $\delta$-correct at both means and their unique best arms differ, data processing gives the necessary condition
-\begin{equation}
-\tfrac12\E_\mu[(\mu-\nu)^\top\mathcal I_T(\mu-\nu)]
-\ge\operatorname{kl}(1-\delta,\delta),\qquad \delta<1/2.
-\end{equation}
-Restricting $\nu$ to a valid graph-energy class connects correctness of the mean graph to exploration requirements. This is a specialization of established change-of-measure reasoning~\cite{combes2017,garivier2016}; counts alone cannot generally replace the adaptive information matrix. No algorithm is proved to attain this instance-specific information program here.
-
-For ongoing reward, a full-current-state oracle can choose $\argmax_i f_{i,t}$, whereas a causal learner acts before observing the current field. With known $\mu$, define $G(\mu,C)=\E\max_i(\mu_i+Z_i)$ for $Z\sim N(0,C)$. A genie seeing every past state predicts the current residual with covariance $\phi^2K_z$ and still lacks fresh innovations. Consequently
-\begin{equation}
-R_T^\pi\ge T\{G(\mu,K_z)-G(\mu,\phi^2K_z)\}.
-\end{equation}
-The bound follows from the genie's maximum conditional mean and convexity of the maximum. It is positive for nondegenerate contrast innovations. It does not prevent consistent permanent-mean selection, whose error can vanish under forced coverage. These two objectives require different benchmarks.
-
-\section{Reproducible experiments}
-The primary experiment uses six nodes on an unweighted path. The permanent means are drawn once from
+Action probabilities cancel; each conditional Gaussian divergence is $(u_t^\top(\mu-\nu))^2/2$. If the recommendation is $\delta$-correct at both means and their unique best arms differ, data processing gives
 \[
-\mu\sim N\{0,(I+\lambda_{\rm true}L)^{-1}\},\qquad
-\lambda_{\rm true}\in\{0,2\}.
+\tfrac12\E_\mu[(\mu-\nu)^\top\mathcal I_T(\mu-\nu)]
+\ge\operatorname{kl}(1-\delta,\delta),\qquad\delta<1/2.
 \]
-Residual covariance is a diagonally normalized resolvent $(I+2L)^{-1}$, with marginal residual variances one; measurement variance is $0.1$. Persistence is $0$, $0.9$, or $0.99$. Every configuration uses 200 independent paired trajectories and 48 sequential measurements. Within a trajectory all policies share the same means, latent field, and potential measurement noises. The normalized residual covariance need not commute with the raw path Laplacian; the full-field spectral formulas assume commuting covariances explicitly and are not imposed on this experiment.
+Trusted graph restrictions reduce the alternative set, while AR schedules alter its information separation. This is established change-of-measure reasoning~\cite{combes2017,garivier2016}; no matching attainable information program is proved here.
 
-Seven specified policies are compared. Graph--AR KG uses the fitted mean prior $(I+2L)^{-1}$ and correct AR likelihood. Unstructured--AR KG uses mean prior $I$, matching the rough-mean generative case. Diagonal-mean--AR KG retains the fitted graph prior's marginal variances but removes its cross-covariances. Graph--iid KG uses the graph mean prior but incorrectly assumes $\phi=0$ when persistence is positive. Wrong-mean-graph--AR KG permutes the mean graph while retaining the correct residual dynamics. The contrast rule uses~\eqref{eq:contrast-gain}. Round robin uses the graph--AR posterior with a fixed cyclic design. Non-round-robin policies force a cyclic location once every seven measurements, ensuring eventual coverage.
+For cumulative reward put $K_0=C\Gamma C^\top$ and $\mathcal G(\mu,K)=\E\max_i(\mu_i+Z_i)$, $Z\sim N(0,K)$. A genie seeing the complete past lag-state lacks only the current innovation, and its predictive-mean covariance is $K_0-Q_G=CF\Gamma F^\top C^\top$. Consequently
+\begin{equation}
+\boxed{R_T^\pi\ge
+T\{\mathcal G(\mu,K_0)-\mathcal G(\mu,K_0-Q_G)\}.}
+\end{equation}
+The genie is stronger than the learner; its maximum conditional mean bounds any causal expected reward. Convexity yields a nonnegative coefficient, strictly positive for nondegenerate contrast innovations when $Q_G\succ0$. At initialization the genie can be granted an additional stationary past state. This linear full-current-state-oracle regret obstruction does not prevent consistent fixed-mean selection.
 
-Every policy recommends the largest posterior mean, so the reported PCS is the accuracy of that recommendation and is not a general Bayes-PCS optimum. The main sampling objective is opportunity loss. We also report mean-estimation MSE and coverage of a fixed endpoint contrast by a 95\% posterior interval. Such coverage has a Bayesian interpretation only for the matched model. The separate all-time frequentist audit tests graph--AR KG and supplies each sampled truth's actual norm and graph energy as valid radii; policies do not use those radii. This audits a conditional theorem under trusted certificates, not a method for obtaining them. Its per-configuration coverage is repeated in the CSV rows and is not an audit of misspecified filters.
+\section{Experiments with fixed means and higher orders}
+The six arms form a path, with two fixed mean vectors:
+\[
+\mu^{\rm smooth}=(0,.2,.45,.65,.75,.7),\qquad
+\mu^{\rm rough}=(0,.65,.2,.75,.1,.7).
+\]
+Each is held fixed across repeated-noise runs. Innovations have covariance $.25$ times a diagonally normalized path resolvent $(I+2L)^{-1}$. Sensor variance is $.1$; the mean penalty is $H=.05I+.5L$. The fixed supplied bounds $B=2$, $S=2$ contain both means.
+
+Three dynamics configurations are used:
+\begin{itemize}
+\item Lag-two: every arm has coefficients $(0,.75)$.
+\item Oscillatory: every arm has coefficients $(.7,-.45)$.
+\item Heterogeneous: $(.6,-.2)$, $(.35,.1,.2)$, $(0,.75)$, $(.1,.4,-.1)$, $(.7,-.3)$, and $(.2,0,.45)$.
+\end{itemize}
+All substantive AR processes have order two or three. Each configuration uses 200 paired independent noise trajectories and 60 measurements; policies share latent paths and potential readings within a run.
+
+Seven policies are compared. Graph--AR contrast uses correct joint dynamics and the mean graph. Unstructured--AR removes the Laplacian penalty. Diagonal-noise--AR removes innovation cross-covariances while retaining marginal variances. Wrong-mean-graph--AR permutes the mean graph and retains correct noise. Graph--iid discards temporal dependence while matching stationary marginal observation covariance. Round robin cycles one reading per location; block cyclic measures each location for $p$ consecutive rounds. Adaptive rules force a cyclic probe every seven rounds.
+
+Policies recommend their largest regularized mean. Reported PCS is repeated-noise success at a fixed truth. The confidence audit tests graph--AR contrast with the supplied bounds, repeating per-configuration coverage and certificate rates in CSV rows. An unpassed terminal certificate gives no fixed-confidence guarantee. Graph variants are estimator stress tests, not demonstrations of learning graph validity.
 
 \begin{table}[p]
-\centering\small
-\input{results/mean_selection/table.tex}
-\caption{Permanent-mean experiment: expected opportunity cost (EOC), PCS of the largest-posterior-mean recommendation, and MSE per mean. Each entry uses 200 paired runs, budget 48, and six locations. Standard errors, variance-matched diagonal-prior comparisons, wrong-graph comparisons, coverage, and paired uncertainty are supplied in the accompanying CSVs and findings.}
-\label{tab:experiment}
+\centering\scriptsize
+\input{results/general_ar/table.tex}
+\caption{Fixed-mean selection over 200 paired noise runs per configuration, six arms, and budget 60. Loss is opportunity loss; PCS is repeated-noise recommendation accuracy. Full CSVs include omitted graph and noise baselines, standard errors, paired comparisons, and confidence audits.}
+\label{tab:results}
 \end{table}
 
-For matched smooth means, graph--AR KG MSE is approximately $0.107$, $0.198$, and $0.253$ as persistence increases. The graph--iid model gives approximately $0.106$, $0.279$, and $0.519$, with endpoint contrast coverage falling to $0.62$ at persistence $0.99$. The diagonal-mean baseline gives MSE approximately $0.121$, $0.230$, and $0.270$, isolating removal of prior correlation while retaining its marginal variances. These finite examples support covariance-aware estimation; they do not establish uniform superiority of the KG policy.
+Paired uncertainty is reported instead of claiming uniform policy superiority. The exact AR(2) comparison is a design result; the six-arm contrast policies are heuristics. The two fixed mean profiles have different gaps as well as graph energy, so they do not isolate a monotone effect of alignment at fixed decision difficulty.
 
-The policy comparison also exposes limitations. At matched smooth means and $\phi=0.9$, round robin has opportunity loss about $0.174$, versus $0.191$ for graph--AR KG. At $\phi=0.99$, unstructured--AR KG gives about $0.247$ versus $0.274$ for graph--AR KG. The paired intervals are reported rather than treating every mean difference as conclusive. At rough means and $\phi=0$, graph--AR KG MSE is about $0.309$ versus $0.151$ for the matching unstructured prior, and its endpoint contrast coverage is $0.85$. An incorrect smooth prior can distort permanent-mean estimates even when the AR likelihood is correct.
+Recursive information, scores, and estimates agree with independent dense trajectory likelihoods. A stationary Lyapunov solve agrees with an independently summed impulse-response covariance. Mixed-order full-field information and certified spectral bounds are checked. Dense GLS validates the AR(2) schedule comparison; 30,000 paired direct process simulations at the same fixed mean vector agree with its PCS formulas within Monte Carlo uncertainty.
 
-Exact calculations are checked independently of the policy experiment. Online information, scores, and posterior updates agree with dense trajectory likelihood calculations across positive, zero, and negative persistence. Constrained estimation enforces its supplied energy; fixed-design contrast bias matches the algebra. A broad two-location grid, including negative spatial correlation, validates the two-observation closed forms and design ordering. Three independent prior-predictive checks use 50,000 draws each; observed PCS agrees with the closed form within Monte Carlo uncertainty. A zero-persistence control verifies removal of transient cross-location information. The full-field effective sample-size identity is checked using independent dense solves. The current script passes 8,888 counted assertions; these are numerical checks, not a substitute for the proofs.
+\section{Discussion}
+The physical model has fixed means, general autoregressive dynamics, and spatial correlation in the innovations. Graph regularization requires a separate deterministic restriction on permanent means. Shared traffic shocks alone do not imply similar permanent location quality.
 
-The standard-library script is \path{experiments/graph_ar1_mean.py}. Accompanying data are in this manuscript's \path{results/mean_selection/} directory. The initial known-zero-mean reward experiment is retained separately and is not evidence for the permanent-mean estimates in this manuscript.
+Use the joint trajectory covariance, constrain or penalize graph differences, and retain smoothing bias in uncertainty statements. Joint lag-state filtering retains spatial information and delayed temporal prediction. General AR dependence replaces scalar freshness with a sequence of cross-arm impulse-response covariances.
 
-\section{Discussion and research agenda}
-The tractable model gives a direct answer to how spatial smoothness should be used. Fit means using the actual covariance of the observed trajectory, regularize differences on the graph, and retain the resulting bias or prior uncertainty. In a frequentist formulation, meaningful smoothing requires a trusted quantitative radius; in a Bayesian formulation, it requires a defensible prior. Neither smoothing a graph nor a small posterior variance verifies that assumption from selected-arm data.
-
-The formulation differs from a pure time-varying GP tracking problem through its permanent target, from iid graph pure exploration through its colored observation likelihood, and from classical correlated-normal KG through its history-dependent whitened experiments. These distinctions motivate specialized results, but the overall model remains within established GP and linear Gaussian families.
-
-A stronger publication contribution would characterize the optimal schedule-dependent information for graph-constrained alternatives, develop an allocation attaining it, and quantify restricted graph and temporal misspecification under adaptive feedback. The stopping rule here is correct with supplied certificates but has conservative sample bounds. Rolling KG is computable but can lose to fixed allocation. Extending to unknown covariance, seasonality, varying costs, and actual profit targets requires additional assumptions and validation.
+The framework specializes established graph and linear Gaussian methods. Optimal allocation depends on evolving experiments and graph-constrained alternatives. A scalar sample-count allocation or automatic extension of a short-budget rule is insufficient. Unknown dynamics, innovation-graph uncertainty, measurement duration and costs, and attaining the information limits require further work.
 
 \appendix
-\section{Implementation and interpretation details}
-The two filters maintained in innovation regression are not an independence approximation between mean and noise. The state $(g,D,P)$ describes the conditional noise distribution at a fixed candidate mean. The posterior $(M,S)$ integrates that affine dependence exactly. For example, the next reward predictor at node $i$ is $g_i+(e_i+D_i)^\top M$, and its latent variance is
-\[
-P_{ii}+(e_i+D_i)^\top S(e_i+D_i).
-\]
-The mean-target measurement covariance is $Sv_{t,a}$ and its total predictive observation variance is $d_{t,a}+v_{t,a}^\top Sv_{t,a}$. Thus the target slopes used by KG equal $Sv_{t,a}/\sqrt{d_{t,a}+v_{t,a}^\top Sv_{t,a}}$, which agrees with~\eqref{eq:kg}.
-
-The batch likelihood at a completed adaptive history is evaluated at its recorded node-time pairs. Its Gaussian form in the unknown mean is legitimate because policy probabilities add no parameter-dependent factor once the recorded observations are fixed. Nevertheless, repeated-sampling distributions conditional on those random node-time pairs can be distorted. The adaptive martingale confidence and~\eqref{eq:adaptive-kl} explicitly avoid that conditioning error.
-
-Stronger mean smoothness shrinks prior difference variances. Comparing Bayesian PCS across different mean priors changes both inference and the distribution of true gaps; monotonic posterior variance does not imply monotonic PCS. The two-location MSE/PCS distinction and the finite-horizon experiment are intended to prevent this interpretation error.
-
-Reproduce from the repository root:
+\section{Reproduction and scope}
+Use \path{experiments/graph_ar_mean.py} and the accompanying \path{results/general_ar/} directory. The superseded common-order-one paper, Bayesian mean-prior result, and experiments are preserved under \path{archive/common_ar1/} and \path{results/mean_selection/}; they do not establish the current fixed-mean higher-order claims.
 \begin{verbatim}
-python3 experiments/graph_ar1_mean.py --verify
-python3 experiments/graph_ar1_mean.py --runs 200 --budget 48
-python3 experiments/graph_ar1_mean.py --render-only
+python3 experiments/graph_ar_mean.py --verify
+python3 experiments/graph_ar_mean.py --runs 200 --budget 60
+python3 experiments/graph_ar_mean.py --render-only
 cd research/spatiotemporal_bandits
 tectonic --only-cached --keep-logs manuscript.tex
 \end{verbatim}
+Exact confidence assumes known stable dynamics, positive definite Gaussian innovations, stationary initialization, and correct noise parameters. Mean bounds are supplied assumptions. The constrained-estimator helper covers positive definite information; the KKT statement also permits partially observed designs with an active positive multiplier. Gaussian deviations represent baseline-adjusted observations rather than literal negative traffic counts.
 
 \begin{thebibliography}{99}
 \raggedright

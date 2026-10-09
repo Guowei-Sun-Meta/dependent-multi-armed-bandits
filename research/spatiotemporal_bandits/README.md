@@ -55,6 +55,34 @@ A hard constraint on the estimate's energy literally enforces a supplied radius,
 - Fixed-truth PCS formulas for fixed Gaussian designs and an exact correlated AR(2) schedule comparison.
 - General full-field information I_n = I_p + (n-p) D_c Q_G^-1 D_c, and long-run covariance D_c^-1 Q_G D_c^-1, with c_i = 1 - sum_k a_i,k.
 - An adaptive KL identity and an innovation-based linear regret floor against an oracle seeing all current states.
+- Objective-specific mean and state UCB/Thompson-style rules, with spatially correlated uncertainty draws and two PCS-oriented contrast designs.
+- A conservative sublinear stationary mean-regret theorem for certified mean UCB, distinct from the unavoidable linear current-state-oracle regret.
+
+## UCB, Thompson sampling, and 100-arm AR(20) experiments
+
+The [policy derivations](policies.md) distinguish permanent means, predictable current states, and fresh innovations. All arms evolve every calendar round. The exact joint likelihood retains heterogeneous AR filters and spatial innovation covariance. Thompson-style Gaussian draws represent algorithmic uncertainty about a fixed truth, not a randomly generated mean population.
+
+The [new executable study](../../experiments/spatiotemporal_policies.py) compares 14 learning policies and four information benchmarks on 100 arms, AR(20), five dependence configurations, and 32 paired independent noise worlds per configuration. Each world has 1,000 decisions, including initial coverage. The configurations include persistent, weak, lag-20, heterogeneous, and independent-innovation processes. Practical policy scales are fixed across configurations.
+
+The [findings](results/policies_ar20/findings.md), [summary](results/policies_ar20/summary.csv), [paired comparisons](results/policies_ar20/paired.csv), and [figures](results/policies_ar20/oracle_regret.pdf) report:
+
+- Current-state-oracle regret and its estimated irreducible innovation coefficient.
+- Stationary mean pseudo-regret and actual reward regret against T times the best permanent mean.
+- Actual reward regret against always operating the best permanent arm, which can be negative.
+- Fixed-truth PCS, simple regret, and mean estimation MSE.
+
+Continuous-metric intervals use independent noise worlds; PCS uses Wilson intervals. The theory covers the certified mean-UCB policy under supplied bounds and known correct dynamics. The tuned state and selection rules remain heuristics; no general optimality or fixed-budget PCS target is claimed. The [analysis code](../../experiments/spatiotemporal_policies_analysis.py) checks paired-result completeness and counterfactual regret bookkeeping. The separate [numerical checks](results/policies_ar20/checks.json) contain 642 assertions against dense Gaussian likelihood and independent state calculations.
+
+Use the workspace scientific environment or the [recorded dependencies](../../experiments/spatiotemporal_requirements.txt):
+
+```sh
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+  .venv/bin/python -I experiments/spatiotemporal_policies.py --verify
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+  .venv/bin/python -I experiments/spatiotemporal_policies.py --runs 32 --horizon 1000 --jobs 4
+MPLCONFIGDIR=/private/tmp/dependent-mab-mpl OPENBLAS_NUM_THREADS=1 \
+  .venv/bin/python -I experiments/spatiotemporal_policies_analysis.py
+```
 
 ## Illustrative AR(2) result
 

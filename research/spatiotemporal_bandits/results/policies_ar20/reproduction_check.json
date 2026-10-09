@@ -1,0 +1,11 @@
+{
+  "paired_world_reproduced": true,
+  "config": "persistent",
+  "seed": 0,
+  "policies": 18,
+  "checkpoint_rows": 72,
+  "maximum_numeric_difference": 0.0,
+  "final_code_matches_saved_results": true,
+  "stationary_reward_bookkeeping_verified": true,
+  "fixed_truth_shared_across_configurations": true
+}

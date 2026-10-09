@@ -1,0 +1,12 @@
+{
+  "complete": true,
+  "terminal_rows": 2880,
+  "expected_terminal_rows": 2880,
+  "bookkeeping_identity_verified": true,
+  "nonnegative_regret_metrics_verified": true,
+  "no_duplicate_rows": true,
+  "floor_mc_samples_per_configuration": 200000,
+  "python": "3.9.6",
+  "numpy": "2.0.2",
+  "matplotlib": "3.9.4"
+}

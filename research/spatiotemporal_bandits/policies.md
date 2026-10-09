@@ -12,12 +12,13 @@ z_{i,t}=\sum_{k=1}^{p_i}a_{i,k}z_{i,t-k}+\eta_{i,t},\qquad
 
 Every arm advances each calendar round. The action is chosen before the current innovation or reading is seen. Only `Y_t = X_{a_t,t} + sensor_noise` is revealed. The supplied mean class is `||mu|| <= B` and `mu' L mu <= S^2`. Correlated innovations and graph-smooth means are separate assumptions.
 
-## Four objectives that need different policies
+## Objectives that need different policies
 
 | Objective | Quantity | Interpretation |
 |---|---|---|
 | Current-state oracle regret | `sum_t [max_i X_i,t - X_a_t,t]` | Missed actual reward relative to seeing the entire current field. |
 | Stationary mean pseudo-regret | `sum_t [max_i mu_i - mu_a_t]` | Cost of choosing inferior permanent locations. |
+| Stationary mean reward regret | `T mu* - sum_t X_a_t,t` | Actual reward relative to the best permanent mean; can be negative. |
 | Fixed best-mean-arm reward regret | `sum_t [X_b*,t - X_a_t,t]`, `b*=argmax mu` | Actual reward relative to operating the best permanent location on the same path. Can be negative. |
 | PCS | `Pr(argmax_i muhat_i,T = b*)` | Repeated-noise terminal selection accuracy at the same fixed truth. |
 
@@ -26,7 +27,7 @@ The instantaneous oracle may select low-mean arms during positive shocks. Conseq
 Writing `z_i,t = X_i,t - mu_i`, the expected actual fixed-arm regret satisfies
 
 ```math
-\mathbb E R_{\mathrm{fixed}}(T)
+\mathbb E R_{\mathrm{stationary}}(T)=\mathbb E R_{\mathrm{fixed}}(T)
 =\mathbb E R_\mu(T)-\sum_t\mathbb E z_{a_t,t}.
 ```
 
@@ -54,7 +55,7 @@ A=K\Xi^{-1},\quad W=I-AM,\quad f=AY+Wm,
 `f` is the plug-in forecast. At the true fixed mean, the conditional expected field is `AY+W mu` and the conditional noise covariance is `P`. Define the *working* Gaussian uncertainty
 
 ```math
-S=P+WVW^\top,\qquad B_\mathrm{cross}=VW^\top.
+\Sigma=P+WVW^\top,\qquad B_\mathrm{cross}=VW^\top.
 ```
 
 This is also the covariance from a Gaussian penalized-likelihood integration, but it is not a calibrated frequentist prediction interval by itself. Its useful role here is to define randomized policies and one-step information gains. The all-time confidence theorem in the paper handles mean estimation error, including smoothing bias, separately.
@@ -68,7 +69,7 @@ V^+=V-\frac{(VW_a^\top)(W_aV)}{P_{aa}+r+W_aVW_a^\top}.
 For a permanent comparison `c=e_b-e_j`, its inverse-information reduction is
 
 ```math
-g_t(c,a)=\frac{(c^\top B_{\mathrm{cross},:,a})^2}{S_{aa}+r}.
+g_t(c,a)=\frac{(c^\top B_{\mathrm{cross},:,a})^2}{\Sigma_{aa}+r}.
 ```
 
 A measurement of a third arm can maximize this score. Its covariance can help remove a shared shock while the graph couples the permanent mean estimates. The reduction is exact for inverse regularized information; it is not an exact reduction in frequentist PCS.
@@ -93,10 +94,10 @@ The practical experiment uses `c_t=0.7 sqrt(2 log(t+2))`. A separate certified v
 
 Only the latter inherits the paper's fixed-mean confidence theorem. Graph regularization enters its estimate, its coordinate width, and its bias allowance.
 
-For current rewards, the full-variance version chooses `argmax_i {f_i+c_t sqrt(S_ii)}`. A more targeted version uses
+For current rewards, the full-variance version chooses `argmax_i {f_i+c_t sqrt(Sigma_ii)}`. A more targeted version uses
 
 ```math
-a_t=\arg\max_i\{f_i+c_t\sqrt{(S-Q_G)_{ii}}\}.
+a_t=\arg\max_i\{f_i+c_t\sqrt{(\Sigma-Q_G)_{ii}}\}.
 ```
 
 The subtraction has a precise meaning: `z_t=CF s_{t-1}+eta_t`, and current `eta_t` is independent of the entire past. Therefore `P-Q_G` is the conditional covariance of the predictable state contribution and is positive semidefinite. Exploration can learn means and past state, but cannot reveal the current innovation before choosing an arm. With zero temporal dependence this predictive score reduces to a mean score, as it should.
@@ -144,7 +145,7 @@ Mean Thompson-style sampling draws
 a_t=\arg\max_i\widetilde\mu_i.
 ```
 
-The current-state version draws `f+tau S^(1/2) xi`. The predictive-state version draws `f+tau (S-Q_G)^(1/2) xi`. All joint draws preserve cross-arm covariance. The experiment fixes `tau=1` for all configurations.
+The current-state version draws `f+tau Sigma^(1/2) xi`. The predictive-state version draws `f+tau (Sigma-Q_G)^(1/2) xi`. All joint draws preserve cross-arm covariance. The experiment fixes `tau=1` for all configurations.
 
 The predictive version samples uncertainty in the current conditional reward given complete past states, integrating the uncertainty about those states and the unknown means. It omits a fresh innovation that is irrelevant to a pre-observation choice. It is a one-step heuristic, not the full future-information algorithm of [Liu, Van Roy, and Xu (2023)](https://proceedings.mlr.press/v206/liu23e.html), and not a solved restless-bandit control problem. A decision can still have value at later lags that a one-step rule undervalues.
 

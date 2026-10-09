@@ -24,7 +24,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We study sequential measurement of arms whose fixed unknown means are graph-smooth and whose deviations follow heterogeneous stable AR($p_i$) processes. Spatial dependence is carried by the joint distribution of contemporaneous innovations; it is distinct from a deterministic smoothness restriction on the means. No random mean population or Gaussian mean prior is assumed. A joint companion state determines the stationary covariance and the generally nonseparable node-time likelihood. Graph-regularized generalized least squares gives explicit fixed-design bias and variance, while an energy-constrained estimator enforces a supplied mean-smoothness radius. An affine conditional-state filter turns adaptive observations into predictable Gaussian linear experiments about the fixed means. Established self-normalized concentration then yields simultaneous confidence and a correct stopping rule under supplied bounds. We derive permanent-contrast sampling scores, future-state information gains, a general full-field information identity, and a fixed-mean AR(2) example in which block sampling strictly improves PCS over alternating sampling. Experiments hold each mean vector fixed and compare policies under order-two, oscillatory, and heterogeneous order-two/order-three dynamics. The framework specializes established graph and linear Gaussian methods; general optimal allocation and publication priority for the specialized results remain unresolved.
+We study sequential measurement of arms whose fixed unknown means are graph-smooth and whose deviations follow heterogeneous stable AR($p_i$) processes. Spatial dependence is carried by the joint distribution of contemporaneous innovations; it is distinct from a deterministic smoothness restriction on the means. No random mean population is assumed; the frequentist results require no Gaussian mean prior. A joint companion state determines the stationary covariance and the generally nonseparable node-time likelihood. Graph-regularized generalized least squares gives explicit fixed-design bias and variance, while an energy-constrained estimator enforces a supplied mean-smoothness radius. An affine conditional-state filter turns adaptive observations into predictable Gaussian linear experiments about the fixed means. Established self-normalized concentration then yields simultaneous confidence and a correct stopping rule under supplied bounds. We derive permanent-contrast sampling scores, future-state information gains, a general full-field information identity, and a fixed-mean AR(2) example in which block sampling strictly improves PCS over alternating sampling. We develop objective-specific UCB and correlated Gaussian Thompson-style policies, prove a conservative sublinear stationary mean-regret bound for certified UCB, and distinguish this comparator from linear current-state-oracle regret. Fixed-truth experiments include six-arm order-two/order-three designs and 100-arm AR(20) comparisons of regret and PCS. The framework specializes established graph and linear Gaussian methods; general optimal allocation and publication priority for the specialized results remain unresolved.
 \end{abstract}
 
 \section{Introduction}
@@ -50,7 +50,7 @@ Time-varying Gaussian-process bandits~\cite{bogunovic2016} already combine spati
 
 Graph ARMA estimation~\cite{guneyi2024} studies joint temporal and graph correlations for reconstruction. Our heterogeneous per-node AR coefficients need not be graph filters or share a graph Fourier eigenbasis. Spatial correlation is placed in the innovation covariance, while adaptive selection and comparison of fixed means are the decision tasks.
 
-Correlated-normal knowledge gradient~\cite{frazier2009} uses Gaussian beliefs on means for final recommendations. A fixed physical parameter can be assigned a Bayesian belief, but this paper deliberately assumes no mean prior and reports repeated-noise PCS at fixed truths. Our contrast rule uses regularized likelihood information, whose inverse is not interpreted as a mean-prior posterior covariance. Self-normalized concentration~\cite{abbasi2011} and best-arm change of measure~\cite{combes2017,garivier2016} supply the confidence and lower-bound arguments.
+Correlated-normal knowledge gradient~\cite{frazier2009} uses Gaussian beliefs on means for final recommendations. A fixed physical parameter can be assigned a Bayesian belief. Our confidence results require no mean prior and report repeated-noise PCS at fixed truths. The randomized policies use algorithmic Gaussian uncertainty, equivalently a working Gaussian belief, without a random physical mean population. Our contrast rule uses regularized likelihood information, whose inverse is not interpreted as a mean-prior posterior covariance. Self-normalized concentration~\cite{abbasi2011} and best-arm change of measure~\cite{combes2017,garivier2016} supply the confidence and lower-bound arguments.
 
 The contribution is a self-contained specialization connecting fixed graph-smooth means, correlated innovations, heterogeneous AR schedules, and adaptive information. We prove the stated estimation, confidence, information, and schedule-comparison results. We do not claim the first combination of spatial and temporal bandits, a generally optimal policy, matching sample complexity, learned graph validity, or unknown-dynamics guarantees.
 
@@ -485,6 +485,8 @@ All 1,200 graph-policy noise trajectories satisfy the audited confidence bound, 
 
 The revised script passes 1,525 counted assertions. Recursive information, scores, and estimates agree with independent dense trajectory likelihoods. A stationary Lyapunov solve agrees with an independently summed impulse-response covariance. Mixed-order full-field information and certified spectral bounds are checked. Dense GLS validates the AR(2) schedule comparison; 30,000 paired direct process simulations at the same fixed mean vector agree with its PCS formulas within Monte Carlo uncertainty.
 
+\input{policy_experiments.tex}
+
 \section{Discussion}
 The physical model has fixed means, general autoregressive dynamics, and spatial correlation in the innovations. Graph regularization requires a separate deterministic restriction on permanent means. Shared traffic shocks alone do not imply similar permanent location quality.
 
@@ -499,6 +501,10 @@ Use \path{experiments/graph_ar_mean.py} and the accompanying \path{results/gener
 python3 experiments/graph_ar_mean.py --verify
 python3 experiments/graph_ar_mean.py --runs 200 --budget 60
 python3 experiments/graph_ar_mean.py --render-only
+.venv/bin/python -I experiments/spatiotemporal_policies.py --verify
+.venv/bin/python -I experiments/spatiotemporal_policies.py \
+  --runs 32 --horizon 1000 --jobs 4
+.venv/bin/python -I experiments/spatiotemporal_policies_analysis.py
 cd research/spatiotemporal_bandits
 tectonic --only-cached --keep-logs manuscript.tex
 \end{verbatim}

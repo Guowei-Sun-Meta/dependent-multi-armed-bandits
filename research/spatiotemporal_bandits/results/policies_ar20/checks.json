@@ -1,9 +1,10 @@
 {
-  "assertions": 588,
+  "assertions": 642,
   "dense_likelihood_verified": true,
   "mixed_AR_kernel_orientation_verified": true,
   "means_are_fixed": true,
   "independent_AR_filter_verified": true,
   "contrast_gain_verified": true,
+  "predictable_working_covariance_is_psd": true,
   "counterfactual_and_mean_regret_distinguished": true
 }

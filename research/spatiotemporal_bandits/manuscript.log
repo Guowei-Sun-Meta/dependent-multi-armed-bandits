@@ -920,25 +920,26 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 5.47441pt on input line 33.
  [1
 
-] [2] [3] [4] [5] [6] [7] (policy_sections.tex [8] [9]
-Underfull \hbox (badness 1117) in paragraph at lines 49--51
-\TU/texgyrepagella-regular.otf(0)/m/it/10.95 Proof.  \TU/texgyrepagella-regular
-.otf(0)/m/n/10.95 On the simultaneous confidence event, a non-forced UCB action
- has gap at most
- []
-
-) (policy_state_sections.tex [10]
-Overfull \hbox (28.29594pt too wide) in paragraph at lines 30--32
-\TU/texgyrepagella-regular.otf(0)/m/n/10.95 Contrast LUCB takes $[] [] [] [][]$
-, picks the challenger maximizing $[][] [] [][] [] [][][]$,
- []
-
-) [11]
+] [2] [3] [4] [5] [6] [7] (policy_sections.tex [8] [9])
+(policy_state_sections.tex [10]) [11]
 PGFPlots: reading {results/general_ar/pcs_schedule.csv}
 PGFPlots: reading {results/general_ar/pcs_schedule.csv}
- [12] [13] (results/general_ar/table.tex) [14] [15] [16] [17]
-(manuscript.aux)
+ [12] [13] (results/general_ar/table.tex)
+[14] [15] (policy_experiments.tex (results/policies_ar20/table.tex)
+File: results/policies_ar20/oracle_regret.pdf Graphic file (type pdf)
+<use results/policies_ar20/oracle_regret.pdf>
+File: results/policies_ar20/mean_regret.pdf Graphic file (type pdf)
+<use results/policies_ar20/mean_regret.pdf>
+File: results/policies_ar20/pcs.pdf Graphic file (type pdf)
+<use results/policies_ar20/pcs.pdf>
+File: results/policies_ar20/stationary_reward_regret.pdf Graphic file (type pdf
+)
+<use results/policies_ar20/stationary_reward_regret.pdf>
+
+(results/policies_ar20/floor_text.tex)
+(results/policies_ar20/interpretation.tex [16] [17] [18] [19] [20] [21]))
+[22] [23] [24] (manuscript.aux)
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: F24A565F461F66079B7F16C71B869329;6237.
+(rerunfilecheck)             Checksum: 9A3B0D2635BFA4292719879779C01972;6529.
  )
-Output written on manuscript.xdv (17 pages, 480092 bytes).
+Output written on manuscript.xdv (24 pages, 576384 bytes).

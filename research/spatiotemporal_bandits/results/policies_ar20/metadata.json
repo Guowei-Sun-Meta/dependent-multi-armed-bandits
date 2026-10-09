@@ -103832,5 +103832,10 @@
         ]
       ]
     }
-  ]
+  ],
+  "confidence_audit_field": "null for policies not audited; certified mean UCB audited at checkpoints",
+  "base_seed": 20261009,
+  "grid_side": 10,
+  "environment_seed_rule": "base_seed + replicate + crc32(configuration)",
+  "policy_seed_rule": "base_seed + 1009*replicate + crc32(policy)"
 }

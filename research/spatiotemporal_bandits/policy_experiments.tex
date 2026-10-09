@@ -37,6 +37,11 @@ Benchmarks always choose the true best-mean arm, greedily filter with known mean
 \caption{Fixed-truth PCS versus budget. Recommendations use permanent mean estimates. With 32 worlds, binomial uncertainty is substantial; Wilson intervals are reported in the CSV and findings. The fixed-budget decisions are not certified recommendations.}
 \label{fig:ar20-pcs}
 \end{figure}
+\begin{figure}[p]
+\centering\includegraphics[width=\textwidth]{results/policies_ar20/stationary_reward_regret.pdf}
+\caption{Actual reward regret against $T\mu_{b^*}$ per decision. Negative values mean the learner earns more than the stationary best mean by exploiting fluctuations. Its expectation equals reward regret against the fixed best-mean arm, but their finite-path realizations differ.}
+\label{fig:ar20-stationary}
+\end{figure}
 
 The innovation-floor coefficients, estimated independently with 200,000 paired stationary Gaussian samples per configuration, are
 \input{results/policies_ar20/floor_text.tex}
@@ -44,4 +49,4 @@ These are expectation bounds; a finite-world sampled regret need not exceed the 
 
 \input{results/policies_ar20/interpretation.tex}
 
-The study validates computation and compares policies at one fixed mean surface. It does not establish general finite-budget optimality, robustness to incorrect graphs or unknown dynamics, or matching graph-dependent regret constants. The new implementation passes 588 assertions against dense likelihood and independent state calculations; large-model pilots exercise both 100-arm predictive policies. The analysis also checks paired-result completeness, nonnegative oracle/mean regret, and the pathwise identity $R_{\rm oracle}^{\pi}-R_{\rm oracle}^{b^*}=R_{\rm fixed}^{\pi}$.
+The study validates computation and compares policies at one fixed mean surface. It does not establish general finite-budget optimality, robustness to incorrect graphs or unknown dynamics, or matching graph-dependent regret constants. The new implementation passes 642 assertions against dense likelihood and independent state calculations; large-model pilots exercise both 100-arm predictive policies. The analysis also checks paired-result completeness, nonnegative oracle/mean regret, and the pathwise identity $R_{\rm oracle}^{\pi}-R_{\rm oracle}^{b^*}=R_{\rm fixed}^{\pi}$.

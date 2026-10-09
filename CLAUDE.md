@@ -32,7 +32,7 @@ The proposal is [www/CLAUDE.md](www/CLAUDE.md). The theory map, which records re
 
 ## Working conventions
 
-- **Git:** work on branch `kuairec-alignment` (remote `dependent_mab`). Commit and push periodically. Never stage the user's in-progress files; stage paths explicitly. End commit messages with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
+- **Git:** work on `main` (remote `dependent_mab`); `kuairec-alignment` was merged into it on 9 October. Commit and push periodically. Never stage the user's in-progress files; stage paths explicitly. End commit messages with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - **Documents** are local markdown files in the repo, never Claude Docs.
 - **Math in markdown:** GitHub does not render `\( \)` or `\[ \]`. Use ```` ```math ```` fenced blocks for display math and `` $`...`$ `` for inline math.
 - **Python:**

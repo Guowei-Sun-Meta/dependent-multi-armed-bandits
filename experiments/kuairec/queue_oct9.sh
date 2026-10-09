@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # Three-hour experiment queue (9 October 2026). Run from the repo root.
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1
 PY=".venv/bin/python -I"

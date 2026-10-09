@@ -119,7 +119,25 @@ That limit tends to 1 as φ → 1 at a fixed confidence level ℓ, and it shrink
 1. **B1 is valid, but its log-determinant confidence width is conservative.** At high persistence its regret approaches the iid policy's; at low persistence it is about 2× worse. The paper needs a tighter practical β, or comparisons at matched nominal coverage.
 2. **B2's failure did not appear under one-at-a-time UCB sampling.** UCB interleaves arms, so repeat pulls are about 20 rounds apart. The correlation between them is φ²⁰ ≈ 0.54 at φ = 0.97, which inflates variance about 1.8×, not the 8× of consecutive pulls. With a conservative union-bound level, the iid certificate still covers. B2's mechanism therefore needs **bursty exposure**: commit blocks, daily slates, batched updates. Its practical form uses variances estimated from the arm's own autocorrelated samples.
 
-**Coverage test v2** (running) adds commit blocks b ∈ {1, 25} and an empirical-variance, log t "practical iid" certificate. If v2 also shows no failures, B2 should be presented as a fixed-design result about bursty exposure, not as a general failure of iid certification.
+**Coverage test v2** adds commit blocks b ∈ {1, 25} (20 seeds; results in `research/st_toy/results/coverage_runs_v2.csv`):
+
+| Exposure | φ | Runs with a violation, iid SP-UCB | Rounds violated, iid SP-UCB | Runs with a violation, SP-UCB-ST (B1) | Mean regret, iid / B1 (independent shocks) |
+| --- | ---: | ---: | ---: | ---: | --- |
+| one at a time (b = 1) | 0.97 | 0% | 0% | 0% | 649 / 755 |
+| blocks of 25 | 0.5 | 5% | 5% | 0% | 406 / 916 |
+| blocks of 25 | 0.9 | 70–75% | 58–59% | 0% | 629 / 1,023 |
+| blocks of 25 | 0.97 | 90–100% | 86–88% | 0% | 853 / 1,034 |
+
+1. **B2 is confirmed as a coverage failure under bursty exposure.** It matches the mechanism: consecutive pulls inflate variance by (1 + φ)/(1 − φ). One-at-a-time sampling stays covered.
+2. **B1 is always valid**: 0 violations in 1,600 runs.
+3. **Invalid certificates did not raise mean regret in this toy.** The iid policy's violations mostly under-cover suboptimal arms, and B1's confidence width is wide. A regret argument for certification therefore rests on cases where the *optimal* component is under-covered: KuaiRec Setting A's heavy tails, and the misalignment counterexample.
+4. *(The empirical-variance, log t variant violates even at φ = 0, because variance estimates from 2–3 samples are tiny. That is a small-sample artifact, not persistence, and is excluded from the B2 claim.)*
+
+**Implications for the paper.**
+- Present certification as guaranteeing **correct decisions**: certified rejection, stopping and recommendation, where a false certificate means a wrong irrevocable action. The fixed-confidence corollary in [S] is the natural statement.
+- Present regret as the cost of that guarantee, not as the headline benefit.
+- Tighten B1's width before final runs, for example with per-contrast martingale bounds over the finite set of arm and component contrasts.
+- Add an instance where the optimal component's certificate is the one that fails, to show the regret consequence.
 
 ## Experiments that test the theory
 

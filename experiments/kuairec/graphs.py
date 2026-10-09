@@ -224,6 +224,8 @@ def build_all(k: int = K_DEFAULT) -> dict:
 
     # I-cat: three-level category tree.
     cat = pd.read_csv(raw_file("kuairec_caption_category.csv"), on_bad_lines="skip", engine="python")
+    cat["video_id"] = pd.to_numeric(cat["video_id"], errors="coerce")  # a few multi-line captions break rows
+    cat = cat.dropna(subset=["video_id"]).astype({"video_id": int})
     cat = cat.drop_duplicates("video_id").set_index("video_id").reindex(videos)
     S_cat = np.zeros((len(videos), len(videos)))
     for col, w in [("first_level_category_id", 0.1), ("second_level_category_id", 0.3), ("third_level_category_id", 1.0)]:

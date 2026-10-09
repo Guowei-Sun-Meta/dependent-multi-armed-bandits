@@ -42,6 +42,7 @@ def table(summary: pd.DataFrame) -> str:
 
 def figure(signals: pd.DataFrame, summary: pd.DataFrame, path: Path) -> None:
     real = summary[summary.null == "real"].sort_values(["axis", "quotient_median"])
+    real = real[real.isolated < 0.5 * real.nodes]  # near-empty graphs (U-soc) stay in the table only
     graphs = real.graph.tolist()
     fig, ax = plt.subplots(figsize=(8, 0.45 * len(graphs) + 1.2))
     for i, g in enumerate(graphs):

@@ -78,6 +78,10 @@ def score(name: str, M: np.ndarray, rng: np.random.Generator) -> tuple[dict, np.
     edge_corr, rand_corr = homophily(X, W, rng)
     deg = np.asarray((W > 0).sum(axis=1)).ravel()
     base, _, null = name.partition("~")
+    # Personal signal only: remove each user's activity level and each video's popularity.
+    D = M - M.mean(axis=1, keepdims=True) - M.mean(axis=0, keepdims=True) + M.mean()
+    Xd = D.T if axis == "I2I" else D
+    edge_dc, rand_dc = homophily(Xd, W, rng)
     row = {
         "graph": base,
         "null": null or "real",
@@ -89,6 +93,9 @@ def score(name: str, M: np.ndarray, rng: np.random.Generator) -> tuple[dict, np.
         "quotient_mean": float(q.mean()),
         "edge_corr": edge_corr,
         "random_pair_corr": rand_corr,
+        "quotient_dc_median": float(np.median(smoothness(Xd, L))),
+        "edge_corr_dc": edge_dc,
+        "random_pair_corr_dc": rand_dc,
     }
     eye = sp.identity(W.shape[0], format="csc")
     for lam in LAMBDAS:

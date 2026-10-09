@@ -136,7 +136,7 @@ The KuaiRec queue and the toy benchmark finish in about 1–2 hours. Then:
 | 4 | Yahoo! R6 news slot. Needs the user to accept the Yahoo! Webscope licence and download the data | 3 h once data is available |
 | 5 | NYC taxi, then M5, Spotify and RIPE Atlas | Later |
 
-**Decided: a separate WWW 2027 short paper** (abstract 9 November, paper 16 November). See [st_short_paper.md](st_short_paper.md).
+**Decided: merged into the WWW 2027 long paper** on correlated arms ([CLAUDE.md](CLAUDE.md)). KuaiRec daily is in the long paper. Wikipedia, Yahoo! R6 and NYC taxi are follow-up work.
 
 ## Sources
 

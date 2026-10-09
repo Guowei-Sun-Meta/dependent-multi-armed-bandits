@@ -1,6 +1,8 @@
-# Short Paper Plan: Spatiotemporal Bandits for Web Attention
+# Short Paper Plan: Spatiotemporal Bandits for Web Attention (fallback only)
 
-As of 9 October 2026. **Decision: a separate WWW 2027 short paper, not a section of the long paper.**
+**Superseded on 9 October 2026: the spatiotemporal work is merged into the long paper** ([CLAUDE.md](CLAUDE.md)). This plan is the fallback if bridging theorem B1 is not ready by the 20 October go/no-go point.
+
+Original decision, kept for reference: a separate WWW 2027 short paper.
 
 ## Deadlines and format
 

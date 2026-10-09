@@ -89,6 +89,10 @@ Kept up to date by whoever runs experiments. Check `research/kuairec_graphs/READ
 - [x] Setting A v1 (60 users, T = 20,000)
 - [ ] **Setting A v2.** Adds KL-UCB, graph-free shrinkage (Gaussian TS on a complete graph), SP-KLUCB (KL confidence bounds, fixing the σ handicap), and a **calibrated certificate**: the 90th percentile of each component's within-component range over tuning users. Three video subsets per user.
 - [ ] **Setting B.** 300 users × 100 videos, users arrive at random, T = 100,000. User graphs U-coeng, U-mf, U-coauthor, U-geo, the U-coeng rewiring, and a complete graph. Policies: per-user TS, global TS, user-graph Gaussian TS, and user-side SP-KLUCB with oracle, calibrated and no certificate.
+- [ ] **Spatiotemporal thread** (requested 9 October; "iid is rare in applications"):
+    - [Algorithm catalog and toy benchmark](research/st_toy/README.md): 100-arm grid, AR(20), joint-Kalman policies against UCB, TS and Spectral; code in `experiments/st_toy/`. The toy is running.
+    - [Application scenarios and experiment designs](www/st_applications.md): Wikipedia attention with the clickstream graph, the KuaiRec daily trending slot, the Yahoo! R6 news slot, NYC taxi zones, and others.
+    - Next: build the shared panel harness `experiments/st_apps/`, then run KuaiRec daily and Wikipedia.
 - [ ] Setting C (product graph), Last.fm social graph, R2 sensitivity
 - [ ] Theory: T4 (product-graph regret), T5 (certificate for embedding graphs), and the calibrated certificate's validity statement
 - [ ] Abstract (by 18 October) and paper draft (by 25 October)

@@ -1,0 +1,43 @@
+{
+  "checks": 1636,
+  "two_arm_spatial_temporal_example": [
+    {
+      "rho": 0.0,
+      "two_period_optimal_reward": 0.35904805236128945,
+      "oracle_reward_per_round": 0.5641895835477563,
+      "two_period_optimal_regret": 0.7693311147342231,
+      "one_sample_next_state_pcs": 0.7195755994475247,
+      "full_past_lower_coefficient": 0.05641895835477562
+    },
+    {
+      "rho": 0.5,
+      "two_period_optimal_reward": 0.17952402618064472,
+      "oracle_reward_per_round": 0.3989422804014327,
+      "two_period_optimal_regret": 0.6183605346222207,
+      "one_sample_next_state_pcs": 0.6485760219466834,
+      "full_past_lower_coefficient": 0.03989422804014326
+    },
+    {
+      "rho": 0.9,
+      "two_period_optimal_reward": 0.03590480523612894,
+      "oracle_reward_per_round": 0.1784124116152771,
+      "two_period_optimal_regret": 0.32092001799442527,
+      "one_sample_next_state_pcs": 0.5644991004367479,
+      "full_past_lower_coefficient": 0.017841241161527705
+    },
+    {
+      "rho": 0.99,
+      "two_period_optimal_reward": 0.0035904805236128975,
+      "oracle_reward_per_round": 0.05641895835477566,
+      "two_period_optimal_regret": 0.10924743618593842,
+      "one_sample_next_state_pcs": 0.52027081564788,
+      "full_past_lower_coefficient": 0.005641895835477565
+    }
+  ],
+  "dense_gp_filter_agreement": true,
+  "unknown_mean_augmented_filter_agreement": true,
+  "multi_arm_envelope_quadrature_agreement": true,
+  "two_arm_pcs_quadrature_agreement": true,
+  "fixed_design_covariance_error_certificate": true,
+  "common_mode_has_zero_ranking_value": true
+}

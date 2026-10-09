@@ -23,15 +23,15 @@ from scipy.sparse.linalg import splu
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data import RESULTS, load_eval  # noqa: E402
-from graphs import GRAPHS, load_graph, scaled_laplacian  # noqa: E402
+from graphs import K_DEFAULT, graph_dir, load_graph, scaled_laplacian  # noqa: E402
 
 LAMBDAS = (0.1, 1.0, 10.0)
 RANDOM_PAIRS = 20_000
 SEED = 20261009
 
 
-def graph_names() -> list[str]:
-    return sorted(p.stem for p in GRAPHS.glob("*.npz"))
+def graph_names(k: int) -> list[str]:
+    return sorted(p.stem for p in graph_dir(k).glob("*.npz"))
 
 
 def smoothness(X: np.ndarray, L: sp.csr_matrix) -> np.ndarray:
@@ -69,8 +69,8 @@ def choice_quality(M: np.ndarray, S: np.ndarray) -> dict[str, float]:
     }
 
 
-def score(name: str, M: np.ndarray, rng: np.random.Generator) -> tuple[dict, np.ndarray]:
-    W = load_graph(name)
+def score(name: str, M: np.ndarray, rng: np.random.Generator, k: int) -> tuple[dict, np.ndarray]:
+    W = load_graph(name, k)
     L = scaled_laplacian(W)
     axis = "I2I" if name.startswith("I-") else "U2U"
     X = M.T if axis == "I2I" else M  # graph nodes along rows
@@ -84,6 +84,7 @@ def score(name: str, M: np.ndarray, rng: np.random.Generator) -> tuple[dict, np.
     edge_dc, rand_dc = homophily(Xd, W, rng)
     row = {
         "graph": base,
+        "k": k,
         "null": null or "real",
         "axis": axis,
         "nodes": W.shape[0],
@@ -107,24 +108,26 @@ def score(name: str, M: np.ndarray, rng: np.random.Generator) -> tuple[dict, np.
     return row, q
 
 
-def main(model: str) -> pd.DataFrame:
+def main(model: str, k: int) -> pd.DataFrame:
     rng = np.random.default_rng(SEED)
     _, _, M = load_eval(model)
     M = M.astype(np.float64)
     M = np.where(np.isnan(M), np.nanmean(M, axis=1, keepdims=True), M)  # 0.4% blocked pairs
     rows, signals = [], []
-    for name in graph_names():
-        row, q = score(name, M, rng)
+    for name in graph_names(k):
+        row, q = score(name, M, rng, k)
         rows.append(row)
         signals.append(pd.DataFrame({"graph": row["graph"], "null": row["null"], "quotient": q}))
         print(f"{name:22s} quotient={row['quotient_median']:.3f} top1@1={row['top1_kept@1']:.3f}", flush=True)
     out = pd.DataFrame(rows).sort_values(["axis", "graph", "null"])
-    out.to_csv(RESULTS / f"alignment_summary_{model}.csv", index=False)
-    pd.concat(signals).to_csv(RESULTS / f"alignment_signals_{model}.csv.gz", index=False)
+    out.to_csv(RESULTS / f"alignment_summary_{model}_k{k}.csv", index=False)
+    pd.concat(signals).to_csv(RESULTS / f"alignment_signals_{model}_k{k}.csv.gz", index=False)
     return out
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="R1", choices=["R1", "R2", "R3"])
-    main(ap.parse_args().model)
+    ap.add_argument("--k", type=int, default=K_DEFAULT)
+    args = ap.parse_args()
+    main(args.model, args.k)

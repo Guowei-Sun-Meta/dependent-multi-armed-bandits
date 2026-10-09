@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="460" viewBox="0 0 1080 460" role="img" aria-labelledby="title desc">
+  <title id="title">One measurement: spatial reach, temporal prediction, and ranking value</title>
+  <desc id="desc">A measurement at one graph node updates correlated neighbors and predictions at future times. Ranking value depends on how differently the measurement updates the competing locations, rather than on total variance reduction.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#347b91"/></marker>
+  </defs>
+  <rect width="1080" height="460" fill="#f7f8fa"/>
+  <g font-family="Arial, sans-serif" fill="#182b3a">
+    <text x="35" y="40" font-size="24" font-weight="bold">What does an expensive traffic measurement tell us?</text>
+    <text x="35" y="68" font-size="15" fill="#526571">A joint Gaussian belief connects locations, future times, and the final decision.</text>
+    <rect x="25" y="90" width="325" height="295" rx="14" fill="#fff" stroke="#d9e2e8"/>
+    <rect x="377" y="90" width="325" height="295" rx="14" fill="#fff" stroke="#d9e2e8"/>
+    <rect x="730" y="90" width="325" height="295" rx="14" fill="#fff" stroke="#d9e2e8"/>
+    <text x="45" y="122" font-size="19" font-weight="bold">1. Across locations</text>
+    <g stroke="#9dbfca" stroke-width="3">
+      <path d="M100 195 L190 170 L278 195 M100 195 L150 270 L240 270 L278 195 M190 170 L150 270 M190 170 L240 270" fill="none"/>
+    </g>
+    <g stroke="#347b91" stroke-width="2">
+      <circle cx="100" cy="195" r="24" fill="#d78743" stroke="#a6652b"/>
+      <circle cx="190" cy="170" r="19" fill="#c7e0e8"/>
+      <circle cx="278" cy="195" r="15" fill="#edf4f7"/>
+      <circle cx="150" cy="270" r="19" fill="#c7e0e8"/>
+      <circle cx="240" cy="270" r="15" fill="#edf4f7"/>
+    </g>
+    <text x="94" y="201" font-size="17" fill="#fff">a</text>
+    <text x="78" y="155" font-size="14">Measure</text>
+    <text x="45" y="325" font-size="15">Update all correlated locations.</text>
+    <text x="45" y="350" font-size="14" fill="#526571">Covariance sets the reach of information.</text>
+    <text x="397" y="122" font-size="19" font-weight="bold">2. Through time</text>
+    <g fill="#dbeaf0" stroke="#347b91" stroke-width="2">
+      <circle cx="427" cy="207" r="21"/>
+      <circle cx="538" cy="207" r="21"/>
+      <circle cx="649" cy="207" r="21"/>
+    </g>
+    <g stroke="#347b91" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M451 207 L509 207"/><path d="M562 207 L620 207"/>
+    </g>
+    <text x="421" y="213" font-size="16">t</text>
+    <text x="524" y="213" font-size="16">t+1</text>
+    <text x="634" y="213" font-size="16">t+2</text>
+    <text x="462" y="180" font-size="15">φ</text><text x="576" y="180" font-size="15">φ</text>
+    <text x="404" y="266" font-size="14">AR(1): transient covariance × φˢ</text>
+    <text x="397" y="325" font-size="15">Predict neighbors at future times.</text>
+    <text x="397" y="350" font-size="14" fill="#526571">Static mean information persists.</text>
+    <text x="750" y="122" font-size="19" font-weight="bold">3. For the ranking</text>
+    <text x="756" y="165" font-size="15" font-weight="bold">Two candidates: j and k</text>
+    <text x="756" y="204" font-size="15">Same predicted change:</text>
+    <text x="756" y="232" font-size="18" fill="#a6652b">j + cZ, k + cZ → no change</text>
+    <text x="756" y="270" font-size="15">Different changes:</text>
+    <text x="756" y="298" font-size="18" fill="#347b91">Difference changes by (cⱼ−cₖ)Z</text>
+    <text x="750" y="350" font-size="14" fill="#526571">Shared traffic variation can cancel.</text>
+    <text x="35" y="421" font-size="17" font-weight="bold">Choose a measurement for the target: permanent location quality, a future window, or ongoing reward.</text>
+  </g>
+</svg>

@@ -58,3 +58,5 @@ tectonic --only-cached --keep-logs manuscript.tex
 ```
 
 Both experiment scripts use only Python's standard library. Tables and experimental prose are rendered directly from saved CSVs. PGFPlots renders the analytical and empirical figures. If TeX resources are not cached elsewhere, omit `--only-cached` to obtain support files.
+
+The [spatial and temporal extension](../spatiotemporal_bandits/README.md) connects graph mean certificates with graph-correlated AR fluctuations. It reviews close GP and shared-state predecessors, derives joint predictive-information and two-period policy formulas, and separates permanent-location PCS from ongoing reward regret. Its graph-error certificate is a fixed-design starting result, not a general adaptive robustness guarantee.

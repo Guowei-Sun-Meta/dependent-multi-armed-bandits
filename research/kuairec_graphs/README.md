@@ -143,6 +143,46 @@ The protocol:
 - Location helps least.
 - Pooling over user clusters without a certificate is 39% worse than not pooling. With an oracle certificate it is about 6% better. Calibrated certificates are too wide to help at this horizon.
 
+## Daily trending slot: the fluctuation channel
+
+The protocol (`experiments/kuairec/daily.py`):
+
+- **Arms:** the 253 evaluation videos observed on all 63 days.
+- **Reward:** the logit of the daily complete-play rate.
+- **Decisions:** each test day the learner fills 10 slots and observes those videos.
+- **Fit window:** the first F days of full logs, with F = 28, 35 and 42. The model is fitted there:
+    - pooled AR coefficients on lags {1, 2, 7};
+    - an innovation covariance shrunk toward an I-coeng graph kernel plus a common shock;
+    - a joint filter run over the fit window.
+- **Seeds:** 5 per stochastic policy.
+
+**What the data looks like.**
+- Deviations from each video's mean are strongly persistent: lag-1 autocorrelation 0.78, fitted AR spectral radius 0.75–0.81. They are about as large as the spread of long-run means (sd 0.46 against 0.54).
+- Shocks are only weakly linked to the graph. I-coeng neighbours correlate at 0.071, against 0.068 for the rewiring and 0.042 for a common platform-wide shock.
+
+**Regret per day** (oracle top-10 sum minus chosen sum, logit scale):
+
+| Policy | F = 28 | F = 35 | F = 42 | Mean |
+| --- | ---: | ---: | ---: | ---: |
+| Spatiotemporal filter, greedy | 3.08 | 2.84 | 1.31 | **2.41** |
+| AR filter (temporal only), greedy | 3.15 | 2.80 | 1.35 | 2.44 |
+| Persistent sampling, common shock only | 3.09 | 3.15 | 1.60 | 2.62 |
+| Persistent sampling, I-coeng | 2.99 | 3.31 | 1.59 | 2.63 |
+| Persistent sampling, rewired graph | 3.06 | 3.19 | 1.65 | 2.64 |
+| AR filter, persistent sampling | 3.17 | 3.15 | 1.62 | 2.65 |
+| Spatiotemporal UCB | 3.22 | 3.11 | 1.90 | 2.74 |
+| Last observed value | 4.27 | 3.46 | 0.93 | 2.88 |
+| iid Gaussian TS | 3.88 | 4.12 | 3.71 | 3.90 |
+| Spatiotemporal state-TS (samples the fresh shock) | 4.17 | 5.15 | 4.41 | 4.58 |
+| Fit-window means (static) | 4.94 | 5.31 | 4.47 | 4.91 |
+
+**Reading.**
+
+1. **Modelling persistence is the gain.** Filter-based greedy policies have 38% less regret than iid TS and 51% less than a static ranking.
+2. **The graph adds about 1%.** The spatiotemporal and AR-only filters perform almost the same, and real, rewired and no-graph covariances tie. This matches the weak graph correlation of shocks on KuaiRec.
+3. **Exploring the wrong uncertainty is costly.** Thompson sampling on the current-state posterior samples the fresh daily shock, which will not persist. It is the worst learning policy (4.58). Persistent sampling, which samples only the long-run means (the Predictive Sampling principle), recovers most of that loss (2.63). With strong priors from the fit window, greedy is best at this horizon.
+4. **Lifecycle drift.** At F = 42 the stale "last value" rule beats every model (0.93 against 1.31). Late in the window, engagement drifts with each video's lifecycle instead of reverting to a fixed mean. A local-level (random-walk) mean in the state is the planned fix.
+
 ## Caveats
 
 - **UCB-style methods are handicapped.** They use the Bernoulli-valid noise bound σ = 0.5 while true means average about 0.18, so they explore far more than Thompson sampling. Compare them within families. A KL-UCB baseline and a variance-adaptive SP-UCB are the fair next step.

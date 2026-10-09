@@ -4,6 +4,8 @@ Working derivations, 9 October 2026. This extends the [two-arm AR(1) note](../tw
 
 Full statements and proofs: [manuscript.tex](manuscript.tex), [PDF](manuscript.pdf). Reproducible calculations: [script](../../experiments/ar_p_extension.py), [findings](results/findings.md), [saved checks](results/checks.json).
 
+The [spatial extension](../spatiotemporal_bandits/README.md) retains general AR(p_i) dynamics and fixed unknown means, while replacing independent innovations with a joint spatial covariance. Its standalone paper develops the resulting joint lag-state likelihood, graph-constrained estimation, adaptive confidence, and correlated AR(2) sampling comparisons.
+
 ## What extends, and what changes
 
 | Result | Extension | Scope |

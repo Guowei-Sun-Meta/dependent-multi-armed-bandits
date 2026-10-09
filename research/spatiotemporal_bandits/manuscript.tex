@@ -41,7 +41,7 @@ The AR polynomials are stable, the orders and coefficients are known, and $Q_G$ 
 
 This formulation keeps two spatial mechanisms separate. Correlated innovations explain shared transient deviations. A mean-energy restriction explains why neighboring permanent means should be similar. The first assumption alone does not imply the second. A covariance for $\eta_t$ does not make the fixed $\mu_i$ random or force them to be close.
 
-The paper develops likelihood-correct graph estimation, adaptive confidence, sampling directed toward mean comparisons, and forecast information that depends on full impulse responses. The main terminal objective is selecting the largest permanent mean. Cumulative reward against a full-current-state oracle is included as a separate objective with a different information limit.
+We develop graph estimation using the trajectory likelihood, adaptive confidence, sampling for mean comparisons, and forecast information from complete impulse responses. The main terminal objective is selecting the largest permanent mean. Cumulative reward against a full-current-state oracle has a separate information limit.
 
 \subsection{Existing research and contribution boundary}
 Spectral bandits~\cite{valko2014} and graph pure exploration~\cite{thaker2022} already exploit graph-smooth fixed means. Our mean-energy assumption follows that tradition; replacing independent noise with correlated AR observation error changes the trajectory likelihood and the information supplied by a schedule.
@@ -70,6 +70,8 @@ Innovation vectors are independent over time, but their coordinates can be corre
 \Cov(\eta_{i,t},\eta_{j,s})=(Q_G)_{ij}\one\{t=s\}.
 \end{equation}
 A candidate graph covariance is $(\alpha_\eta I+\lambda_\eta L)^{-1}$, with $\alpha_\eta>0$, possibly rescaled to specified innovation variances. This models the shocks. It is not a distribution for $\mu$ or a hard energy bound on every shock realization. A mean graph and an innovation graph may differ; a common supplied graph is a substantive assumption.
+
+Correlated shocks can improve prediction and comparison precision, but they do not identify an unrestricted mean at a never-measured arm: its column of $M$ is zero and its mean does not enter the observation likelihood. A separate mean restriction can bound or link that coordinate; innovation correlation alone cannot do so.
 
 The fixed mean may satisfy
 \begin{equation}
@@ -387,11 +389,9 @@ For $V=1$, $r=.1$, $a=.8$, $\rho=.6$, and fixed gap $\Delta=.4$, variances are $
 \begin{axis}[width=.82\textwidth,height=5cm,xlabel={Spatial innovation correlation $\rho$},
 ylabel={Fixed-mean PCS},xmin=0,xmax=.95,ymin=.59,ymax=.76,
 legend pos=north west,grid=major]
-\addplot[blue,thick,domain=0:.95,samples=80]
-{.5*(1+erf(.4/sqrt(2*(1.1-.8*x))))};
+\addplot[blue,thick] table[col sep=comma,x=rho,y=pcs_aabb]{results/general_ar/pcs_schedule.csv};
 \addlegendentry{AABB}
-\addplot[orange,thick,domain=0:.95,samples=80]
-{.5*(1+erf(.4/sqrt(2*1.9)))};
+\addplot[orange,thick] table[col sep=comma,x=rho,y=pcs_abab]{results/general_ar/pcs_schedule.csv};
 \addlegendentry{ABAB}
 \end{axis}
 \end{tikzpicture}
@@ -476,9 +476,11 @@ Policies recommend their largest regularized mean. Reported PCS is repeated-nois
 \label{tab:results}
 \end{table}
 
-Paired uncertainty is reported instead of claiming uniform policy superiority. The exact AR(2) comparison is a design result; the six-arm contrast policies are heuristics. The two fixed mean profiles have different gaps as well as graph energy, so they do not isolate a monotone effect of alignment at fixed decision difficulty.
+For lag-two dynamics and smooth fixed means, graph--AR contrast gives opportunity loss $.0675$, versus $.1030$ for the iid likelihood; the paired improvement is $.0355$ with approximate 95\% half-width $.0193$. For oscillatory rough means, unstructured--AR gives PCS $.520$ versus $.470$ for the graph rule, although graph MSE is smaller ($.0917$ versus $.1166$). At lag-two smooth means, block cyclic gives overall MSE $.0757$ versus $.1426$ for the graph contrast policy, despite slightly greater selection loss. These examples distinguish estimation and selection objectives.
 
-Recursive information, scores, and estimates agree with independent dense trajectory likelihoods. A stationary Lyapunov solve agrees with an independently summed impulse-response covariance. Mixed-order full-field information and certified spectral bounds are checked. Dense GLS validates the AR(2) schedule comparison; 30,000 paired direct process simulations at the same fixed mean vector agree with its PCS formulas within Monte Carlo uncertainty.
+All 1,200 graph-policy noise trajectories satisfy the audited confidence bound, but no terminal certificate passes at budget 60. The conservative theorem therefore provides no certificate for these fixed-budget recommendations. Paired uncertainty is reported instead of claiming uniform superiority. The exact AR(2) result compares two designs; the six-arm policies are heuristics. The two mean profiles also have different gaps, so they do not isolate a monotone alignment effect at fixed decision difficulty.
+
+The revised script passes 1,525 counted assertions. Recursive information, scores, and estimates agree with independent dense trajectory likelihoods. A stationary Lyapunov solve agrees with an independently summed impulse-response covariance. Mixed-order full-field information and certified spectral bounds are checked. Dense GLS validates the AR(2) schedule comparison; 30,000 paired direct process simulations at the same fixed mean vector agree with its PCS formulas within Monte Carlo uncertainty.
 
 \section{Discussion}
 The physical model has fixed means, general autoregressive dynamics, and spatial correlation in the innovations. Graph regularization requires a separate deterministic restriction on permanent means. Shared traffic shocks alone do not imply similar permanent location quality.
@@ -504,14 +506,12 @@ Exact confidence assumes known stable dynamics, positive definite Gaussian innov
 \bibitem{valko2014} M. Valko, R. Munos, B. Kveton, and T. Koc\'{a}k. Spectral Bandits for Smooth Graph Functions. ICML, PMLR 32(2):46--54, 2014. \url{https://proceedings.mlr.press/v32/valko14.html}.
 \bibitem{thaker2022} P. Thaker, M. Malu, N. Rao, and G. Dasarathy. Maximizing and Satisficing in Multi-armed Bandits with Graph Information. NeurIPS 35, 2022. \url{https://papers.neurips.cc/paper_files/paper/2022/hash/0d561979f0f4bc6127cfcfe9c46ee205-Abstract-Conference.html}.
 \bibitem{bogunovic2016} I. Bogunovic, J. Scarlett, and V. Cevher. Time-Varying Gaussian Process Bandit Optimization. AISTATS, PMLR 51:314--323, 2016. \url{https://proceedings.mlr.press/v51/bogunovic16.html}.
-\bibitem{krause2011} A. Krause and C. S. Ong. Contextual Gaussian Process Bandit Optimization. NIPS 24, 2011. \url{https://papers.nips.cc/paper/2011/hash/f3f1b7fc5a8779a9e618e1f23a7b7860-Abstract.html}.
 \bibitem{gornet2024} J. Gornet and B. Sinopoli. Restless bandits with rewards generated by a linear Gaussian dynamical system. L4DC, PMLR 242:1791--1802, 2024. \url{https://proceedings.mlr.press/v242/gornet24a.html}.
 \bibitem{trella2025} A. L. Trella, W. H. Dempsey, A. Gazi, Z. Xu, F. Doshi-Velez, and S. Murphy. Non-Stationary Latent Auto-Regressive Bandits. Reinforcement Learning Journal 6:765--789, 2025. \url{https://rlj.cs.umass.edu/2025/papers/Paper70.html}.
 \bibitem{frazier2009} P. Frazier, W. B. Powell, and S. Dayanik. The Knowledge-Gradient Policy for Correlated Normal Beliefs. INFORMS Journal on Computing 21(4):599--613, 2009. \url{https://doi.org/10.1287/ijoc.1080.0314}.
 \bibitem{abbasi2011} Y. Abbasi-Yadkori, D. P\'{a}l, and C. Szepesv\'{a}ri. Online Least Squares Estimation with Self-Normalized Processes: An Application to Bandit Problems. 2011 preprint. \url{https://arxiv.org/abs/1102.2670}.
 \bibitem{combes2017} R. Combes, S. Magureanu, and A. Proutiere. Minimal Exploration in Structured Stochastic Bandits. NIPS 30, 2017. \url{https://papers.nips.cc/paper_files/paper/2017/hash/e19347e1c3ca0c0b97de5fb3b690855a-Abstract.html}.
 \bibitem{garivier2016} A. Garivier and E. Kaufmann. Optimal Best Arm Identification with Fixed Confidence. COLT, PMLR 49:998--1027, 2016. \url{https://proceedings.mlr.press/v49/garivier16a.html}.
-\bibitem{ziomek2025} J. Ziomek, M. Adachi, and M. A. Osborne. Time-varying Gaussian Process Bandits with Unknown Prior. AISTATS, PMLR 258:4294--4302, 2025. \url{https://proceedings.mlr.press/v258/ziomek25a.html}.
 \bibitem{guneyi2024} E. T. G\"uneyi, B. Yald\i z, A. Canbolat, and E. Vural. Learning Graph ARMA Processes From Time-Vertex Spectra. IEEE Transactions on Signal Processing 72:47--56, 2024; online publication November 2023. \url{https://doi.org/10.1109/TSP.2023.3329948}.
 \end{thebibliography}
 \end{document}

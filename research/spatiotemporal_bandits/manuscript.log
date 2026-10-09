@@ -795,8 +795,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 \Hy@SectionHShift=\skip52
 )
 \c@theorem=\count337
-
-No file manuscript.aux.
+ (manuscript.aux)
 \openout1 = `manuscript.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -819,6 +818,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -877,12 +877,10 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 24.
 LaTeX Info: Redefining \pageref on input line 24.
 LaTeX Info: Redefining \nameref on input line 24.
+ (manuscript.out)
+(manuscript.out)
 \@outlinefile=\write4
 \openout4 = `manuscript.out'.
-
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
 (Font)              scaled to size 12.00128pt on input line 26.
@@ -920,68 +918,14 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 7.66417pt on input line 33.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 5.47441pt on input line 33.
-[1
+ [1
 
-]
-Underfull \hbox (badness 1983) in paragraph at lines 44--45
-[]\TU/texgyrepagella-regular.otf(0)/m/n/10.95 The paper develops likelihood-cor
-rect graph estimation, adaptive confidence, sampling
- []
-
-
-LaTeX Warning: Citation `valko2014' on page 2 undefined on input line 47.
-
-
-LaTeX Warning: Citation `thaker2022' on page 2 undefined on input line 47.
-
-
-LaTeX Warning: Citation `bogunovic2016' on page 2 undefined on input line 49.
-
-
-LaTeX Warning: Citation `gornet2024' on page 2 undefined on input line 49.
-
-
-LaTeX Warning: Citation `trella2025' on page 2 undefined on input line 49.
-
-
-LaTeX Warning: Citation `guneyi2024' on page 2 undefined on input line 51.
-
-
-LaTeX Warning: Citation `frazier2009' on page 2 undefined on input line 53.
-
-
-LaTeX Warning: Citation `abbasi2011' on page 2 undefined on input line 53.
-
-
-LaTeX Warning: Citation `combes2017' on page 2 undefined on input line 53.
-
-
-LaTeX Warning: Citation `garivier2016' on page 2 undefined on input line 53.
-
-[2] [3] [4] [5]
-
-LaTeX Warning: Citation `abbasi2011' on page 6 undefined on input line 268.
-
-[6] [7]
-
-LaTeX Warning: Reference `eq:gain' on page 8 undefined on input line 337.
-
-
-LaTeX Warning: Reference `eq:confidence' on page 8 undefined on input line 347.
-
-
-[8]
-
-LaTeX Warning: Reference `eq:fixed-pcs' on page 9 undefined on input line 379.
-
-
-! Package PGF Math Error: Unknown function `erf' (in '.5*(1+erf(.4/sqrt(2*(1.1-
-.8*x))))').
-
-See the PGF Math package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.391 {.5*(1+erf(.4/sqrt(2*(1.1-.8*x))))};
-                                          
-Output written on manuscript.xdv (8 pages, 208800 bytes).
+] [2] [3] [4] [5] [6] [7] [8]
+PGFPlots: reading {results/general_ar/pcs_schedule.csv}
+PGFPlots: reading {results/general_ar/pcs_schedule.csv}
+ [9] [10]
+(results/general_ar/table.tex) [11] [12] [13] [14] (manuscript.aux)
+Package rerunfilecheck Info: File `manuscript.out' has not changed.
+(rerunfilecheck)             Checksum: 0E9EA1920384A62834ED419A7762C109;4727.
+ )
+Output written on manuscript.xdv (14 pages, 395020 bytes).

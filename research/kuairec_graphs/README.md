@@ -1,85 +1,142 @@
 # KuaiRec Graph Alignment: Preliminary Report
 
-9 October 2026. Phase 1 of the [KuaiRec experiment plan](../../www/kuairec_experiment_plan.md): no bandit runs yet. Reward model R1 (capped watch ratio / 5) unless stated.
+9 October 2026. Phase 1 (alignment of 16 graphs) and a first run of Setting A (single-user item-graph bandits) from the [KuaiRec experiment plan](../../www/kuairec_experiment_plan.md). Reward model R1 (capped watch ratio / 5) and k = 10 unless stated.
 
 ## Findings
 
-1. **Collaborative graphs are the only ones that carry personal taste.**
-    - The item graph from matrix factorization (I-mf) is the smoothest graph. Its median smoothness quotient is 0.756, against 0.963 for its degree-preserving rewiring; 1.0 means no better than random.
-    - With each user's activity level and each video's popularity removed, neighbouring videos in I-mf agree at a correlation of 0.046, against 0.002 for random pairs.
-    - Tag and category graphs are only slightly smoother than chance, and almost all of that comes from popularity. Their personal-taste correlation is 0.010.
-    - Among user graphs, factorization (U-mf, quotient 0.850) beats location (0.942), profile features (0.974) and demographics (0.984).
-2. **KuaiRec's social graph is too sparse to use.** Only 146 of the 1,411 evaluation users appear in `social_network.csv`, with 47 edges among them, so 80 users (5.7%) have a friend. Per edge, friends agree on personal taste the most of any graph (0.035, against 0.001). The social-graph result has to come from Last.fm.
-3. **Smoother than chance does not mean safe to smooth.** For each user, we smoothed the true means over the graph with (I + λL)⁻¹ and took the best video under the smoothed values. Then we measured what that choice costs against the user's true best, as a share of the gap between the user's best and average videos:
+1. **Co-engagement is the best user–user graph, and collaborative graphs are the only ones that carry personal taste.**
+    - Two users are linked if they fully watched the same videos (U-coeng). Its median smoothness quotient is 0.649, against 0.791 for its degree-preserving rewiring; 1 means no better than random.
+    - With each user's activity and each video's popularity removed, U-coeng neighbours agree on taste at 0.020. That is ahead of matrix factorization (U-mf, 0.016) and co-engagement by author (0.018).
+    - On the item side, factorization (I-mf, 0.046) and co-engagement (I-coeng, 0.034) carry personal taste. Tags, categories and same-author links (≤ 0.010) mostly group videos of similar popularity.
+    - Profile, location, demographic and time-of-day user graphs are close to their nulls.
+    - The ranking is stable across k = 5, 10 and 20.
+2. **KuaiRec's social graph is too sparse to use.** Only 47 edges join evaluation users, and just 80 of the 1,411 users have a friend. Per edge, friends agree on taste the most of any graph (0.035), so the social result has to come from Last.fm.
+3. **In the bandit runs, gains come from shrinkage, not from graph structure.**
+    - On 300-video instances, a rewired I-mf graph gives the same regret as the real one. SpectralUCB at λ = 10 regrets 0.695× UCB1 on the rewiring and 0.697× on the real graph. Spectral TS at λ = 10 regrets 0.610× graph-free Gaussian TS on both.
+    - Certified pooling gains slightly from structure: oracle-certified SP-UCB regrets 0.53× UCB1 on the real I-mf and 0.58× on its rewiring.
+4. **Uncertified pooling fails badly for some users; certified pooling does not.** This is the misalignment failure from the theory, now seen on real data. The table gives ratios to Bernoulli Thompson sampling over 60 users, T = 20,000:
 
-    | Graph | λ = 0.1 (real / rewired) | λ = 1 | λ = 10 |
-    | --- | --- | --- | --- |
-    | I-mf | 0.000 / 0.000 | 0.014 / 0.007 | 0.117 / 0.021 |
-    | I-tag | 0.001 / 0.000 | 0.030 / 0.014 | 0.099 / 0.051 |
-    | I-cat | 0.003 / 0.001 | 0.039 / 0.017 | 0.100 / 0.082 |
-    | U-mf | 0.000 / 0.000 | 0.050 / 0.048 | 0.300 / 0.299 |
-    | U-geo | 0.000 / 0.000 | 0.056 / 0.040 | 0.350 / 0.303 |
+    | Policy | Graph | Median | 90th percentile | Share of users beating TS |
+    | --- | --- | ---: | ---: | ---: |
+    | Spectral TS, λ = 10 | I-mf | 0.68 | 1.71 | 0.75 |
+    | Spectral TS, λ = 10 | I-coeng | 1.11 | 18.78 | 0.45 |
+    | SP-UCB, no certificate | I-coauthor | 2.06 | 29.61 | 0.27 |
+    | SP-UCB, no certificate | I-cat | 1.72 | 11.37 | 0.32 |
+    | SP-UCB, oracle certificate | I-mf | 2.23 | 8.06 | 0.00 |
+    | UCB1 (reference) | none | 4.29 | 14.02 | 0.00 |
 
-    - **Real graphs cost more than random ones.** On every item graph, real graphs cost more than their rewired nulls, up to 5.6 times more for I-mf at λ = 10. Smoothing on a random graph acts like uniform shrinkage toward the mean, which keeps rankings. A real graph pulls each video toward its neighbourhood's level, which reorders the top.
-    - **This is the repo's misalignment mechanism, now measured on real data.** A spectral bandit with a fixed, large λ inherits this cost as a regret floor that grows linearly with time.
-    - **Small λ is nearly free.** At λ = 0.1 the cost is close to zero on every graph.
-4. **User graphs barely change the best choice beyond shrinkage toward the population.**
-    - Real and rewired user graphs cost almost the same at every λ.
-    - Users' rows correlate at 0.38 even for random pairs, so a shared popularity component dominates. Pooling across users mostly imports that component.
-    - This predicts that GOB.Lin-style user pooling helps mainly in the first rounds of each user's history.
+    Smoothing hard (λ = 10), or pooling without a certificate, helps the typical user a lot: Spectral TS beats Bernoulli TS for 75% of users on I-mf. But it produces a heavy tail of users with near-linear regret. Oracle-certified SP-UCB never exceeds UCB1's tail, and it halves UCB1's regret on I-mf (0.53×) and I-coeng (0.50×).
+5. **The energy certificate is too loose on real graphs, as the theory predicts.**
+    - On 300-video instances the median energy-to-gap ratio is about 5 for every graph, well above the threshold of about 1 where it helps.
+    - With energy certificates, SP-UCB can reject only 18–33% of suboptimal components (68% on I-coauthor), against 55–83% with oracle certificates. Its regret is 0.92–0.97× UCB1.
+    - Closing the gap between the oracle and energy certificates is the main open problem for the paper's method.
+6. **Smoother than chance does not mean safe to smooth (Phase 1).**
+    - Smoothing users' true means with (I + λL)⁻¹ and picking the best video costs more on most real item graphs than on their rewired nulls. At λ = 10 the cost is 0.117 against 0.019 for I-mf, as a share of each user's best-to-average gap.
+    - The exception is I-coauthor (0.040 against 0.184), whose same-author cliques keep rankings.
 
-## What was run
+## Phase 1: alignment of 16 graphs
 
-| Step | Result |
+![Smoothness quotients, real against null graphs](results/alignment_quotients_R1_k10.png)
+
+| Graph | Side | Edges | Quotient (real / rewired) | Personal-taste edge corr. (real / random) | Choice cost @λ=1 (real / rewired) | Choice cost @λ=10 (real / rewired) |
+| --- | --- | ---: | --- | --- | --- | --- |
+| I-mf | I2I | 25,492 | 0.756 / 0.961 | 0.046 / 0.002 | 0.014 / 0.007 | 0.117 / 0.019 |
+| I-coauthor | I2I | 30,080 | 0.805 / 1.006 | 0.004 / 0.002 | 0.024 / 0.055 | 0.040 / 0.184 |
+| I-cat | I2I | 29,558 | 0.908 / 0.985 | 0.010 / 0.002 | 0.036 / 0.020 | 0.099 / 0.079 |
+| I-tag | I2I | 30,094 | 0.943 / 1.010 | 0.010 / 0.002 | 0.027 / 0.014 | 0.100 / 0.054 |
+| I-coeng | I2I | 31,680 | 1.098 / 1.302 | 0.034 / 0.002 | 0.030 / 0.019 | 0.131 / 0.037 |
+| U-coeng | U2U | 12,563 | 0.649 / 0.791 | 0.020 / 0.000 | 0.058 / 0.055 | 0.284 / 0.291 |
+| U-coeng-idf | U2U | 11,193 | 0.748 / 0.860 | 0.018 / 0.001 | 0.057 / 0.052 | 0.294 / 0.296 |
+| U-coauthor | U2U | 11,182 | 0.761 / 0.871 | 0.018 / 0.000 | 0.055 / 0.051 | 0.296 / 0.294 |
+| U-soc | U2U | 47 | 0.787 / 0.862 | 0.035 / 0.001 | 0.010 / 0.014 | 0.014 / 0.016 |
+| U-cotag | U2U | 10,716 | 0.842 / 0.884 | 0.004 / 0.001 | 0.054 / 0.046 | 0.299 / 0.297 |
+| U-mf | U2U | 10,971 | 0.850 / 0.907 | 0.016 / 0.001 | 0.050 / 0.048 | 0.300 / 0.298 |
+| U-soc+mf | U2U | 11,003 | 0.850 / 0.908 | 0.016 / 0.000 | 0.050 / 0.048 | 0.301 / 0.303 |
+| U-cotime | U2U | 11,298 | 0.931 / 0.947 | 0.003 / 0.000 | 0.045 / 0.040 | 0.315 / 0.304 |
+| U-geo | U2U | 10,263 | 0.946 / 1.002 | 0.007 / 0.000 | 0.059 / 0.040 | 0.350 / 0.301 |
+| U-feat | U2U | 10,789 | 0.972 / 0.989 | 0.006 / 0.001 | 0.050 / 0.041 | 0.305 / 0.303 |
+| U-demo | U2U | 10,934 | 0.988 / 1.000 | 0.002 / 0.000 | 0.046 / 0.042 | 0.328 / 0.304 |
+
+How to read it:
+
+- **Compare each graph with its own rewired null.** A raw quotient is not comparable across graphs with very different degree distributions. I-coeng scores 1.098, but its rewiring scores 1.302.
+- **U-soc's quotient is not comparable either.** 94% of its nodes are isolated, and it is left out of the figure.
+- **Neighbour-count sensitivity** is in [alignment_table_R1_k10.md](results/alignment_table_R1_k10.md). Rankings hold for k = 5 and 20.
+
+### Graph definitions
+
+All graphs are leakage-free: user-side signals use only interactions with non-evaluation videos, and video-side signals use only non-evaluation users.
+
+| Graph | Built from |
 | --- | --- |
-| Data checks | Evaluation users and videos are subsets of the big matrix, and the two matrices share **no** (user, video) pairs, so the graphs are leakage-free by construction. Of the 3327 × 1411 pairs, 17,827 are blocked (0.4%). Watch ratio: median 0.77; 4.6% of pairs above 2; 0.5% above 5. ([step0_report.json](results/step0_report.json)) |
-| Graphs | 7 user graphs and 3 item graphs, each with a degree-preserving rewiring and an Erdős–Rényi null. k = 10, union kNN, Laplacian scaled to mean degree 1. ([graphs_meta.json](results/graphs_meta.json)) |
-| Diagnostics | Smoothness quotient, edge correlation (raw and with popularity and activity removed), top-1 and top-10 preservation, and choice cost after smoothing at λ ∈ {0.1, 1, 10}. ([alignment_summary_R1.csv](results/alignment_summary_R1.csv)) |
+| U-coeng | Jaccard on sets of fully watched videos (watch ratio ≥ 1) |
+| U-coeng-idf | Cosine on engagement weighted down for popular videos |
+| U-coauthor | Cosine on engagement aggregated by video author, weighted down for popular authors |
+| U-mf / I-mf | PureSVD factors (rank 64) |
+| U-cotag | Cosine on per-tag taste (tag mean minus the user's mean) |
+| U-cotime | Cosine on hour-of-day activity profiles |
+| U-soc | `social_network.csv` friend lists |
+| U-feat / U-geo / U-demo | Profile fields; same city (1) or province (0.3); gender, age, phone brand, price band |
+| I-coeng | Cosine on engagement from non-evaluation users, weighted down for heavy users |
+| I-coauthor | Same author |
+| I-tag / I-cat | Jaccard on tags; three-level category tree |
 
-![Smoothness quotients, real against null graphs](results/alignment_quotients_R1.png)
+## Setting A: single-user bandits on item graphs
 
-Summary table ([alignment_table_R1.md](results/alignment_table_R1.md)):
+The protocol:
 
-| Graph | Side | Edges | Isolated | Quotient (real / rewired) | Edge corr. (real / random pairs) | Top-1 kept @λ=1 (real / rewired) | Choice regret @λ=1 (real / rewired) |
-| --- | --- | ---: | ---: | --- | --- | --- | --- |
-| I-mf | I2I | 25,492 | 0 | 0.756 / 0.963 | 0.101 / 0.074 | 0.272 / 0.291 | 0.014 / 0.007 |
-| I-cat | I2I | 29,529 | 0 | 0.906 / 0.993 | 0.077 / 0.074 | 0.218 / 0.263 | 0.039 / 0.017 |
-| I-tag | I2I | 30,052 | 0 | 0.946 / 1.006 | 0.077 / 0.074 | 0.259 / 0.294 | 0.030 / 0.014 |
-| U-soc | U2U | 47 | 1,331 | 0.787 / 0.858 | 0.398 / 0.384 | 0.950 / 0.947 | 0.010 / 0.016 |
-| U-mf | U2U | 10,971 | 0 | 0.850 / 0.908 | 0.418 / 0.383 | 0.230 / 0.237 | 0.050 / 0.048 |
-| U-soc+mf | U2U | 11,003 | 0 | 0.850 / 0.907 | 0.418 / 0.384 | 0.231 / 0.225 | 0.050 / 0.047 |
-| U-geo | U2U | 10,264 | 0 | 0.942 / 0.994 | 0.389 / 0.384 | 0.226 / 0.242 | 0.056 / 0.040 |
-| U-feat | U2U | 10,764 | 0 | 0.974 / 0.994 | 0.391 / 0.384 | 0.236 / 0.243 | 0.047 / 0.043 |
-| U-demo | U2U | 10,953 | 0 | 0.984 / 0.991 | 0.386 / 0.384 | 0.229 / 0.242 | 0.045 / 0.040 |
+- 60 test users. For each user, 300 random videos and a horizon of T = 20,000, about 67 pulls per arm.
+- Each graph is rebuilt on the user's 300 videos.
+- Rewards are Bernoulli, with common random numbers across policies.
+- Policies:
+    - UCB1 and Bernoulli TS
+    - SpectralUCB and Spectral TS at λ ∈ {0.1, 1, 10}
+    - SP-UCB on a 20-component spectral partition, with oracle, energy and no certificates
 
-U-soc's quotient is not comparable with the others: 94% of its nodes are isolated, and scaling 47 edges to mean degree 1 inflates their weights. It is left out of the figure.
+The full table, with means, 95% bootstrap CIs, medians, 90th percentiles and ratios to each method's own family baseline, is in [setting_a_table.md](results/setting_a_table.md).
+
+![Setting A regret relative to Thompson sampling](results/setting_a_regret.png)
+
+Per-instance diagnostics on the 300-video graphs:
+
+| Graph | Quotient | Energy-to-gap (10th best) | Components rejectable, oracle certificate | Rejectable, energy certificate |
+| --- | ---: | ---: | ---: | ---: |
+| I-coauthor | 0.709 | 5.0 | 0.83 | 0.68 |
+| I-mf | 0.846 | 4.9 | 0.61 | 0.21 |
+| I-cat | 0.950 | 5.0 | 0.66 | 0.33 |
+| I-mf~rewired | 0.964 | 5.3 | 0.55 | 0.03 |
+| I-tag | 0.974 | 5.4 | 0.65 | 0.29 |
+| I-coeng | 1.038 | 5.7 | 0.71 | 0.18 |
 
 ## Caveats
 
-- **Noisy ground truth.** Each true mean is a single observed watch ratio. That observation noise makes every signal look rougher, so these quotients understate how aligned the underlying preferences are. A split-half check is impossible with one observation per pair. Reward model R2 or a denoised mean is the next sensitivity check.
-- **Departures from the plan.**
-    - Embeddings are PureSVD (rank 64) instead of ALS and LightGCN.
-    - Graphs are union kNN instead of mutual kNN plus nearest neighbour.
-    - Only k = 10 was run.
-    - The caption-text and aggregate-statistics item graphs are not built yet.
-- **Not yet computed:** the energy-to-gap ratio on 300-video bandit instances, and the resistance radius. Both need graphs rebuilt on each sampled subset.
-- **Degree structure alone matters.** The rewired U-mf graph is itself smoother than chance (0.908), so a share of U-mf's alignment comes from which users are hubs, not from who connects to whom.
+- **UCB-style methods are handicapped.** They use the Bernoulli-valid noise bound σ = 0.5 while true means average about 0.18, so they explore far more than Thompson sampling. Compare them within families. A KL-UCB baseline and a variance-adaptive SP-UCB are the fair next step.
+- **Noisy ground truth.** Each true mean is one observed watch ratio, so measured alignment understates true preference alignment.
+- **One video subset per user, 60 users.** Confidence intervals are wide for the heavy-tailed policies.
+- **Approximations.** Spectral TS samples each arm's marginal posterior, not the joint posterior. Its prior mean, 0.18, is the platform average.
+- **SP-UCB's partition** is spectral clustering into 20 components. Changing it changes component gaps.
+- **Departures from the plan.** PureSVD instead of ALS and LightGCN; union kNN; caption-text and aggregate-statistics graphs not built yet; Settings B and C not run yet.
 
-## Implications for the bandit experiments
+## Next steps
 
-- **Main graphs:** I-mf and U-mf. The tag and category graphs are the "popularity-only" condition, and rewired graphs are the null.
-- **Prediction for Setting A:** SpectralUCB/TS with λ ≥ 1 on I-tag or I-cat plateaus above per-user Thompson sampling, while certified pooling (SP-UCB, GDE-UCB) does not. With λ = 0.1 the bias is negligible, so the comparison should report the whole λ grid.
-- **The social-graph condition moves to Last.fm.**
+1. **Add a graph-free shrinkage baseline**, shrinking toward the user's running mean, to confirm that Spectral TS's gain is shrinkage. Add KL-UCB.
+2. **Tighten certificates.** Estimate the energy bound on the partition from warm-up data, and test a data-driven certificate between the oracle and energy bounds.
+3. **Run Setting B** (user graphs, cold users) with U-coeng, U-mf and U-coauthor against nulls. Phase 1 predicts small gains beyond shrinkage toward the population.
+4. **Check sensitivity** to R2 and R3, and to more video subsets per user.
 
 ## Reproduce
 
-From the repo root, with the virtual environment set up as in [experiments/kuairec](../../experiments/kuairec):
+From the repo root, with the virtual environment from [experiments/kuairec/requirements.txt](../../experiments/kuairec/requirements.txt):
 
 ```sh
-.venv/bin/python -I experiments/kuairec/data.py         # about 10 s
-.venv/bin/python -I experiments/kuairec/graphs.py       # about 25 s
-.venv/bin/python -I experiments/kuairec/alignment.py    # about 5 min on 8 cores
-.venv/bin/python -I experiments/kuairec/render_alignment.py
+.venv/bin/python -I experiments/kuairec/data.py                     # about 10 s
+.venv/bin/python -I experiments/kuairec/graphs.py --k 5 10 20       # about 1 min
+.venv/bin/python -I experiments/kuairec/alignment.py --k 10         # about 8 min on an idle 8-core laptop
+.venv/bin/python -I experiments/kuairec/alignment.py --k 5 --quick
+.venv/bin/python -I experiments/kuairec/alignment.py --k 20 --quick
+.venv/bin/python -I experiments/kuairec/render_alignment.py --k 10
+.venv/bin/python -I experiments/kuairec/setting_a.py --users 60 --horizon 20000 --jobs 6   # about 1 h
+.venv/bin/python -I experiments/kuairec/analyze_a.py
 ```
 
 Raw data goes in `data/kuairec_raw/` (git-ignored), from [Zenodo record 18164998](https://zenodo.org/records/18164998).

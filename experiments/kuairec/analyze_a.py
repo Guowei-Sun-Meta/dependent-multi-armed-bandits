@@ -36,6 +36,14 @@ def main() -> None:
     col = f"regret@{T}"
     ts = runs[runs.policy == "ts"].set_index("user")[col]
     runs["ratio_ts"] = runs[col].to_numpy() / ts.reindex(runs.user).to_numpy()
+    # Family baselines: UCB for UCB-style policies; graph-free Gaussian TS (lambda = 0.1 on the
+    # same graph, whose prior is nearly flat) for spectral TS.
+    ucb = runs[runs.policy == "ucb"].set_index("user")[col]
+    gts = runs[(runs.policy == "spectral_ts") & (runs.param.astype(str) == "0.1")].set_index(["user", "graph"])[col]
+    fam = np.where(runs.policy.isin(["ucb", "spectral_ucb", "sp_ucb"]), ucb.reindex(runs.user).to_numpy(), np.nan)
+    is_sts = runs.policy == "spectral_ts"
+    fam[is_sts.to_numpy()] = gts.reindex(list(zip(runs.user[is_sts], runs.graph[is_sts]))).to_numpy()
+    runs["ratio_family"] = runs[col].to_numpy() / fam
 
     rows = []
     for (policy, graph, param), d in runs.groupby(["policy", "graph", "param"], sort=False):
@@ -44,6 +52,10 @@ def main() -> None:
             "policy": policy, "graph": graph, "param": param, "users": len(d),
             f"mean_{col}": d[col].mean(), "ratio_to_ts": d.ratio_ts.mean(), "ci_low": lo, "ci_high": hi,
             "share_beats_ts": float((d.ratio_ts < 1).mean()),
+            "median_ratio_to_ts": float(d.ratio_ts.median()),
+            "p90_ratio_to_ts": float(d.ratio_ts.quantile(0.9)),
+            "ratio_to_family": float(d.ratio_family.mean()),
+            "median_ratio_to_family": float(d.ratio_family.median()),
         })
     summary = pd.DataFrame(rows)
     summary.to_csv(RESULTS / "setting_a_summary.csv", index=False)
@@ -57,11 +69,15 @@ def main() -> None:
     diag.to_csv(RESULTS / "setting_a_diagnostics.csv", index=False)
 
     lines = [f"Regret at T = {T:,} relative to Bernoulli Thompson sampling (mean over users; 95% bootstrap CI).", "",
-             "| Policy | Graph | Parameter | Regret ratio to TS | 95% CI | Share of users beating TS |",
-             "| --- | --- | --- | ---: | --- | ---: |"]
+             "Family ratio: UCB-style policies against UCB1; spectral TS against itself at lambda = 0.1 (nearly graph-free).",
+             "",
+             "| Policy | Graph | Parameter | Ratio to TS (mean) | 95% CI | Median | 90th pct. | Share beating TS "
+             "| Ratio to family (mean / median) |",
+             "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- |"]
     for _, r in summary.iterrows():
         lines.append(f"| {r.policy} | {r.graph} | {r.param} | {r.ratio_to_ts:.3f} | {r.ci_low:.3f} to {r.ci_high:.3f} "
-                     f"| {r.share_beats_ts:.2f} |")
+                     f"| {r.median_ratio_to_ts:.3f} | {r.p90_ratio_to_ts:.2f} | {r.share_beats_ts:.2f} "
+                     f"| {r.ratio_to_family:.3f} / {r.median_ratio_to_family:.3f} |")
     lines += ["", "Per-instance graph diagnostics (300-video graphs; medians or means over users):", "",
               "| Graph | Quotient | Energy-to-gap (10th) | Share of components rejectable, oracle cert. "
               "| Share rejectable, energy cert. |", "| --- | ---: | ---: | ---: | ---: |"]

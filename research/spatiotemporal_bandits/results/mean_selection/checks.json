@@ -1,0 +1,93 @@
+{
+  "checks": 8597,
+  "innovation_regression_matches_batch": true,
+  "constrained_mean_enforces_energy": true,
+  "two_arm_other_location_optimal_with_two_observations": true,
+  "two_arm_closed_forms": [
+    {
+      "phi": 0.0,
+      "rho": 0.0,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8076923076923077
+    },
+    {
+      "phi": 0.0,
+      "rho": 0.5,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8076923076923077
+    },
+    {
+      "phi": 0.0,
+      "rho": 0.9,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8076923076923077
+    },
+    {
+      "phi": 0.5,
+      "rho": 0.0,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8387096774193549
+    },
+    {
+      "phi": 0.5,
+      "rho": 0.5,
+      "posterior_difference_variance": 0.6296296296296295,
+      "bayes_pcs": 0.7082607951135571,
+      "repeat_variance": 0.8387096774193549
+    },
+    {
+      "phi": 0.5,
+      "rho": 0.9,
+      "posterior_difference_variance": 0.5652173913043479,
+      "bayes_pcs": 0.7291813404057592,
+      "repeat_variance": 0.8387096774193549
+    },
+    {
+      "phi": 0.9,
+      "rho": 0.0,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8571428571428571
+    },
+    {
+      "phi": 0.9,
+      "rho": 0.5,
+      "posterior_difference_variance": 0.5652173913043479,
+      "bayes_pcs": 0.7291813404057592,
+      "repeat_variance": 0.8571428571428571
+    },
+    {
+      "phi": 0.9,
+      "rho": 0.9,
+      "posterior_difference_variance": 0.36708860759493667,
+      "bayes_pcs": 0.7928218014707722,
+      "repeat_variance": 0.8571428571428571
+    },
+    {
+      "phi": 0.99,
+      "rho": 0.0,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8607242339832869
+    },
+    {
+      "phi": 0.99,
+      "rho": 0.5,
+      "posterior_difference_variance": 0.5475113122171946,
+      "bayes_pcs": 0.7348538278116319,
+      "repeat_variance": 0.8607242339832869
+    },
+    {
+      "phi": 0.99,
+      "rho": 0.9,
+      "posterior_difference_variance": 0.2947813822284908,
+      "bayes_pcs": 0.817311956145529,
+      "repeat_variance": 0.8607242339832869
+    }
+  ],
+  "phi_zero_removes_transient_cross_location_information": true
+}

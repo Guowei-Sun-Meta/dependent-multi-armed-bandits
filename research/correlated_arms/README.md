@@ -76,6 +76,35 @@ n_i(T)\le1+\frac{4\beta_T^2}{\iota_i\Delta_i^2}
 - *Open:* a per-pull information bound with correlated shocks Q_G. The coefficient of μ_i then also involves other arms' means. Plan: state the component bound in terms of the realized information, which is always computable, and check it numerically.
 - *Open:* the analogue for GDE-UCB (the A2 path rate) under persistence, using the same substitution of information for counts.
 
+### B1′. A tight certificate for independent shocks
+
+**Why B1 is too wide.** B1's confidence width carries the N-dimensional log-determinant, about $`\sqrt{N\log T}`$. With 20 arms and T = 20,000 that is about 12 standard errors, against about 5.5 for a per-arm bound. In the long-horizon elimination test (T = 20,000), B1 eliminated **no** arm in any run.
+
+**Proposition B1′.** Assume Q_G is diagonal (shocks independent across arms) and the regularizer is H = αI. In S1, every observation's design vector u_t then has a single nonzero entry, so $`\mathcal I_t`$ is diagonal and each arm's score $`W_{i}=\sum_{t:a_t=i}u_t\epsilon_t`$ is a scalar martingale. Define for each arm i, and for each component c the pooled sums $`J_c=\alpha+\sum_{i\in C_c}\mathcal I_{ii}`$ and $`q_c=\sum_{i\in C_c}q_i`$:
+
+```math
+U_i=\frac{q_i}{J_{ii}}+\frac{\sqrt{2\log\big(\sqrt{J_{ii}/\alpha}\,/\delta'\big)}+\sqrt\alpha}{\sqrt{J_{ii}}},\qquad
+U_c^{\rm pool}=\frac{q_c}{J_c}+\frac{\sqrt{2\log\big(\sqrt{J_c/\alpha}\,/\delta'\big)}+\sqrt\alpha}{\sqrt{J_c}}+\varepsilon_c,\qquad \delta'=\frac{\delta}{N+M}
+```
+
+With probability at least 1 − δ, at every round, U_i ≥ μ_i and $`U_c^{\rm pool}\ge v_c`$.
+
+*Proof.*
+1. **Arms.** Each arm's (q_i, J_ii) is the scalar case of S2, so the one-dimensional method of mixtures applies. The regularization bias is at most √α · |μ_i| ≤ √α.
+2. **Components.** The pooled statistic estimates the information-weighted average of the pulled arms' means, which is at least v_c − ε_c. Its error is a scalar martingale with quadratic variation J_c − α.
+3. **Union bound** over the N + M scalar processes. ∎
+
+The scalar construction is valid for any adaptive, restless schedule. With correlated shocks the design vectors couple arms, and the per-contrast analogue is open.
+
+**First check** (one seed, independent shocks):
+
+| | iid SP-UCB | SP-UCB with B1′ |
+| --- | --- | --- |
+| φ = 0, one at a time | regret 274, valid | regret 221, valid |
+| φ = 0.97, blocks of 25 | regret 1,424, violated in 99.8% of rounds | regret 763, never violated |
+
+The full sweep is in `coverage_runs_scalar.csv` once it finishes.
+
 ### B2. iid certificates fail under persistence
 
 **Proposition B2.** Take one arm sampled on n consecutive rounds, with stationary AR(1) persistence φ ∈ (0, 1), r = 0 and Var(z) = V. The sample mean has

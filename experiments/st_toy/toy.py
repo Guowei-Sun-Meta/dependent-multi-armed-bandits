@@ -50,6 +50,8 @@ GH_W = np.full(GRID, 1.0 / GRID)
 
 POLICIES = ("ucb", "ts", "swucb", "spectral_ucb", "spectral_ts", "ar_ts", "ar_twostep",
             "st_greedy", "st_ts", "st_ucb", "st_twostep")
+# Follow-up: tuned exploration and predictive sampling (bonus = m x predictive sd for st_ucbm<m>).
+EXTRA = ("st_ps", "ar_ps", "st_ucbm1", "st_ucbm2", "st_ucbm4")
 
 
 # ---------------------------------------------------------------- world
@@ -217,6 +219,21 @@ def run_policy(world: World, policy: str, seed: int) -> dict:
             elif kind == "ucb":
                 beta = 2 * np.log(N * (t + 1) ** 2 * np.pi ** 2 / (6 * 0.1))
                 arm = int(np.argmax(m + np.sqrt(beta * np.maximum(np.diag(S), 0))))
+            elif kind.startswith("ucbm"):
+                arm = int(np.argmax(m + float(kind[4:]) * np.sqrt(np.maximum(np.diag(S), 0))))
+            elif kind == "ps":
+                # Joint predictive sampling: sample only the part of current-reward uncertainty
+                # that the next round's rewards would reveal, B = C V^-1 C' with
+                # C = Cov(f_t, f_{t+1}), V = Var(f_{t+1}) (one-step screening approximation).
+                _, HAP = flt.next_projection()
+                C = (HAP[:, :N] + HAP[:, N:2 * N]).T
+                Hb = HAP.reshape(N, world.p + 1, N)
+                V = Hb[:, 0, :] + np.tensordot(Hb[:, 1:, :], world.a, axes=([1], [0])) + flt.Q
+                B = C @ np.linalg.solve(V + 1e-9 * np.eye(N), C.T)
+                B = (B + B.T) / 2
+                w, U = np.linalg.eigh(B)
+                draw = m + U @ (np.sqrt(np.maximum(w, 0)) * rng.standard_normal(N))
+                arm = int(np.argmax(draw))
             elif kind == "twostep":
                 if t == T - 1:
                     arm = int(np.argmax(m))
@@ -367,14 +384,14 @@ def job(args):
     return row
 
 
-def main(seeds: int, T: int, jobs: int, configs: list[str]) -> None:
+def main(seeds: int, T: int, jobs: int, configs: list[str], extra: bool = False) -> None:
     RESULTS.mkdir(parents=True, exist_ok=True)
-    tasks = [(c, s, p, T) for c in configs for s in range(seeds) for p in POLICIES]
+    tasks = [(c, s, p, T) for c in configs for s in range(seeds) for p in (EXTRA if extra else POLICIES)]
     tasks.sort(key=lambda x: not (x[2].startswith("st_") or x[2].startswith("ar_")))  # heavy first
     with ProcessPoolExecutor(jobs) as ex:
         rows = list(ex.map(job, tasks, chunksize=1))
     df = pd.DataFrame(rows)
-    df.to_csv(RESULTS / "runs.csv", index=False)
+    df.to_csv(RESULTS / ("runs_extra.csv" if extra else "runs.csv"), index=False)
     (RESULTS / "metadata.json").write_text(json.dumps({"seeds": seeds, "horizon": T, "configs": CONFIGS,
                                                        "policies": POLICIES}, indent=2))
 
@@ -386,8 +403,9 @@ if __name__ == "__main__":
     ap.add_argument("--horizon", type=int, default=2000)
     ap.add_argument("--jobs", type=int, default=2)
     ap.add_argument("--configs", nargs="+", default=list(CONFIGS))
+    ap.add_argument("--extra", action="store_true", help="run the follow-up policies (tuned UCB, predictive sampling)")
     a = ap.parse_args()
     if a.verify:
         verify()
     else:
-        main(a.seeds, a.horizon, a.jobs, a.configs)
+        main(a.seeds, a.horizon, a.jobs, a.configs, a.extra)

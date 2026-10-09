@@ -139,7 +139,7 @@ Any feasible experiment attaining the constant posterior variance s attains this
 Specify independent priors `mu_i ~ N(0,tau^2)`, tau>0, and stationary initial states conditional on their means. The likelihood remains Gaussian under non-anticipating sampling, and posterior mean variances are
 
 ```math
-\operatorname{Var}(\mu_i\mid H_K)=(\tau^{-2}+I_i(H_K))^{-1}.
+\mathrm{Var}(\mu_i\mid H_K)=(\tau^{-2}+I_i(H_K))^{-1}.
 ```
 
 The information-sum bound above holds pathwise. If only one arm is sampled, its sum `1+(K-1)f(1)` is also no larger than `2+(K-2)f(2)`. Thus, for even K, the posterior variance of `D=mu1-mu2` is at least

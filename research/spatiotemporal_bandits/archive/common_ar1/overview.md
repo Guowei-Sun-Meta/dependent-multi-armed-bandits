@@ -97,7 +97,7 @@ For the closest comparison, the 2016 process can be written
 
 ```math
 f_{t+1}=\phi f_t+\sqrt{1-\phi^2}\,g_{t+1},
-\qquad g_t\stackrel{\mathrm{iid}}\sim\operatorname{GP}(0,k),
+\qquad g_t\stackrel{\mathrm{iid}}\sim\mathrm{GP}(0,k),
 \qquad \phi=\sqrt{1-\epsilon}.
 ```
 
@@ -140,7 +140,7 @@ A convenient proper graph covariance is `K_G=(alpha I+lambda L_G)^-1`, alpha>0, 
 
 ```math
 \mathbb E[\mu^\top L_G\mu]
-=m_\mu^\top L_Gm_\mu+\operatorname{tr}(L_GK_\mu),
+=m_\mu^\top L_Gm_\mu+\mathrm{tr}(L_GK_\mu),
 ```
 
 and is not a deterministic energy certificate. Gaussian fluctuations also need not satisfy a hard graph-energy bound at every time. Deterministic certificates and Bayesian priors must retain their separate interpretations.
@@ -155,14 +155,14 @@ Our simplest benchmark takes common persistence and a specified stationary resid
 With stationary initialization, conditional on mu,
 
 ```math
-\operatorname{Cov}(f_{i,t},f_{j,t+s}\mid\mu)
+\mathrm{Cov}(f_{i,t},f_{j,t+s}\mid\mu)
 =\phi^{|s|}(K_z)_{ij}.
 ```
 
 Under an independent Gaussian prior for mu,
 
 ```math
-\boxed{\operatorname{Cov}(f_{i,t},f_{j,u})
+\boxed{\mathrm{Cov}(f_{i,t},f_{j,u})
 =(K_\mu)_{ij}+\phi^{|t-u|}(K_z)_{ij}.}
 ```
 
@@ -206,7 +206,7 @@ Conditional on the complete history, these updates remain valid under adaptive s
 For a future node j at lag s define
 
 ```math
-C_{j,s;a}=\operatorname{Cov}(f_{j,t+s},Y_t\mid H_t,a_t=a).
+C_{j,s;a}=\mathrm{Cov}(f_{j,t+s},Y_t\mid H_t,a_t=a).
 ```
 
 Then observing a reduces that future reward variance by
@@ -218,8 +218,8 @@ Then observing a reduces that future reward variance by
 In the augmented state, `C_j,s;a = h_j^T A^s P_t h_a`. The fresh measurement noise is independent and contributes only to d_a. More generally, for a vector target U of permanent means, a future traffic window, or future reward differences,
 
 ```math
-\boxed{\operatorname{Cov}(U\mid H_t)-\operatorname{Cov}(U\mid H_t,Y_t,a)
-=\frac{c_ac_a^\top}{d_a},\quad c_a=\operatorname{Cov}(U,Y_t\mid H_t).}
+\boxed{\mathrm{Cov}(U\mid H_t)-\mathrm{Cov}(U\mid H_t,Y_t,a)
+=\frac{c_ac_a^\top}{d_a},\quad c_a=\mathrm{Cov}(U,Y_t\mid H_t).}
 ```
 
 For a particular difference D=f_j,t+s-f_k,t+s, the reduction is
@@ -243,7 +243,7 @@ After adaptive observations, the joint covariance need not retain this simple fa
 Let m_i be current reward means and ell_i next-period reward means before the current observation. For candidate measurement a, put
 
 ```math
-u_j^{(a)}=\frac{\operatorname{Cov}(f_{j,t+1},Y_t\mid H_t,a)}{\sqrt{d_a}}.
+u_j^{(a)}=\frac{\mathrm{Cov}(f_{j,t+1},Y_t\mid H_t,a)}{\sqrt{d_a}}.
 ```
 
 The standardized observation innovation Z is N(0,1), and every next-period mean changes to `ell_j+u_j^(a) Z`. Therefore
@@ -269,7 +269,7 @@ With two candidate arms, define `g(d,s)=s varphi(d/s)-d Phi(-d/s)` for d>=0, and
 ```math
 \boxed{Q_a=m_a+\max(\ell_1,\ell_2)
 +g\!\left(|\ell_1-\ell_2|,
-\frac{|\operatorname{Cov}(f_{1,t+1}-f_{2,t+1},Y_t\mid H_t)|}{\sqrt{d_a}}\right).}
+\frac{|\mathrm{Cov}(f_{1,t+1}-f_{2,t+1},Y_t\mid H_t)|}{\sqrt{d_a}}\right).}
 ```
 
 This extends the independent-arm rule: the information bonus depends on the uncertainty reduction of the **future difference**. A large common fluctuation cancels. With more than two arms the full upper envelope replaces this pairwise formula.
@@ -312,7 +312,7 @@ p_i=\Pr(\theta_i\ge\theta_j\ \forall j\mid H).
 For correlated targets, p_i is a Gaussian orthant probability for the difference vector. Its covariance entries are
 
 ```math
-\operatorname{Cov}(\theta_i-\theta_j,\theta_i-\theta_k)
+\mathrm{Cov}(\theta_i-\theta_j,\theta_i-\theta_k)
 =S_{ii}-S_{ij}-S_{ik}+S_{jk}.
 ```
 
@@ -332,8 +332,8 @@ With one measurement left, a **PCS knowledge-gradient rule** chooses
 For two candidates this rule has a simple exact allocation: maximize
 
 ```math
-\boxed{\frac{\operatorname{Cov}(\theta_1-\theta_2,Y_a\mid H)^2}
-{\operatorname{Var}(Y_a\mid H)}.}
+\boxed{\frac{\mathrm{Cov}(\theta_1-\theta_2,Y_a\mid H)^2}
+{\mathrm{Var}(Y_a\mid H)}.}
 ```
 
 **Reason.** The target is the scalar Gaussian contrast D. Each possible measurement supplies a Gaussian experiment about D, with deterministic posterior contrast variance. A larger variance reduction is a more informative Gaussian experiment: the smaller-information experiment can be simulated by adding independent noise to the more informative one. Thus its optimal sign-selection success cannot be greater. The rule holds even at a nonzero posterior contrast mean, with a common measurement budget and target. Costs or durations change the allocation problem. For more than two contenders, one contrast variance does not determine PCS; use the expected best-probability objective or a documented approximation.
@@ -461,7 +461,7 @@ Here sigma_obs^2 is the measurement variance denoted by r elsewhere. The exact i
 
 ```math
 \boxed{\mathcal I=M^\top\Xi^{-1}M,\qquad
-\operatorname{KL}(P_\mu,P_\nu)=\tfrac12(\mu-\nu)^\top\mathcal I(\mu-\nu).}
+\mathrm{KL}(P_\mu,P_\nu)=\tfrac12(\mu-\nu)^\top\mathcal I(\mu-\nu).}
 ```
 
 With a proper Gaussian mean prior,

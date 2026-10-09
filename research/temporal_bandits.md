@@ -31,7 +31,7 @@ v_i(h)=q_i\sum_{j=0}^{h-1}\phi_i^{2j}
 
 The forecast mean reverts toward the long-run mean; its variance increases with age and approaches the stationary variance $`V_i=q_i/(1-\phi_i^2)`$. For a rested arm, calendar inactivity does not increase this transition count.
 
-With noisy observations $`Y=X+\epsilon`$, $`\operatorname{Var}(\epsilon)=r_i`$, the state posterior variance after observation is
+With noisy observations $`Y=X+\epsilon`$, $`\mathrm{Var}(\epsilon)=r_i`$, the state posterior variance after observation is
 
 ```math
 P^+=\frac{P^-r_i}{P^-+r_i},\qquad
@@ -43,11 +43,11 @@ The reward's predictive variance also includes measurement noise if the noisy me
 Parameter uncertainty is a different quantity. With known $`\phi_i,q_i`$, unknown $`\mu_i`$, and an exact last state observation, the law of total variance gives
 
 ```math
-\operatorname{Var}(X_{i,t}\mid H_t)
-=v_i(h)+(1-\phi_i^h)^2\operatorname{Var}(\mu_i\mid H_t).
+\mathrm{Var}(X_{i,t}\mid H_t)
+=v_i(h)+(1-\phi_i^h)^2\mathrm{Var}(\mu_i\mid H_t).
 ```
 
-More generally it gives $`\mathbb E_\theta[v_i(h;\theta)\mid H_t]+\operatorname{Var}_\theta(m_i(h;\theta)\mid H_t)`$, with the conditional state uncertainty included in $`v_i`$. Parameter learning can reduce the second term; innovations continually replenish the first.
+More generally it gives $`\mathbb E_\theta[v_i(h;\theta)\mid H_t]+\mathrm{Var}_\theta(m_i(h;\theta)\mid H_t)`$, with the conditional state uncertainty included in $`v_i`$. Parameter learning can reduce the second term; innovations continually replenish the first.
 
 ### Correlation has opposing effects
 
@@ -60,7 +60,7 @@ v_i(h)/V_i=1-\phi_i^{2h}.
 However, for a stationary consecutively observed AR(1) sequence,
 
 ```math
-n\operatorname{Var}(\bar X_n)\longrightarrow
+n\mathrm{Var}(\bar X_n)\longrightarrow
 V_i\frac{1+\phi_i}{1-\phi_i}
 =\frac{q_i}{(1-\phi_i)^2}.
 ```

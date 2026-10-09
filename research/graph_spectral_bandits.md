@@ -154,7 +154,7 @@ An alternative is to fit all observations directly:
 =(D_t+\lambda L+\eta I)^{-1}D_t\bar y_t,
 ```
 
-where $`D_t=\operatorname{diag}(n_i(t))`$ and $`\eta>0`$. In the graph eigenbasis, this is regularized linear least squares with graph-frequency penalties. This puts the estimator in the same class as [SpectralUCB's estimator](https://jmlr.org/papers/volume21/16-529/16-529.pdf); adding its standard confidence bonus is an existing baseline.
+where $`D_t=\mathrm{diag}(n_i(t))`$ and $`\eta>0`$. In the graph eigenbasis, this is regularized linear least squares with graph-frequency penalties. This puts the estimator in the same class as [SpectralUCB's estimator](https://jmlr.org/papers/volume21/16-529/16-529.pdf); adding its standard confidence bonus is an existing baseline.
 
 With equal counts $`n`$ and $`\eta=0`$, the estimate reduces to $`(I+(\lambda/n)L)^{-1}\bar y`$. With unequal counts, it changes the original S-index and needs its own rank-preservation analysis.
 

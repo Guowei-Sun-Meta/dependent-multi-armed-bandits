@@ -70,7 +70,7 @@ n_i(T)\le1+\frac{4\beta_T^2}{\iota_i\Delta_i^2}
 *Proof.*
 1. **Validity.** S2 holds for all contrasts simultaneously, so it covers every e_i and every w in every simplex, at every round. For w in Δ(C_c), wᵀμ ≥ min over C_c of μ_i ≥ v_c − ε_c. Hence both terms of U_c bound v_c from above. The event does not depend on how w is chosen, so minimizing over w is free.
 2. **Regret.** If c is selected at round t, then on the event μ* ≤ U_c ≤ wᵀμ + 2β_t‖w‖ + ε_c ≤ v_c + ε_c + 2β_t‖w‖ for the minimizing w. So $`\min_w\lVert w\rVert^2_{J_t^{-1}}\ge(\Gamma_c-\varepsilon_c)^2/(4\beta_t^2)`$. The information-growth condition says this minimum is at most 1/(ι_c (N_c − 1)) after N_c pulls. The arm bound is identical. Summation follows A1's proof, with the first-pull term unchanged.
-3. **Corollary.** For independent arms, the observation information I_t is diagonal (S1 with block-diagonal dynamics). The coefficient of μ_i in a pull of arm i is $`1-\varphi^h s`$, where h ≥ 1 is the gap since the arm's last observation and s is the Kalman filter's estimate of z after seeing residuals all equal to 1. Each filter step is a convex combination of φ × (previous estimate) and the new residual, so 0 ≤ s ≤ 1, and the coefficient is at least 1 − φ. The predictive variance satisfies d ≤ V + r. Each pull therefore adds at least (1 − φ)²/(V + r) to $`(\mathcal I_t)_{ii}`$. For a component, take w proportional to the diagonal information; then $`w^\top J^{-1}w\le w^\top\operatorname{diag}(\mathcal I)^{-1}w=1/\sum_{i\in C_c}\mathcal I_{ii}`$. ∎
+3. **Corollary.** For independent arms, the observation information I_t is diagonal (S1 with block-diagonal dynamics). The coefficient of μ_i in a pull of arm i is $`1-\varphi^h s`$, where h ≥ 1 is the gap since the arm's last observation and s is the Kalman filter's estimate of z after seeing residuals all equal to 1. Each filter step is a convex combination of φ × (previous estimate) and the new residual, so 0 ≤ s ≤ 1, and the coefficient is at least 1 − φ. The predictive variance satisfies d ≤ V + r. Each pull therefore adds at least (1 − φ)²/(V + r) to $`(\mathcal I_t)_{ii}`$. For a component, take w proportional to the diagonal information; then $`w^\top J^{-1}w\le w^\top\mathrm{diag}(\mathcal I)^{-1}w=1/\sum_{i\in C_c}\mathcal I_{ii}`$. ∎
 
 **Status.** Parts 1 and 2 are complete given S1, S2 and A1. Part 3 is complete for independent AR(1) arms.
 - *Open:* a per-pull information bound with correlated shocks Q_G. The coefficient of μ_i then also involves other arms' means. Plan: state the component bound in terms of the realized information, which is always computable, and check it numerically.
@@ -81,7 +81,7 @@ n_i(T)\le1+\frac{4\beta_T^2}{\iota_i\Delta_i^2}
 **Proposition B2.** Take one arm sampled on n consecutive rounds, with stationary AR(1) persistence φ ∈ (0, 1), r = 0 and Var(z) = V. The sample mean has
 
 ```math
-\operatorname{Var}(\bar Y_n)=\frac Vn\Big[\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^n)}{n(1-\varphi)^2}\Big]
+\mathrm{Var}(\bar Y_n)=\frac Vn\Big[\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^n)}{n(1-\varphi)^2}\Big]
 ```
 
 The iid radius $`b(n)=\sqrt{2V\ell/n}`$ therefore has miscoverage probability

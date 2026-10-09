@@ -920,12 +920,25 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 5.47441pt on input line 33.
  [1
 
-] [2] [3] [4] [5] [6] [7] [8]
+] [2] [3] [4] [5] [6] [7] (policy_sections.tex [8] [9]
+Underfull \hbox (badness 1117) in paragraph at lines 49--51
+\TU/texgyrepagella-regular.otf(0)/m/it/10.95 Proof.  \TU/texgyrepagella-regular
+.otf(0)/m/n/10.95 On the simultaneous confidence event, a non-forced UCB action
+ has gap at most
+ []
+
+) (policy_state_sections.tex [10]
+Overfull \hbox (28.29594pt too wide) in paragraph at lines 30--32
+\TU/texgyrepagella-regular.otf(0)/m/n/10.95 Contrast LUCB takes $[] [] [] [][]$
+, picks the challenger maximizing $[][] [] [][] [] [][][]$,
+ []
+
+) [11]
 PGFPlots: reading {results/general_ar/pcs_schedule.csv}
 PGFPlots: reading {results/general_ar/pcs_schedule.csv}
- [9] [10]
-(results/general_ar/table.tex) [11] [12] [13] [14] (manuscript.aux)
+ [12] [13] (results/general_ar/table.tex) [14] [15] [16] [17]
+(manuscript.aux)
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: 0E9EA1920384A62834ED419A7762C109;4727.
+(rerunfilecheck)             Checksum: F24A565F461F66079B7F16C71B869329;6237.
  )
-Output written on manuscript.xdv (14 pages, 395020 bytes).
+Output written on manuscript.xdv (17 pages, 480092 bytes).

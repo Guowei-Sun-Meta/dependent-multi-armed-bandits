@@ -36,6 +36,10 @@ SEED = 20261009
 N, COMP, R_OBS, EPS = 20, 4, 0.1, 0.1
 POLICIES = ("ucb_iid", "sp_ucb_iid", "sp_ucb_emp", "ucb_st", "sp_ucb_st")
 ELIM_POLICIES = ("se_iid", "se_st")
+# B1' (independent shocks only): the innovation information is diagonal, so each arm and each
+# component is a scalar martingale; use the one-dimensional mixture bound with a union over the
+# N + M arms and components instead of the N-dimensional log-determinant ellipsoid.
+SCALAR_POLICIES = ("sp_ucb_iid", "sp_ucb_st", "sp_ucb_st1", "se_iid", "se_st", "se_st1")
 BATCHES = (1, 25)
 PHIS = (0.0, 0.5, 0.9, 0.97)
 CONFIGS = ("independent", "correlated")
@@ -64,6 +68,20 @@ def world(seed: int, phi: float, config: str, T: int):
         z = phi * z + Lq @ rng.standard_normal(N)
     Y = mu + Z + R_OBS * rng.standard_normal((T, N))
     return mu, labels, C, q, Y
+
+
+def scalar_bounds(st, members, delta):
+    """B1' bounds from the diagonal innovation information (valid when Q is diagonal)."""
+    alpha = st.H[0, 0]
+    Jd = np.diag(st.J)
+    dlt = delta / (N + COMP)
+    mu_i = st.q / Jd
+    rad_i = (np.sqrt(2 * np.log(np.sqrt(Jd / alpha) / dlt)) + np.sqrt(alpha)) / np.sqrt(Jd)
+    pool = np.empty(COMP)
+    for c, m in enumerate(members):
+        Jc = alpha + (Jd[m] - alpha).sum()
+        pool[c] = st.q[m].sum() / Jc + (np.sqrt(2 * np.log(np.sqrt(Jc / alpha) / dlt)) + np.sqrt(alpha)) / np.sqrt(Jc)
+    return mu_i - rad_i, mu_i + rad_i, pool + EPS
 
 
 class InnovationRegression:
@@ -118,7 +136,7 @@ def run(args):
     ell = np.log(2 * (N + COMP) * T / delta)
     reg = np.zeros(T)
     viol_rounds = 0
-    st = InnovationRegression(phi, q * C, C, alpha=1.0 / N) if policy.endswith("_st") else None
+    st = InnovationRegression(phi, q * C, C, alpha=1.0 / N) if policy.endswith(("_st", "_st1")) else None
     if policy.startswith("se_"):
         return run_elimination(policy, config, phi, seed, T, batch, mu, labels, members, Y, st, sigma2, ell, delta, t0)
     for t in range(T):
@@ -133,6 +151,8 @@ def run(args):
             var_c = np.where(Nc > 1, SSc / np.maximum(Nc, 1) - (Sc / np.maximum(Nc, 1)) ** 2, sigma2)
             U_i = np.where(n > 1, s / np.maximum(n, 1) + np.sqrt(np.maximum(var_i, 1e-6) * lvl / np.maximum(n, 1)), np.inf)
             pool = np.where(Nc > 1, Sc / np.maximum(Nc, 1) + np.sqrt(np.maximum(var_c, 1e-6) * lvl / np.maximum(Nc, 1)) + EPS, np.inf)
+        elif policy.endswith("_st1"):
+            _, U_i, pool = scalar_bounds(st, members, delta)
         else:
             mu_hat, Jinv, beta = st.estimate(delta, np.sqrt(N))
             sd = np.sqrt(np.maximum(np.diag(Jinv), 0))
@@ -149,7 +169,7 @@ def run(args):
             comp_up = np.array([min(U_i[m].max(), pool[c]) for c, m in enumerate(members)])
             viol = (U_i < mu - 1e-12).any() or (comp_up < v_c - 1e-12).any()
             if decide:
-                if not policy.endswith("_st") and t < COMP * batch:
+                if not policy.endswith(("_st", "_st1")) and t < COMP * batch:
                     a = int(members[t // batch][0])
                 else:
                     c = int(np.argmax(comp_up))
@@ -197,6 +217,8 @@ def run_elimination(policy, config, phi, seed, T, batch, mu, labels, members, Y,
                 lo = np.where(n > 0, s / np.maximum(n, 1) - rad, -np.inf)
                 hi = np.where(n > 0, s / np.maximum(n, 1) + rad, np.inf)
                 pool = np.where(Nc > 0, Sc / np.maximum(Nc, 1) + np.sqrt(2 * sigma2 * ell / np.maximum(Nc, 1)) + EPS, np.inf)
+            elif policy == "se_st1":
+                lo, hi, pool = scalar_bounds(st, members, delta)
             else:
                 mu_hat, Jinv, beta = st.estimate(delta, np.sqrt(N))
                 sd = np.sqrt(np.maximum(np.diag(Jinv), 0))
@@ -263,8 +285,9 @@ def verify():
 
 def main(seeds, T, jobs, tag=""):
     RESULTS.mkdir(parents=True, exist_ok=True)
-    pols = ELIM_POLICIES if tag.startswith("_elim") else POLICIES
-    tasks = [(c, phi, s, p, T, b) for c in CONFIGS for phi in PHIS for s in range(seeds) for p in pols
+    pols = SCALAR_POLICIES if tag.startswith("_scalar") else ELIM_POLICIES if tag.startswith("_elim") else POLICIES
+    configs = ("independent",) if tag.startswith("_scalar") else CONFIGS
+    tasks = [(c, phi, s, p, T, b) for c in configs for phi in PHIS for s in range(seeds) for p in pols
              for b in BATCHES]
     tasks.sort(key=lambda x: not x[3].endswith("_st"))
     with ProcessPoolExecutor(jobs) as ex:

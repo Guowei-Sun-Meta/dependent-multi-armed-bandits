@@ -133,6 +133,18 @@ That limit tends to 1 as φ → 1 at a fixed confidence level ℓ, and it shrink
 3. **Invalid certificates did not raise mean regret in this toy.** The iid policy's violations mostly under-cover suboptimal arms, and B1's confidence width is wide. A regret argument for certification therefore rests on cases where the *optimal* component is under-covered: KuaiRec Setting A's heavy tails, and the misalignment counterexample.
 4. *(The empirical-variance, log t variant violates even at φ = 0, because variance estimates from 2–3 samples are tiny. That is a small-sample artifact, not persistence, and is excluded from the B2 claim.)*
 
+**Certified successive elimination** (an irrevocable decision; 20 seeds, T = 5,000; `coverage_runs_elim.csv`):
+
+| Exposure | φ | Best arm eliminated, iid certificate | Best arm eliminated, B1 | Mean regret, iid / B1 |
+| --- | ---: | ---: | ---: | --- |
+| One at a time | 0 to 0.97 | 0% | 0% | 1,088–1,170 / 1,170 |
+| Blocks of 25 | 0.9 | 40% (correlated), 65% (independent) | 0% | 984–1,060 / 1,170 |
+| Blocks of 25 | 0.97 | 65% (correlated), 75% (independent) | 0% | 1,072–1,097 / 1,170 |
+
+- **Decision correctness:** under bursty persistent exposure, iid certificates make the wrong irrevocable decision in 40–75% of runs, against a nominal 5%. B1 never does.
+- **Cost:** B1 eliminated nothing within 5,000 rounds; its regret equals round-robin's (1,170). Valid but slow, so it needs longer horizons and reported stopping times.
+- **Regret consequence of the wrong eliminations is small here,** because near-best arms (0.50 against 0.55) survive. A larger best-arm gap would make it linear.
+
 **Implications for the paper.**
 - Present certification as guaranteeing **correct decisions**: certified rejection, stopping and recommendation, where a false certificate means a wrong irrevocable action. The fixed-confidence corollary in [S] is the natural statement.
 - Present regret as the cost of that guarantee, not as the headline benefit.

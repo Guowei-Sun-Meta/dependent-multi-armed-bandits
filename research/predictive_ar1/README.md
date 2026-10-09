@@ -4,6 +4,8 @@ Working development, 8 October 2026. The objective is to reduce the coefficient 
 
 The [two-arm allocation development](../two_arm_ar1/README.md) and its [proofs in PDF](../two_arm_ar1/manuscript.pdf) now give exact even-budget allocation for identifying unknown long-run means, an adaptive Bayesian optimality theorem, and an exact terminal-state identification policy. They also derive the two-pull reward optimum and a stronger two-arm sparse-monitoring regret lower bound. In that note `K` denotes the total sample budget; this draft uses `K` for the number of arms.
 
+The [multiple-arm AR(p) development](../ar_p_bandits/README.md) extends the Gaussian belief calculations and Predictive Sampling to heterogeneous orders, gives an exact general two-period reward score, and derives allocation benchmarks for separate simulation streams. Its counterexamples distinguish those results from a general optimal PCS or reward policy.
+
 ## Model and observation timing
 
 Independent arms evolve every calendar round:

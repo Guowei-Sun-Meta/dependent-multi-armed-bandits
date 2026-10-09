@@ -1,0 +1,101 @@
+{
+  "verification": {
+    "matrix_filter_schedule_checks": 46606,
+    "ar2_information": {
+      "consecutive_pair": 2.0000000000000004,
+      "gap_two_pair": 1.1111111111111112
+    },
+    "ar2_terminal_difference_variances": {
+      "AABB": 0.9503999999999997,
+      "BABA": 1.3599999999999999
+    },
+    "unequal_variance_best_probabilities": [
+      0.36736985995795135,
+      0.20572048683314362,
+      0.42690965320890467
+    ],
+    "equal_gap_three_arm_weights": [
+      0.41421356237309503,
+      0.2928932188134525,
+      0.2928932188134525
+    ],
+    "rested_variance_optimal_counts_budget_20": [
+      10,
+      2,
+      8
+    ],
+    "scope": "exact formulas and stated design criteria; no general PCS or regret optimality claim"
+  },
+  "conditional_pcs": [
+    {
+      "a": 0,
+      "resample_arm_1": 0.4336575545351893,
+      "sample_arm_3": 0.4884698983638883
+    },
+    {
+      "a": 1,
+      "resample_arm_1": 0.5667116144775727,
+      "sample_arm_3": 0.45913814908742256
+    },
+    {
+      "a": 2,
+      "resample_arm_1": 0.6230421110310346,
+      "sample_arm_3": 0.4909493208108758
+    },
+    {
+      "a": 3,
+      "resample_arm_1": 0.6329806373936367,
+      "sample_arm_3": 0.49922028764347637
+    },
+    {
+      "a": 5,
+      "resample_arm_1": 0.6338595751171511,
+      "sample_arm_3": 0.4999993851688189
+    },
+    {
+      "a": 10,
+      "resample_arm_1": 0.6338602375546099,
+      "sample_arm_3": 0.5000000005761313
+    }
+  ],
+  "simulation": {
+    "runs": 40000,
+    "budget": 12,
+    "means": [
+      0.35,
+      0,
+      -0.3
+    ],
+    "AR_coefficients": [
+      [
+        0.85
+      ],
+      [
+        0.3,
+        0.6
+      ],
+      [
+        0.4,
+        0.15,
+        0.1
+      ]
+    ],
+    "stationary_variances": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "estimator_variances": [
+      0.5823486966717777,
+      0.7179262970464174,
+      0.4169063588859812
+    ],
+    "exact_pcs": 0.5286984835929014,
+    "empirical_pcs": 0.528175,
+    "ci95_halfwidth": 0.004892214274413479
+  },
+  "date": "2026-10-09",
+  "clock": "calendar time, except explicitly rested allocation results",
+  "parameters_known": "AR coefficients and innovation variance; means unknown for mean selection",
+  "numerical_integration": "Inner composite Simpson, [-9,9], 160 intervals; outer adaptive Simpson target tolerance 2e-8; unequal-variance example uses 640 intervals; not certified quadrature bounds"
+}

@@ -16,7 +16,7 @@ The original limitations concerning untrusted certificates and unmatched positiv
 2. How informative is a valid quantitative restriction on reward differences? This is the question answered by the current energy certificates and regret bounds.
 3. What if the asserted restriction is false or unknown, and how much does learning its validity cost? The present algorithm has no general guarantee for this setting.
 
-The manuscript assumes supplied bounds \(\mu_c^\top L_c\mu_c\le S_c^2\). Its clique calculation varies the allowed budget \(S_c\) while the actual true means remain homogeneous and their energy remains zero. Consequently, that curve describes uncertainty allowed by prior information, not a directly observed measure of how wrong the graph is. The corrupted-graph experiment also supplies an oracle certificate. It does not demonstrate inexpensive validation from selected-arm feedback.
+The manuscript assumes supplied bounds $`\mu_c^\top L_c\mu_c\le S_c^2`$. Its clique calculation varies the allowed budget $`S_c`$ while the actual true means remain homogeneous and their energy remains zero. Consequently, that curve describes uncertainty allowed by prior information, not a directly observed measure of how wrong the graph is. The corrupted-graph experiment also supplies an oracle certificate. It does not demonstrate inexpensive validation from selected-arm feedback.
 
 **Closest primary research.**
 
@@ -44,21 +44,21 @@ Related ideas also constrain possible extensions. [Liu, Yin, and Wang, UAI 2023]
 
 **The clique interpolation needs particularly careful positioning.** Our constant is
 
-\[
+```math
 C_c=\frac{2\sigma^2m\Gamma}
 {\Gamma^2+(m-1)(\Gamma-S/\sqrt{w(m-1)})_+^2}.
-\]
+```
 
-For a homogeneous cluster, Clus-UCB's lower-bound expression reduces to \(m\Gamma/[d+(m-1)b]\), where \(d\) and \(b\) are its one-sided divergences at the optimum and at the optimum minus the width. Replacing these by Gaussian divergences gives the same algebraic expression with width \(\beta=S/\sqrt{w(m-1)}\). This is our mathematical comparison, not a Gaussian theorem proved in that Bernoulli paper. The energy and width classes are different; the shared extremal shape limits the case for a fundamentally new interpolation law.
+For a homogeneous cluster, Clus-UCB's lower-bound expression reduces to $`m\Gamma/[d+(m-1)b]`$, where $`d`$ and $`b`$ are its one-sided divergences at the optimum and at the optimum minus the width. Replacing these by Gaussian divergences gives the same algebraic expression with width $`\beta=S/\sqrt{w(m-1)}`$. This is our mathematical comparison, not a Gaussian theorem proved in that Bernoulli paper. The energy and width classes are different; the shared extremal shape limits the case for a fundamentally new interpolation law.
 
-**A useful limitation on any validation proposal.** Consider Gaussian rewards with known variance \(\sigma^2\), a unique best arm with mean below one, and an arbitrary candidate graph carrying no trusted restrictions. If a policy is uniformly efficient over every mean vector in \([0,1]^K\), then even at an instance perfectly matching the candidate graph,
+**A useful limitation on any validation proposal.** Consider Gaussian rewards with known variance $`\sigma^2`$, a unique best arm with mean below one, and an arbitrary candidate graph carrying no trusted restrictions. If a policy is uniformly efficient over every mean vector in $`[0,1]^K`$, then even at an instance perfectly matching the candidate graph,
 
-\[
+```math
 \liminf_{T\to\infty}\frac{\mathbb E R_T}{\log T}
 \ge \sum_{i:\Delta_i>0}\frac{2\sigma^2}{\Delta_i}.
-\]
+```
 
-This is a direct specialization of the standard change-of-measure lower bound, not a new theorem. To see why, an alternative environment can change only arm \(i\) to mean \(\mu^*+\eta\). Other arms provide no evidence against this alternative. The necessary information gives \(\liminf \mathbb E N_i(T)/\log T\ge 2\sigma^2/(\Delta_i+\eta)^2\); let \(\eta\downarrow0\) and sum regret contributions. The structured information framework above formalizes the same argument.
+This is a direct specialization of the standard change-of-measure lower bound, not a new theorem. To see why, an alternative environment can change only arm $`i`$ to mean $`\mu^*+\eta`$. Other arms provide no evidence against this alternative. The necessary information gives $`\liminf \mathbb E N_i(T)/\log T\ge 2\sigma^2/(\Delta_i+\eta)^2`$; let $`\eta\downarrow0`$ and sum regret contributions. The structured information framework above formalizes the same argument.
 
 Thus a policy cannot retain the reduced component-wise logarithmic constant while also promising logarithmic regret on every arbitrary graph violation using only ordinary bandit observations. This does not rule out finite-horizon benefits, weaker robustness requirements, restricted violations, or additional informative data. Clus-UCB v2 also discusses the corresponding obstacle for learning unrestricted cluster widths.
 

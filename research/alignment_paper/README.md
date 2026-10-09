@@ -16,26 +16,26 @@ The paper establishes an information separation growing with `m`, and a concrete
 
 For a fixed observation design `p`, the useful graph quantity is
 
-\[
+```math
 \kappa_L(p)=\max_i\sqrt{(e_i-p)^\top L^\dagger(e_i-p)},\qquad
 \rho_L=\min_{p\ge0,\,\mathbf1^\top p=1}\kappa_L(p).
-\]
+```
 
 The radius is the smallest enclosing ball in the resistance embedding. Its computation is equivalent to the established maximum graph variance problem, credited to prior work. We connect it to the first-order increase in information cost when a valid energy certificate is loosened:
 
-\[
+```math
 \frac{C_{L,S}}{2\sigma^2/\Gamma}
 =1+2(S/\Gamma)\rho_L+O((S/\Gamma)^2D),
-\]
+```
 
 where `D` is resistance diameter and the component's true means are homogeneous. A general information design and a finite-strength spectral resolvent oracle describe the underlying lower-bound program. The expansion is not the achieved regret coefficient of the proposed policy.
 
 The new algorithm, GDE-UCB, samples a fixed resistance design in doubling stages, eliminates components using valid bounds, and falls back to ordinary arm UCB. Its regret bound charges exploration and integer rounding. On the normalized path at `S=Γ`, a sufficient horizon permits rejection using only the two endpoints, with
 
-\[
+```math
 R_T\le1024\sigma^2\ell/\Gamma+4\Gamma+\delta T,
 \quad \ell=\log(2(K+M)T/\delta).
-\]
+```
 
 The corresponding clique class has an information lower-bound coefficient `2σ²m/Γ`. These statements separate arm-count dependence; the constants do not match, and the algorithm is not proved information-optimal.
 

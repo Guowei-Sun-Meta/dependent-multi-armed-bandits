@@ -22,40 +22,40 @@ The sample clock is part of the problem. If waiting is free and the calendar hor
 
 For the reward problem, retain the existing draft's known common mean and full-current-state oracle. Center the mean at zero:
 
-\[
+```math
 X_{i,t}=\phi X_{i,t-1}+\eta_{i,t},\qquad \eta_{i,t}\sim N(0,q).
-\]
+```
 
 Every deterministic sampling sequence has expected cumulative reward zero by stationarity, regardless of its allocation. Its expected oracle regret is exactly `K sqrt(V/pi)`. Adaptive actions can earn a positive expected reward by using previous observations to predict the current states. Thus the desired allocation is a history-dependent action rule, not a predetermined count split.
 
 For two rounds remaining at predictive beliefs `N(m_i,v_i)`, put `d=|m1-m2|` and
 
-\[
+```math
 g(d,s)=s\varphi(d/s)-d\Phi(-d/s).
-\]
+```
 
 The exact two-period score is
 
-\[
+```math
 Q_i=m_i+\phi\max(m_1,m_2)+\phi g(d,\sqrt{v_i}).
-\]
+```
 
 Choose the arm with the larger score. At `phi=.99`, `(m1,m2)=(.05,0)` and `(v1,v2)=(.0199,1)`, the scores are `(.133928,.420196)`. The optimal first action samples the lower predictive mean to improve the last decision. These beliefs are reachable after one observation from the stationary prior, so greedy prediction is already suboptimal at a total budget of three.
 
 From the stationary prior, the total-budget-two optimum is explicit: sample either arm, then repeat it if its observed reward is nonnegative and switch otherwise. Its exact regret is
 
-\[
+```math
 R_2^*=2\sqrt{V/\pi}-\phi\sqrt{V/(2\pi)}.
-\]
+```
 
 For larger budgets, the finite-horizon Bellman recursion in the earlier draft remains the exact characterization; a general closed-form adaptive solution is not established. The same Gaussian autoregressive reward-observation model has prior literature, including [Kuhn, Mandjes, and Nazarathy, VALUETOOLS 2014, published 2015](https://eudl.eu/pdf/10.4108/icst.valuetools.2014.258207). No novelty claim is made for the model or the use of belief-state control.
 
 We can also compare reward and mean identification under the same unknown-mean model. With independent `mu_i ~ N(0,tau^2)`, a first observed reward x predicts the next reward on that arm as `beta x`, where `beta=(tau^2+phi V)/(tau^2+V)`; the other arm retains forecast zero. The optimal two-pull reward policy again repeats after a nonnegative observation and switches otherwise, with exact prior-averaged regret
 
-\[
+```math
 R_2^{\mathrm{Bayes},*}=2\sqrt{(\tau^2+V)/\pi}
 -\frac{\tau^2+\phi V}{\sqrt{2\pi(\tau^2+V)}}.
-\]
+```
 
 Under that same prior, the best-mean identification optimum below samples each arm once at K=2. Changing the objective alone therefore changes the optimal policy. The known-common-mean sparse-monitoring regret bound below is not asserted for this unknown-mean extension.
 
@@ -63,29 +63,29 @@ Under that same prior, the best-mean identification optimum below samples each a
 
 Mean identification requires unknown means. Now write
 
-\[
+```math
 X_{i,t}=\mu_i+\phi(X_{i,t-1}-\mu_i)+\eta_{i,t}.
-\]
+```
 
 Conditional on each mean, initialization is stationary with variance V. Suppose arm i is observed at fixed times `t1<...<tn`, with gaps `h_r=t_r-t_{r-1}`. Its first observation supplies information `1/V`. A gap-h transition satisfies
 
-\[
+```math
 X_{t_r}-\phi^h X_{t_{r-1}}
 \sim N\bigl((1-\phi^h)\mu_i,V(1-\phi^{2h})\bigr).
-\]
+```
 
 These Gaussian innovations yield the exact mean information
 
-\[
+```math
 I_i=\frac1V\left[1+\sum_{r=2}^{n_i}
 \frac{1-\phi^{h_r}}{1+\phi^{h_r}}\right].
-\]
+```
 
 The Gaussian maximum-likelihood/generalized-least-squares estimator has distribution `N(mu_i,1/I_i)`. For fixed schedules, estimates are independent across arms. If `Delta=|mu1-mu2|>0`, recommending the larger GLS estimate gives
 
-\[
+```math
 \mathrm{PCS}=\Phi\left(\frac{\Delta}{\sqrt{I_1^{-1}+I_2^{-1}}}\right).
-\]
+```
 
 These are frequentist probabilities involving the true unknown gap. Substituting an observed gap does not turn them into exact frequentist confidence statements. Conditioning an adaptive estimator only on its realized sample counts also does not justify its fixed-schedule Gaussian distribution.
 
@@ -93,29 +93,29 @@ These are frequentist probabilities involving the true unknown gap. Substituting
 
 Let `f(h)=(1-phi^h)/(1+phi^h)`. For `0<phi<1`, this is `tanh((-log phi)h/2)`, increasing and concave. There are `K-2` within-arm gaps if both arms are observed. Their total length is at most `2(K-2)`, because the first observations are distinct times and the last observations are distinct times. Jensen's inequality gives
 
-\[
+```math
 I_1+I_2\le\frac{2+(K-2)f(2)}V.
-\]
+```
 
 The comparison variance obeys
 
-\[
+```math
 I_1^{-1}+I_2^{-1}\ge\frac4{I_1+I_2}
 \ge\frac{4V}{2+(K-2)f(2)}.
-\]
+```
 
 For even K, strict alternation attains both inequalities: every gap equals two and both information totals are equal. Consequently
 
-\[
+```math
 n_1^*=n_2^*=K/2,\qquad
 I_* =\frac{K(1-\phi^2)+4\phi^2}{2V(1+\phi^2)},
-\]
+```
 
-\[
+```math
 \boxed{\mathrm{PCS}^{\mathrm{fixed},*}_K
 =\Phi\left(\Delta\sqrt{
 \frac{K(1-\phi^2)+4\phi^2}{4V(1+\phi^2)}}\right).}
-\]
+```
 
 This proves optimality over deterministic calendar schedules followed by GLS comparison. A proper symmetric Gaussian prior below gives a separate optimality result over all adaptive policies. Unknown or unequal persistence, noisy measurements, and nonstationary initialization require another analysis.
 
@@ -127,10 +127,10 @@ Suppose a scalar target D has prior `N(0,S0)` and any observation history gives 
 
 For the enhanced experiment, `D|H_enhanced ~ N(M',s)` with constant variance. Characteristic functions imply `M' ~ N(0,S0-s)`, even if the original policy was adaptive. The correlation between M' and D is `sqrt(1-s/S0)`. The bivariate Gaussian sign formula then yields the upper bound
 
-\[
+```math
 \Pr(\text{correct sign})\le\frac12+
 \frac1\pi\arcsin\sqrt{1-\frac{s}{S_0}}.
-\]
+```
 
 Any feasible experiment attaining the constant posterior variance s attains this bound. This proves an adaptive result from a pathwise variance bound, rather than assuming that adaptive sample means have a Gaussian law.
 
@@ -138,22 +138,22 @@ Any feasible experiment attaining the constant posterior variance s attains this
 
 Specify independent priors `mu_i ~ N(0,tau^2)`, tau>0, and stationary initial states conditional on their means. The likelihood remains Gaussian under non-anticipating sampling, and posterior mean variances are
 
-\[
+```math
 \operatorname{Var}(\mu_i\mid H_K)=(\tau^{-2}+I_i(H_K))^{-1}.
-\]
+```
 
 The information-sum bound above holds pathwise. If only one arm is sampled, its sum `1+(K-1)f(1)` is also no larger than `2+(K-2)f(2)`. Thus, for even K, the posterior variance of `D=mu1-mu2` is at least
 
-\[
+```math
 s_* =\frac2{\tau^{-2}+I_*}.
-\]
+```
 
 Alternation attains this constant variance. Apply the refinement argument with `S0=2 tau^2` to obtain
 
-\[
+```math
 \boxed{\mathrm{PCS}^{\mathrm{Bayes},*}_K
 =\frac12+\frac1\pi\arctan(\tau\sqrt{I_*}).}
-\]
+```
 
 The optimal terminal recommendation is the larger posterior mean. Alternation is therefore optimal over all adaptive sampling policies for this symmetric Bayesian objective and even K. This is prior-averaged PCS, not a uniform frequentist optimality theorem at every fixed mean pair.
 
@@ -161,18 +161,18 @@ The optimal terminal recommendation is the larger posterior mean. Alternation is
 
 Return to known common mean zero and ask which arm has the larger state at round K+1. Given the sampling history, let `D=X_{1,K+1}-X_{2,K+1}` and let h_i be each latest observation's age at K+1. Then
 
-\[
+```math
 D\mid H_K\sim N(m_1-m_2,S),\quad
 S=V(2-\phi^{2h_1}-\phi^{2h_2}),
-\]
+```
 
 with a zero predictable share for an unobserved arm. Since only one observation is allowed per round, the freshest possible ages are 1 and 2. Hence `S>=V(2-phi^2-phi^4)`. Observing different arms in the last two rounds attains this constant bound regardless of earlier actions. The refinement argument with `S0=2V` proves
 
-\[
+```math
 \boxed{\mathrm{PCS}^{\mathrm{state},*}_K
 =\frac12+\frac1\pi\arcsin\left(
 \phi\sqrt{\frac{1+\phi^2}{2}}\right),\quad K\ge2.}
-\]
+```
 
 At the terminal decision, select the larger predictive mean. Earlier samples cannot improve this pure terminal objective when means and dynamics are known and states are observed exactly. They can still be used to earn rewards before the final two observations, so this conclusion does not imply that repeated monitoring is useless for cumulative reward.
 
@@ -182,10 +182,10 @@ Timing matters. If the target is instead the state at K, after observing the Kth
 
 The refinement argument also bounds expected absolute predictive gaps by a Gaussian experiment with the minimal possible posterior variance. Before round t>=3 this gives `E max(m1,m2) <= sqrt(V/pi) rho`, where `rho=phi sqrt((1+phi^2)/2)`. Since any current action's expected reward is at most this greedy reward,
 
-\[
+```math
 R_K^\pi\ge\sqrt{V/\pi}
 \left[K-\frac\phi{\sqrt2}-(K-2)\rho\right],\qquad K\ge2.
-\]
+```
 
 In particular, `c_pi >= sqrt(V/pi)(1-rho)`, stronger than the all-past-state innovation bound `sqrt(V/pi)(1-phi)`. The finite-K bound is attained at K=2, but no general attainability claim is made. It captures an additional restriction: a causal learner cannot have observed both arms in the immediately previous round.
 
@@ -193,17 +193,17 @@ In particular, `c_pi >= sqrt(V/pi)(1-rho)`, stronger than the all-past-state inn
 
 If each arm advances only when it is sampled, consecutive local observations provide information
 
-\[
+```math
 I(n)=\frac{n(1-\phi)+2\phi}{V(1+\phi)},\qquad n\ge1.
-\]
+```
 
 The variance of the GLS mean estimator is `1/I(n)`, a convex function of n. Fixed-budget PCS is therefore maximized by `n1=floor(K/2)` and `n2=ceil(K/2)` for every K>=2. For even K,
 
-\[
+```math
 \boxed{\mathrm{PCS}^{\mathrm{rested},*}_K
 =\Phi\left(\Delta\sqrt{
 \frac{K(1-\phi)+4\phi}{4V(1+\phi)}}\right).}
-\]
+```
 
 This differs from the restless alternating formula: sampling the other arm also lets calendar time decorrelate the first arm in the restless model.
 

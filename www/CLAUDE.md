@@ -45,9 +45,9 @@ Two graphs constrain M:
 
 The two energies add up to the energy of vec(M) on the **Cartesian product graph**, whose Laplacian is L_U ⊗ I_K + I_n ⊗ L_I:
 
-$$
+```math
 \operatorname{tr}(M^\top L_U M) + \operatorname{tr}(M L_I M^\top) = \operatorname{vec}(M)^\top \left(L_U \oplus L_I\right) \operatorname{vec}(M)
-$$
+```
 
 So a user-graph bandit, an item-graph bandit and a combined one are all graph-over-arms problems on a single graph. The arms are (user, item) pairs, and only the arriving user's row can be played. This is how the repo's theory carries over.
 

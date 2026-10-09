@@ -26,6 +26,8 @@ FAMILY = {
     "ar_ts": "temporal only", "ar_twostep": "temporal only",
     "st_greedy": "spatiotemporal", "st_ts": "spatiotemporal", "st_ucb": "spatiotemporal",
     "st_twostep": "spatiotemporal",
+    "st_ps": "spatiotemporal", "st_ucbm1": "spatiotemporal", "st_ucbm2": "spatiotemporal",
+    "st_ucbm4": "spatiotemporal", "ar_ps": "temporal only",
 }
 COLORS = {"iid": "#9aa3ad", "spatial only": "#e08a2c", "temporal only": "#3b9a5a", "spatiotemporal": "#2a6fdb"}
 
@@ -45,6 +47,8 @@ def innovation_floor(config: str, seed: int, draws: int = 200_000) -> float:
 
 def main() -> None:
     runs = pd.read_csv(RESULTS / "runs.csv")
+    if (RESULTS / "runs_extra.csv").exists():
+        runs = pd.concat([runs, pd.read_csv(RESULTS / "runs_extra.csv")], ignore_index=True)
     T = max(int(c.split("@")[1]) for c in runs.columns if c.startswith("dyn@") and runs[c].notna().all())
     runs["dyn_per_round"] = runs[f"dyn@{T}"] / T
     runs["mu_per_round"] = runs[f"mu@{T}"] / T
@@ -67,12 +71,14 @@ def main() -> None:
     lines = [f"Regret per round at T = {T:,} (mean over seeds; standard error in brackets). Dynamic regret is "
              "against the full-current-state oracle; mean regret against the best long-run mean.", ""]
     for config, d in s.groupby("config", sort=False):
+        ts_reg = d.set_index("policy").dynamic_regret_per_round["ts"]
         lines += [f"**{config}** (innovation lower bound: {floor[config]:.3f} per round)", "",
-                  "| Policy | Uses | Dynamic regret / round | Ratio to TS | Mean regret / round |",
-                  "| --- | --- | ---: | ---: | ---: |"]
+                  "| Policy | Uses | Dynamic regret / round | Ratio to TS | Gap to the bound closed | Mean regret / round |",
+                  "| --- | --- | ---: | ---: | ---: | ---: |"]
         for _, r in d.sort_values("dynamic_regret_per_round").iterrows():
+            closed = (ts_reg - r.dynamic_regret_per_round) / (ts_reg - floor[config])
             lines.append(f"| {r.policy} | {r.family} | {r.dynamic_regret_per_round:.3f} [{r.se:.3f}] "
-                         f"| {r.ratio_to_ts:.3f} | {r.mean_regret_per_round:.3f} |")
+                         f"| {r.ratio_to_ts:.3f} | {closed:+.0%} | {r.mean_regret_per_round:.3f} |")
         lines.append("")
     text = "\n".join(lines)
     (RESULTS / "summary.md").write_text(text)

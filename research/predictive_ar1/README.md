@@ -2,6 +2,8 @@
 
 Working development, 8 October 2026. The objective is to reduce the coefficient of expected regret against an oracle observing every arm's current state. We specialize published Predictive Sampling, derive exact finite-horizon belief control, and give a conditional average-reward certificate. The experiments do not establish an optimal policy or publication novelty.
 
+The [two-arm allocation development](../two_arm_ar1/README.md) and its [proofs in PDF](../two_arm_ar1/manuscript.pdf) now give exact even-budget allocation for identifying unknown long-run means, an adaptive Bayesian optimality theorem, and an exact terminal-state identification policy. They also derive the two-pull reward optimum and a stronger two-arm sparse-monitoring regret lower bound. In that note `K` denotes the total sample budget; this draft uses `K` for the number of arms.
+
 ## Model and observation timing
 
 Independent arms evolve every calendar round:
@@ -111,6 +113,8 @@ R_T^\pi\geq \frac{(1-\phi)\sqrt V}{\sqrt\pi}T.
 \]
 
 At \(\phi=0\), all current states are independent of past information and every causal policy has expected reward zero. The lower bound is attained by every policy, including Predictive Sampling. No temporal policy can improve its coefficient in that case.
+
+For two homogeneous arms, the [new sparse-monitoring proof](../two_arm_ar1/README.md#a-stronger-sparse-monitoring-regret-lower-bound) improves the coefficient lower bound to `sqrt(V/pi) [1-phi sqrt((1+phi^2)/2)]`. It uses the fact that a learner observing one arm per round cannot have refreshed both arms in the immediately previous round. This is a lower bound, with no general attainability claim.
 
 Degenerate cases fall outside the positive lower bound: one arm, zero innovation noise, or parameters changing with the horizon. Exact \(\phi=1,q>0\) is a random walk and has no stationary variance; it is not covered by this analysis.
 

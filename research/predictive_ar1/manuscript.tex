@@ -41,7 +41,7 @@ c^*=\inf_\pi c_\pi.
 \end{equation}
 The limsup avoids assuming that every time-varying policy has a limiting rate. Actions do not affect the state trajectories, so the oracle and all policies can be evaluated on the same exogenous realization.
 
-The observation clock matters: unplayed rested arms freeze, while the restless arms here continue evolving. Known parameters do not eliminate the value of monitoring changing states. Markov restless-bandit research already studies this distinction and the value of non-myopic state observations~\cite{ortner2014}. Predictive Sampling already targets information according to its remaining lifetime~\cite{liu2023}. Our development specializes that policy, changes its evaluation comparator, and supplies elementary bounds and controlled comparisons. It does not claim a new sampling principle or an optimal linear coefficient.
+The observation clock matters: unplayed rested arms freeze, while the restless arms here continue evolving. Known parameters do not eliminate the value of monitoring changing states. Markov restless-bandit research already studies this distinction and the value of non-myopic state observations~\cite{ortner2014}. Kuhn, Mandjes, and Nazarathy~\cite{kuhn2015} study the closely matching Gaussian autoregressive reward-observation model and develop Whittle and parametric index policies. Predictive Sampling already targets information according to its remaining lifetime~\cite{liu2023}. Our development specializes that policy, changes its evaluation comparator, and supplies elementary bounds and controlled comparisons. It does not claim a new sampling principle or an optimal linear coefficient.
 
 \section{Persistence and the value of an observation}
 Let $H_t$ contain all selected-arm observations before round $t$. Conditional on this history, current states have independent Gaussian beliefs $N(m_i,v_i)$. If the latest exact observation of arm $i$ was $x$ at age $h$, then
@@ -135,6 +135,13 @@ c_\pi\geq(1-\phi)\sqrt V M_K,
 \qquad c_{\mathrm{fixed}}=\sqrt V M_K.
 \end{equation}
 For $K=2$, $M_2=1/\sqrt\pi$. When $\phi=0$, every causal policy attains the fixed-arm coefficient because current states are independent of the history.
+
+For two homogeneous arms, the separate \href{../two_arm_ar1/manuscript.pdf}{two-arm allocation note} proves a stronger bound using the one-observation-per-round restriction. With $\rho=\phi\sqrt{(1+\phi^2)/2}$ and $T\geq2$,
+\[
+R_T^\pi\geq\sqrt{V/\pi}\left[T-\phi/\sqrt2-(T-2)\rho\right],
+\qquad c_\pi\geq\sqrt{V/\pi}(1-\rho).
+\]
+The learner cannot have observed both arms in the previous round, so its freshest possible pair of predictive ages is one and two. A Gaussian refinement argument bounds the expected predictive gap for every adaptive policy. The bound is exact at $T=2$; no general attainability claim is made. The note also gives exact mean- and state-identification allocations, which solve different terminal objectives.
 \end{corollary}
 The positive lower bound excludes one arm and zero-innovation degeneracies. Exact $\phi=1,q>0$ is a nonstationary random walk and has no finite stationary variance. Horizon-dependent parameters also require a separate asymptotic analysis.
 
@@ -236,10 +243,11 @@ The heterogeneous case has four persistent zero-mean arms with $\phi=0.99,V=1$ a
 \clearpage
 \input{optimal_policy}
 \section{Scope and next theoretical target}
-The study formalizes a full-state linear-coefficient objective, an exact PS specialization, an innovation lower bound, a feasible persistence-sensitive upper bound, and exact finite-horizon belief control. It also supplies conditional bias-based policy improvement and a Bellman-residual route to certifying an average coefficient. It does not compute an optimal average-reward bias, certify PS or the lifetime rule, match the persistence exponents, or handle unknown parameters and noisy observations. The immediate computational target is to evaluate PS's average-reward continuation value for a small number of arms, improve its action choices, and bound the residual including Gaussian tails. The lifetime-rule comparison shows why a large persistence multiplier alone is insufficient. Improving the probing upper bound and deriving lower bounds for sparse monitoring would distinguish hidden-arm costs from fresh-innovation costs.
+The study formalizes a full-state linear-coefficient objective, an exact PS specialization, an innovation lower bound, a stronger two-arm sparse-monitoring bound developed in the separate allocation note, a feasible persistence-sensitive upper bound, and exact finite-horizon belief control. It also supplies conditional bias-based policy improvement and a Bellman-residual route to certifying an average coefficient. It does not compute an optimal average-reward bias, certify PS or the lifetime rule, match the persistence exponents, or handle unknown parameters and noisy observations. The immediate computational target is to evaluate PS's average-reward continuation value for a small number of arms, improve its action choices, and bound the residual including Gaussian tails. The lifetime-rule comparison shows why a large persistence multiplier alone is insufficient. Improving the probing upper bound, extending the sparse-monitoring bound beyond two arms, and establishing sharpness would further distinguish hidden-arm costs from fresh-innovation costs.
 
 \begin{thebibliography}{9}
 \bibitem{liu2023} Y. Liu, B. Van Roy, and K. Xu. Nonstationary Bandit Learning via Predictive Sampling. AISTATS, PMLR 206:6215--6244, 2023. \url{https://proceedings.mlr.press/v206/liu23e.html}.
+\bibitem{kuhn2015} J. Kuhn, M. Mandjes, and Y. Nazarathy. Exploration vs Exploitation with Partially Observable Gaussian Autoregressive Arms. VALUETOOLS 2014 proceedings, published 2015. \url{https://eudl.eu/doi/10.4108/icst.valuetools.2014.258207}.
 \bibitem{ortner2014} R. Ortner, D. Ryabko, P. Auer, and R. Munos. Regret bounds for restless Markov bandits. Theoretical Computer Science 558:62--76, 2014. \url{https://daniil.ryabko.net/mabajr.pdf}.
 \bibitem{frazier2008} P. I. Frazier, W. B. Powell, and S. Dayanik. A Knowledge-Gradient Policy for Sequential Information Collection. SIAM Journal on Control and Optimization 47(5):2410--2439, 2008. \url{https://doi.org/10.1137/070693424}.
 \end{thebibliography}

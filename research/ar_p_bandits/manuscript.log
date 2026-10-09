@@ -920,23 +920,12 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 5.47441pt on input line 30.
  [1
 
-] [2] [3] [4] [5]
-Underfull \hbox (badness 2293) in paragraph at lines 260--261
-[]\TU/texgyrepagella-regular.otf(0)/m/it/10.95 If $[]$ is divisible by $[]$, st
-rict
- []
-
-[6] [7]
-Underfull \hbox (badness 1681) in paragraph at lines 335--336
-[]\TU/texgyrepagella-regular.otf(0)/m/it/10.95 For consecutive local observatio
-ns
- []
-
-[8] [9] (results/conditional_table.tex)
+] [2] [3] [4] [5] [6] [7] [8] [9] [10]
+(results/conditional_table.tex)
 PGFPlots: reading {results/ar2_pcs.csv}
 PGFPlots: reading {results/ar2_pcs.csv}
- [10] [11] [12] (manuscript.aux)
+ [11] [12] (manuscript.aux)
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: 927316D5EF26D1C1F815CD8150FA09BF;3775.
+(rerunfilecheck)             Checksum: A2537CD1AF89BBA3E13A1C3D33437B09;3719.
  )
-Output written on manuscript.xdv (12 pages, 337388 bytes).
+Output written on manuscript.xdv (12 pages, 356340 bytes).

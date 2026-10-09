@@ -23,7 +23,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We extend the two-arm AR(1) calculations to $L$ independent Gaussian arms of heterogeneous stable orders $p_i$. Exact state-space conditioning yields finite-dimensional beliefs, an explicit two-period reward policy, and an AR($p_i$) specialization of Predictive Sampling using $p_i$ future states. A full-past-information observer gives a positive linear regret lower bound against the full-current-state oracle. Mean information for an arbitrary observation schedule is $\mathbf1^\top\Sigma_i^{-1}\mathbf1$, and fixed-schedule PCS has a one-dimensional Gaussian integral for any number of arms. Homogeneous AR(1) round-robin designs minimize total estimation variance, but a three-arm iid example proves that balanced sampling need not maximize Bayesian PCS. A delayed AR(2) example disproves direct extensions of the AR(1) gap-concavity and terminal-freshness rules. For separately advanced streams, mean information becomes exactly affine after $p_i$ consecutive observations, giving finite-budget variance allocations. The optimal fixed-proportion Gaussian error exponent reduces to a single scalar equation, with elementary allocation formulas for equal competitor gaps. The results distinguish exact finite-budget statements from estimation criteria, asymptotic allocation benchmarks, and unresolved general optimal-control problems.
+We extend the two-arm AR(1) calculations to $L$ independent Gaussian arms of heterogeneous stable orders $p_i$. Exact state-space conditioning yields finite-dimensional beliefs, an explicit two-period reward policy, and an AR($p_i$) specialization of Predictive Sampling using $p_i$ future states. A full-past-information observer gives a positive linear regret lower bound, while complete lag-state probes yield a constructive impulse-response upper bound against the full-current-state oracle. Mean information for an arbitrary observation schedule is $\mathbf1^\top\Sigma_i^{-1}\mathbf1$, and fixed-schedule PCS has a one-dimensional Gaussian integral for any number of arms. Homogeneous AR(1) round-robin designs minimize total estimation variance, but a three-arm iid example proves that balanced sampling need not maximize Bayesian PCS. A delayed AR(2) example disproves direct extensions of the AR(1) gap-concavity and terminal-freshness rules. For separately advanced streams, mean information becomes exactly affine after $p_i$ consecutive observations, giving finite-budget variance allocations. The optimal fixed-proportion Gaussian error exponent reduces to a single scalar equation, with elementary allocation formulas for equal competitor gaps. The results distinguish exact finite-budget statements from estimation criteria, asymptotic allocation benchmarks, and unresolved general optimal-control problems.
 \end{abstract}
 
 \section{Model, notation, and scope}
@@ -166,7 +166,7 @@ c_i[r]&=e_i^\top F_i^rP_ie_i,\\
 \end{align}
 At order one, the score variance reduces to $\phi_i^2v_i^2/(\phi_i^2v_i+q_i)$. With unknown means, the finite future vector alone does not screen the remaining future's information about the mean; the stated finite-vector specialization requires known means.
 
-\subsection{A linear full-state oracle regret lower bound}
+\subsection{Bounds for full-state oracle regret}
 Define, for independent standard normal $G_i$,
 \begin{equation}
 G=\E\max_i(\mu_i+\sqrt{V_i}G_i),\qquad
@@ -185,6 +185,27 @@ A stronger observer sees every arm's complete past lag vector. Its current predi
 \end{proof}
 For common zero mean, $V$, and $q$, the coefficient bound is
 $M_L[\sqrt V-\sqrt{V-q}]$. It reflects complete-past predictability, rather than resolving the additional loss from sparse monitoring. Together with finite stationary reward moments it implies linear-order full-state regret for fixed nondegenerate parameters. A sharp general coefficient and a closed arbitrary-horizon optimal policy are not obtained here.
+
+\begin{proposition}[A constructive refresh upper bound]
+Assume known common zero mean, and let $B=\sum_i p_i$. For any integer period $H\geq B$, probe each arm for $p_i$ consecutive rounds, then select the largest predictive mean for the remaining $H-B$ rounds. Repeat this period. Define
+\begin{equation}
+u_H=\max_i q_i\sum_{r=0}^{H-1}(e_i^\top F_i^re_i)^2.
+\end{equation}
+Its full-state oracle regret coefficient obeys
+\begin{equation}
+\boxed{c_{\mathrm{refresh}}\leq
+\frac BH G+\left(1-\frac BH\right)\sqrt{2u_H\log L}.}
+\label{eq:refresh}
+\end{equation}
+Consequently $G-G_{\mathrm{past}}\leq c^*\leq\min\{G,\inf_{H\geq B}c_{\mathrm{refresh}}^{\mathrm{bound}}(H)\}$.
+\end{proposition}
+\begin{proof}
+Consecutive exact observations reconstruct the complete lag state of each arm at the end of its probe block. At age $h$ after this reconstruction, without additional observations, its current reward variance is
+$q_i\sum_{r=0}^{h-1}(e_i^\top F_i^re_i)^2$. Every exploitation age is at most $H$, and subsequent selected observations can only decrease forecast covariance. Hence conditional residual reward variances are at most $u_H$.
+
+On an exploitation round write $X_i=m_i+\epsilon_i$. For the greedy forecast action, conditional expected regret is at most $\E\max_i\epsilon_i\leq\sqrt{2u_H\log L}$ by the Gaussian exponential-moment bound. The probe sequence is predetermined, so each zero-mean probe reward has unconditional expectation zero and regret $G$. Average the two round types. An incomplete last period has bounded expected contribution for fixed $H$, which vanishes after dividing by the horizon. A fixed arm has coefficient $G$, giving the other upper bound.
+\end{proof}
+The sum of AR orders determines the cost of complete refresh, while the impulse responses determine how prediction error accumulates afterwards. These lower and upper bounds need not match; the upper bound certifies a feasible policy family, not Predictive Sampling or an optimal coefficient.
 
 \section{Mean likelihood and exact multi-arm PCS}
 For a fixed schedule $\mathcal T_i=(t_{i,1},\ldots,t_{i,n_i})$, set
@@ -256,7 +277,7 @@ I_i=\frac1V\left[1+\sum_{r=2}^{n_i}f(t_{i,r}-t_{i,r-1})\right]
 \]
 for each observed arm.
 
-\begin{theorem}[Information and mean-square estimation optimum]
+\begin{theorem}[Round-robin information and squared error]
 If $T$ is divisible by $L$, strict round-robin achieves equal per-arm information
 \begin{equation}
 I_*^{(L)}=\frac{1+(T/L-1)f(L)}V.
@@ -331,7 +352,7 @@ A_i=\mathbf1^\top\Sigma_{i,p_i}^{-1}\mathbf1,\qquad
 \end{equation}
 Here $\kappa_i$ is the long-run variance of the stationary noise process; equivalently it is the sum of its autocovariances. The stable AR transfer function at frequency zero gives $q_i/(1-\sum_ra_{i,r})^2$.
 
-\begin{theorem}[Exact affine precision after the initial lag block]
+\begin{theorem}[Affine precision for local observations]
 For consecutive local observations and $n_i\geq p_i$,
 \begin{equation}
 \boxed{I_i(n_i)=A_i+(n_i-p_i)\frac{c_i^2}{q_i}

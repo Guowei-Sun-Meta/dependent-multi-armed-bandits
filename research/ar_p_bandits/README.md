@@ -11,7 +11,7 @@ Full statements and proofs: [manuscript.tex](manuscript.tex), [PDF](manuscript.p
 | Gaussian beliefs and likelihood information | Exact matrix formulas for arbitrary stable AR orders and sampling schedules | Known AR coefficients and innovation variances; stationary initialization |
 | Two-period reward policy | Explicit action score for any number of independent Gaussian arms | Exact with two rounds remaining; repeated use is a rolling approximation |
 | Predictive Sampling | A finite future-vector Gaussian score | Known means and dynamics; future length p_i rather than one |
-| Positive linear full-state oracle regret | Explicit innovation lower bound for heterogeneous AR arms | Does not establish a sharp optimal coefficient |
+| Full-state oracle regret bounds | Explicit innovation lower bound and constructive refresh upper bound for heterogeneous AR arms | Upper bound uses complete lag-state probes; does not establish a sharp optimal coefficient |
 | Multi-arm PCS | Exact one-dimensional integral for a fixed schedule, and for posterior best probabilities | The PCS-maximizing Bayesian recommendation can differ from the largest posterior mean |
 | Homogeneous AR(1) round-robin | Optimal total information and posterior mean-square estimation error | T divisible by L; not generally PCS optimal when L>=3 |
 | Consecutive local AR(p_i) streams | Exact affine mean information after p_i observations | Rested clock; supports exact finite-budget variance allocation |
@@ -113,6 +113,16 @@ An observer seeing the complete past lag vectors knows the current reward up to 
 \]
 
 For L>=2 and positive independent q_i, the gap is strictly positive. With common zero mean, V, and q, the coefficient lower bound becomes `M_L [sqrt(V)-sqrt(V-q)]`. Dependence enters through the dynamics' stationary variance and innovation variance; this bound does not resolve the extra monitoring cost or prove a sharp coefficient.
+
+For a constructive upper bound with known common mean zero, let `B=sum_i p_i`. In each period of H>=B rounds, observe each arm for p_i consecutive rounds to reconstruct its complete lag state, then exploit the largest predictive mean. Its coefficient satisfies
+
+\[
+\boxed{c_{\mathrm{refresh}}\le\frac BH G+
+\left(1-\frac BH\right)\sqrt{2u_H\log L},\qquad
+u_H=\max_iq_i\sum_{r=0}^{H-1}(e_i^\top F_i^re_i)^2.}
+\]
+
+The cost of a sweep depends on the sum of the AR orders; subsequent uncertainty growth depends on the impulse responses. Combining this family with a fixed-arm policy gives `G-G_past <= c* <= min(G, inf_H refresh_bound(H))`. These are explicit bounds, with no matching or optimal-policy claim.
 
 ## Exact likelihood information and PCS
 

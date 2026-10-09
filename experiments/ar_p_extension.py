@@ -245,6 +245,8 @@ def rested_variance_allocation(models, budget):
 
 
 def verify():
+    assert math.isclose(adaptive_normal_expectation(abs), math.sqrt(2/math.pi), abs_tol=1e-8)
+    assert math.isclose(normal_expectation(lambda z: z*z), 1.0, abs_tol=1e-10)
     models = [ARModel(a) for a in ([0], [.7], [-.4], [.3, .6], [0, .8], [.3, -.4], [.4, .15, .1])]
     checks = 0
     for model in models:
@@ -267,6 +269,11 @@ def verify():
             cross = matmul(power(model.transition, horizon), model.stationary)[0][0]
             reduction = model.variance-model.propagate_covariance(observed, horizon)[0][0]
             assert math.isclose(reduction, cross*cross/model.variance, abs_tol=1e-9)
+        for age in (1, 2, 5, 10):
+            observed_times = list(range(1, model.order+1))
+            reconstructed_variance = model.terminal_variance(observed_times, model.order+age)
+            impulse_variance = model.q*sum(power(model.transition, r)[0][0]**2 for r in range(age))
+            assert math.isclose(reconstructed_variance, impulse_variance, abs_tol=1e-9)
         checks += 1
     for arms, budgets in ((3, (3, 6, 9)), (4, (4, 8))):
         for phi in (.2, .8):

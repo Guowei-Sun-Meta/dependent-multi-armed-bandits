@@ -9,12 +9,14 @@ The research studies bandits whose arms are dependent:
 - **Across arms:** graph or spatial similarity between arms or users.
 - **Over time:** AR or Markov rewards.
 
-The current deliverable is a **WWW 2027 paper on graph-based bandits for recommendation**: certified user and item graphs, tested on KuaiRec. The deadlines are fixed:
+There are two WWW 2027 deliverables. The first is a **long paper on graph-based bandits for recommendation**: certified user and item graphs, tested on KuaiRec. Its deadlines are fixed:
 
 - **Abstract: 18 October 2026, AoE.** Placeholder abstracts are forbidden, and authors are frozen after this date.
 - **Full paper: 25 October 2026, AoE.** 8 pages plus appendix, double-blind, submitted through OpenReview. The paper must state its Web relevance on page 1.
 
-The proposal, sprint plan and WWW precedent are in [www/CLAUDE.md](www/CLAUDE.md). The KuaiRec design is in [www/kuairec_experiment_plan.md](www/kuairec_experiment_plan.md).
+The second is a **separate short paper on spatiotemporal bandits** (4 pages; abstract 9 November, paper 16 November 2026). The plan is in [www/st_short_paper.md](www/st_short_paper.md). The two papers must stay distinct: no shared results or claims.
+
+The long-paper proposal, sprint plan and WWW precedent are in [www/CLAUDE.md](www/CLAUDE.md). The KuaiRec design is in [www/kuairec_experiment_plan.md](www/kuairec_experiment_plan.md).
 
 ## Repository map
 
@@ -89,7 +91,7 @@ Kept up to date by whoever runs experiments. Check `research/kuairec_graphs/READ
 - [x] Setting A v1 (60 users, T = 20,000)
 - [ ] **Setting A v2.** Adds KL-UCB, graph-free shrinkage (Gaussian TS on a complete graph), SP-KLUCB (KL confidence bounds, fixing the σ handicap), and a **calibrated certificate**: the 90th percentile of each component's within-component range over tuning users. Three video subsets per user.
 - [ ] **Setting B.** 300 users × 100 videos, users arrive at random, T = 100,000. User graphs U-coeng, U-mf, U-coauthor, U-geo, the U-coeng rewiring, and a complete graph. Policies: per-user TS, global TS, user-graph Gaussian TS, and user-side SP-KLUCB with oracle, calibrated and no certificate.
-- [ ] **Spatiotemporal thread** (requested 9 October; "iid is rare in applications"):
+- [ ] **Spatiotemporal thread, aimed at the short paper due 16 November** (requested 9 October; "iid is rare in applications"):
     - [Algorithm catalog and toy benchmark](research/st_toy/README.md): 100-arm grid, AR(20), joint-Kalman policies against UCB, TS and Spectral; code in `experiments/st_toy/`. The toy is running.
     - [Application scenarios and experiment designs](www/st_applications.md): Wikipedia attention with the clickstream graph, the KuaiRec daily trending slot, the Yahoo! R6 news slot, NYC taxi zones, and others.
     - Next: build the shared panel harness `experiments/st_apps/`, then run KuaiRec daily and Wikipedia.

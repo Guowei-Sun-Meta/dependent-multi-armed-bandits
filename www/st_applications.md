@@ -136,7 +136,7 @@ The KuaiRec queue and the toy benchmark finish in about 1–2 hours. Then:
 | 4 | Yahoo! R6 news slot. Needs the user to accept the Yahoo! Webscope licence and download the data | 3 h once data is available |
 | 5 | NYC taxi, then M5, Spotify and RIPE Atlas | Later |
 
-**Fit with the WWW 2027 paper.** The graph-bandit paper is due 25 October. Spatiotemporal results on KuaiRec and Wikipedia could enter it as a section on dynamic graphs, or support a separate paper. This is a decision for the authors.
+**Decided: a separate WWW 2027 short paper** (abstract 9 November, paper 16 November). See [st_short_paper.md](st_short_paper.md).
 
 ## Sources
 

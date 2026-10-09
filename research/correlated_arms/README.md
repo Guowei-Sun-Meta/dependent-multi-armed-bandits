@@ -103,7 +103,27 @@ The scalar construction is valid for any adaptive, restless schedule. With corre
 | φ = 0, one at a time | regret 274, valid | regret 221, valid |
 | φ = 0.97, blocks of 25 | regret 1,424, violated in 99.8% of rounds | regret 763, never violated |
 
-The full sweep is in `coverage_runs_scalar.csv` once it finishes.
+**Full sweep** (20 seeds, independent shocks, T = 5,000; `coverage_runs_scalar.csv`). Mean regret of SP-UCB with iid / B1 / B1′ certificates, and the share of runs where the iid certificate was violated:
+
+| Exposure | φ | iid / B1 / B1′ regret | iid violated | B1, B1′ violated |
+| --- | ---: | --- | ---: | ---: |
+| One at a time | 0 | 353 / 753 / **295** | 0% | 0% |
+| One at a time | 0.5 | 457 / 752 / **396** | 0% | 0% |
+| One at a time | 0.9 | 533 / 759 / 564 | 0% | 0% |
+| One at a time | 0.97 | 649 / 755 / 679 | 0% | 0% |
+| Blocks of 25 | 0 | 380 / 766 / **338** | 0% | 0% |
+| Blocks of 25 | 0.5 | 406 / 916 / 510 | 5% | 0% |
+| Blocks of 25 | 0.9 | 629 / 1,023 / 818 | 75% | 0% |
+| Blocks of 25 | 0.97 | 853 / 1,034 / **828** | 90% | 0% |
+
+**Reading.**
+
+- **B1′ is always valid.** It beats iid pooling when persistence is low or absent: 16% lower regret at φ = 0. It is within 6% of iid pooling at high persistence with one-at-a-time sampling. With bursty exposure it is 26–30% worse at φ = 0.5–0.9, where the iid certificate is invalid in up to 75% of runs, and 3% better at φ = 0.97.
+- **B1′ removes most of B1's cost** (753 → 295 at φ = 0).
+- **The single seed above (1,424 against 763) was not representative.** On average, invalid iid certificates cost little regret in this toy, because suboptimal components are the ones under-covered.
+- **Elimination.** With valid certificates, B1 and B1′ alike, nothing is eliminated within 5,000 rounds at these gaps (0.1–0.4 against unit fluctuation variance). The only eliminations come from invalid iid certificates, and in bursty high-persistence runs they remove the best arm 65–75% of the time.
+
+**What the paper can claim.** B1′ makes certified pooling valid under persistence at no material regret cost against uncertified iid pooling, and lower regret when persistence is low. Invalid iid certificates mainly threaten irrevocable decisions, not regret.
 
 ### B2. iid certificates fail under persistence
 

@@ -34,7 +34,8 @@ ROOT = Path(__file__).resolve().parents[2]
 RESULTS = ROOT / "research" / "st_toy" / "results"
 SEED = 20261009
 N, COMP, R_OBS, EPS = 20, 4, 0.1, 0.1
-POLICIES = ("ucb_iid", "sp_ucb_iid", "ucb_st", "sp_ucb_st")
+POLICIES = ("ucb_iid", "sp_ucb_iid", "sp_ucb_emp", "ucb_st", "sp_ucb_st")
+BATCHES = (1, 25)
 PHIS = (0.0, 0.5, 0.9, 0.97)
 CONFIGS = ("independent", "correlated")
 
@@ -101,15 +102,17 @@ class InnovationRegression:
 
 
 def run(args):
-    config, phi, seed, policy, T = args
+    config, phi, seed, policy, T = args[:5]
+    batch = args[5] if len(args) > 5 else 1
     t0 = time.time()
     mu, labels, C, q, Y = world(SEED + seed, phi, config, T)
     delta = 0.05
     vstar = mu.max()
     v_c = np.array([mu[labels == c].max() for c in range(COMP)])
     members = [np.flatnonzero(labels == c) for c in range(COMP)]
-    n, s = np.zeros(N), np.zeros(N)
-    Nc, Sc = np.zeros(COMP), np.zeros(COMP)
+    n, s, ss = np.zeros(N), np.zeros(N), np.zeros(N)
+    Nc, Sc, SSc = np.zeros(COMP), np.zeros(COMP), np.zeros(COMP)
+    a = 0
     sigma2 = 1.0 + R_OBS ** 2
     ell = np.log(2 * (N + COMP) * T / delta)
     reg = np.zeros(T)
@@ -120,6 +123,13 @@ def run(args):
             b = lambda x: np.sqrt(2 * sigma2 * ell / np.maximum(x, 1))  # noqa: E731
             U_i = np.where(n > 0, s / np.maximum(n, 1) + b(n), np.inf)
             pool = np.where(Nc > 0, Sc / np.maximum(Nc, 1) + b(Nc) + EPS, np.inf)
+        elif policy.endswith("_emp"):
+            # Practical iid certificate: variance estimated from the arm's own samples, level log t.
+            lvl = 2 * np.log(max(t, 2))
+            var_i = np.where(n > 1, ss / np.maximum(n, 1) - (s / np.maximum(n, 1)) ** 2, sigma2)
+            var_c = np.where(Nc > 1, SSc / np.maximum(Nc, 1) - (Sc / np.maximum(Nc, 1)) ** 2, sigma2)
+            U_i = np.where(n > 1, s / np.maximum(n, 1) + np.sqrt(np.maximum(var_i, 1e-6) * lvl / np.maximum(n, 1)), np.inf)
+            pool = np.where(Nc > 1, Sc / np.maximum(Nc, 1) + np.sqrt(np.maximum(var_c, 1e-6) * lvl / np.maximum(Nc, 1)) + EPS, np.inf)
         else:
             mu_hat, Jinv, beta = st.estimate(delta, np.sqrt(N))
             sd = np.sqrt(np.maximum(np.diag(Jinv), 0))
@@ -131,32 +141,37 @@ def run(args):
                 cands.append(w_info / w_info.sum())
                 vals = [w @ mu_hat[m] + beta * np.sqrt(w @ Jinv[np.ix_(m, m)] @ w) for w in cands]
                 pool[c] = min(vals) + EPS
+        decide = t % batch == 0
         if policy.startswith("sp_"):
             comp_up = np.array([min(U_i[m].max(), pool[c]) for c, m in enumerate(members)])
             viol = (U_i < mu - 1e-12).any() or (comp_up < v_c - 1e-12).any()
-            if policy.endswith("_iid") and t < COMP:
-                a = int(members[t][0])
-            else:
-                c = int(np.argmax(comp_up))
-                a = int(members[c][np.argmax(U_i[members[c]])])
+            if decide:
+                if not policy.endswith("_st") and t < COMP * batch:
+                    a = int(members[t // batch][0])
+                else:
+                    c = int(np.argmax(comp_up))
+                    a = int(members[c][np.argmax(U_i[members[c]])])
         else:
             viol = (U_i < mu - 1e-12).any()
-            a = int(np.argmax(U_i))
+            if decide:
+                a = int(np.argmax(U_i))
         viol_rounds += int(viol)
         y = Y[t, a]
         n[a] += 1
         s[a] += y
+        ss[a] += y * y
         Nc[labels[a]] += 1
         Sc[labels[a]] += y
+        SSc[labels[a]] += y * y
         if st is not None:
             st.observe(a, y)
         reg[t] = vstar - mu[a]
     cum = np.cumsum(reg)
-    row = {"config": config, "phi": phi, "seed": seed, "policy": policy, "regret": float(cum[-1]),
+    row = {"config": config, "phi": phi, "seed": seed, "policy": policy, "batch": batch, "regret": float(cum[-1]),
            "regret@1000": float(cum[min(999, T - 1)]), "violation_share": viol_rounds / T,
            "any_violation": viol_rounds > 0, "best_arm_share_last_1000": float((reg[-1000:] == 0).mean()),
            "seconds": round(time.time() - t0, 1)}
-    print(f"{config} phi={phi} seed={seed} {policy}: regret={row['regret']:.1f} viol={row['violation_share']:.3f}",
+    print(f"{config} phi={phi} b={batch} seed={seed} {policy}: regret={row['regret']:.1f} viol={row['violation_share']:.3f}",
           flush=True)
     return row
 
@@ -189,13 +204,14 @@ def verify():
     print("verify: B2 variance formula matches simulation; innovation information matches dense GLS")
 
 
-def main(seeds, T, jobs):
+def main(seeds, T, jobs, tag=""):
     RESULTS.mkdir(parents=True, exist_ok=True)
-    tasks = [(c, phi, s, p, T) for c in CONFIGS for phi in PHIS for s in range(seeds) for p in POLICIES]
+    tasks = [(c, phi, s, p, T, b) for c in CONFIGS for phi in PHIS for s in range(seeds) for p in POLICIES
+             for b in BATCHES]
     tasks.sort(key=lambda x: not x[3].endswith("_st"))
     with ProcessPoolExecutor(jobs) as ex:
         rows = list(ex.map(run, tasks, chunksize=4))
-    pd.DataFrame(rows).to_csv(RESULTS / "coverage_runs.csv", index=False)
+    pd.DataFrame(rows).to_csv(RESULTS / f"coverage_runs{tag}.csv", index=False)
 
 
 if __name__ == "__main__":
@@ -204,8 +220,9 @@ if __name__ == "__main__":
     ap.add_argument("--seeds", type=int, default=30)
     ap.add_argument("--horizon", type=int, default=5000)
     ap.add_argument("--jobs", type=int, default=2)
+    ap.add_argument("--tag", default="")
     a = ap.parse_args()
     if a.verify:
         verify()
     else:
-        main(a.seeds, a.horizon, a.jobs)
+        main(a.seeds, a.horizon, a.jobs, a.tag)

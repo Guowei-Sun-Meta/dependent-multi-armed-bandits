@@ -198,7 +198,7 @@ def verify():
     # Sharp two-observation Bayes-PCS design comparison on a broad parameter grid.
     two_arm_rows = []
     for phi, rho, alpha, strength, noise in product((0.0, 0.5, 0.9, 0.99),
-            (0.0, 0.5, 0.9), (0.2, 1.0, 5.0), (0.0, 0.5, 2.0), (0.0, 0.1)):
+            (-0.9, 0.0, 0.5, 0.9), (0.2, 1.0, 5.0), (0.0, 0.5, 2.0), (0.0, 0.1)):
         kz = [[1.0, rho], [rho, 1.0]]
         h = graph_precision(2, alpha, strength)
         hm = alpha+2*strength
@@ -232,10 +232,36 @@ def verify():
             exact = (t*(1-phi)+2*phi)/(1+phi)
             assert abs(actual-exact) < 1e-8
             checks += 1
+    # Independent prior-predictive draws check selection probabilities, rather
+    # than comparing only equivalent analytic expressions for variance.
+    pcs_draws = []
+    trials = 50000
+    pcs_rng = random.Random(20101989)
+    for phi, rho in ((0.0, 0.9), (0.99, 0.9), (0.9, -0.9)):
+        alpha, strength, noise = 1.0, 0.5, 0.1
+        hm, successful = alpha+2*strength, 0
+        correlation = phi*rho
+        for _ in range(trials):
+            common = pcs_rng.gauss(0, math.sqrt(1/(2*alpha)))
+            difference = pcs_rng.gauss(0, math.sqrt(2/hm))
+            first_noise = pcs_rng.gauss(0, 1)
+            second_noise = correlation*first_noise+math.sqrt(1-correlation**2)*pcs_rng.gauss(0, 1)
+            first = common+difference/2+first_noise+pcs_rng.gauss(0, math.sqrt(noise))
+            second = common-difference/2+second_noise+pcs_rng.gauss(0, math.sqrt(noise))
+            successful += int((first-second)*difference > 0)
+        theory = 0.5+math.atan(1/math.sqrt(hm*(1-correlation+noise)))/math.pi
+        observed = successful/trials
+        se = math.sqrt(theory*(1-theory)/trials)
+        assert abs(observed-theory) < 6*se
+        checks += 1
+        pcs_draws.append({"phi": phi, "rho": rho, "trials": trials,
+                          "theoretical_pcs": theory, "observed_pcs": observed,
+                          "monte_carlo_standard_error": se})
     return {"checks": checks, "innovation_regression_matches_batch": True,
             "constrained_mean_enforces_energy": True,
             "two_arm_other_location_optimal_with_two_observations": True,
             "two_arm_closed_forms": two_arm_rows,
+            "independent_two_arm_pcs_checks": pcs_draws,
             "phi_zero_removes_transient_cross_location_information": True}
 
 

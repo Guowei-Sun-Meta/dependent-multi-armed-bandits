@@ -1,4 +1,68 @@
-# Graph alignment and temporal dependence in sequential selection
+# Persistent graph means under spatial AR(1) fluctuations
+
+The standalone [paper](manuscript.pdf) and [LaTeX source](manuscript.tex) develop the tractable common-AR(1) model for selecting the best long-run location. The paper includes proofs, an analytic PCS figure, a literature comparison, and a permanent-mean experiment. The earlier exploratory formulation and reward experiment remain below.
+
+## Standalone paper: model, estimator, and contribution
+
+At each calendar time, observe one location:
+
+\[
+Y_t=\mu_{a_t}+z_{a_t,t}+\xi_t,\qquad
+z_{t+1}=\phi z_t+\varepsilon_{t+1},\qquad
+\varepsilon_t\sim N(0,(1-\phi^2)K_z).
+\]
+
+Here the unknown permanent mean `mu` is graph-smooth, while the stationary residual covariance `K_z` describes spatially shared fluctuations. All locations evolve every round; dynamics and residual covariance are known. Permanent-mean selection targets the largest `mu_i`, measured by PCS or expected opportunity loss. Tracking the largest current `mu_i + z_i,t` is a separate objective.
+
+For a recorded design matrix `M` and trajectory covariance `Xi`, use
+
+\[
+\widehat\mu=
+\left(M^\top\Xi^{-1}M+\alpha I+\lambda L\right)^{-1}
+M^\top\Xi^{-1}Y.
+\]
+
+The covariance-weighted fit accounts for AR dependence; the Laplacian discourages neighboring permanent means from disagreeing. A **hard constraint** `mu^T L mu <= S^2` literally enforces a supplied smoothness radius, with an active multiplier found by scalar search. A **Gaussian graph prior** with precision `alpha I + lambda L` encourages smoothness and gives exact conjugate updates, but does not enforce a deterministic radius. Frequentist intervals include smoothing bias rather than treating reduced posterior variance as verified accuracy.
+
+The paper establishes:
+
+- Fixed-design contrast bias and variance, including an explicit energy-based bias bound and a constrained estimator.
+- An affine Kalman innovation regression for adaptive measurements, exact Bayesian mean updates, and an all-time confidence bound using established self-normalized concentration. A supplied mean-norm bound and energy radius yield a correct stopping certificate; forced cyclic probes ensure eventual termination.
+- Permanent-contrast information sampling and correlated-normal knowledge gradient with history-dependent measurement vectors. The rules are exact for their respective two-candidate PCS or general opportunity-loss objective when one measurement remains; multi-step use is an approximation.
+- An exact two-location, two-observation Bayes-PCS optimum: for nonnegative temporal persistence and equal marginal residual variances, sample each location once. With prior difference precision `h_minus = alpha + 2 lambda w` and `v_minus = V(1-rho phi)+r`, optimal PCS is `1/2 + atan(1/sqrt(h_minus v_minus))/pi`.
+- Minimax shrinkage within a specified linear two-location contrast family. It reduces worst-case MSE while preserving the observed difference's sign, so it leaves fixed-mean PCS unchanged.
+- A full-field information benchmark showing temporal effective sample size `a_n = [n(1-phi)+2phi]/(1+phi)`. Strong persistence can preserve short-term forecasts while slowing estimation of a permanent mean.
+
+### Difference from existing research
+
+This model belongs to established Gaussian-process and linear Gaussian families. Its additive covariance `K_mu + phi^|t-s| K_z` is not a new kernel construction.
+
+| Closest literature | Distinction developed here |
+|---|---|
+| [Spectral bandits, ICML 2014](https://proceedings.mlr.press/v32/valko14.html), and [GRUB, NeurIPS 2022](https://papers.neurips.cc/paper_files/paper/2022/hash/0d561979f0f4bc6127cfcfe9c46ee205-Abstract-Conference.html) | The graph constrains permanent means, but measurement errors are spatially and temporally correlated. The likelihood information is generally a matrix rather than per-arm iid sample counts. |
+| [Time-varying GP bandits, AISTATS 2016](https://proceedings.mlr.press/v51/bogunovic16.html) | Separate an unknown static component from the evolving field and optimize its final selection. Instantaneous reward tracking uses a different comparator. |
+| [Correlated-normal knowledge gradient, INFORMS Journal on Computing 2009](https://doi.org/10.1287/ijoc.1080.0314) | Retain its established terminal-value objective and envelope calculation, while replacing independent measurement errors with AR innovation regression and history-dependent measurement vectors. |
+| [Shared linear Gaussian bandits, L4DC 2024](https://proceedings.mlr.press/v242/gornet24a.html) | Specialize exact filtering to graph-constrained permanent-mean estimation, contrast confidence, and short-budget selection designs. |
+
+The present contribution is the integration, explicit estimation and confidence formulas, and specialized exact designs. Publication priority for those specializations is not established. General optimal allocation, matching bounds, learning graph validity, and unknown temporal dynamics remain open.
+
+### Reproducible evidence
+
+Use [the executable mean-selection study](../../experiments/graph_ar1_mean.py), [findings](results/mean_selection/findings.md), [summary](results/mean_selection/summary.csv), [paired comparisons](results/mean_selection/paired.csv), [metadata](results/mean_selection/metadata.json), and [checks](results/mean_selection/checks.json).
+
+The permanent-mean experiment uses six locations, 48 measurements, seven policies, and **200 independent paired runs per configuration** across six configurations. It reports opportunity loss, recommendation PCS, MSE, and interval coverage. Correct AR modeling improves estimation under strong persistence; rolling KG does not consistently beat round robin or the other priors. The diagonal-mean baseline preserves graph-prior marginal variances while removing mean correlations. A permuted mean graph and an iid-noise model separately stress spatial and temporal assumptions.
+
+The script passes **8,888 counted assertions**, including independent dense-likelihood comparisons and three 50,000-draw checks of the exact two-location PCS. The all-time frequentist confidence audit uses each truth's actual norm and energy solely as supplied certificates for graph--AR KG; it does not demonstrate learning these bounds.
+
+```sh
+python3 experiments/graph_ar1_mean.py --verify
+python3 experiments/graph_ar1_mean.py --runs 200 --budget 48
+python3 experiments/graph_ar1_mean.py --render-only
+cd research/spatiotemporal_bandits
+tectonic --only-cached --keep-logs manuscript.tex
+```
+
+## Earlier exploratory development
 
 Working research development, 9 October 2026. This connects the [graph alignment paper](../alignment_paper/README.md) with the [heterogeneous AR bandit development](../ar_p_bandits/README.md). The combination is well grounded in existing research; priority for the specialized results below has not been established.
 

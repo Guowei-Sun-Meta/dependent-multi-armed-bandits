@@ -1,9 +1,16 @@
 {
-  "checks": 8597,
+  "checks": 8888,
   "innovation_regression_matches_batch": true,
   "constrained_mean_enforces_energy": true,
   "two_arm_other_location_optimal_with_two_observations": true,
   "two_arm_closed_forms": [
+    {
+      "phi": 0.0,
+      "rho": -0.9,
+      "posterior_difference_variance": 0.6875,
+      "bayes_pcs": 0.6888213532304384,
+      "repeat_variance": 0.8076923076923077
+    },
     {
       "phi": 0.0,
       "rho": 0.0,
@@ -24,6 +31,13 @@
       "posterior_difference_variance": 0.6875,
       "bayes_pcs": 0.6888213532304384,
       "repeat_variance": 0.8076923076923077
+    },
+    {
+      "phi": 0.5,
+      "rho": -0.9,
+      "posterior_difference_variance": 0.7560975609756098,
+      "bayes_pcs": 0.6644162315469194,
+      "repeat_variance": 0.8387096774193549
     },
     {
       "phi": 0.5,
@@ -48,6 +62,13 @@
     },
     {
       "phi": 0.9,
+      "rho": -0.9,
+      "posterior_difference_variance": 0.7925311203319503,
+      "bayes_pcs": 0.6505350356929149,
+      "repeat_variance": 0.8571428571428571
+    },
+    {
+      "phi": 0.9,
       "rho": 0.0,
       "posterior_difference_variance": 0.6875,
       "bayes_pcs": 0.6888213532304384,
@@ -69,6 +90,13 @@
     },
     {
       "phi": 0.99,
+      "rho": -0.9,
+      "posterior_difference_variance": 0.7992773986350863,
+      "bayes_pcs": 0.6478709372444666,
+      "repeat_variance": 0.8607242339832869
+    },
+    {
+      "phi": 0.99,
       "rho": 0.0,
       "posterior_difference_variance": 0.6875,
       "bayes_pcs": 0.6888213532304384,
@@ -87,6 +115,32 @@
       "posterior_difference_variance": 0.2947813822284908,
       "bayes_pcs": 0.817311956145529,
       "repeat_variance": 0.8607242339832869
+    }
+  ],
+  "independent_two_arm_pcs_checks": [
+    {
+      "phi": 0.0,
+      "rho": 0.9,
+      "trials": 50000,
+      "theoretical_pcs": 0.6888213532304384,
+      "observed_pcs": 0.68804,
+      "monte_carlo_standard_error": 0.002070490263508747
+    },
+    {
+      "phi": 0.99,
+      "rho": 0.9,
+      "trials": 50000,
+      "theoretical_pcs": 0.817311956145529,
+      "observed_pcs": 0.8159,
+      "monte_carlo_standard_error": 0.0017280805680702383
+    },
+    {
+      "phi": 0.9,
+      "rho": -0.9,
+      "trials": 50000,
+      "theoretical_pcs": 0.6505350356929149,
+      "observed_pcs": 0.65074,
+      "monte_carlo_standard_error": 0.0021323189396942137
     }
   ],
   "phi_zero_removes_transient_cross_location_information": true

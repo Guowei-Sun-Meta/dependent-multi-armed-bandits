@@ -98,4 +98,4 @@ The confidence theorem audit supplies each trajectory's actual mean norm and ene
 Contrast coverage refers to a fixed endpoint contrast and Gaussian posterior 95% intervals. Those intervals have a Bayesian interpretation only under the matched generative model. All-time frequentist confidence uses a distinct, bias-aware radius and is generally conservative.
 The KG rule is exact with one observation remaining for opportunity loss; rolling KG and the selected-contrast heuristic have no fixed-budget optimality guarantee. Forced probes ensure asymptotic observation of every arm.
 No real traffic data, hyperparameter fitting, unknown AR dynamics, general PCS-optimal control, or matching lower/upper bound is evaluated.
-Separate exact checks: 8597; see checks.json.
+Separate exact checks: 8888; see checks.json.

@@ -11,7 +11,7 @@
   "measurement_variance": 0.1,
   "forced_cadence": 7,
   "recommendation": "largest posterior mean: opportunity-loss optimal, not generally PCS optimal",
-  "frequentist_confidence_audit": "uses true norm and graph energy solely for a valid supplied-radius diagnostic",
+  "frequentist_confidence_audit": "graph_ar_kg only; uses true norm and graph energy solely for a valid supplied-radius diagnostic; coverage repeated across policy rows",
   "wrong_mean_graph_permutation": [
     0,
     2,

@@ -939,43 +939,9 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 5.47441pt on input line 36.
  [1
 
-] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12]
-(results/mean_selection/table.tex) [13] [14]
-Overfull \hbox (1.53616pt too wide) in paragraph at lines 571--572
-[]\TU/texgyrepagella-regular.otf(0)/m/n/10.95 The standard-library script is $[
-][][][][][][][][][][] [] [][][][][] [] [][][] [] [][][][] [] [][]$; saved resul
-ts are in $[][][][][][][][] []
- []
-
-[15]
-Underfull \hbox (badness 10000) in paragraph at lines 603--604
-[][][][][] [] [][][][][] [] [][][][] [] [][][][] [] [][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-[] []
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 605--606
-[]\TU/texgyrepagella-regular.otf(0)/m/n/10.95 A. Krause and C. S. Ong. Contextu
-al Gaussian Process Bandit Opti-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 605--606
-\TU/texgyrepagella-regular.otf(0)/m/n/10.95 mization. NIPS 24, 2011. [][]$[][][
-][][] [] [] [] [][][][][][] [] [][][][] [] [][] [] [][][][][] [] [][][][] [] []
-[][][] []
- []
-
-[16]
-Underfull \hbox (badness 3148) in paragraph at lines 610--611
-\TU/texgyrepagella-regular.otf(0)/m/n/10.95 tic Bandits. NIPS 30, 2017. [][]$[]
-[][][][] [] [] [] [][][][][][] [] [][][][] [] [][] [] [][][][][] [] [][][][][] 
-[] [][][][][] [] [][][][] [] [][][][] []
- []
-
-[17] (manuscript.aux)
+] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13]
+(results/mean_selection/table.tex) [14] [15] [16] [17] [18] (manuscript.aux)
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: B50BC9819E0330AE339FFD6C46F25CFC;5411.
+(rerunfilecheck)             Checksum: 9A2AFAD97D6CB1A05D0C78AC4B783BDA;5689.
  )
-Output written on manuscript.xdv (17 pages, 503572 bytes).
+Output written on manuscript.xdv (18 pages, 512976 bytes).

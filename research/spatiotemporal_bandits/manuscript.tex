@@ -256,6 +256,20 @@ M_t^+&=M_t+\frac{S_tu_t(R_t-u_t^\top M_t)}{1+u_t^\top S_tu_t}.
 \end{align}
 The mean posterior remains unchanged under temporal propagation; only the future observation experiment changes. Thus old data continue to inform the permanent mean even after their usefulness for predicting $z_t$ has decayed.
 
+\subsection{What the second reading actually measures}
+For a simple illustration, let two residuals have variance $V$ and spatial correlation $\rho$. After measuring location one, consider measuring location two at the next time. Define
+\[
+\gamma=\frac{\phi\rho V}{V+r},\qquad
+d_2=V+r-\frac{\phi^2\rho^2V^2}{V+r}.
+\]
+The second innovation experiment is
+\begin{equation}
+\boxed{\frac{Y_2-\gamma Y_1}{\sqrt{d_2}}
+=\frac{\mu_2-\gamma\mu_1}{\sqrt{d_2}}+\eta_2.}
+\label{eq:two-reading-innovation}
+\end{equation}
+Subtracting the predictable shared fluctuation also subtracts part of the first permanent mean. The correct likelihood therefore updates a weighted mean comparison, rather than treating $Y_2-\gamma Y_1$ as an unbiased reading of $\mu_2$. The graph prior or energy constraint links the two unknown means; the innovation covariance determines how precisely their weighted comparison is observed. If either $\phi$ or $\rho$ is zero, $\gamma=0$ and this transient cross-location effect vanishes, while the mean graph can remain informative.
+
 \section{Confidence, graph validity, and a correct stopping rule}
 \begin{theorem}[All-time graph-regularized confidence]
 Let the true mean be fixed in $\mathcal M(S,B)$, and let $H=\alpha I+\lambda L\succ0$ be fixed before collecting data. With known correct $K_z,\phi,r$, define
@@ -568,7 +582,7 @@ The policy comparison also exposes limitations. At matched smooth means and $\ph
 
 Exact calculations are checked independently of the policy experiment. Online information, scores, and posterior updates agree with dense trajectory likelihood calculations across positive, zero, and negative persistence. Constrained estimation enforces its supplied energy; fixed-design contrast bias matches the algebra. A broad two-location grid, including negative spatial correlation, validates the two-observation closed forms and design ordering. Three independent prior-predictive checks use 50,000 draws each; observed PCS agrees with the closed form within Monte Carlo uncertainty. A zero-persistence control verifies removal of transient cross-location information. The full-field effective sample-size identity is checked using independent dense solves. The current script passes 8,888 counted assertions; these are numerical checks, not a substitute for the proofs.
 
-The standard-library script is \path{experiments/graph_ar1_mean.py}; saved results are in \path{research/spatiotemporal_bandits/results/mean_selection/}. The initial known-zero-mean reward experiment is retained separately and is not evidence for the permanent-mean estimates in this manuscript.
+The standard-library script is \path{experiments/graph_ar1_mean.py}. Accompanying data are in this manuscript's \path{results/mean_selection/} directory. The initial known-zero-mean reward experiment is retained separately and is not evidence for the permanent-mean estimates in this manuscript.
 
 \section{Discussion and research agenda}
 The tractable model gives a direct answer to how spatial smoothness should be used. Fit means using the actual covariance of the observed trajectory, regularize differences on the graph, and retain the resulting bias or prior uncertainty. In a frequentist formulation, meaningful smoothing requires a trusted quantitative radius; in a Bayesian formulation, it requires a defensible prior. Neither smoothing a graph nor a small posterior variance verifies that assumption from selected-arm data.
@@ -599,6 +613,7 @@ tectonic --only-cached --keep-logs manuscript.tex
 \end{verbatim}
 
 \begin{thebibliography}{99}
+\raggedright
 \bibitem{valko2014} M. Valko, R. Munos, B. Kveton, and T. Koc\'{a}k. Spectral Bandits for Smooth Graph Functions. ICML, PMLR 32(2):46--54, 2014. \url{https://proceedings.mlr.press/v32/valko14.html}.
 \bibitem{thaker2022} P. Thaker, M. Malu, N. Rao, and G. Dasarathy. Maximizing and Satisficing in Multi-armed Bandits with Graph Information. NeurIPS 35, 2022. \url{https://papers.neurips.cc/paper_files/paper/2022/hash/0d561979f0f4bc6127cfcfe9c46ee205-Abstract-Conference.html}.
 \bibitem{bogunovic2016} I. Bogunovic, J. Scarlett, and V. Cevher. Time-Varying Gaussian Process Bandit Optimization. AISTATS, PMLR 51:314--323, 2016. \url{https://proceedings.mlr.press/v51/bogunovic16.html}.

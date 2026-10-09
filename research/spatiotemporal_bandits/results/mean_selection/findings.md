@@ -94,7 +94,7 @@ Positive paired opportunity-loss differences favor graph AR knowledge gradient.
 ## Interpretation and scope
 
 The diagonal-mean baseline retains the graph prior's marginal variances while removing its cross-covariances. The separate unstructured prior is I and matches the rough-mean generative model.
-The confidence theorem audit supplies each trajectory's actual mean norm and energy as valid radii, independently of measurement noise. The sampling policies do not use those radii; this does not demonstrate learning or validating them.
+The confidence theorem audit tests graph_ar_kg and supplies each trajectory's actual mean norm and energy as valid radii, independently of measurement noise. The sampling policies do not use those radii; this does not demonstrate learning or validating them. Its per-configuration coverage is repeated in CSV policy rows and does not audit misspecified filters.
 Contrast coverage refers to a fixed endpoint contrast and Gaussian posterior 95% intervals. Those intervals have a Bayesian interpretation only under the matched generative model. All-time frequentist confidence uses a distinct, bias-aware radius and is generally conservative.
 The KG rule is exact with one observation remaining for opportunity loss; rolling KG and the selected-contrast heuristic have no fixed-budget optimality guarantee. Forced probes ensure asymptotic observation of every arm.
 No real traffic data, hyperparameter fitting, unknown AR dynamics, general PCS-optimal control, or matching lower/upper bound is evaluated.

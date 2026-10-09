@@ -18,12 +18,11 @@ from pathlib import Path
 import random
 import statistics
 
-from spatiotemporal_bandits import (cholesky, density, dot, expected_max_lines,
-    gaussian_draw, graph_covariance, inverse, matmul, solve, transpose)
+from spatiotemporal_bandits import (cholesky, dot, expected_max_lines,
+    gaussian_draw, graph_covariance, inverse, solve)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "research" / "spatiotemporal_bandits" / "results" / "mean_selection"
-NORMAL = statistics.NormalDist()
 POLICIES = ("graph_ar_kg", "unstructured_ar_kg", "diagonal_mean_ar_kg", "graph_iid_kg",
             "wrong_mean_graph_ar_kg", "graph_ar_contrast", "round_robin")
 
@@ -366,7 +365,7 @@ def simulate(runs, budget, seed, n=6):
         "diagonal_mean_prior": "same marginal mean variances as fitted graph prior, zero cross-covariance",
         "measurement_variance": 0.1, "forced_cadence": n+1,
         "recommendation": "largest posterior mean: opportunity-loss optimal, not generally PCS optimal",
-        "frequentist_confidence_audit": "uses true norm and graph energy solely for a valid supplied-radius diagnostic",
+        "frequentist_confidence_audit": "graph_ar_kg only; uses true norm and graph energy solely for a valid supplied-radius diagnostic; coverage repeated across policy rows",
         "wrong_mean_graph_permutation": permutation}
     return rows, paired, metadata
 
@@ -394,7 +393,7 @@ def render(rows, paired, metadata, checks):
         lines.append(f"| {row['true_mean_graph_strength']:g} | {row['phi']:g} | {row['comparator']} | {row['opportunity_loss_difference']:.4f} | {1.96*row['standard_error']:.4f} |")
     lines += ["", "## Interpretation and scope", "",
         "The diagonal-mean baseline retains the graph prior's marginal variances while removing its cross-covariances. The separate unstructured prior is I and matches the rough-mean generative model.",
-        "The confidence theorem audit supplies each trajectory's actual mean norm and energy as valid radii, independently of measurement noise. The sampling policies do not use those radii; this does not demonstrate learning or validating them.",
+        "The confidence theorem audit tests graph_ar_kg and supplies each trajectory's actual mean norm and energy as valid radii, independently of measurement noise. The sampling policies do not use those radii; this does not demonstrate learning or validating them. Its per-configuration coverage is repeated in CSV policy rows and does not audit misspecified filters.",
         "Contrast coverage refers to a fixed endpoint contrast and Gaussian posterior 95% intervals. Those intervals have a Bayesian interpretation only under the matched generative model. All-time frequentist confidence uses a distinct, bias-aware radius and is generally conservative.",
         "The KG rule is exact with one observation remaining for opportunity loss; rolling KG and the selected-contrast heuristic have no fixed-budget optimality guarantee. Forced probes ensure asymptotic observation of every arm.",
         "No real traffic data, hyperparameter fitting, unknown AR dynamics, general PCS-optimal control, or matching lower/upper bound is evaluated.",

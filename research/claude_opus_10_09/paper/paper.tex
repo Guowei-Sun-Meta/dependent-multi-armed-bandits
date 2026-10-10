@@ -348,7 +348,8 @@ Calibrated, 90th percentile & 1.00 / 1.05 & 93\% & 19\% & 0.71 \\
 Energy & 0.98 / 1.05 & 100\% & 18\% & 0.80 \\
 None & 0.67 / 1.32 & 0\% & 98\% & 0 \\
 \midrule
-Per-user calibrated, 90th / 75th percentile & \multicolumn{4}{c}{see Section~\ref{sec:usercal}} \\
+Per-user calibrated, 90th percentile & 0.96 / 1.05 & 90\% & -- & 0.60 \\
+Per-user calibrated, 75th percentile & 0.88 / 1.05 & 73\% & -- & 0.40 \\
 \bottomrule
 \end{tabular}
 \caption{Setting A v2 with KL-based bounds (30 users $\times$ 2 subsets, $T=20{,}000$).}\label{tab:a2}
@@ -356,7 +357,7 @@ Per-user calibrated, 90th / 75th percentile & \multicolumn{4}{c}{see Section~\re
 
 \paragraph{Setting A v2 (KL bounds, calibrated certificates).} Table~\ref{tab:a2}. Oracle-certified pooling cuts regret 22\% at no tail cost; no practical certificate gets there: energy and 90th-percentile calibrated certificates are valid but too wide; the 50th-percentile calibration is narrow but valid for only half of the components. Uncertified pooling is best on average and worst in the tail, and does as well on the rewired graph.
 
-\paragraph{Per-user calibration.}\label{sec:usercal} \textit{[Pending: per-user certificates calibrated from level-matched tuning users after a one-pull-per-video warm-up; results to be inserted from \texttt{setting\_a2\_runs\_usercal.csv}.]}
+\paragraph{Per-user calibration.}\label{sec:usercal} Within-component ranges vary too much across users for a population quantile to be both valid and narrow. A per-user certificate first pulls each of the 300 videos once (charged to regret), estimates the user's reward level, and sets each component's width to a quantile of the ranges of the 100 tuning users with the closest level. At the 90th percentile it is valid for 89--90\% of components with mean width 0.55--0.60 (against 0.71 for the population quantile) and regret $0.95$--$0.96\times$ KL-UCB; at the 75th percentile, valid for 73\% with width 0.36--0.40 and regret $0.86$--$0.88\times$ (I-coeng / I-mf). Level matching recovers about half of the oracle's gain, but no practical certificate is yet both valid and narrow.
 
 \paragraph{Setting B (users arrive at random; 300 users $\times$ 100 videos; $T=100{,}000$; 8 instances).} Shrinking each video's estimate toward its population mean (complete graph, $\lambda=10$) cuts regret 27\% against per-user TS; real user graphs do not beat it (U-mf $0.741$, rewired U-coeng $0.745$, U-coeng $0.759$, U-geo $0.893$). Pooling over user clusters with an oracle certificate gains about 6\%; with calibrated certificates nearly nothing; without a certificate regret rises 39\%.
 

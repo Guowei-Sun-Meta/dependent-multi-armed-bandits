@@ -1,0 +1,15 @@
+{
+  "seconds": 22.660462667,
+  "scope": "small-world screening; anytime joint ellipsoid, fixed bursty schedule; fitted inflation is heuristic",
+  "r_obs": 0.01,
+  "delta": 0.05,
+  "true_means": [
+    0.15,
+    0.27,
+    0.39,
+    0.51,
+    0.63,
+    0.75
+  ],
+  "heavy_tails": "not_run_in_this_screen"
+}

@@ -1,0 +1,12 @@
+{
+  "seconds": 90.69720845799999,
+  "arms": 16,
+  "truth_fixed_across_policies": true,
+  "stationary_marginal_variance": 1.0,
+  "scope": "AR(1) mechanism screen; general-AR extension outstanding",
+  "ucb_multiplier": 1.0,
+  "discount": 0.98,
+  "tuning": "fixed pilot constants, no per-cell optimization",
+  "corruption": "fixed degree-preserving node relabeling of cycle graph; record actual changed edges",
+  "changed_edge_fraction": 0.875
+}

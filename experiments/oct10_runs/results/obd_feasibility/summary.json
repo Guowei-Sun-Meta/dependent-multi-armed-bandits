@@ -1,0 +1,197 @@
+{
+ "all": {
+  "rows": 1374327,
+  "items": 80,
+  "positions": [
+   1,
+   2,
+   3
+  ],
+  "start": "2019-11-24 00:00:00.007365+00:00",
+  "end": "2019-11-30 23:59:59.408889+00:00",
+  "days": 7,
+  "clicks": 4768,
+  "ctr": 0.0034693344451502445,
+  "propensities": [
+   0.0125
+  ],
+  "clicks_per_item": {
+   "median": 55.5,
+   "min": 20,
+   "max": 129
+  },
+  "item_ctr": {
+   "mean": 0.0034693344451502445,
+   "between_item_sd": 0.001571592620179764,
+   "mean_sampling_se": 0.0004487327352167738,
+   "reliability_of_7day_ctr": 0.9246195676909547,
+   "sd_over_se": 3.5022910005006853
+  },
+  "split_half": {
+   "pearson": 0.708358484328309,
+   "spearman": 0.7631973745897798,
+   "reliability_days4to7": 0.8972896499136102,
+   "top_item_same": false
+  },
+  "truth_gaps": {
+   "best_ctr": 0.009179864823968526,
+   "gap_to_2nd": 0.0008802486812151296,
+   "gap_to_5th": 0.003025708246083135,
+   "median_se_days4to7": 0.0005426543372552704
+  },
+  "position_ctr": {
+   "1": 0.003541446054082379,
+   "2": 0.0034704185019141867,
+   "3": 0.0033961638190691543
+  },
+  "dispersion_day": {
+   "pearson_over_df": 1.9733489702931812,
+   "null_q95": 1.2901205912172138,
+   "p_value": 0.0,
+   "lag1_resid_autocorr": -0.21639726319589314,
+   "median_clicks_per_item_bin": 7.0
+  },
+  "dispersion_bin6h": {
+   "pearson_over_df": 1.966824610116969,
+   "null_q95": 1.0999691180104139,
+   "p_value": 0.0,
+   "lag1_resid_autocorr": -0.03477756194044278,
+   "median_clicks_per_item_bin": 1.0
+  },
+  "segments_user_feature_0": {
+   "segments": 4,
+   "median_clicks_per_item_segment": 9.0,
+   "share_item_segments_with_ge5_clicks": 0.5875
+  }
+ },
+ "men": {
+  "rows": 452949,
+  "items": 34,
+  "positions": [
+   1,
+   2,
+   3
+  ],
+  "start": "2019-11-24 00:00:03.800821+00:00",
+  "end": "2019-11-30 23:59:58.340081+00:00",
+  "days": 7,
+  "clicks": 2321,
+  "ctr": 0.005124197205424894,
+  "propensities": [
+   0.029412
+  ],
+  "clicks_per_item": {
+   "median": 67.5,
+   "min": 42,
+   "max": 102
+  },
+  "item_ctr": {
+   "mean": 0.005124197205424894,
+   "between_item_sd": 0.001203193513224306,
+   "mean_sampling_se": 0.0006188557211033779,
+   "reliability_of_7day_ctr": 0.7907951099142536,
+   "sd_over_se": 1.9442229783043665
+  },
+  "split_half": {
+   "pearson": 0.33153182615616267,
+   "spearman": 0.439877769289534,
+   "reliability_days4to7": 0.7299201355915925,
+   "top_item_same": false
+  },
+  "truth_gaps": {
+   "best_ctr": 0.009412363266344441,
+   "gap_to_2nd": 0.0009932800109655818,
+   "gap_to_5th": 0.002720602496791953,
+   "median_se_days4to7": 0.0007969987897944391
+  },
+  "position_ctr": {
+   "1": 0.005379763608416813,
+   "2": 0.005244755244755245,
+   "3": 0.0047481871461209895
+  },
+  "dispersion_day": {
+   "pearson_over_df": 2.0243368200961,
+   "null_q95": 1.4181234278100998,
+   "p_value": 0.0,
+   "lag1_resid_autocorr": -0.20417328546729965,
+   "median_clicks_per_item_bin": 9.0
+  },
+  "dispersion_bin6h": {
+   "pearson_over_df": 2.1709033671859217,
+   "null_q95": 1.1635126307172303,
+   "p_value": 0.0,
+   "lag1_resid_autocorr": -0.031591144867549256,
+   "median_clicks_per_item_bin": 2.0
+  },
+  "segments_user_feature_0": {
+   "segments": 4,
+   "median_clicks_per_item_segment": 10.0,
+   "share_item_segments_with_ge5_clicks": 0.5661764705882353
+  }
+ },
+ "women": {
+  "rows": 864585,
+  "items": 46,
+  "positions": [
+   1,
+   2,
+   3
+  ],
+  "start": "2019-11-24 00:00:00.686850+00:00",
+  "end": "2019-11-30 23:59:57.920185+00:00",
+  "days": 7,
+  "clicks": 4163,
+  "ctr": 0.004815026862598819,
+  "propensities": [
+   0.021739
+  ],
+  "clicks_per_item": {
+   "median": 90.5,
+   "min": 35,
+   "max": 148
+  },
+  "item_ctr": {
+   "mean": 0.004815026862598819,
+   "between_item_sd": 0.001557182677425009,
+   "mean_sampling_se": 0.0005050035613912197,
+   "reliability_of_7day_ctr": 0.9048346246062092,
+   "sd_over_se": 3.083508308605134
+  },
+  "split_half": {
+   "pearson": 0.4940101349015599,
+   "spearman": 0.5405488744989206,
+   "reliability_days4to7": 0.8731921757056578,
+   "top_item_same": false
+  },
+  "truth_gaps": {
+   "best_ctr": 0.008640291041382447,
+   "gap_to_2nd": 0.0010159302789463712,
+   "gap_to_5th": 0.0013682087426949699,
+   "median_se_days4to7": 0.0006428057849383597
+  },
+  "position_ctr": {
+   "1": 0.0048310352367103146,
+   "2": 0.004752983624757147,
+   "3": 0.0048610725587076
+  },
+  "dispersion_day": {
+   "pearson_over_df": 2.098548570538095,
+   "null_q95": 1.3562170747969975,
+   "p_value": 0.0,
+   "lag1_resid_autocorr": -0.13783248922711222,
+   "median_clicks_per_item_bin": 12.0
+  },
+  "dispersion_bin6h": {
+   "pearson_over_df": 1.9862578545663805,
+   "null_q95": 1.1348342019244868,
+   "p_value": 0.0,
+   "lag1_resid_autocorr": -0.011145486284482146,
+   "median_clicks_per_item_bin": 2.0
+  },
+  "segments_user_feature_0": {
+   "segments": 4,
+   "median_clicks_per_item_segment": 8.0,
+   "share_item_segments_with_ge5_clicks": 0.5380434782608695
+  }
+ }
+}

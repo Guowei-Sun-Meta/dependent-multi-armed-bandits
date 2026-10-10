@@ -1,0 +1,6 @@
+{
+  "dense_conditional_innovation_information": "pass",
+  "dense_conditional_score": "pass",
+  "simultaneous_partial_slate_marginal_precision": "pass",
+  "whitening_includes_sensor_noise": true
+}

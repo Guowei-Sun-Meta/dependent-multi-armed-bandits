@@ -1,5 +1,7 @@
 # Prioritized experiment plan for the correlated-arms paper
 
+> **Folded into [experiment_plan.md](experiment_plan.md)** (10 October afternoon), which is the single plan. This assessment is kept for its reasoning.
+
 10 October 2026. Status: assessment and proposed execution plan; no new benchmark was run for this document.
 
 Compared documents: [next_experiments.md](next_experiments.md) and [recommended_spatiotemporal_experiments.md](recommended_spatiotemporal_experiments.md). The latter is the repository file corresponding to the requested `recommended_st_experiments.md`.

@@ -1,0 +1,10 @@
+campaign,position,median_hourly_lag1_pearson_residual_correlation,training_rate_spread_sd,median_training_rate_sampling_se,method_of_moments_between_item_variance,scope
+men,1,-0.04449020411809678,0.0028667455092725195,0.0017475536484476803,5.032934417480471e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+men,2,-0.020389959851101674,0.0028030044765585045,0.0016453350166700104,5.028598725845684e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+men,3,-0.047482411277725504,0.0028974201263443906,0.0014933996302721668,5.771239969620117e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+women,1,-0.04641507029570228,0.0023787131863866697,0.0013635263108245973,3.5667970527841918e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+women,2,-0.05132265805879753,0.002682602585849442,0.001377289370731802,5.2382136477869785e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+women,3,-0.015425519971792947,0.0025726194378096617,0.0012798650561489109,4.692712480278962e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+all,1,-0.02787052340959925,0.002188115206615132,0.0012476591101702609,3.0894887911499955e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+all,2,-0.03628505425705149,0.002284839974452483,0.0011383599763064257,3.6370709098531165e-06,prefix only; sparse Pearson correlations cannot validate an AR model
+all,3,-0.03598148356660508,0.002078321574165614,0.0011741657213891873,2.810745753512989e-06,prefix only; sparse Pearson correlations cannot validate an AR model

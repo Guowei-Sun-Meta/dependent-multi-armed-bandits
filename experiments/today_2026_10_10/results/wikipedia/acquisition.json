@@ -1,0 +1,386 @@
+[
+  {
+    "panel": "astronomy",
+    "index": 0,
+    "title": "Sun",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Sun/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_00.json",
+    "sha256": "4caf1ca06ebd025eb8a58453ee5c5e56488373e883916378116354af14a1865d"
+  },
+  {
+    "panel": "astronomy",
+    "index": 1,
+    "title": "Moon",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Moon/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_01.json",
+    "sha256": "f65efcc56fbd676a36f3ed1750b0e1884ce4f919026fc95cf40a451879ed9029"
+  },
+  {
+    "panel": "astronomy",
+    "index": 2,
+    "title": "Mars",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Mars/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_02.json",
+    "sha256": "2cef2aa2e606c9ee2a3d9cab9c4151fb3b83abfc31b9ca3c688a63c8499a4455"
+  },
+  {
+    "panel": "astronomy",
+    "index": 3,
+    "title": "Venus",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Venus/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_03.json",
+    "sha256": "f764b4f8ed442f22451cc4d23f0d77395e67b5e22dc535df4260acaf9b84ef93"
+  },
+  {
+    "panel": "astronomy",
+    "index": 4,
+    "title": "Jupiter",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Jupiter/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_04.json",
+    "sha256": "42df56fdabf99bab304117ecb062dd412600fca135ee017bec8489a4d3f5f98f"
+  },
+  {
+    "panel": "astronomy",
+    "index": 5,
+    "title": "Saturn",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Saturn/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_05.json",
+    "sha256": "0deba4a99dc9cdf62ba3acc157c426aa034332242a5e15e479d18ba286a92c09"
+  },
+  {
+    "panel": "astronomy",
+    "index": 6,
+    "title": "Mercury_(planet)",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Mercury_%28planet%29/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_06.json",
+    "sha256": "996455c60e628e3230f16973f6e21178da8d1b0fe132bf704791a3b12e8f9775"
+  },
+  {
+    "panel": "astronomy",
+    "index": 7,
+    "title": "Neptune",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Neptune/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_07.json",
+    "sha256": "04d3ca1cb14dbbc629265b30826ebb0e280ddd91510e714b9cf9c61449e78d82"
+  },
+  {
+    "panel": "astronomy",
+    "index": 8,
+    "title": "Uranus",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Uranus/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_08.json",
+    "sha256": "c633fc4a05122c655dcd203f0c27b6e542add6748d2cd31ad4e52bac7c2b8aa7"
+  },
+  {
+    "panel": "astronomy",
+    "index": 9,
+    "title": "Earth",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Earth/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_09.json",
+    "sha256": "af6a8495d3d489b757731bb843ed8079fdbbcd50c99cabf3b11a74ae4b699749"
+  },
+  {
+    "panel": "astronomy",
+    "index": 10,
+    "title": "Solar_System",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Solar_System/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_10.json",
+    "sha256": "af0862917c18fed86d9544512fb138eb670b5d1ac1aa814bf82e11b4e51cc488"
+  },
+  {
+    "panel": "astronomy",
+    "index": 11,
+    "title": "Milky_Way",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Milky_Way/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_11.json",
+    "sha256": "9fe692a9e2595f776d8df77f87868e384ebf4bd210a7da9b233eb2c8cdc6cd20"
+  },
+  {
+    "panel": "astronomy",
+    "index": 12,
+    "title": "Galaxy",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Galaxy/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_12.json",
+    "sha256": "088d4c59f8bdae66424499612e1f485828756076cd1b3828e25d881bf73bf5bb"
+  },
+  {
+    "panel": "astronomy",
+    "index": 13,
+    "title": "Black_hole",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Black_hole/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_13.json",
+    "sha256": "8d7f19729f67f53d93e6a4ebf4fa4b67755a8a0ebcbe4a2e49fa16892ee6d819"
+  },
+  {
+    "panel": "astronomy",
+    "index": 14,
+    "title": "Supernova",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Supernova/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_14.json",
+    "sha256": "f7e19b26669d8b6bdcb4e8e983cb94f2bd12385b3448e2f2bad460f2632ef923"
+  },
+  {
+    "panel": "astronomy",
+    "index": 15,
+    "title": "Hubble_Space_Telescope",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Hubble_Space_Telescope/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_15.json",
+    "sha256": "d90e86e3bb7485f7ea27371f24a440e0b8970d0b95512b0bff881295caacf7d4"
+  },
+  {
+    "panel": "astronomy",
+    "index": 16,
+    "title": "James_Webb_Space_Telescope",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/James_Webb_Space_Telescope/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_16.json",
+    "sha256": "ebd310b096557758dccd715e116a48942840bf70b2c8307682dedbc9d506e4d6"
+  },
+  {
+    "panel": "astronomy",
+    "index": 17,
+    "title": "International_Space_Station",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/International_Space_Station/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_17.json",
+    "sha256": "326b45df8d46dbd6e1fd5cf8c70189b8188e0b06f7a6bebf694a36b284cf2b35"
+  },
+  {
+    "panel": "astronomy",
+    "index": 18,
+    "title": "NASA",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/NASA/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_18.json",
+    "sha256": "86b062b914c851fafaf95aaee5f6c6d7115b025883f26e2b795a519c50292c67"
+  },
+  {
+    "panel": "astronomy",
+    "index": 19,
+    "title": "SpaceX",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/SpaceX/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_19.json",
+    "sha256": "edf6ffcd44f5b2825172e4e8a99ad79de41b79eb2c1def87e7d5d3414005053a"
+  },
+  {
+    "panel": "astronomy",
+    "index": 20,
+    "title": "Apollo_11",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Apollo_11/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_20.json",
+    "sha256": "cfad821be340fecccb46a472baf8d0e30ec7d8b42ac87dda07cba27f271584b7"
+  },
+  {
+    "panel": "astronomy",
+    "index": 21,
+    "title": "Falcon_9",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Falcon_9/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_21.json",
+    "sha256": "bd061e50f1a509d84ae4daa6471ab42e99e1794c0d6359be14a6e5136a7f67aa"
+  },
+  {
+    "panel": "astronomy",
+    "index": 22,
+    "title": "Space_Shuttle",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Space_Shuttle/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_22.json",
+    "sha256": "19d48e3c13cd70e4836f4f87a26e54aef85db85df7a4bb550f956570903bed71"
+  },
+  {
+    "panel": "astronomy",
+    "index": 23,
+    "title": "Artemis_program",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Artemis_program/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/astronomy_23.json",
+    "sha256": "89b182b985f83be56277d238e363b5990f398639319b362a1b43b710c63d680f"
+  },
+  {
+    "panel": "football",
+    "index": 0,
+    "title": "UEFA_Champions_League",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/UEFA_Champions_League/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_00.json",
+    "sha256": "a3fc15fb84c6edabc34a79a574fb15c0daa2a5b4696f2ae647a65362d774b181"
+  },
+  {
+    "panel": "football",
+    "index": 1,
+    "title": "FIFA_World_Cup",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/FIFA_World_Cup/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_01.json",
+    "sha256": "080808a8bac58729eefe91287b0510e18b0fa77553de55c704b0b2d168e07e57"
+  },
+  {
+    "panel": "football",
+    "index": 2,
+    "title": "Premier_League",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Premier_League/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_02.json",
+    "sha256": "de85c9f77b3921e10eb8e734895c6fd96a9f3198752da37319ead04305acd743"
+  },
+  {
+    "panel": "football",
+    "index": 3,
+    "title": "Manchester_United_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Manchester_United_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_03.json",
+    "sha256": "70ffcabdb76fdd22ad7c4fc56887b2ce5f450d8f94f1b1cef93c3c4ccc76b03a"
+  },
+  {
+    "panel": "football",
+    "index": 4,
+    "title": "Manchester_City_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Manchester_City_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_04.json",
+    "sha256": "e316764d0ee1067d16710ad91b6949945a27d816141b275b92d71f4ccf1123a4"
+  },
+  {
+    "panel": "football",
+    "index": 5,
+    "title": "Liverpool_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Liverpool_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_05.json",
+    "sha256": "0aa8546f8eba3a464d1b42f6c25f6a634d6801517b2bd9a0dfc9aa7e566f0b03"
+  },
+  {
+    "panel": "football",
+    "index": 6,
+    "title": "Real_Madrid_CF",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Real_Madrid_CF/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_06.json",
+    "sha256": "17bfebc30a4c5f8a902b021526bf9cafe9d55369f99e8944451a86d53d02fab8"
+  },
+  {
+    "panel": "football",
+    "index": 7,
+    "title": "FC_Barcelona",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/FC_Barcelona/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_07.json",
+    "sha256": "60f125db2f9608238045a14edaebe31f0b92a1881740ab9975ca84394bd8163f"
+  },
+  {
+    "panel": "football",
+    "index": 8,
+    "title": "FC_Bayern_Munich",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/FC_Bayern_Munich/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_08.json",
+    "sha256": "1503c0ea0881c53309ae6bc99860f14b8babeab297258bb679f5843cbd5e9abf"
+  },
+  {
+    "panel": "football",
+    "index": 9,
+    "title": "Borussia_Dortmund",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Borussia_Dortmund/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_09.json",
+    "sha256": "432adeda6120386d0a704efff9c70b2c97eec16dabeb0efbf24813e8cafb2924"
+  },
+  {
+    "panel": "football",
+    "index": 10,
+    "title": "Arsenal_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Arsenal_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_10.json",
+    "sha256": "9fa9c3f42c719722ba3b562413048503b58092751c31565231049895fe7bb88f"
+  },
+  {
+    "panel": "football",
+    "index": 11,
+    "title": "Chelsea_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Chelsea_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_11.json",
+    "sha256": "7125083eb4e179c80208067375038357358f75ec7540856babc1b5259e8000f4"
+  },
+  {
+    "panel": "football",
+    "index": 12,
+    "title": "Juventus_FC",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Juventus_FC/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_12.json",
+    "sha256": "6c6ba6fba1db7bc22cafe56ff2ba80221321695d5e56672955e6383ada0f7bb4"
+  },
+  {
+    "panel": "football",
+    "index": 13,
+    "title": "Paris_Saint-Germain_FC",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Paris_Saint-Germain_FC/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_13.json",
+    "sha256": "1a8a68d8ee4874c77b3829d3f1ebef15584731dbc7cc179b6dc059078a05fb1f"
+  },
+  {
+    "panel": "football",
+    "index": 14,
+    "title": "Atl\u00e9tico_Madrid",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Atl%C3%A9tico_Madrid/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_14.json",
+    "sha256": "1c2d1c5962602ee7a0f2153a594cd379ccb649e1c42a587ef5f8de8d25e7245e"
+  },
+  {
+    "panel": "football",
+    "index": 15,
+    "title": "AC_Milan",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/AC_Milan/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_15.json",
+    "sha256": "8c835e4f69565cd6a3d272592f24499d63e60a485b4efbcf315792744490f29f"
+  },
+  {
+    "panel": "football",
+    "index": 16,
+    "title": "Inter_Milan",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Inter_Milan/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_16.json",
+    "sha256": "82a3eb3693a057267789fcf1cd9d174db64b5f1e6c77d92f8ae9bb9070f00192"
+  },
+  {
+    "panel": "football",
+    "index": 17,
+    "title": "Tottenham_Hotspur_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Tottenham_Hotspur_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_17.json",
+    "sha256": "44526aa9bde13b2635ab30de7c296aa1d2f09f6b43f89dfb1ad1ecb7446a707f"
+  },
+  {
+    "panel": "football",
+    "index": 18,
+    "title": "Everton_F.C.",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Everton_F.C./daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_18.json",
+    "sha256": "c1e408804590768f4f25dfe7db496f64afe9b930c17114ed3db34a1d98131a64"
+  },
+  {
+    "panel": "football",
+    "index": 19,
+    "title": "Cristiano_Ronaldo",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Cristiano_Ronaldo/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_19.json",
+    "sha256": "a2370b6d631a2c48f48f51b7e2d3655c87cec9d8396815a95f86b6e7bf5d67c3"
+  },
+  {
+    "panel": "football",
+    "index": 20,
+    "title": "Lionel_Messi",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Lionel_Messi/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_20.json",
+    "sha256": "8d99fcd98798315c630eda43d0a504aec9301a1d00246b942ca5f7730c4d8a12"
+  },
+  {
+    "panel": "football",
+    "index": 21,
+    "title": "Kylian_Mbapp\u00e9",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Kylian_Mbapp%C3%A9/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_21.json",
+    "sha256": "244ce63200ca4f4e47dbec5431bd64c3b867c206ff23eaad681f1d67267d4c44"
+  },
+  {
+    "panel": "football",
+    "index": 22,
+    "title": "Erling_Haaland",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Erling_Haaland/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_22.json",
+    "sha256": "a08caee446f823d2db25b64adb6a3cabfa118a1efb483209400530794dcf0ddd"
+  },
+  {
+    "panel": "football",
+    "index": 23,
+    "title": "UEFA_European_Championship",
+    "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/UEFA_European_Championship/daily/2024010100/2025123100",
+    "path": "experiments/today_2026_10_10/data/wikipedia/football_23.json",
+    "sha256": "5f78c433c9ee669fe5c73df9207cdf187579aa150dc9d65c28b15384cf175897"
+  }
+]

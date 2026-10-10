@@ -1,0 +1,10 @@
+{
+  "dense_transition_and_update": "pass",
+  "state_dimension": 8,
+  "batch_selected_before_feedback": "pass_by_interface",
+  "nonnegative_oracle_loss": "pass",
+  "future_data_in_fit": "absent_by_prefix_slicing",
+  "full_field_refresh_during_test": "none",
+  "tuning": "2024 development only; 3 stochastic development seeds",
+  "scope": "conditional historical-panel evidence"
+}

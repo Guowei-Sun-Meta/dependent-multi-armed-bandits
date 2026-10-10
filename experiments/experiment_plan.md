@@ -7,6 +7,26 @@
 
 Experiments freeze on 21 October. The abstract is due 18 October and the paper 25 October.
 
+## Revisions, 10 October afternoon: one plan
+
+[optimal_experiment_plan.md](optimal_experiment_plan.md) is folded in here; this file is the single plan. First results for experiments 3a, 4, 6 and 8 are in [oct10_runs/](oct10_runs/README.md).
+
+**Open Bandit Dataset: the limited form (experiment 8) stands.** The censored-feedback, calendar-time study in [open_bandit/design.md](open_bandit/design.md) is deferred. The feasibility check settles it:
+- Item click rates do vary from day to day more than binomial noise allows, with Pearson dispersion about 2.
+- But the day-to-day residuals do not persist. Their lag-1 autocorrelation is −0.14 to −0.22 by day and about 0 by 6-hour bin.
+- At 1–2 clicks per item per 6-hour bin, there is no fluctuation channel to filter.
+
+**Corrections adopted from the optimal plan:**
+
+1. **Availability must be known before selection.** Masking zero-play days in experiment 1 uses that day's outcome. Define availability from the prefix, or label the setup as retrospective.
+2. **3a uses the full fitted autocovariance**, at block lengths 1, 3, 7, 14 and 28. The AR(1) shortcut from lag 1 is reported separately; it underpredicts at long blocks.
+3. **3b's main worlds resample innovations independently over time.** Weekly blocks of residuals break B1's assumption, so they move to the stress test.
+4. **Experiment 4 reports observed coverage with binomial intervals.** "Fitted φ plus 2 SE" is a heuristic, not a theorem.
+5. **Replication units.** Disjoint windows still share global shocks and fitted parameters, so the analysis must be dependence-aware. An interval that crosses zero means inconclusive, not tied.
+6. **B3: (1 − ρ) holds only for equal pairs.** Use the long-run covariance Ω, and add unequal-variance, heterogeneous-persistence and staggered controls. Done in 6.
+7. **Tuning.** Freeze exploration constants on development runs. The benchmark's UCB multiplier was picked on evaluation runs.
+8. **Wikipedia links.** Old revisions parsed today expand templates at their current versions. Use literal links from the dated revision, or disclose the mismatch.
+
 ## Bottom line
 
 The recommended file's most important point is one my review missed: **the KuaiRec daily results use future information, and the Wikipedia panels do too.** Fixing that comes first, because every real-data number in Q1 and Q4 depends on it.

@@ -1,0 +1,8 @@
+{
+  "seconds": 97.19049212499999,
+  "exposure_block": 1000,
+  "true_mean_gap": 0.2,
+  "randomized_arm_order": true,
+  "regret_comparison": "fixed batch exploration persists even after the best arm survives; loss mechanism illustration, not an optimal policy",
+  "claim": "finite-horizon evidence, not a proof of linear regret"
+}

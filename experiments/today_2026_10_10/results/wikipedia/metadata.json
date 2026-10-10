@@ -1,0 +1,147 @@
+{
+  "astronomy": {
+    "status": "complete",
+    "titles": [
+      "Sun",
+      "Moon",
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn",
+      "Mercury_(planet)",
+      "Neptune",
+      "Uranus",
+      "Earth",
+      "Solar_System",
+      "Milky_Way",
+      "Galaxy",
+      "Black_hole",
+      "Supernova",
+      "Hubble_Space_Telescope",
+      "James_Webb_Space_Telescope",
+      "International_Space_Station",
+      "NASA",
+      "SpaceX",
+      "Apollo_11",
+      "Falcon_9",
+      "Space_Shuttle",
+      "Artemis_program"
+    ],
+    "graph_source_sha256": "897a5088e3cb5c4965e67fa2f1829d4cea1f17e9ecadd2a683b860974940d3bf",
+    "graph_cutoff": "before 2024, as reconstructed by released study",
+    "initial_readings": 8784,
+    "ar_coefficients": [
+      0.6645924227975106,
+      0.08497510822256178,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.10238542390164795
+    ],
+    "covariance_specs": {
+      "ar": {
+        "gamma": 0.0,
+        "mix": 0.0
+      },
+      "st": {
+        "gamma": 0.5,
+        "mix": 0.5
+      },
+      "rewired": {
+        "gamma": 0.5,
+        "mix": 0.5
+      },
+      "factor": {
+        "gamma": 0.0,
+        "mix": 0.5
+      },
+      "empirical": {
+        "gamma": 0.0,
+        "mix": 0.5
+      }
+    },
+    "covariance_development_scores": {
+      "ar": 34.49872181540286,
+      "st": 35.177693781984544,
+      "rewired": 35.213633597519284,
+      "factor": 35.847706720345386,
+      "empirical": 35.847706720345386
+    },
+    "spectral_radius": 0.9226528789437435
+  },
+  "football": {
+    "status": "complete",
+    "titles": [
+      "UEFA_Champions_League",
+      "FIFA_World_Cup",
+      "Premier_League",
+      "Manchester_United_F.C.",
+      "Manchester_City_F.C.",
+      "Liverpool_F.C.",
+      "Real_Madrid_CF",
+      "FC_Barcelona",
+      "FC_Bayern_Munich",
+      "Borussia_Dortmund",
+      "Arsenal_F.C.",
+      "Chelsea_F.C.",
+      "Juventus_FC",
+      "Paris_Saint-Germain_FC",
+      "Atl\u00e9tico_Madrid",
+      "AC_Milan",
+      "Inter_Milan",
+      "Tottenham_Hotspur_F.C.",
+      "Everton_F.C.",
+      "Cristiano_Ronaldo",
+      "Lionel_Messi",
+      "Kylian_Mbapp\u00e9",
+      "Erling_Haaland",
+      "UEFA_European_Championship"
+    ],
+    "graph_source_sha256": "30913363fe16b7cb4343a6607d02067c17579a9561ceef339899e0c893d2b8ad",
+    "graph_cutoff": "before 2024, as reconstructed by released study",
+    "initial_readings": 8784,
+    "ar_coefficients": [
+      0.7521036869715528,
+      0.046966295733801115,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.1310293474955349
+    ],
+    "covariance_specs": {
+      "ar": {
+        "gamma": 0.0,
+        "mix": 0.0
+      },
+      "st": {
+        "gamma": 8.0,
+        "mix": 0.5
+      },
+      "rewired": {
+        "gamma": 8.0,
+        "mix": 0.5
+      },
+      "factor": {
+        "gamma": 1.0,
+        "mix": 0.9
+      },
+      "empirical": {
+        "gamma": 1.0,
+        "mix": 0.9
+      }
+    },
+    "covariance_development_scores": {
+      "ar": 17.7217874174502,
+      "st": 20.0077385503644,
+      "rewired": 19.929844838477866,
+      "factor": 19.660830990253512,
+      "empirical": 19.660830990253512
+    },
+    "spectral_radius": 0.9640454395043689
+  },
+  "seconds": 20.314821959,
+  "runs": 108,
+  "daily_records": 39420
+}

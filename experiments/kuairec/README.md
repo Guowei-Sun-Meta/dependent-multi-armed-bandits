@@ -180,6 +180,8 @@ The protocol:
 
 ## Daily trending slot: the fluctuation channel
 
+> **Known look-ahead (found 10 October; re-run planned in [experiment_plan.md](../experiment_plan.md)).** The I-coeng graph is built from the full interaction log: 79.1% of its input rows postdate the first cutoff. The panel also keeps only videos observed on all 63 days. Graph-related numbers below may favour the graph, and the cohort is conditioned on survival.
+
 The protocol (`experiments/kuairec/code/daily.py`):
 
 - **Arms:** the 253 evaluation videos observed on all 63 days.

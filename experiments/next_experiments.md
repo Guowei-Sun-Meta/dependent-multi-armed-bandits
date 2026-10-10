@@ -1,5 +1,7 @@
 # Next Experiments: Is the Evidence Sufficient?
 
+> **Superseded for priorities** by [experiment_plan.md](experiment_plan.md), which merges this review with [recommended_spatiotemporal_experiments.md](recommended_spatiotemporal_experiments.md). The evidence review below still stands.
+
 10 October 2026. Reviewed against the claims of the current long paper ([research/claude_opus_10_09_v2](../research/claude_opus_10_09_v2/README.md)), with the WWW deadlines in mind: abstract on 18 October, full paper on 25 October.
 
 ## Verdict

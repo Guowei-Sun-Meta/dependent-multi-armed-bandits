@@ -97,6 +97,7 @@ The graph's effect on decisions is small ([paired differences](../../research/cl
 
 ## Limitations
 
+- **Look-ahead in panel construction** (found 10 October; re-run planned in [experiment_plan.md](../experiment_plan.md)). Articles were selected by 2022–2025 popularity and completeness, and the hyperlinks are a 2026 snapshot, so both use information from after the fit windows.
 - Featuring is assumed not to change organic views.
 - Articles were selected by popularity. Other selections may show link-specific shocks, such as current events spreading along links.
 - Bots and spiders are excluded through the API's "user" agent filter only.

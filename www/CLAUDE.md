@@ -95,7 +95,7 @@ Appendix: proofs, graph construction, Setting B (user graphs), sensitivity check
 
 ## Experiments
 
-Existing results are in [research/kuairec_graphs/README.md](../research/kuairec_graphs/README.md) and [research/st_toy/README.md](../research/st_toy/README.md).
+Existing results are in [experiments/kuairec/README.md](../experiments/kuairec/README.md) and [experiments/simulations/spatiotemporal_benchmark/README.md](../experiments/simulations/spatiotemporal_benchmark/README.md).
 
 | Experiment | Purpose | Status |
 | --- | --- | --- |
@@ -133,4 +133,4 @@ Cut from the long paper:
 ## Sources
 
 - The Web Conference 2027: [Call for Research Track Papers](https://www2027.thewebconf.org/?p=296); [Important dates](https://www2027.thewebconf.org/important-dates/).
-- Related work and dataset sources are listed in [research/correlated_arms/README.md](../research/correlated_arms/README.md), [research/kuairec_graphs/README.md](../research/kuairec_graphs/README.md) and [research/st_toy/README.md](../research/st_toy/README.md).
+- Related work and dataset sources are listed in [research/correlated_arms/README.md](../research/correlated_arms/README.md), [experiments/kuairec/README.md](../experiments/kuairec/README.md) and [experiments/simulations/spatiotemporal_benchmark/README.md](../experiments/simulations/spatiotemporal_benchmark/README.md).

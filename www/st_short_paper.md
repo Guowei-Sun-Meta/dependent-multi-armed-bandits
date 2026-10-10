@@ -63,7 +63,7 @@ Designs are in [st_applications.md](st_applications.md).
 
 | Priority | Experiment | Status |
 | --- | --- | --- |
-| 1 | Toy benchmark (100-arm grid, AR(20)) | Running (`experiments/st_toy/`) |
+| 1 | Toy benchmark (100-arm grid, AR(20)) | Running (`experiments/simulations/spatiotemporal_benchmark/code/`) |
 | 2 | Shared panel harness: fit window, rolling origins, learned dynamics, policies, gap-closed metric | To build (`experiments/st_apps/`) |
 | 3 | KuaiRec daily trending slot | After 2 |
 | 4 | Wikipedia featured-article slot (Kaggle panel and clickstream graph) | After 2 |

@@ -1,6 +1,6 @@
 # UCB, Thompson-style sampling, and selection under spatial AR rewards
 
-The [paper](manuscript.pdf) and [simulation code](../../experiments/spatiotemporal_policies.py) use fixed unknown means and known, stable AR filters. Gaussian parameter draws below are a randomized decision mechanism. They do not make the environment's means random, and their covariance is inverse penalized information rather than the repeated-noise sampling covariance of the estimator.
+The [paper](manuscript.pdf) and [simulation code](../../experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py) use fixed unknown means and known, stable AR filters. Gaussian parameter draws below are a randomized decision mechanism. They do not make the environment's means random, and their covariance is inverse penalized information rather than the repeated-noise sampling covariance of the estimator.
 
 For each arm,
 
@@ -188,9 +188,9 @@ See the [results](results/policies_ar20/findings.md), raw [paired runs](results/
 
 ```sh
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
-  .venv/bin/python -I experiments/spatiotemporal_policies.py --verify
+  .venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py --verify
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
-  .venv/bin/python -I experiments/spatiotemporal_policies.py --runs 32 --horizon 1000 --jobs 4
+  .venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py --runs 32 --horizon 1000 --jobs 4
 MPLCONFIGDIR=/private/tmp/dependent-mab-mpl OPENBLAS_NUM_THREADS=1 \
-  .venv/bin/python -I experiments/spatiotemporal_policies_analysis.py
+  .venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies_analysis.py
 ```

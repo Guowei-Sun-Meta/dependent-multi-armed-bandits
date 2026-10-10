@@ -73,7 +73,7 @@ With deterministic rewards, a naive policy that adds the ordinary arm confidence
 The accompanying script reproduces the example with a conservative noise proxy $`\sigma=1`$, one initial sample per arm, and horizon-dependent confidence bounds:
 
 ```sh
-python3 experiments/s_index_counterexample.py
+python3 experiments/simulations/theory/graph_alignment/s_index_counterexample.py
 ```
 
 | Policy | Regret at T=1,000 | T=10,000 | T=100,000 |

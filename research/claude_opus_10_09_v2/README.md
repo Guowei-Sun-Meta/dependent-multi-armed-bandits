@@ -5,9 +5,10 @@
 | Item | What it is |
 | --- | --- |
 | [paper/paper.pdf](paper/paper.pdf) ([source](paper/paper.tex)) | The long working paper, organized around four questions |
-| [analysis/](analysis) | Theory-to-data analyses, each a CSV plus a markdown table (`experiments/deepdive.py`) |
-| [figures/](figures) | One figure per bridge (`experiments/paper_figures_v2.py`) |
-| [wikipedia_multi/](wikipedia_multi/README.md) | The new application: Wikipedia attention across six communities |
+| [analysis/](analysis) | Theory-to-data analyses, each a CSV plus a markdown table (`experiments/paper/deepdive.py`) |
+| [figures/](figures) | One figure per bridge (`experiments/paper/paper_figures_v2.py`) |
+| [experiments/wikipedia](../../experiments/wikipedia/README.md#panel-2-six-communities) | The new application: Wikipedia attention across six communities (moved to `experiments/` on 10 October) |
+| [experiments/](../../experiments/README.md) | Design, code, results and report of every experiment in the paper |
 
 ## What changed from version 1
 
@@ -36,7 +37,7 @@
 From the repository root, after the experiments listed in the paper's appendix:
 
 ```sh
-OPENBLAS_NUM_THREADS=2 .venv/bin/python -I experiments/deepdive.py
-.venv/bin/python -I experiments/paper_figures_v2.py
+OPENBLAS_NUM_THREADS=2 .venv/bin/python -I experiments/paper/deepdive.py
+.venv/bin/python -I experiments/paper/paper_figures_v2.py
 cd research/claude_opus_10_09_v2/paper && tectonic paper.tex
 ```

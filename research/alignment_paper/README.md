@@ -48,11 +48,11 @@ The original SP-UCB analysis and experiments remain as supplementary material. C
 Reproduce from the project root:
 
 ```sh
-python3 experiments/resistance_geometry.py --verify
-python3 experiments/resistance_geometry.py --runs 40 --horizon 20000
-python3 experiments/render_geometry_results.py
-python3 experiments/alignment_regret.py --verify
-python3 experiments/alignment_regret.py --runs 40 --horizon 20000
+python3 experiments/simulations/theory/graph_alignment/resistance_geometry.py --verify
+python3 experiments/simulations/theory/graph_alignment/resistance_geometry.py --runs 40 --horizon 20000
+python3 experiments/simulations/theory/graph_alignment/render_geometry_results.py
+python3 experiments/simulations/theory/graph_alignment/alignment_regret.py --verify
+python3 experiments/simulations/theory/graph_alignment/alignment_regret.py --runs 40 --horizon 20000
 cd research/alignment_paper
 tectonic --only-cached --keep-logs manuscript.tex
 ```

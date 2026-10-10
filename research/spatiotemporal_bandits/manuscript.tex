@@ -496,15 +496,15 @@ The framework specializes established graph and linear Gaussian methods. Optimal
 
 \appendix
 \section{Reproduction and scope}
-Use \path{experiments/graph_ar_mean.py} and the accompanying \path{results/general_ar/} directory. The superseded common-order-one paper, Bayesian mean-prior result, and experiments are preserved under \path{archive/common_ar1/} and \path{results/mean_selection/}; they do not establish the current fixed-mean higher-order claims.
+Use \path{experiments/simulations/theory/spatiotemporal/graph_ar_mean.py} and the accompanying \path{results/general_ar/} directory. The superseded common-order-one paper, Bayesian mean-prior result, and experiments are preserved under \path{archive/common_ar1/} and \path{results/mean_selection/}; they do not establish the current fixed-mean higher-order claims.
 \begin{verbatim}
-python3 experiments/graph_ar_mean.py --verify
-python3 experiments/graph_ar_mean.py --runs 200 --budget 60
-python3 experiments/graph_ar_mean.py --render-only
-.venv/bin/python -I experiments/spatiotemporal_policies.py --verify
-.venv/bin/python -I experiments/spatiotemporal_policies.py \
+python3 experiments/simulations/theory/spatiotemporal/graph_ar_mean.py --verify
+python3 experiments/simulations/theory/spatiotemporal/graph_ar_mean.py --runs 200 --budget 60
+python3 experiments/simulations/theory/spatiotemporal/graph_ar_mean.py --render-only
+.venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py --verify
+.venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py \
   --runs 32 --horizon 1000 --jobs 4
-.venv/bin/python -I experiments/spatiotemporal_policies_analysis.py
+.venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies_analysis.py
 cd research/spatiotemporal_bandits
 tectonic --only-cached --keep-logs manuscript.tex
 \end{verbatim}

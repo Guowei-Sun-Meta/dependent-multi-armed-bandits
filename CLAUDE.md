@@ -1,6 +1,6 @@
 # Dependent Multi-Armed Bandits: Project Context
 
-Read this first in a new session. Last updated 9 October 2026.
+Read this first in a new session. Last updated 10 October 2026.
 
 ## Goal
 
@@ -16,7 +16,7 @@ The deliverable is one **WWW 2027 long paper on correlated arms** (merged on 9 O
 
 **Go/no-go on 20 October:** if bridging theorem B1 is not proved, split into the long paper (correlated means) and a short paper on dynamics (abstract 9 November, paper 16 November; [www/st_short_paper.md](www/st_short_paper.md)).
 
-The proposal is [www/CLAUDE.md](www/CLAUDE.md). The theory map, which records reused results [A]/[S]/[P] and the new B1–B3 with proofs, is [research/correlated_arms/README.md](research/correlated_arms/README.md). The KuaiRec design is in [www/kuairec_experiment_plan.md](www/kuairec_experiment_plan.md).
+The proposal is [www/CLAUDE.md](www/CLAUDE.md). The theory map, which records reused results [A]/[S]/[P] and the new B1–B3 with proofs, is [research/correlated_arms/README.md](research/correlated_arms/README.md). The KuaiRec design is in [experiments/kuairec/design.md](experiments/kuairec/design.md).
 
 ## Repository map
 
@@ -24,8 +24,13 @@ The proposal is [www/CLAUDE.md](www/CLAUDE.md). The theory map, which records re
 | --- | --- |
 | `research/alignment_paper/` | Theory for graph alignment: SP-UCB, GDE-UCB, certified energy bounds, resistance geometry (manuscript.tex/pdf). Supplies T1–T3 of the WWW paper |
 | `research/graph_spectral_bandits.md` | Note linking the S-index (Sun, Li and Fu 2019) to cumulative regret; contains the misalignment counterexample |
-| `research/kuairec_graphs/` | **Active.** KuaiRec experiments: report (README.md) and results/ |
-| `experiments/kuairec/` | **Active.** Code for the KuaiRec pipeline (see below) |
+| `experiments/` | **Every experiment**, one folder per data source, each with `README.md` (report), `design.md`, `code/` and `results/`. Index and old→new path map: [experiments/README.md](experiments/README.md) |
+| `experiments/kuairec/` | KuaiRec: graph alignment, Settings A, A v2 and B, the daily trending slot |
+| `experiments/wikipedia/` | Wikipedia attention: one domain and six communities (panels committed in `data/`) |
+| `experiments/simulations/` | `spatiotemporal_benchmark/` (100-arm AR(20) toy), `certificates_under_persistence/` (B1/B2 coverage), `theory/` (scripts behind the theory notes; their outputs stay in `research/<note>/results`) |
+| `experiments/paper/` | Cross-experiment analyses and figures for the long papers |
+| `research/correlated_arms/` | Theory map for the long paper (B1–B3) |
+| `research/claude_opus_10_09/`, `research/claude_opus_10_09_v2/` | Long working papers (v2 is current) |
 | `research/temporal_bandits.md`, `predictive_ar1/`, `two_arm_ar1/`, `ar_p_bandits/`, `spatiotemporal_bandits/` | Temporal-dependence thread, maintained by the user in parallel. **Don't edit these unless asked**; the user often has uncommitted work there |
 | `www/` | WWW proposal and experiment plan |
 | `data/` | Raw and cached data (git-ignored) |
@@ -36,11 +41,12 @@ The proposal is [www/CLAUDE.md](www/CLAUDE.md). The theory map, which records re
 - **Documents** are local markdown files in the repo, never Claude Docs.
 - **Math in markdown:** GitHub does not render `\( \)` or `\[ \]`. Use ```` ```math ```` fenced blocks for display math and `` $`...`$ `` for inline math.
 - **Python:**
-    - Use `.venv/bin/python -I` (Python 3.9; packages in `experiments/kuairec/requirements.txt`). Scripts add their own directory to `sys.path` because `-I` drops it.
+    - Use `.venv/bin/python -I` (Python 3.9; packages in `experiments/requirements.txt`). Scripts add their own directory to `sys.path` because `-I` drops it.
     - For parallel runs, set `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1` to avoid oversubscribing the 8 cores (8 GB RAM).
-- **The original repo scripts** (`experiments/*.py` outside `kuairec/`) use only the standard library. Keep it that way.
+- **The theory scripts** (`experiments/simulations/theory/`) mostly use only the standard library. Keep it that way. They run without `-I`, since sibling imports rely on the script's folder being on `sys.path`.
+- **New experiments** go in their own folder under `experiments/` with `README.md`, `design.md`, `code/` and `results/`. Code finds its results through `Path(__file__).resolve().parents[1] / "results"`.
 
-## KuaiRec pipeline (`experiments/kuairec/`)
+## KuaiRec pipeline (`experiments/kuairec/code/`)
 
 Data:
 
@@ -55,7 +61,8 @@ Data:
 | `alignment.py` | Phase 1 diagnostics: smoothness quotient (Laplacian scaled to mean degree 1, so random ≈ 1), personal-taste edge correlation (double-centered), choice cost after smoothing; `--model`, `--k`, `--quick` | 8 min |
 | `render_alignment.py` | Tables and figure for Phase 1 | seconds |
 | `setting_a.py` / `analyze_a.py` | Setting A: one user, 300 videos, item graph rebuilt on the subset; UCB1, TS, SpectralUCB/TS, SP-UCB with oracle, energy or no certificate | about 1 h for 60 users at T = 20,000 on 6 workers |
-| `setting_a2.py`, `setting_b.py` | Next experiments; see "Current status" | — |
+| `setting_a2.py`, `setting_b.py` / `analyze_b.py` | Setting A v2 (KL bounds, calibrated and per-user certificates); Setting B (user graphs) | — |
+| `daily.py` | Daily trending slot: 253 videos × 63 days, joint-filter policies; `--extra`, `--sparse` | — |
 
 Leakage rule:
 
@@ -66,7 +73,7 @@ Leakage rule:
 
 ## Findings so far
 
-Details and tables are in [research/kuairec_graphs/README.md](research/kuairec_graphs/README.md).
+Details and tables are in [experiments/kuairec/README.md](experiments/kuairec/README.md).
 
 1. **Data.** The evaluation matrix is 99.6% dense. The social graph covers only 80 of the 1,411 evaluation users with 47 edges, so the social-graph result must come from Last.fm.
 2. **Alignment (Phase 1).**
@@ -87,27 +94,28 @@ Details and tables are in [research/kuairec_graphs/README.md](research/kuairec_g
 
 Everything is compiled in [research/claude_opus_10_09/](research/claude_opus_10_09/README.md):
 - the long working paper `paper/paper.tex` and `paper.pdf` (17 pages; compile with `tectonic`)
-- figures from `experiments/paper_figures.py`
-- the Wikipedia attention application, with code in `experiments/wikipedia/`
+- figures from `experiments/paper/paper_figures.py`
+- the Wikipedia attention application, now in `experiments/wikipedia/`
 
 The user condenses the paper into the submission.
 
-**Revision 2** (requested: better organization, deeper analysis, theory-to-data bridges, storytelling) is in [research/claude_opus_10_09_v2/](research/claude_opus_10_09_v2/README.md): a paper organized around four questions, analyses from `experiments/deepdive.py`, figures from `experiments/paper_figures_v2.py`, and the six-community Wikipedia experiment (`experiments/wikipedia/collect_multi.py`, `attention.py --dataset multi`). `research/gpt_sol_10_09/` belongs to another agent; do not edit it.
+**Revision 2** (requested: better organization, deeper analysis, theory-to-data bridges, storytelling) is in [research/claude_opus_10_09_v2/](research/claude_opus_10_09_v2/README.md): a paper organized around four questions, analyses from `experiments/paper/deepdive.py`, figures from `experiments/paper/paper_figures_v2.py`, and the six-community Wikipedia experiment (now in `experiments/wikipedia/`). `research/gpt_sol_10_09/` belongs to another agent; do not edit it.
 
 ## Current status and next steps
 
-Kept up to date by whoever runs experiments. Check `research/kuairec_graphs/README.md` for the latest numbers.
+Kept up to date by whoever runs experiments. Check `experiments/kuairec/README.md` for the latest numbers.
 
 - [x] Phase 1 alignment for 16 graphs, k ∈ {5, 10, 20}, with R1 and R3
 - [x] Setting A v1 (60 users, T = 20,000)
-- [ ] **Setting A v2.** Adds KL-UCB, graph-free shrinkage (Gaussian TS on a complete graph), SP-KLUCB (KL confidence bounds, fixing the σ handicap), and a **calibrated certificate**: the 90th percentile of each component's within-component range over tuning users. Three video subsets per user.
-- [ ] **Setting B.** 300 users × 100 videos, users arrive at random, T = 100,000. User graphs U-coeng, U-mf, U-coauthor, U-geo, the U-coeng rewiring, and a complete graph. Policies: per-user TS, global TS, user-graph Gaussian TS, and user-side SP-KLUCB with oracle, calibrated and no certificate.
+- [x] **Setting A v2**, with per-user calibrated certificates. Adds KL-UCB, graph-free shrinkage (Gaussian TS on a complete graph), SP-KLUCB (KL confidence bounds, fixing the σ handicap), and a **calibrated certificate**: the 90th percentile of each component's within-component range over tuning users. Three video subsets per user.
+- [x] **Setting B.** 300 users × 100 videos, users arrive at random, T = 100,000. User graphs U-coeng, U-mf, U-coauthor, U-geo, the U-coeng rewiring, and a complete graph. Policies: per-user TS, global TS, user-graph Gaussian TS, and user-side SP-KLUCB with oracle, calibrated and no certificate.
 - [ ] **Merged paper, theory:** B1 validity and regret (done given [A] and [S]); B1 with correlated shocks; B2 linear-regret instance; B3 write-up. See research/correlated_arms.
-- [ ] **Merged paper, experiments:** toy coverage test (iid SP-UCB against SP-UCB-ST across φ); KuaiRec daily panel (253 videos × 63 days, 10 daily slots).
+- [x] **Merged paper, experiments:** certificates under persistence (B1, B1′, B1″ against iid); KuaiRec daily panel; Wikipedia one domain and six communities.
+- [ ] **Experiment gaps** (10 October): stronger baselines on the real panels, certificates with estimated or misspecified dynamics, logged-feedback replay, more seeds and confidence intervals.
 - [ ] **Spatiotemporal thread** (now part of the long paper):
-    - [Algorithm catalog and toy benchmark](research/st_toy/README.md): 100-arm grid, AR(20), joint-Kalman policies against UCB, TS and Spectral; code in `experiments/st_toy/`. The toy is running.
+    - [Algorithm catalog and toy benchmark](experiments/simulations/spatiotemporal_benchmark/README.md): 100-arm grid, AR(20), joint-Kalman policies against UCB, TS and Spectral; code in `experiments/simulations/spatiotemporal_benchmark/code/`. Done.
     - [Application scenarios and experiment designs](www/st_applications.md): Wikipedia attention with the clickstream graph, the KuaiRec daily trending slot, the Yahoo! R6 news slot, NYC taxi zones, and others.
-    - Next: build the shared panel harness `experiments/st_apps/`, then run KuaiRec daily and Wikipedia.
+    - KuaiRec daily and Wikipedia are done. `experiments/st_apps/` is another agent's panel harness.
 - [ ] Setting C (product graph), Last.fm social graph, R2 sensitivity
 - [ ] Theory: T4 (product-graph regret), T5 (certificate for embedding graphs), and the calibrated certificate's validity statement
 - [ ] Abstract (by 18 October) and paper draft (by 25 October)

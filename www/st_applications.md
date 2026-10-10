@@ -1,6 +1,6 @@
 # Spatiotemporal Bandits on the Web: Application Scenarios and Experiment Designs
 
-As of 9 October 2026. Companion to the [algorithm catalog and toy benchmark](../research/st_toy/README.md) and the [graph-bandit proposal](CLAUDE.md).
+As of 9 October 2026. Companion to the [algorithm catalog and toy benchmark](../experiments/simulations/spatiotemporal_benchmark/README.md) and the [graph-bandit proposal](CLAUDE.md).
 
 Seven web scenarios suit spatiotemporal bandits. Two can run this week: Wikipedia attention and KuaiRec daily engagement. Both are complete panels, so every arm's reward is known at every time step, together with a real web graph. Yahoo! R6 adds the one setting with real bandit feedback. The others follow as data preparation allows.
 
@@ -147,4 +147,4 @@ The KuaiRec queue and the toy benchmark finish in about 1–2 hours. Then:
 - [Spotify Daily Top 200 charts dataset](https://hyper.ai/en/datasets/34663)
 - [Optimizing Earnings for On-Demand Ride-Hailing (NYC TLC data)](https://www.bu.edu/cs/groups/dblab/ride-hailing)
 - [Characterizing a Meta-CDN (RIPE Atlas latency measurements)](https://arxiv.org/abs/1803.09990)
-- [Algorithm catalog and toy benchmark](../research/st_toy/README.md)
+- [Algorithm catalog and toy benchmark](../experiments/simulations/spatiotemporal_benchmark/README.md)

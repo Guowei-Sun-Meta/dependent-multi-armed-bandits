@@ -5,13 +5,14 @@ This directory collects everything developed in the 9 October 2026 session into 
 | Item | What it is |
 | --- | --- |
 | [paper/paper.pdf](paper/paper.pdf) ([source](paper/paper.tex)) | Long working paper with every finding, theorem, table and figure, written to be condensed into a WWW 2027 submission |
-| [figures/](figures) | Paper figures (PDF and PNG), produced by `experiments/paper_figures.py` |
-| [wikipedia/](wikipedia) | The new application: Wikipedia attention over the hyperlink graph (data, diagnostics, results) |
+| [figures/](figures) | Paper figures (PDF and PNG), produced by `experiments/paper/paper_figures.py` |
+| [experiments/wikipedia](../../experiments/wikipedia/README.md#panel-1-one-domain) | The new application: Wikipedia attention over the hyperlink graph (moved to `experiments/` on 10 October with its data, diagnostics and results) |
 
 Supporting material elsewhere in the repository:
 - [research/correlated_arms](../correlated_arms/README.md): theory map, with the bridging results B1–B3 and their proofs
-- [research/kuairec_graphs](../kuairec_graphs/README.md): KuaiRec report
-- [research/st_toy](../st_toy/README.md): spatiotemporal benchmark and the algorithm catalog
+- [experiments/](../../experiments/README.md): every experiment's design, code, results and report
+- [experiments/kuairec](../../experiments/kuairec/README.md): KuaiRec report
+- [experiments/simulations/spatiotemporal_benchmark](../../experiments/simulations/spatiotemporal_benchmark/README.md): spatiotemporal benchmark and the algorithm catalog
 - [www/](../../www): proposal, experiment plans and application designs
 
 ## Headline findings
@@ -26,4 +27,4 @@ Supporting material elsewhere in the repository:
     - Benchmark: joint predictive sampling closes 37% of the gap to the innovation lower bound; spatial correlation adds 15%.
     - KuaiRec daily: modelling persistence cuts regret 38–43% against iid TS.
     - Exploration must target persistent uncertainty and be matched to the number of observations per arm.
-6. **Wikipedia attention.** Strong persistence and weekly cycles. Shocks are strongly correlated, but mostly through a domain-wide common factor; hyperlinks add little beyond it. Policy results are in [wikipedia/README.md](wikipedia/README.md).
+6. **Wikipedia attention.** Strong persistence and weekly cycles. Shocks are strongly correlated, but mostly through a domain-wide common factor; hyperlinks add little beyond it. Policy results are in [experiments/wikipedia](../../experiments/wikipedia/README.md#panel-1-one-domain).

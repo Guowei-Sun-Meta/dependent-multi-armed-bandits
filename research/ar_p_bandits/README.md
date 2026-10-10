@@ -2,7 +2,7 @@
 
 Working derivations, 9 October 2026. This extends the [two-arm AR(1) note](../two_arm_ar1/README.md). To avoid its overloaded `K`, use **L arms** and **T total observations**: `i=1,...,L`, with arm i following AR(`p_i`). Thus L is the number of arms in the current request. Unless stated otherwise, all arms evolve every calendar round and one exact current reward is observed per round.
 
-Full statements and proofs: [manuscript.tex](manuscript.tex), [PDF](manuscript.pdf). Reproducible calculations: [script](../../experiments/ar_p_extension.py), [findings](results/findings.md), [saved checks](results/checks.json).
+Full statements and proofs: [manuscript.tex](manuscript.tex), [PDF](manuscript.pdf). Reproducible calculations: [script](../../experiments/simulations/theory/ar_allocation/ar_p_extension.py), [findings](results/findings.md), [saved checks](results/checks.json).
 
 The [spatial extension](../spatiotemporal_bandits/README.md) retains general AR(p_i) dynamics and fixed unknown means, while replacing independent innovations with a joint spatial covariance. Its standalone paper develops the resulting joint lag-state likelihood, graph-constrained estimation, adaptive confidence, and correlated AR(2) sampling comparisons.
 
@@ -268,9 +268,9 @@ These are optimal **fixed-proportion Gaussian-likelihood error exponents**, usin
 ## Reproduction and literature
 
 ```sh
-python3 experiments/ar_p_extension.py --verify
-python3 experiments/ar_p_extension.py --runs 40000
-python3 experiments/ar_p_extension.py --render-only
+python3 experiments/simulations/theory/ar_allocation/ar_p_extension.py --verify
+python3 experiments/simulations/theory/ar_allocation/ar_p_extension.py --runs 40000
+python3 experiments/simulations/theory/ar_allocation/ar_p_extension.py --render-only
 cd research/ar_p_bandits
 /Users/guoweisun/.local/bin/tectonic --only-cached --keep-logs manuscript.tex
 ```

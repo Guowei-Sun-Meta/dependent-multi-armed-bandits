@@ -171,20 +171,20 @@ The first two terms are the greedy immediate gap; the last is the immediate cost
 
 ## Reproducible comparisons
 
-The [experiment script](../../experiments/predictive_ar1.py) uses shared exogenous state trajectories across policies and independent replications. Non-oracle decisions are made before current innovations are generated; only the selected state enters their belief updates. All parameters are supplied, so these experiments isolate state tracking rather than parameter learning.
+The [experiment script](../../experiments/simulations/theory/predictive_ar1/predictive_ar1.py) uses shared exogenous state trajectories across policies and independent replications. Non-oracle decisions are made before current innovations are generated; only the selected state enters their belief updates. All parameters are supplied, so these experiments isolate state tracking rather than parameter learning.
 
 The primary sweep has five homogeneous zero-mean arms, stationary variance one, and persistence $`0,0.1,0.5,0.9,0.99,0.995`$. Therefore innovation variance changes as $`q=1-\phi^2`$. A separate case has four persistent arms and a high-variance white-noise arm, exposing information that cannot be retained. Comparators are fixed arm, greedy predictions, state-posterior Thompson Sampling, Predictive Sampling, rolling two-step control, deterministic refresh, and the stronger all-past-state observer.
 
 Results are generated in [results/findings.md](results/findings.md), with raw replications, paired differences, cumulative curves, and metadata alongside it. Intervals are approximate 95% intervals over independent replications. They do not certify asymptotic optimality. The [working paper](manuscript.pdf) contains the model, derivations, bounds, and generated comparisons.
 
 ```sh
-python3 experiments/predictive_ar1.py --verify
-python3 experiments/predictive_ar1.py --runs 40 --horizon 30000 --burn 5000 --workers 4
-python3 experiments/render_predictive_ar1.py
-python3 experiments/ar1_policy_improvement.py --verify
-python3 experiments/ar1_policy_improvement.py --workers 4
+python3 experiments/simulations/theory/predictive_ar1/predictive_ar1.py --verify
+python3 experiments/simulations/theory/predictive_ar1/predictive_ar1.py --runs 40 --horizon 30000 --burn 5000 --workers 4
+python3 experiments/simulations/theory/predictive_ar1/render_predictive_ar1.py
+python3 experiments/simulations/theory/predictive_ar1/ar1_policy_improvement.py --verify
+python3 experiments/simulations/theory/predictive_ar1/ar1_policy_improvement.py --workers 4
 # Regenerate the additional comparison without rerunning simulation:
-python3 experiments/ar1_policy_improvement.py --render-only
+python3 experiments/simulations/theory/predictive_ar1/ar1_policy_improvement.py --render-only
 cd research/predictive_ar1
 /Users/guoweisun/.local/bin/tectonic --only-cached --keep-logs manuscript.tex
 ```
@@ -282,7 +282,7 @@ The multiplier is derived before simulation, with no fitted parameter. At $`\phi
 
 Replanning this rule uses future feedback that its continuation calculation ignored. Its accumulated bonus can therefore count benefits that later observations replace. The geometric formula is exact for that one-observation calculation, but the resulting repeated policy is an approximation. Heterogeneous means or persistence require another calculation.
 
-The [additional experiment](../../experiments/ar1_policy_improvement.py) reuses the original 40 trajectories per homogeneous case, with 5,000 burn-in and 30,000 measured rounds. It verifies an exact replay of a saved PS replication before comparing against the baseline files. [Complete results and paired intervals](results/policy_improvement/findings.md).
+The [additional experiment](../../experiments/simulations/theory/predictive_ar1/ar1_policy_improvement.py) reuses the original 40 trajectories per homogeneous case, with 5,000 burn-in and 30,000 measured rounds. It verifies an exact replay of a saved PS replication before comparing against the baseline files. [Complete results and paired intervals](results/policy_improvement/findings.md).
 
 | Persistence | Greedy | Two-step | Predictive Sampling | Lifetime KG |
 |---|---:|---:|---:|---:|

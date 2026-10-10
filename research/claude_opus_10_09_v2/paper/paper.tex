@@ -499,17 +499,24 @@ KuaiRec daily, sparse history & 1.1 & 0.02 & 33\% & 0.85 & 1.74 & \textbf{0.91} 
 \section{Reproducibility}\label{app:repro}
 %=====================================================================
 
+Each experiment has its own directory under \texttt{experiments/} (\texttt{kuairec}, \texttt{wikipedia}, \texttt{simulations}) holding its design, code, results and report. From the repository root:
+
 {\footnotesize
 \begin{verbatim}
-python -I experiments/kuairec/{data,graphs,alignment}.py        # Q1, mean channel
-python -I experiments/kuairec/setting_a.py | setting_a2.py | setting_b.py   # Q2
-python -I experiments/st_toy/coverage.py --tag {_v2,_elim,_scalar,_plugin}  # Q3
-python -I experiments/st_toy/toy.py [--extra]                   # Q4 benchmark
-python -I experiments/kuairec/daily.py [--extra | --sparse]     # Q4 KuaiRec
-python -I experiments/wikipedia/collect.py; collect_multi.py    # Wikipedia data
-python -I experiments/wikipedia/attention.py [--dataset multi] [--diagnose]
-python -I experiments/deepdive.py                               # theory-to-data analyses
-python -I experiments/paper_figures_v2.py                       # figures
+# Q1, mean channel (KuaiRec)
+python -I experiments/kuairec/code/{data,graphs,alignment}.py
+# Q2, certified pooling (KuaiRec)
+python -I experiments/kuairec/code/{setting_a,setting_a2,setting_b}.py
+# Q3, certificates under persistence
+python -I experiments/simulations/certificates_under_persistence/code/coverage.py \
+    --tag {_v2,_elim,_scalar,_plugin}
+# Q4, benchmark, KuaiRec daily, Wikipedia
+python -I experiments/simulations/spatiotemporal_benchmark/code/toy.py [--extra]
+python -I experiments/kuairec/code/daily.py [--extra | --sparse]
+python -I experiments/wikipedia/code/{collect,collect_multi}.py
+python -I experiments/wikipedia/code/attention.py [--dataset multi] [--diagnose]
+# theory-to-data analyses and figures
+python -I experiments/paper/{deepdive,paper_figures_v2}.py
 \end{verbatim}}
 
 \end{document}

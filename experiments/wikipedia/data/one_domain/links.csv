@@ -1,0 +1,4540 @@
+source,target
+Ada (programming language),ALGOL
+Ada (programming language),ALGOL 60
+Ada (programming language),ALGOL 68
+Ada (programming language),APL (programming language)
+Ada (programming language),Assembly language
+Ada (programming language),BASIC
+Ada (programming language),C++
+Ada (programming language),COBOL
+Ada (programming language),C (programming language)
+Ada (programming language),C Sharp (programming language)
+Ada (programming language),Comparison of programming languages
+Ada (programming language),D (programming language)
+Ada (programming language),Delphi (software)
+Ada (programming language),Eiffel (programming language)
+Ada (programming language),Elixir (programming language)
+Ada (programming language),Erlang (programming language)
+Ada (programming language),Forth (programming language)
+Ada (programming language),Fortran
+Ada (programming language),Go (programming language)
+Ada (programming language),Haskell
+Ada (programming language),History of programming languages
+Ada (programming language),Imperative programming
+Ada (programming language),JavaScript
+Ada (programming language),Java (programming language)
+Ada (programming language),Julia (programming language)
+Ada (programming language),Lisp (programming language)
+Ada (programming language),List of programming languages by type
+Ada (programming language),MATLAB
+Ada (programming language),ML (programming language)
+Ada (programming language),Nim (programming language)
+Ada (programming language),Non-English-based programming languages
+Ada (programming language),OCaml
+Ada (programming language),Object Pascal
+Ada (programming language),PHP
+Ada (programming language),PL/SQL
+Ada (programming language),Pascal (programming language)
+Ada (programming language),Perl
+Ada (programming language),Programming language
+Ada (programming language),Prolog
+Ada (programming language),Python (programming language)
+Ada (programming language),R (programming language)
+Ada (programming language),Raku (programming language)
+Ada (programming language),Ruby (programming language)
+Ada (programming language),Rust (programming language)
+Ada (programming language),SAS language
+Ada (programming language),SPARK (programming language)
+Ada (programming language),SQL
+Ada (programming language),Scratch (programming language)
+Ada (programming language),Shell script
+Ada (programming language),Simula
+Ada (programming language),Smalltalk
+Ada (programming language),Standard ML
+Ada (programming language),Swift (programming language)
+Ada (programming language),Timeline of programming languages
+Ada (programming language),Visual Basic
+Ada (programming language),Visual Basic (classic)
+Assembly language,ALGOL
+Assembly language,Ada (programming language)
+Assembly language,BASIC
+Assembly language,C++
+Assembly language,COBOL
+Assembly language,C (programming language)
+Assembly language,Esoteric programming language
+Assembly language,Fortran
+Assembly language,Imperative programming
+Assembly language,Lisp (programming language)
+Assembly language,Machine code
+Assembly language,PL/I
+Assembly language,Pascal (programming language)
+Assembly language,Programming language
+Assembly language,Turing completeness
+Assembly language,Visual Basic
+BASIC,ALGOL
+BASIC,ALGOL 60
+BASIC,APL (programming language)
+BASIC,Ada (programming language)
+BASIC,Assembly language
+BASIC,C++
+BASIC,COBOL
+BASIC,C (programming language)
+BASIC,C Sharp (programming language)
+BASIC,Comparison of programming languages
+BASIC,Delphi (software)
+BASIC,Elixir (programming language)
+BASIC,Erlang (programming language)
+BASIC,Forth (programming language)
+BASIC,Fortran
+BASIC,Go (programming language)
+BASIC,Haskell
+BASIC,History of programming languages
+BASIC,JavaScript
+BASIC,Java (programming language)
+BASIC,Julia (programming language)
+BASIC,Lisp (programming language)
+BASIC,List of programming languages by type
+BASIC,MATLAB
+BASIC,ML (programming language)
+BASIC,Machine code
+BASIC,Non-English-based programming languages
+BASIC,OCaml
+BASIC,Object Pascal
+BASIC,PHP
+BASIC,Pascal (programming language)
+BASIC,Perl
+BASIC,Programming language
+BASIC,Prolog
+BASIC,Python (programming language)
+BASIC,R (programming language)
+BASIC,Raku (programming language)
+BASIC,Ruby (programming language)
+BASIC,Rust (programming language)
+BASIC,SAS language
+BASIC,SQL
+BASIC,Scratch (programming language)
+BASIC,Shell script
+BASIC,Simula
+BASIC,Smalltalk
+BASIC,Standard ML
+BASIC,Swift (programming language)
+BASIC,Timeline of programming languages
+BASIC,Visual Basic
+BASIC,Visual Basic (classic)
+BASIC,WebAssembly
+Bash (Unix shell),ALGOL
+Bash (Unix shell),ALGOL 68
+Bash (Unix shell),APL (programming language)
+Bash (Unix shell),AWK
+Bash (Unix shell),Ada (programming language)
+Bash (Unix shell),Assembly language
+Bash (Unix shell),BASIC
+Bash (Unix shell),C++
+Bash (Unix shell),COBOL
+Bash (Unix shell),C (programming language)
+Bash (Unix shell),C Sharp (programming language)
+Bash (Unix shell),Comparison of programming languages
+Bash (Unix shell),Elixir (programming language)
+Bash (Unix shell),Erlang (programming language)
+Bash (Unix shell),Forth (programming language)
+Bash (Unix shell),Fortran
+Bash (Unix shell),GNU Octave
+Bash (Unix shell),Go (programming language)
+Bash (Unix shell),Haskell
+Bash (Unix shell),History of programming languages
+Bash (Unix shell),Imperative programming
+Bash (Unix shell),JavaScript
+Bash (Unix shell),Java (programming language)
+Bash (Unix shell),Julia (programming language)
+Bash (Unix shell),KornShell
+Bash (Unix shell),Lisp (programming language)
+Bash (Unix shell),List of programming languages by type
+Bash (Unix shell),MATLAB
+Bash (Unix shell),ML (programming language)
+Bash (Unix shell),Non-English-based programming languages
+Bash (Unix shell),OCaml
+Bash (Unix shell),Object Pascal
+Bash (Unix shell),PHP
+Bash (Unix shell),Pascal (programming language)
+Bash (Unix shell),Perl
+Bash (Unix shell),Programming language
+Bash (Unix shell),Prolog
+Bash (Unix shell),Python (programming language)
+Bash (Unix shell),R (programming language)
+Bash (Unix shell),Raku (programming language)
+Bash (Unix shell),Ruby (programming language)
+Bash (Unix shell),Rust (programming language)
+Bash (Unix shell),SAS language
+Bash (Unix shell),SQL
+Bash (Unix shell),Scratch (programming language)
+Bash (Unix shell),Shell script
+Bash (Unix shell),Simula
+Bash (Unix shell),Smalltalk
+Bash (Unix shell),Standard ML
+Bash (Unix shell),Swift (programming language)
+Bash (Unix shell),Timeline of programming languages
+Bash (Unix shell),Visual Basic
+Bash (Unix shell),Visual Basic (classic)
+Bash (Unix shell),Z shell
+C (programming language),ALGOL
+C (programming language),ALGOL 68
+C (programming language),APL (programming language)
+C (programming language),AWK
+C (programming language),Ada (programming language)
+C (programming language),Assembly language
+C (programming language),BASIC
+C (programming language),BCPL
+C (programming language),B (programming language)
+C (programming language),C++
+C (programming language),C--
+C (programming language),COBOL
+C (programming language),C Sharp (programming language)
+C (programming language),Comparison of programming languages
+C (programming language),D (programming language)
+C (programming language),Delphi (software)
+C (programming language),Eiffel (programming language)
+C (programming language),Elixir (programming language)
+C (programming language),Erlang (programming language)
+C (programming language),Forth (programming language)
+C (programming language),Fortran
+C (programming language),Go (programming language)
+C (programming language),Haskell
+C (programming language),Haxe
+C (programming language),History of programming languages
+C (programming language),Imperative programming
+C (programming language),JavaScript
+C (programming language),Java (programming language)
+C (programming language),Julia (programming language)
+C (programming language),Lisp (programming language)
+C (programming language),List of programming languages by type
+C (programming language),MATLAB
+C (programming language),ML (programming language)
+COBOL,ALGOL
+COBOL,ALGOL 60
+COBOL,APL (programming language)
+COBOL,Ada (programming language)
+COBOL,Assembly language
+COBOL,BASIC
+COBOL,C++
+COBOL,C (programming language)
+COBOL,C Sharp (programming language)
+COBOL,Comparison of programming languages
+COBOL,ECMAScript
+COBOL,Eiffel (programming language)
+COBOL,Elixir (programming language)
+COBOL,Erlang (programming language)
+COBOL,Forth (programming language)
+COBOL,Fortran
+C (programming language),Nim (programming language)
+C (programming language),Non-English-based programming languages
+C (programming language),OCaml
+C (programming language),Object Pascal
+C (programming language),Objective-C
+C (programming language),OpenCL
+C (programming language),PHP
+C (programming language),PL/I
+C (programming language),Pascal (programming language)
+C (programming language),Perl
+C (programming language),Processing
+C (programming language),Programming language
+C (programming language),Prolog
+C (programming language),Python (programming language)
+C (programming language),R (programming language)
+C (programming language),Raku (programming language)
+C (programming language),Ruby (programming language)
+C (programming language),Rust (programming language)
+C (programming language),SAS language
+C (programming language),SQL
+C (programming language),Scratch (programming language)
+C (programming language),Shell script
+C (programming language),Simula
+C (programming language),Smalltalk
+C (programming language),Standard ML
+C (programming language),Swift (programming language)
+C (programming language),Timeline of programming languages
+C (programming language),Vala (programming language)
+C (programming language),Vim (text editor)
+C (programming language),Visual Basic
+C (programming language),Visual Basic (classic)
+C (programming language),Zig (programming language)
+COBOL,Go (programming language)
+COBOL,HTML
+COBOL,Haskell
+COBOL,History of programming languages
+COBOL,Imperative programming
+COBOL,JavaScript
+COBOL,Java (programming language)
+COBOL,Julia (programming language)
+COBOL,Lisp (programming language)
+COBOL,List of programming languages by type
+COBOL,MATLAB
+COBOL,ML (programming language)
+COBOL,Non-English-based programming languages
+COBOL,OCaml
+COBOL,Object Pascal
+COBOL,PHP
+COBOL,PL/I
+COBOL,Pascal (programming language)
+COBOL,Perl
+COBOL,Programming language
+COBOL,Prolog
+COBOL,Python (programming language)
+COBOL,R (programming language)
+COBOL,Raku (programming language)
+COBOL,Ruby (programming language)
+COBOL,Rust (programming language)
+COBOL,SAS language
+COBOL,SQL
+COBOL,Scratch (programming language)
+COBOL,Shell script
+COBOL,Simula
+COBOL,Smalltalk
+COBOL,Standard ML
+COBOL,Swift (programming language)
+COBOL,Timeline of programming languages
+COBOL,Visual Basic
+COBOL,Visual Basic (classic)
+COBOL,XML
+Erlang (programming language),ALGOL
+Erlang (programming language),APL (programming language)
+Erlang (programming language),Ada (programming language)
+Erlang (programming language),Assembly language
+Erlang (programming language),BASIC
+Erlang (programming language),C++
+Erlang (programming language),COBOL
+Erlang (programming language),C (programming language)
+Erlang (programming language),C Sharp (programming language)
+Erlang (programming language),Clojure
+Erlang (programming language),Comparison of programming languages
+Erlang (programming language),Dart (programming language)
+Erlang (programming language),Elixir (programming language)
+Erlang (programming language),F Sharp (programming language)
+Erlang (programming language),Forth (programming language)
+Erlang (programming language),Fortran
+Erlang (programming language),Go (programming language)
+Erlang (programming language),Haskell
+Erlang (programming language),History of programming languages
+Erlang (programming language),JavaScript
+Erlang (programming language),Java (programming language)
+Erlang (programming language),Julia (programming language)
+Erlang (programming language),Lisp (programming language)
+Erlang (programming language),List of programming languages by type
+Erlang (programming language),MATLAB
+Erlang (programming language),ML (programming language)
+Erlang (programming language),Non-English-based programming languages
+Erlang (programming language),OCaml
+Erlang (programming language),Object Pascal
+Erlang (programming language),PHP
+Erlang (programming language),Pascal (programming language)
+Erlang (programming language),Perl
+Erlang (programming language),Programming language
+Erlang (programming language),Prolog
+Erlang (programming language),Python (programming language)
+Erlang (programming language),R (programming language)
+Erlang (programming language),Raku (programming language)
+Erlang (programming language),Ruby (programming language)
+Erlang (programming language),Rust (programming language)
+Erlang (programming language),SAS language
+Erlang (programming language),SQL
+Erlang (programming language),Scala (programming language)
+Erlang (programming language),Scratch (programming language)
+Erlang (programming language),Shell script
+Erlang (programming language),Simula
+Erlang (programming language),Smalltalk
+Erlang (programming language),Standard ML
+Erlang (programming language),Swift (programming language)
+Erlang (programming language),Timeline of programming languages
+Erlang (programming language),Visual Basic
+Erlang (programming language),Visual Basic (classic)
+JavaScript,ALGOL
+JavaScript,APL (programming language)
+JavaScript,AWK
+JavaScript,ActionScript
+JavaScript,Ada (programming language)
+JavaScript,Assembly language
+JavaScript,BASIC
+JavaScript,C++
+JavaScript,COBOL
+JavaScript,C (programming language)
+JavaScript,C Sharp (programming language)
+JavaScript,CoffeeScript
+JavaScript,Comparison of programming languages
+JavaScript,Dart (programming language)
+Fortran,ALGOL
+Fortran,APL (programming language)
+Fortran,Ada (programming language)
+JavaScript,ECMAScript
+JavaScript,Elixir (programming language)
+JavaScript,Elm (programming language)
+JavaScript,Erlang (programming language)
+JavaScript,Forth (programming language)
+JavaScript,Fortran
+JavaScript,Go (programming language)
+JavaScript,HTML
+JavaScript,Haskell
+JavaScript,Haxe
+JavaScript,History of programming languages
+JavaScript,Imperative programming
+JavaScript,JScript
+JavaScript,Java (programming language)
+JavaScript,Julia (programming language)
+JavaScript,Lisp (programming language)
+JavaScript,List of programming languages by type
+JavaScript,MATLAB
+JavaScript,ML (programming language)
+JavaScript,Nim (programming language)
+JavaScript,Non-English-based programming languages
+JavaScript,OCaml
+JavaScript,Object Pascal
+JavaScript,PHP
+JavaScript,Pascal (programming language)
+JavaScript,Perl
+JavaScript,Programming language
+JavaScript,Prolog
+JavaScript,Python (programming language)
+JavaScript,R (programming language)
+JavaScript,Raku (programming language)
+JavaScript,Ruby (programming language)
+JavaScript,Rust (programming language)
+JavaScript,SAS language
+JavaScript,SQL
+JavaScript,Scheme (programming language)
+JavaScript,Scratch (programming language)
+JavaScript,Shell script
+JavaScript,Simula
+JavaScript,Smalltalk
+JavaScript,Solidity
+JavaScript,Standard ML
+JavaScript,Swift (programming language)
+JavaScript,Timeline of programming languages
+JavaScript,TypeScript
+JavaScript,Vim (text editor)
+JavaScript,Visual Basic
+JavaScript,Visual Basic (classic)
+JavaScript,WebAssembly
+Fortran,Assembly language
+Fortran,BASIC
+Fortran,C++
+Fortran,COBOL
+Fortran,C (programming language)
+Fortran,C Sharp (programming language)
+Fortran,Comparison of programming languages
+Fortran,Elixir (programming language)
+Fortran,Erlang (programming language)
+Fortran,Forth (programming language)
+Fortran,Go (programming language)
+Fortran,Haskell
+Fortran,History of programming languages
+Fortran,IDL (programming language)
+Fortran,Imperative programming
+Fortran,JavaScript
+Fortran,Java (programming language)
+Fortran,Julia (programming language)
+Fortran,Lisp (programming language)
+Fortran,List of programming languages by type
+Fortran,MATLAB
+Fortran,ML (programming language)
+Fortran,MUMPS
+Fortran,Machine code
+Fortran,Non-English-based programming languages
+Fortran,OCaml
+Fortran,Object Pascal
+Fortran,PHP
+Fortran,PL/I
+Fortran,Pascal (programming language)
+Fortran,Perl
+Fortran,Programming language
+Fortran,Prolog
+Fortran,Python (programming language)
+Fortran,R (programming language)
+Fortran,Raku (programming language)
+Fortran,Ruby (programming language)
+Fortran,Rust (programming language)
+Fortran,SAS language
+Fortran,SQL
+Fortran,Scratch (programming language)
+Fortran,Shell script
+Fortran,Simula
+Fortran,Smalltalk
+Fortran,Standard ML
+Fortran,Swift (programming language)
+Fortran,Timeline of programming languages
+Fortran,Vim (text editor)
+Fortran,Visual Basic
+Fortran,Visual Basic (classic)
+Fortran,Wolfram Language
+HTML,ALGOL 60
+HTML,C++
+HTML,COBOL
+HTML,C Sharp (programming language)
+HTML,ECMAScript
+HTML,JavaScript
+HTML,Markup language
+HTML,Pascal (programming language)
+HTML,Prolog
+HTML,Ruby (programming language)
+HTML,SQL
+HTML,TeX
+HTML,WebAssembly
+HTML,XML
+HTML,XSLT
+Java (programming language),ALGOL
+Java (programming language),APL (programming language)
+Java (programming language),Ada (programming language)
+Java (programming language),Apache Groovy
+Java (programming language),Assembly language
+Java (programming language),BASIC
+Java (programming language),C++
+Java (programming language),COBOL
+Java (programming language),C (programming language)
+Java (programming language),C Sharp (programming language)
+Java (programming language),Clojure
+Java (programming language),Comparison of programming languages
+Java (programming language),Dart (programming language)
+Java (programming language),ECMAScript
+Java (programming language),Eiffel (programming language)
+Java (programming language),Elixir (programming language)
+Java (programming language),Erlang (programming language)
+Java (programming language),Executable
+Java (programming language),Forth (programming language)
+Java (programming language),Fortran
+Java (programming language),Go (programming language)
+Java (programming language),HTML
+Java (programming language),Hack (programming language)
+Java (programming language),Haskell
+Java (programming language),Haxe
+Java (programming language),History of programming languages
+Java (programming language),Imperative programming
+Java (programming language),JavaScript
+Java (programming language),Julia (programming language)
+Java (programming language),Lisp (programming language)
+Java (programming language),List of programming languages by type
+Java (programming language),MATLAB
+Java (programming language),ML (programming language)
+Java (programming language),Machine code
+Java (programming language),Non-English-based programming languages
+Java (programming language),OCaml
+Java (programming language),Object Pascal
+Java (programming language),Objective-C
+Java (programming language),PHP
+Java (programming language),PL/SQL
+Java (programming language),Pascal (programming language)
+Java (programming language),Perl
+Java (programming language),Processing
+Java (programming language),Programming language
+Java (programming language),Prolog
+Java (programming language),Python (programming language)
+Java (programming language),R (programming language)
+Java (programming language),Raku (programming language)
+Java (programming language),Ruby (programming language)
+Java (programming language),Rust (programming language)
+Java (programming language),SAS language
+Java (programming language),SQL
+Java (programming language),Scala (programming language)
+Java (programming language),Scratch (programming language)
+Java (programming language),Shell script
+Java (programming language),Simula
+Java (programming language),Smalltalk
+Java (programming language),Standard ML
+Java (programming language),Swift (programming language)
+Java (programming language),Timeline of programming languages
+Java (programming language),Vala (programming language)
+Java (programming language),Visual Basic
+Java (programming language),Visual Basic (classic)
+Java (programming language),XML
+Lisp (programming language),ALGOL
+Lisp (programming language),ALGOL 60
+Lisp (programming language),APL (programming language)
+Lisp (programming language),Ada (programming language)
+Lisp (programming language),Assembly language
+Lisp (programming language),BASIC
+Lisp (programming language),C++
+Lisp (programming language),COBOL
+Lisp (programming language),C (programming language)
+Lisp (programming language),C Sharp (programming language)
+Lisp (programming language),Clojure
+Lisp (programming language),Common Lisp
+Lisp (programming language),Comparison of programming languages
+Lisp (programming language),Domain-specific language
+Lisp (programming language),Elixir (programming language)
+Lisp (programming language),Erlang (programming language)
+Lisp (programming language),Forth (programming language)
+Lisp (programming language),Fortran
+Lisp (programming language),Go (programming language)
+Lisp (programming language),Haskell
+Lisp (programming language),History of programming languages
+Lisp (programming language),JavaScript
+Lisp (programming language),Java (programming language)
+Lisp (programming language),Julia (programming language)
+Lisp (programming language),List of programming languages by type
+Lisp (programming language),Logo (programming language)
+Lisp (programming language),MATLAB
+Lisp (programming language),ML (programming language)
+Lisp (programming language),Machine code
+Lisp (programming language),Nim (programming language)
+Lisp (programming language),Non-English-based programming languages
+Lisp (programming language),OCaml
+Lisp (programming language),Object Pascal
+Lisp (programming language),Objective-C
+Lisp (programming language),PHP
+Lisp (programming language),Pascal (programming language)
+Lisp (programming language),Perl
+Lisp (programming language),Programming language
+Lisp (programming language),Prolog
+Lisp (programming language),Python (programming language)
+Lisp (programming language),R (programming language)
+Lisp (programming language),Racket (programming language)
+Lisp (programming language),Raku (programming language)
+Lisp (programming language),Ruby (programming language)
+Lisp (programming language),Rust (programming language)
+Lisp (programming language),SAS language
+Lisp (programming language),SQL
+Lisp (programming language),Scala (programming language)
+Lisp (programming language),Scheme (programming language)
+Lisp (programming language),Scratch (programming language)
+Lisp (programming language),Shell script
+Lisp (programming language),Simula
+Lisp (programming language),Smalltalk
+Lisp (programming language),Standard ML
+Lisp (programming language),Swift (programming language)
+Lisp (programming language),Timeline of programming languages
+Lisp (programming language),Turing completeness
+Lisp (programming language),Visual Basic
+Lisp (programming language),Visual Basic (classic)
+Lisp (programming language),Wolfram Language
+Lisp (programming language),XML
+MATLAB,ALGOL
+MATLAB,APL (programming language)
+MATLAB,Ada (programming language)
+MATLAB,Assembly language
+MATLAB,BASIC
+Markup language,HTML
+Markup language,List of programming languages by type
+Markup language,Programming language
+Markup language,TeX
+Markup language,XML
+MATLAB,C++
+MATLAB,COBOL
+MATLAB,C (programming language)
+MATLAB,C Sharp (programming language)
+MATLAB,Comparison of programming languages
+MATLAB,Elixir (programming language)
+MATLAB,Erlang (programming language)
+MATLAB,Forth (programming language)
+MATLAB,Fortran
+MATLAB,GNU Octave
+MATLAB,Go (programming language)
+MATLAB,Haskell
+MATLAB,History of programming languages
+MATLAB,IDL (programming language)
+MATLAB,Imperative programming
+MATLAB,JavaScript
+MATLAB,Java (programming language)
+MATLAB,Julia (programming language)
+MATLAB,LabVIEW
+MATLAB,Lisp (programming language)
+MATLAB,List of programming languages by type
+MATLAB,ML (programming language)
+MATLAB,Maple (software)
+MATLAB,Non-English-based programming languages
+MATLAB,OCaml
+MATLAB,Object Pascal
+MATLAB,PHP
+MATLAB,Pascal (programming language)
+MATLAB,Perl
+MATLAB,Programming language
+MATLAB,Prolog
+MATLAB,Python (programming language)
+MATLAB,R (programming language)
+MATLAB,Raku (programming language)
+MATLAB,Ruby (programming language)
+MATLAB,Rust (programming language)
+MATLAB,SAS (software)
+MATLAB,SAS language
+MATLAB,SQL
+MATLAB,Scilab
+MATLAB,Scratch (programming language)
+MATLAB,Shell script
+MATLAB,Simula
+MATLAB,Simulink
+MATLAB,Smalltalk
+MATLAB,Standard ML
+MATLAB,Stata
+MATLAB,Swift (programming language)
+MATLAB,Timeline of programming languages
+MATLAB,Visual Basic
+MATLAB,Visual Basic (classic)
+MATLAB,XML
+Machine code,Assembly language
+Machine code,COBOL
+Machine code,C (programming language)
+Machine code,Esoteric programming language
+Machine code,Executable
+Machine code,List of programming languages by type
+Machine code,Objective-C
+Machine code,PL/I
+Machine code,Programming language
+Machine code,Swift (programming language)
+Programming language,ALGOL
+Programming language,APL (programming language)
+Programming language,Ada (programming language)
+Programming language,Assembly language
+Programming language,BASIC
+Programming language,C++
+Programming language,COBOL
+Programming language,C (programming language)
+Programming language,C Sharp (programming language)
+Programming language,Clojure
+Programming language,Comparison of programming languages
+Programming language,Domain-specific language
+Programming language,Elixir (programming language)
+Programming language,Erlang (programming language)
+Programming language,Esoteric programming language
+Programming language,Executable
+Programming language,F Sharp (programming language)
+Programming language,Forth (programming language)
+Programming language,Fortran
+Programming language,Go (programming language)
+Programming language,HTML
+Programming language,Haskell
+Programming language,History of programming languages
+Programming language,Imperative programming
+Programming language,JavaScript
+Programming language,Java (programming language)
+Programming language,Julia (programming language)
+Programming language,LabVIEW
+Programming language,Lisp (programming language)
+Programming language,List of programming languages by type
+Programming language,MATLAB
+Programming language,ML (programming language)
+Programming language,Machine code
+Programming language,Markup language
+Programming language,Non-English-based programming languages
+Programming language,OCaml
+Programming language,Object Pascal
+Programming language,PHP
+Programming language,Pascal (programming language)
+Programming language,Perl
+Programming language,PostScript
+Programming language,Prolog
+Programming language,Python (programming language)
+Programming language,R (programming language)
+Programming language,Racket (programming language)
+Programming language,Raku (programming language)
+Programming language,Ruby (programming language)
+Programming language,Rust (programming language)
+Programming language,SAS language
+Programming language,SQL
+Programming language,Scheme (programming language)
+Programming language,Scratch (programming language)
+Programming language,Shell script
+Programming language,Simula
+Programming language,Smalltalk
+Programming language,Standard ML
+Programming language,Swift (programming language)
+Programming language,Timeline of programming languages
+Programming language,Visual Basic
+Programming language,Visual Basic (classic)
+Programming language,Wolfram Language
+Programming language,Zig (programming language)
+Prolog,ALGOL
+Prolog,ALGOL 60
+Prolog,APL (programming language)
+Prolog,Ada (programming language)
+Prolog,Assembly language
+Prolog,BASIC
+Prolog,C++
+Prolog,COBOL
+Prolog,C (programming language)
+Prolog,C Sharp (programming language)
+Prolog,Clojure
+Prolog,Comparison of programming languages
+Prolog,Datalog
+Prolog,Delphi (software)
+Prolog,ECMAScript
+Prolog,Elixir (programming language)
+Prolog,Erlang (programming language)
+Prolog,Forth (programming language)
+Prolog,Fortran
+Prolog,Go (programming language)
+Prolog,HTML
+Prolog,Haskell
+Prolog,History of programming languages
+Pascal (programming language),ALGOL
+Pascal (programming language),ALGOL 60
+Pascal (programming language),ALGOL 68
+Pascal (programming language),APL (programming language)
+Pascal (programming language),Ada (programming language)
+Pascal (programming language),Assembly language
+Prolog,Imperative programming
+Prolog,JavaScript
+Prolog,Java (programming language)
+Prolog,Julia (programming language)
+Prolog,Lisp (programming language)
+Prolog,List of programming languages by type
+Prolog,MATLAB
+Prolog,ML (programming language)
+Prolog,Non-English-based programming languages
+Prolog,OCaml
+Prolog,Object Pascal
+Prolog,PHP
+Prolog,Pascal (programming language)
+Prolog,Perl
+Prolog,Programming language
+Prolog,Python (programming language)
+Prolog,R (programming language)
+Prolog,Raku (programming language)
+Prolog,Ruby (programming language)
+Prolog,Rust (programming language)
+Prolog,SAS language
+Prolog,SQL
+Prolog,Scratch (programming language)
+Prolog,Shell script
+Prolog,Simula
+Prolog,Smalltalk
+Prolog,Standard ML
+Prolog,Swift (programming language)
+Prolog,Timeline of programming languages
+Prolog,Turing completeness
+Prolog,Visual Basic
+Prolog,Visual Basic (classic)
+Prolog,XML
+Pascal (programming language),BASIC
+Pascal (programming language),C++
+Pascal (programming language),COBOL
+Pascal (programming language),C (programming language)
+Pascal (programming language),C Sharp (programming language)
+Pascal (programming language),Comparison of programming languages
+Pascal (programming language),Delphi (software)
+Pascal (programming language),ECMAScript
+Pascal (programming language),Elixir (programming language)
+Pascal (programming language),Erlang (programming language)
+Pascal (programming language),Forth (programming language)
+Pascal (programming language),Fortran
+Pascal (programming language),Go (programming language)
+Pascal (programming language),HTML
+Pascal (programming language),Haskell
+Pascal (programming language),History of programming languages
+Pascal (programming language),Imperative programming
+Pascal (programming language),JavaScript
+Pascal (programming language),Java (programming language)
+Pascal (programming language),Julia (programming language)
+Pascal (programming language),Lisp (programming language)
+Pascal (programming language),List of programming languages by type
+Pascal (programming language),MATLAB
+Pascal (programming language),ML (programming language)
+Pascal (programming language),Nim (programming language)
+Pascal (programming language),Non-English-based programming languages
+Pascal (programming language),OCaml
+Pascal (programming language),Object Pascal
+Pascal (programming language),PHP
+Pascal (programming language),PL/I
+Pascal (programming language),Perl
+Pascal (programming language),Programming language
+Pascal (programming language),Prolog
+Pascal (programming language),Python (programming language)
+Pascal (programming language),R (programming language)
+Pascal (programming language),Raku (programming language)
+Pascal (programming language),Ruby (programming language)
+Pascal (programming language),Rust (programming language)
+Pascal (programming language),SAS language
+Pascal (programming language),SQL
+Pascal (programming language),Scratch (programming language)
+Pascal (programming language),Shell script
+Pascal (programming language),Simula
+Pascal (programming language),Smalltalk
+Pascal (programming language),Standard ML
+Pascal (programming language),Swift (programming language)
+Pascal (programming language),TeX
+Pascal (programming language),Timeline of programming languages
+Pascal (programming language),Visual Basic
+Pascal (programming language),Visual Basic (classic)
+Python (programming language),ABC (programming language)
+Python (programming language),ALGOL
+Python (programming language),ALGOL 68
+Python (programming language),APL (programming language)
+Python (programming language),Ada (programming language)
+Python (programming language),Apache Groovy
+Python (programming language),Assembly language
+Python (programming language),BASIC
+Python (programming language),C++
+Python (programming language),COBOL
+Python (programming language),C (programming language)
+Python (programming language),C Sharp (programming language)
+Python (programming language),CoffeeScript
+Python (programming language),Common Lisp
+Python (programming language),Comparison of programming languages
+Python (programming language),Cython
+Python (programming language),D (programming language)
+Python (programming language),ECMAScript
+Python (programming language),Elixir (programming language)
+Python (programming language),Erlang (programming language)
+Python (programming language),F Sharp (programming language)
+Python (programming language),Forth (programming language)
+Python (programming language),Fortran
+Python (programming language),GNU Octave
+Python (programming language),Go (programming language)
+Python (programming language),Haskell
+Python (programming language),History of programming languages
+Python (programming language),Imperative programming
+Python (programming language),JavaScript
+Python (programming language),Java (programming language)
+Python (programming language),Julia (programming language)
+Python (programming language),Kivy (framework)
+Python (programming language),LabVIEW
+Python (programming language),Lisp (programming language)
+Python (programming language),List of programming languages by type
+Python (programming language),MATLAB
+Python (programming language),ML (programming language)
+Python (programming language),Maple (software)
+Python (programming language),Nim (programming language)
+Python (programming language),Non-English-based programming languages
+Python (programming language),OCaml
+Python (programming language),Object Pascal
+Python (programming language),PHP
+Python (programming language),Pascal (programming language)
+Python (programming language),Perl
+Python (programming language),Programming language
+Python (programming language),Prolog
+Python (programming language),R (programming language)
+Python (programming language),Raku (programming language)
+Python (programming language),Ruby (programming language)
+Python (programming language),Rust (programming language)
+Python (programming language),SAS (software)
+Python (programming language),SAS language
+Python (programming language),SQL
+Python (programming language),Scheme (programming language)
+Python (programming language),Scilab
+Python (programming language),Scratch (programming language)
+Python (programming language),Shell script
+Python (programming language),Simula
+Python (programming language),Smalltalk
+Python (programming language),Standard ML
+Python (programming language),Stata
+Python (programming language),Swift (programming language)
+Python (programming language),Timeline of programming languages
+Python (programming language),Vim (text editor)
+Python (programming language),Visual Basic
+Python (programming language),Visual Basic (classic)
+Python (programming language),WebAssembly
+Perl,ALGOL
+Perl,APL (programming language)
+Perl,AWK
+Perl,Ada (programming language)
+Perl,Assembly language
+Perl,BASIC
+Perl,Bash (Unix shell)
+Perl,C++
+Perl,COBOL
+Perl,C (programming language)
+Perl,C Sharp (programming language)
+Perl,CoffeeScript
+Perl,Comparison of programming languages
+Perl,Elixir (programming language)
+Perl,Erlang (programming language)
+Perl,Forth (programming language)
+Perl,Fortran
+Perl,Go (programming language)
+Perl,HTML
+Perl,Haskell
+Perl,History of programming languages
+Perl,JavaScript
+Perl,Java (programming language)
+Perl,Julia (programming language)
+Perl,Lisp (programming language)
+Perl,List of programming languages by type
+Perl,MATLAB
+Perl,ML (programming language)
+Perl,Non-English-based programming languages
+Perl,OCaml
+Perl,Object Pascal
+Perl,PHP
+Perl,Pascal (programming language)
+Perl,PowerShell
+Perl,Programming language
+Perl,Prolog
+Perl,Python (programming language)
+Perl,R (programming language)
+Perl,Raku (programming language)
+Perl,Ruby (programming language)
+Perl,Rust (programming language)
+Perl,SAS language
+Perl,SQL
+Perl,Scratch (programming language)
+Perl,Sed
+Perl,Shell script
+Perl,Simula
+Perl,Smalltalk
+Perl,Standard ML
+Perl,Swift (programming language)
+Perl,Timeline of programming languages
+Perl,Visual Basic
+Perl,Visual Basic (classic)
+PHP,ALGOL
+PHP,APL (programming language)
+PHP,Ada (programming language)
+PHP,Assembly language
+PHP,BASIC
+PHP,C++
+PHP,COBOL
+PHP,C (programming language)
+PHP,C Sharp (programming language)
+PHP,Common Intermediate Language
+PHP,Comparison of programming languages
+PHP,Elixir (programming language)
+PHP,Erlang (programming language)
+PHP,Forth (programming language)
+PHP,Fortran
+PHP,Go (programming language)
+PHP,HTML
+PHP,Hack (programming language)
+PHP,Haskell
+PHP,History of programming languages
+PHP,Imperative programming
+PHP,JavaScript
+PHP,Java (programming language)
+PHP,Julia (programming language)
+PHP,Lisp (programming language)
+PHP,List of programming languages by type
+PHP,MATLAB
+PHP,ML (programming language)
+PHP,Non-English-based programming languages
+PHP,OCaml
+PHP,Object Pascal
+PHP,Pascal (programming language)
+PHP,Perl
+PHP,Programming language
+PHP,Prolog
+PHP,Python (programming language)
+PHP,R (programming language)
+PHP,Raku (programming language)
+PHP,Ruby (programming language)
+PHP,Rust (programming language)
+PHP,SAS language
+PHP,SQL
+PHP,Scratch (programming language)
+PHP,Shell script
+PHP,Simula
+PHP,Smalltalk
+PHP,Standard ML
+PHP,Swift (programming language)
+PHP,Timeline of programming languages
+PHP,Visual Basic
+PHP,Visual Basic (classic)
+PHP,WebAssembly
+PHP,XML
+Ruby (programming language),ALGOL
+Ruby (programming language),ALGOL 60
+Ruby (programming language),APL (programming language)
+Ruby (programming language),ActionScript
+Ruby (programming language),Ada (programming language)
+Ruby (programming language),Assembly language
+Ruby (programming language),BASIC
+Ruby (programming language),C++
+Ruby (programming language),COBOL
+Ruby (programming language),C (programming language)
+Ruby (programming language),C Sharp (programming language)
+Ruby (programming language),Clojure
+Ruby (programming language),CoffeeScript
+Ruby (programming language),Comparison of programming languages
+Ruby (programming language),Crystal (programming language)
+Ruby (programming language),D (programming language)
+Ruby (programming language),ECMAScript
+Ruby (programming language),Eiffel (programming language)
+Ruby (programming language),Elixir (programming language)
+Ruby (programming language),Erlang (programming language)
+Ruby (programming language),Forth (programming language)
+Ruby (programming language),Fortran
+Ruby (programming language),Go (programming language)
+Ruby (programming language),HTML
+Ruby (programming language),Haskell
+Ruby (programming language),History of programming languages
+Ruby (programming language),Imperative programming
+Ruby (programming language),JavaScript
+Ruby (programming language),Java (programming language)
+Ruby (programming language),Julia (programming language)
+Ruby (programming language),Lisp (programming language)
+Ruby (programming language),List of programming languages by type
+Ruby (programming language),MATLAB
+Ruby (programming language),ML (programming language)
+Ruby (programming language),Non-English-based programming languages
+Ruby (programming language),OCaml
+Ruby (programming language),Object Pascal
+Ruby (programming language),Objective-C
+Ruby (programming language),PHP
+Ruby (programming language),Pascal (programming language)
+Ruby (programming language),Perl
+Ruby (programming language),Programming language
+Ruby (programming language),Prolog
+Ruby (programming language),Python (programming language)
+Ruby (programming language),R (programming language)
+Ruby (programming language),Raku (programming language)
+Ruby (programming language),Rust (programming language)
+Ruby (programming language),SAS language
+Ruby (programming language),SQL
+Ruby (programming language),Scratch (programming language)
+Ruby (programming language),Shell script
+Ruby (programming language),Simula
+Ruby (programming language),Smalltalk
+Ruby (programming language),Standard ML
+Ruby (programming language),Swift (programming language)
+Ruby (programming language),Timeline of programming languages
+Ruby (programming language),Visual Basic
+Ruby (programming language),Visual Basic (classic)
+Ruby (programming language),WebAssembly
+Ruby (programming language),XML
+SQL,ALGOL
+SQL,ALGOL 60
+SQL,APL (programming language)
+SQL,Ada (programming language)
+SQL,Assembly language
+SQL,BASIC
+SQL,C++
+SQL,COBOL
+SQL,C (programming language)
+SQL,C Sharp (programming language)
+SQL,Comparison of programming languages
+SQL,DBase
+SQL,Datalog
+SQL,Domain-specific language
+SQL,ECMAScript
+SQL,Elixir (programming language)
+SQL,Erlang (programming language)
+SQL,Forth (programming language)
+SQL,Fortran
+SQL,Go (programming language)
+SQL,HTML
+SQL,Haskell
+SQL,History of programming languages
+SQL,JavaScript
+SQL,Java (programming language)
+SQL,Julia (programming language)
+SQL,Lisp (programming language)
+SQL,List of programming languages by type
+SQL,MATLAB
+SQL,ML (programming language)
+SQL,MUMPS
+SQL,Non-English-based programming languages
+SQL,OCaml
+SQL,Object Pascal
+SQL,PHP
+SQL,PL/SQL
+SQL,Pascal (programming language)
+SQL,Perl
+SQL,PowerShell
+SQL,Programming language
+SQL,Prolog
+SQL,Python (programming language)
+SQL,R (programming language)
+SQL,Raku (programming language)
+SQL,Ruby (programming language)
+SQL,Rust (programming language)
+SQL,SAS language
+SQL,Scratch (programming language)
+SQL,Shell script
+SQL,Simula
+SQL,Smalltalk
+SQL,Standard ML
+SQL,Swift (programming language)
+SQL,Timeline of programming languages
+SQL,Transact-SQL
+SQL,Visual Basic
+SQL,Visual Basic (classic)
+SQL,XML
+Turing completeness,Ada (programming language)
+Turing completeness,C++
+Turing completeness,C (programming language)
+Turing completeness,C Sharp (programming language)
+Turing completeness,Common Lisp
+Turing completeness,Esoteric programming language
+Turing completeness,Fortran
+Turing completeness,JavaScript
+Turing completeness,Java (programming language)
+Turing completeness,Lisp (programming language)
+Turing completeness,Object Pascal
+Turing completeness,Pascal (programming language)
+Turing completeness,Perl
+Turing completeness,Programming language
+Turing completeness,Prolog
+Turing completeness,Python (programming language)
+Turing completeness,R (programming language)
+Turing completeness,SQL
+Turing completeness,Smalltalk
+Turing completeness,TeX
+Turing completeness,TypeScript
+Turing completeness,XSLT
+Vim (text editor),BASIC
+Vim (text editor),C++
+Vim (text editor),C (programming language)
+Vim (text editor),Delphi (software)
+Vim (text editor),Eiffel (programming language)
+Vim (text editor),Go (programming language)
+Vim (text editor),Haxe
+Vim (text editor),Imperative programming
+Vim (text editor),JavaScript
+Vim (text editor),Object Pascal
+Vim (text editor),PHP
+Vim (text editor),Pascal (programming language)
+Vim (text editor),Perl
+Vim (text editor),Python (programming language)
+Vim (text editor),R (programming language)
+Vim (text editor),Racket (programming language)
+Vim (text editor),Ruby (programming language)
+Vim (text editor),Rust (programming language)
+Vim (text editor),Visual Basic (classic)
+XML,ECMAScript
+XML,HTML
+XML,JavaScript
+XML,Java (programming language)
+XML,Markup language
+XML,PHP
+XML,Perl
+XML,Python (programming language)
+C++,ALGOL
+C++,ALGOL 60
+C++,ALGOL 68
+C++,APL (programming language)
+C++,Ada (programming language)
+C++,Assembly language
+C++,BASIC
+C++,BCPL
+C++,COBOL
+C++,C (programming language)
+C++,C Sharp (programming language)
+C++,Clojure
+C++,Comparison of programming languages
+C++,D (programming language)
+C++,ECMAScript
+C++,Elixir (programming language)
+C++,Erlang (programming language)
+C++,F Sharp (programming language)
+C++,Forth (programming language)
+C++,Fortran
+C++,Go (programming language)
+C++,HTML
+C++,Haskell
+C++,History of programming languages
+XML,Scala (programming language)
+XML,Smalltalk
+XML,WebAssembly
+XML,XSLT
+C++,Imperative programming
+C++,JavaScript
+C++,Java (programming language)
+C++,Julia (programming language)
+C++,Lisp (programming language)
+C++,List of programming languages by type
+C++,MATLAB
+C++,ML (programming language)
+C++,Nim (programming language)
+C++,Non-English-based programming languages
+C++,OCaml
+C++,Object Pascal
+C++,PHP
+C++,Pascal (programming language)
+C++,Perl
+C++,Programming language
+C++,Prolog
+C++,Python (programming language)
+C++,R (programming language)
+C++,Raku (programming language)
+C++,Ruby (programming language)
+C++,Rust (programming language)
+C++,SAS language
+C++,SQL
+C++,Scratch (programming language)
+C++,Shell script
+C++,Simula
+C++,Smalltalk
+C++,Standard ML
+C++,Swift (programming language)
+C++,Timeline of programming languages
+C++,Visual Basic
+C++,Visual Basic (classic)
+C++,Zig (programming language)
+ECMAScript,ALGOL 60
+ECMAScript,AWK
+ECMAScript,ActionScript
+ECMAScript,C++
+ECMAScript,COBOL
+ECMAScript,C (programming language)
+ECMAScript,C Sharp (programming language)
+ECMAScript,CoffeeScript
+ECMAScript,Dart (programming language)
+ECMAScript,Eiffel (programming language)
+ECMAScript,Google Apps Script
+ECMAScript,HTML
+ECMAScript,Haxe
+ECMAScript,Imperative programming
+ECMAScript,JScript
+ECMAScript,JavaScript
+ECMAScript,Java (programming language)
+ECMAScript,Pascal (programming language)
+ECMAScript,Perl
+ECMAScript,Prolog
+ECMAScript,Python (programming language)
+ECMAScript,Ruby (programming language)
+ECMAScript,SQL
+ECMAScript,Scheme (programming language)
+ECMAScript,Solidity
+ECMAScript,TypeScript
+Imperative programming,ALGOL
+Imperative programming,Ada (programming language)
+Imperative programming,Assembly language
+Imperative programming,BASIC
+Imperative programming,BCPL
+Imperative programming,B (programming language)
+Imperative programming,C++
+Imperative programming,COBOL
+Imperative programming,C (programming language)
+Imperative programming,C Sharp (programming language)
+Imperative programming,Comparison of programming languages
+Imperative programming,Delphi (software)
+Imperative programming,Domain-specific language
+Imperative programming,Esoteric programming language
+Imperative programming,F Sharp (programming language)
+Imperative programming,Fortran
+Imperative programming,History of programming languages
+Imperative programming,JavaScript
+Imperative programming,Java (programming language)
+Imperative programming,List of programming languages by type
+Imperative programming,MUMPS
+Imperative programming,Machine code
+Imperative programming,Non-English-based programming languages
+Imperative programming,PHP
+Imperative programming,Pascal (programming language)
+Imperative programming,Perl
+Imperative programming,Python (programming language)
+Imperative programming,Quantum programming
+Imperative programming,Ruby (programming language)
+Imperative programming,Simula
+Imperative programming,Smalltalk
+Imperative programming,Visual Basic
+Imperative programming,Visual Basic (classic)
+R (programming language),ALGOL
+R (programming language),APL (programming language)
+R (programming language),Ada (programming language)
+R (programming language),Assembly language
+R (programming language),BASIC
+R (programming language),Bash (Unix shell)
+R (programming language),C++
+R (programming language),COBOL
+R (programming language),C (programming language)
+R (programming language),C Sharp (programming language)
+R (programming language),Comparison of programming languages
+R (programming language),Elixir (programming language)
+R (programming language),Erlang (programming language)
+R (programming language),Executable
+R (programming language),F Sharp (programming language)
+R (programming language),Forth (programming language)
+R (programming language),Fortran
+R (programming language),GNU Octave
+R (programming language),Go (programming language)
+R (programming language),Haskell
+R (programming language),History of programming languages
+R (programming language),Imperative programming
+R (programming language),JavaScript
+R (programming language),Java (programming language)
+R (programming language),Julia (programming language)
+R (programming language),LabVIEW
+R (programming language),Lisp (programming language)
+R (programming language),List of programming languages by type
+R (programming language),MATLAB
+R (programming language),ML (programming language)
+R (programming language),Maple (software)
+R (programming language),Non-English-based programming languages
+R (programming language),OCaml
+R (programming language),Object Pascal
+R (programming language),PHP
+R (programming language),Pascal (programming language)
+R (programming language),Perl
+R (programming language),Programming language
+Domain-specific language,AWK
+Domain-specific language,ActionScript
+Domain-specific language,Assembly language
+Domain-specific language,BASIC
+Domain-specific language,C++
+Domain-specific language,C (programming language)
+Domain-specific language,C Sharp (programming language)
+Domain-specific language,Comparison of programming languages
+Domain-specific language,Delphi (software)
+Domain-specific language,Esoteric programming language
+Domain-specific language,GNU Octave
+Domain-specific language,HTML
+Domain-specific language,Imperative programming
+Domain-specific language,Java (programming language)
+Domain-specific language,Lisp (programming language)
+Domain-specific language,List of programming languages by type
+Domain-specific language,MATLAB
+Domain-specific language,Machine code
+Domain-specific language,Maple (software)
+Domain-specific language,Non-English-based programming languages
+Domain-specific language,OpenGL Shading Language
+Domain-specific language,Perl
+Domain-specific language,PostScript
+Domain-specific language,Programming language
+Domain-specific language,Python (programming language)
+Domain-specific language,Quantum programming
+Domain-specific language,R (programming language)
+Domain-specific language,Racket (programming language)
+Domain-specific language,SQL
+Domain-specific language,S (programming language)
+R (programming language),Prolog
+R (programming language),Python (programming language)
+R (programming language),Raku (programming language)
+R (programming language),Ruby (programming language)
+R (programming language),Rust (programming language)
+R (programming language),SAS (software)
+R (programming language),SAS language
+R (programming language),SQL
+R (programming language),S (programming language)
+R (programming language),Scheme (programming language)
+R (programming language),Scilab
+R (programming language),Scratch (programming language)
+R (programming language),Shell script
+R (programming language),Simula
+R (programming language),Smalltalk
+R (programming language),Standard ML
+R (programming language),Stata
+R (programming language),Swift (programming language)
+R (programming language),Timeline of programming languages
+R (programming language),Vim (text editor)
+R (programming language),Visual Basic
+R (programming language),Visual Basic (classic)
+Domain-specific language,Sed
+Domain-specific language,Shell script
+Domain-specific language,XSLT
+History of programming languages,ALGOL
+History of programming languages,ALGOL 60
+History of programming languages,ALGOL 68
+History of programming languages,APL (programming language)
+History of programming languages,AWK
+History of programming languages,ActionScript
+History of programming languages,Ada (programming language)
+History of programming languages,Assembly language
+History of programming languages,BASIC
+History of programming languages,BCPL
+History of programming languages,B (programming language)
+History of programming languages,C++
+History of programming languages,COBOL
+History of programming languages,C (programming language)
+History of programming languages,C Sharp (programming language)
+History of programming languages,Clojure
+History of programming languages,Common Lisp
+History of programming languages,Comparison of programming languages
+History of programming languages,Crystal (programming language)
+History of programming languages,D (programming language)
+History of programming languages,Dart (programming language)
+History of programming languages,Delphi (software)
+History of programming languages,Domain-specific language
+History of programming languages,Eiffel (programming language)
+History of programming languages,Elixir (programming language)
+History of programming languages,Elm (programming language)
+History of programming languages,Erlang (programming language)
+History of programming languages,F Sharp (programming language)
+History of programming languages,Forth (programming language)
+History of programming languages,Fortran
+History of programming languages,Go (programming language)
+History of programming languages,Hack (programming language)
+History of programming languages,Haskell
+History of programming languages,Haxe
+History of programming languages,IBM RPG
+History of programming languages,IDL (programming language)
+History of programming languages,Imperative programming
+History of programming languages,J (programming language)
+History of programming languages,JavaScript
+History of programming languages,Java (programming language)
+History of programming languages,Julia (programming language)
+History of programming languages,LabVIEW
+History of programming languages,Lisp (programming language)
+History of programming languages,List of programming languages by type
+History of programming languages,Logo (programming language)
+History of programming languages,MATLAB
+History of programming languages,ML (programming language)
+History of programming languages,MUMPS
+History of programming languages,Machine code
+History of programming languages,Nim (programming language)
+History of programming languages,Non-English-based programming languages
+History of programming languages,OCaml
+History of programming languages,Object Pascal
+History of programming languages,Objective-C
+History of programming languages,OpenCL
+History of programming languages,PHP
+History of programming languages,PL/I
+History of programming languages,Pascal (programming language)
+History of programming languages,Perl
+History of programming languages,Plankalkül
+History of programming languages,PowerShell
+History of programming languages,Programming language
+History of programming languages,Prolog
+History of programming languages,Python (programming language)
+History of programming languages,Q Sharp
+History of programming languages,Quantum programming
+History of programming languages,R (programming language)
+History of programming languages,Raku (programming language)
+History of programming languages,Ruby (programming language)
+History of programming languages,Rust (programming language)
+History of programming languages,SAS language
+History of programming languages,SNOBOL
+History of programming languages,SQL
+History of programming languages,Scala (programming language)
+History of programming languages,Scheme (programming language)
+History of programming languages,Scratch (programming language)
+History of programming languages,Shell script
+History of programming languages,Simula
+History of programming languages,Smalltalk
+History of programming languages,Standard ML
+History of programming languages,Swift (programming language)
+History of programming languages,Timeline of programming languages
+History of programming languages,TypeScript
+History of programming languages,Visual Basic
+History of programming languages,Visual Basic (classic)
+History of programming languages,Visual FoxPro
+History of programming languages,Wolfram Language
+History of programming languages,XML
+History of programming languages,Zig (programming language)
+SAS (software),Assembly language
+SAS (software),C (programming language)
+C Sharp (programming language),ALGOL
+C Sharp (programming language),ALGOL 60
+C Sharp (programming language),APL (programming language)
+C Sharp (programming language),Ada (programming language)
+C Sharp (programming language),Assembly language
+C Sharp (programming language),BASIC
+C Sharp (programming language),C++
+C Sharp (programming language),COBOL
+C Sharp (programming language),C (programming language)
+C Sharp (programming language),Clojure
+C Sharp (programming language),Common Intermediate Language
+C Sharp (programming language),Comparison of programming languages
+C Sharp (programming language),Crystal (programming language)
+C Sharp (programming language),D (programming language)
+C Sharp (programming language),Dart (programming language)
+C Sharp (programming language),Delphi (software)
+C Sharp (programming language),ECMAScript
+C Sharp (programming language),Eiffel (programming language)
+C Sharp (programming language),Elixir (programming language)
+G-code,Imperative programming
+G-code,Programming language
+SAS (software),Fortran
+SAS (software),GNU Octave
+SAS (software),Julia (programming language)
+SAS (software),LabVIEW
+SAS (software),MATLAB
+SAS (software),Maple (software)
+SAS (software),PL/I
+SAS (software),Python (programming language)
+SAS (software),R (programming language)
+SAS (software),SAS language
+SAS (software),Scilab
+SAS (software),Stata
+C Sharp (programming language),Erlang (programming language)
+C Sharp (programming language),F Sharp (programming language)
+C Sharp (programming language),Forth (programming language)
+C Sharp (programming language),Fortran
+C Sharp (programming language),Go (programming language)
+C Sharp (programming language),Godot (game engine)
+C Sharp (programming language),HTML
+C Sharp (programming language),Hack (programming language)
+C Sharp (programming language),Haskell
+C Sharp (programming language),History of programming languages
+C Sharp (programming language),Imperative programming
+C Sharp (programming language),JavaScript
+C Sharp (programming language),Java (programming language)
+C Sharp (programming language),Julia (programming language)
+C Sharp (programming language),Lean (proof assistant)
+C Sharp (programming language),Lisp (programming language)
+C Sharp (programming language),List of programming languages by type
+C Sharp (programming language),MATLAB
+C Sharp (programming language),ML (programming language)
+C Sharp (programming language),Non-English-based programming languages
+C Sharp (programming language),OCaml
+C Sharp (programming language),Object Pascal
+C Sharp (programming language),PHP
+C Sharp (programming language),Pascal (programming language)
+C Sharp (programming language),Perl
+C Sharp (programming language),PowerShell
+C Sharp (programming language),Programming language
+C Sharp (programming language),Prolog
+C Sharp (programming language),Python (programming language)
+C Sharp (programming language),Q Sharp
+C Sharp (programming language),R (programming language)
+C Sharp (programming language),Raku (programming language)
+C Sharp (programming language),Ruby (programming language)
+C Sharp (programming language),Rust (programming language)
+C Sharp (programming language),SAS language
+C Sharp (programming language),SQL
+C Sharp (programming language),Scala (programming language)
+C Sharp (programming language),Scratch (programming language)
+C Sharp (programming language),Shell script
+C Sharp (programming language),Simula
+C Sharp (programming language),Smalltalk
+C Sharp (programming language),Standard ML
+C Sharp (programming language),Swift (programming language)
+C Sharp (programming language),Timeline of programming languages
+C Sharp (programming language),TypeScript
+C Sharp (programming language),Vala (programming language)
+C Sharp (programming language),Vim (text editor)
+C Sharp (programming language),Visual Basic
+C Sharp (programming language),Visual Basic (classic)
+C Sharp (programming language),WebAssembly
+C Sharp (programming language),XML
+Scala (programming language),ALGOL
+Scala (programming language),APL (programming language)
+Scala (programming language),Ada (programming language)
+Scala (programming language),Apache Groovy
+Scala (programming language),Assembly language
+Scala (programming language),BASIC
+Scala (programming language),C++
+Scala (programming language),COBOL
+Scala (programming language),C (programming language)
+Scala (programming language),C Sharp (programming language)
+Scala (programming language),Clojure
+Scala (programming language),Common Intermediate Language
+Scala (programming language),Common Lisp
+Scala (programming language),Comparison of programming languages
+Scala (programming language),Domain-specific language
+Scala (programming language),Eiffel (programming language)
+Scala (programming language),Elixir (programming language)
+Scala (programming language),Erlang (programming language)
+Scala (programming language),F Sharp (programming language)
+Scala (programming language),Forth (programming language)
+Scala (programming language),Fortran
+Scala (programming language),Go (programming language)
+Scala (programming language),Haskell
+Scala (programming language),History of programming languages
+Scala (programming language),Imperative programming
+Scala (programming language),JavaScript
+Scala (programming language),Java (programming language)
+Scala (programming language),Julia (programming language)
+Scala (programming language),Lisp (programming language)
+Scala (programming language),List of programming languages by type
+Scala (programming language),MATLAB
+Scala (programming language),ML (programming language)
+Scala (programming language),Machine code
+Scala (programming language),Non-English-based programming languages
+Scala (programming language),OCaml
+Scala (programming language),Object Pascal
+Scala (programming language),Objective-C
+Scala (programming language),PHP
+Scala (programming language),Pascal (programming language)
+Scala (programming language),Perl
+Scala (programming language),PowerShell
+Scala (programming language),Processing
+Scala (programming language),Programming language
+Scala (programming language),Prolog
+Scala (programming language),Python (programming language)
+Scala (programming language),Q Sharp
+Scala (programming language),R (programming language)
+Scala (programming language),Raku (programming language)
+Scala (programming language),Ruby (programming language)
+Scala (programming language),Rust (programming language)
+Scala (programming language),SAS language
+Scala (programming language),SQL
+Scala (programming language),Scheme (programming language)
+Scala (programming language),Scratch (programming language)
+Scala (programming language),Shell script
+Scala (programming language),Simula
+Scala (programming language),Smalltalk
+Scala (programming language),Standard ML
+Scala (programming language),Swift (programming language)
+Scala (programming language),Timeline of programming languages
+Scala (programming language),TypeScript
+Scala (programming language),Visual Basic
+Scala (programming language),Visual Basic (classic)
+TypeScript,ActionScript
+TypeScript,C++
+TypeScript,C (programming language)
+TypeScript,C Sharp (programming language)
+TypeScript,CoffeeScript
+TypeScript,Dart (programming language)
+TypeScript,Delphi (software)
+TypeScript,ECMAScript
+TypeScript,Elm (programming language)
+TypeScript,F Sharp (programming language)
+TypeScript,Go (programming language)
+TypeScript,HTML
+TypeScript,Haxe
+TypeScript,Imperative programming
+TypeScript,JScript
+TypeScript,JavaScript
+TypeScript,Java (programming language)
+TypeScript,Lean (proof assistant)
+Scratch (programming language),ALGOL
+Scratch (programming language),APL (programming language)
+Scratch (programming language),ActionScript
+Scratch (programming language),Ada (programming language)
+Scratch (programming language),Assembly language
+Scratch (programming language),BASIC
+Scratch (programming language),C++
+Scratch (programming language),COBOL
+Scratch (programming language),C (programming language)
+Scratch (programming language),C Sharp (programming language)
+Scratch (programming language),Comparison of programming languages
+Scratch (programming language),Elixir (programming language)
+Scratch (programming language),Erlang (programming language)
+Scratch (programming language),Forth (programming language)
+Scratch (programming language),Fortran
+Scratch (programming language),Go (programming language)
+Scratch (programming language),Godot (game engine)
+Scratch (programming language),Haskell
+Scratch (programming language),History of programming languages
+Scratch (programming language),JavaScript
+Scratch (programming language),Java (programming language)
+Scratch (programming language),Julia (programming language)
+Scratch (programming language),Lisp (programming language)
+Scratch (programming language),List of programming languages by type
+Scratch (programming language),Logo (programming language)
+Scratch (programming language),MATLAB
+Scratch (programming language),ML (programming language)
+Scratch (programming language),Non-English-based programming languages
+Scratch (programming language),OCaml
+Scratch (programming language),Object Pascal
+Scratch (programming language),PHP
+Scratch (programming language),Pascal (programming language)
+Scratch (programming language),Perl
+Scratch (programming language),Programming language
+Scratch (programming language),Prolog
+Scratch (programming language),Python (programming language)
+Scratch (programming language),R (programming language)
+Scratch (programming language),Raku (programming language)
+Scratch (programming language),Ruby (programming language)
+Scratch (programming language),Rust (programming language)
+Scratch (programming language),SAS language
+TypeScript,Nim (programming language)
+TypeScript,PowerShell
+TypeScript,Programming language
+TypeScript,Q Sharp
+TypeScript,Rust (programming language)
+TypeScript,Solidity
+TypeScript,Vim (text editor)
+TypeScript,WebAssembly
+PowerShell,Bash (Unix shell)
+PowerShell,Batch file
+PowerShell,C Sharp (programming language)
+PowerShell,Clojure
+PowerShell,Common Intermediate Language
+PowerShell,Comparison of programming languages
+PowerShell,Executable
+PowerShell,F Sharp (programming language)
+PowerShell,Imperative programming
+PowerShell,JScript
+PowerShell,KornShell
+PowerShell,Lean (proof assistant)
+Scratch (programming language),SQL
+Scratch (programming language),Shell script
+Scratch (programming language),Simula
+Scratch (programming language),Smalltalk
+Scratch (programming language),Standard ML
+Scratch (programming language),Swift (programming language)
+Scratch (programming language),Timeline of programming languages
+Scratch (programming language),Visual Basic
+Scratch (programming language),Visual Basic (classic)
+PowerShell,PHP
+PowerShell,Perl
+PowerShell,Programming language
+PowerShell,Python (programming language)
+PowerShell,Q Sharp
+PowerShell,SQL
+PowerShell,Scala (programming language)
+PowerShell,Shell script
+PowerShell,TypeScript
+Go (programming language),ALGOL
+Go (programming language),APL (programming language)
+Go (programming language),Ada (programming language)
+Go (programming language),Assembly language
+Go (programming language),BASIC
+Go (programming language),BCPL
+Go (programming language),B (programming language)
+Go (programming language),C++
+Go (programming language),COBOL
+Go (programming language),C (programming language)
+Go (programming language),C Sharp (programming language)
+Go (programming language),Comparison of programming languages
+Go (programming language),Crystal (programming language)
+Go (programming language),Dart (programming language)
+Go (programming language),Elixir (programming language)
+Go (programming language),Erlang (programming language)
+Go (programming language),Forth (programming language)
+Go (programming language),Fortran
+Go (programming language),Haskell
+Go (programming language),History of programming languages
+Go (programming language),Imperative programming
+Go (programming language),JavaScript
+Go (programming language),Java (programming language)
+Go (programming language),Julia (programming language)
+Go (programming language),Lisp (programming language)
+Go (programming language),List of programming languages by type
+Go (programming language),MATLAB
+Go (programming language),ML (programming language)
+Go (programming language),Non-English-based programming languages
+Go (programming language),OCaml
+Go (programming language),Object Pascal
+Go (programming language),PHP
+Go (programming language),Pascal (programming language)
+Go (programming language),Perl
+Go (programming language),Programming language
+Go (programming language),Prolog
+Go (programming language),Python (programming language)
+Go (programming language),R (programming language)
+Go (programming language),Raku (programming language)
+Go (programming language),Ruby (programming language)
+Go (programming language),Rust (programming language)
+Go (programming language),SAS language
+Go (programming language),SQL
+Go (programming language),Scala (programming language)
+Go (programming language),Scratch (programming language)
+Go (programming language),Shell script
+Go (programming language),Simula
+Go (programming language),Smalltalk
+Go (programming language),Standard ML
+Go (programming language),Swift (programming language)
+Go (programming language),Timeline of programming languages
+Go (programming language),TypeScript
+Go (programming language),Visual Basic
+Go (programming language),Visual Basic (classic)
+Haskell,ALGOL
+Haskell,APL (programming language)
+Haskell,Ada (programming language)
+Haskell,Agda (programming language)
+Haskell,Assembly language
+Haskell,BASIC
+Haskell,C++
+Haskell,C--
+Haskell,COBOL
+Haskell,C (programming language)
+Haskell,C Sharp (programming language)
+Haskell,Clojure
+Haskell,CoffeeScript
+Haskell,Comparison of programming languages
+Haskell,Domain-specific language
+Haskell,Elixir (programming language)
+Haskell,Elm (programming language)
+Haskell,Erlang (programming language)
+Haskell,F Sharp (programming language)
+Haskell,Forth (programming language)
+Haskell,Fortran
+PowerShell,XML
+Haskell,Go (programming language)
+Haskell,Hack (programming language)
+Haskell,History of programming languages
+Haskell,JavaScript
+Haskell,Java (programming language)
+Haskell,Julia (programming language)
+Haskell,Lisp (programming language)
+Haskell,List of programming languages by type
+Haskell,MATLAB
+Haskell,ML (programming language)
+Haskell,Machine code
+Haskell,Non-English-based programming languages
+Haskell,OCaml
+Haskell,Object Pascal
+Haskell,PHP
+Haskell,Pascal (programming language)
+Haskell,Perl
+Haskell,Programming language
+Haskell,Prolog
+Haskell,Python (programming language)
+Haskell,R (programming language)
+Haskell,Raku (programming language)
+Haskell,Ruby (programming language)
+Haskell,Rust (programming language)
+Haskell,SAS language
+Haskell,SQL
+Haskell,Scala (programming language)
+Haskell,Scheme (programming language)
+Haskell,Scratch (programming language)
+Haskell,Shell script
+Haskell,Simula
+Haskell,Smalltalk
+Haskell,Standard ML
+Haskell,Swift (programming language)
+Haskell,Timeline of programming languages
+Haskell,Visual Basic
+Haskell,Visual Basic (classic)
+Rust (programming language),ALGOL
+Rust (programming language),APL (programming language)
+Rust (programming language),Ada (programming language)
+Rust (programming language),Assembly language
+Rust (programming language),BASIC
+Rust (programming language),C++
+Rust (programming language),COBOL
+Rust (programming language),C (programming language)
+Rust (programming language),C Sharp (programming language)
+Rust (programming language),Comparison of programming languages
+Rust (programming language),Elixir (programming language)
+Rust (programming language),Elm (programming language)
+Rust (programming language),Erlang (programming language)
+Rust (programming language),Executable
+Rust (programming language),Forth (programming language)
+Rust (programming language),Fortran
+Rust (programming language),Go (programming language)
+Rust (programming language),Haskell
+Rust (programming language),History of programming languages
+Rust (programming language),Imperative programming
+Rust (programming language),JavaScript
+Rust (programming language),Java (programming language)
+Rust (programming language),Julia (programming language)
+Rust (programming language),Lisp (programming language)
+Rust (programming language),List of programming languages by type
+Rust (programming language),MATLAB
+Rust (programming language),ML (programming language)
+Rust (programming language),Non-English-based programming languages
+Rust (programming language),OCaml
+Rust (programming language),Object Pascal
+Dart (programming language),ALGOL
+Dart (programming language),APL (programming language)
+Dart (programming language),Ada (programming language)
+Dart (programming language),Assembly language
+Dart (programming language),BASIC
+Dart (programming language),C++
+Dart (programming language),COBOL
+Dart (programming language),C (programming language)
+Dart (programming language),C Sharp (programming language)
+Dart (programming language),CoffeeScript
+Dart (programming language),Comparison of programming languages
+Dart (programming language),Elixir (programming language)
+Dart (programming language),Elm (programming language)
+Dart (programming language),Erlang (programming language)
+Dart (programming language),Forth (programming language)
+Dart (programming language),Fortran
+Dart (programming language),Go (programming language)
+Dart (programming language),Google Apps Script
+Rust (programming language),PHP
+Rust (programming language),Pascal (programming language)
+Rust (programming language),Perl
+Rust (programming language),Programming language
+Rust (programming language),Prolog
+Rust (programming language),Python (programming language)
+Rust (programming language),R (programming language)
+Rust (programming language),Raku (programming language)
+Rust (programming language),Ruby (programming language)
+Rust (programming language),SAS language
+Rust (programming language),SPARK (programming language)
+Rust (programming language),SQL
+Rust (programming language),Scheme (programming language)
+Rust (programming language),Scratch (programming language)
+Rust (programming language),Shell script
+Rust (programming language),Simula
+Rust (programming language),Smalltalk
+Rust (programming language),Standard ML
+Rust (programming language),Swift (programming language)
+Rust (programming language),Timeline of programming languages
+Rust (programming language),TypeScript
+Rust (programming language),Visual Basic
+Rust (programming language),Visual Basic (classic)
+Rust (programming language),WebAssembly
+Rust (programming language),Zig (programming language)
+Dart (programming language),HTML
+Dart (programming language),Haskell
+Dart (programming language),Haxe
+Dart (programming language),History of programming languages
+Dart (programming language),Imperative programming
+Dart (programming language),JavaScript
+Dart (programming language),Java (programming language)
+Dart (programming language),Julia (programming language)
+Dart (programming language),Lisp (programming language)
+Dart (programming language),List of programming languages by type
+Dart (programming language),MATLAB
+Dart (programming language),ML (programming language)
+Dart (programming language),Machine code
+Dart (programming language),Nim (programming language)
+Dart (programming language),Non-English-based programming languages
+Dart (programming language),OCaml
+Dart (programming language),Object Pascal
+Dart (programming language),PHP
+Dart (programming language),Pascal (programming language)
+Dart (programming language),Perl
+Dart (programming language),Programming language
+Dart (programming language),Prolog
+Dart (programming language),Python (programming language)
+Dart (programming language),R (programming language)
+Dart (programming language),Raku (programming language)
+Dart (programming language),Ruby (programming language)
+Dart (programming language),Rust (programming language)
+Dart (programming language),SAS language
+Dart (programming language),SQL
+Dart (programming language),Scratch (programming language)
+Dart (programming language),Shell script
+Dart (programming language),Simula
+Dart (programming language),Smalltalk
+Dart (programming language),Standard ML
+Dart (programming language),Swift (programming language)
+Dart (programming language),Timeline of programming languages
+Dart (programming language),TypeScript
+Dart (programming language),Vim (text editor)
+Dart (programming language),Visual Basic
+Dart (programming language),Visual Basic (classic)
+Dart (programming language),WebAssembly
+Julia (programming language),ALGOL
+Julia (programming language),APL (programming language)
+Julia (programming language),Ada (programming language)
+Julia (programming language),Assembly language
+Julia (programming language),BASIC
+Julia (programming language),C++
+Julia (programming language),COBOL
+Julia (programming language),C (programming language)
+Julia (programming language),C Sharp (programming language)
+Julia (programming language),Common Lisp
+Julia (programming language),Comparison of programming languages
+Julia (programming language),Elixir (programming language)
+Julia (programming language),Erlang (programming language)
+Julia (programming language),Executable
+Julia (programming language),Forth (programming language)
+Julia (programming language),Fortran
+Julia (programming language),GNU Octave
+Julia (programming language),Go (programming language)
+Julia (programming language),HTML
+Julia (programming language),Haskell
+Julia (programming language),History of programming languages
+Julia (programming language),Imperative programming
+Julia (programming language),JavaScript
+Julia (programming language),Java (programming language)
+Julia (programming language),LabVIEW
+Julia (programming language),Lisp (programming language)
+Julia (programming language),List of programming languages by type
+Julia (programming language),MATLAB
+Julia (programming language),ML (programming language)
+Julia (programming language),Machine code
+Julia (programming language),Maple (software)
+Julia (programming language),Nim (programming language)
+Julia (programming language),Non-English-based programming languages
+Julia (programming language),OCaml
+Julia (programming language),Object Pascal
+Julia (programming language),PHP
+Julia (programming language),Pascal (programming language)
+Julia (programming language),Perl
+Julia (programming language),Programming language
+Julia (programming language),Prolog
+Julia (programming language),Python (programming language)
+Julia (programming language),R (programming language)
+Julia (programming language),Raku (programming language)
+Julia (programming language),Ruby (programming language)
+Julia (programming language),Rust (programming language)
+Julia (programming language),SAS (software)
+Julia (programming language),SAS language
+Julia (programming language),SQL
+Julia (programming language),Scala (programming language)
+Julia (programming language),Scheme (programming language)
+Julia (programming language),Scilab
+Julia (programming language),Scratch (programming language)
+Julia (programming language),Shell script
+Julia (programming language),Simula
+Julia (programming language),Smalltalk
+Julia (programming language),Standard ML
+Julia (programming language),Stata
+Julia (programming language),Swift (programming language)
+Julia (programming language),Timeline of programming languages
+Julia (programming language),Visual Basic
+Julia (programming language),Visual Basic (classic)
+Julia (programming language),Wolfram Language
+Julia (programming language),XML
+Objective-C,ALGOL
+Objective-C,APL (programming language)
+Objective-C,Ada (programming language)
+Objective-C,Assembly language
+Objective-C,BASIC
+Objective-C,C++
+Objective-C,COBOL
+Objective-C,C (programming language)
+Objective-C,C Sharp (programming language)
+Objective-C,Common Lisp
+Objective-C,Comparison of programming languages
+Objective-C,D (programming language)
+Objective-C,Elixir (programming language)
+Objective-C,Erlang (programming language)
+Objective-C,Forth (programming language)
+Objective-C,Fortran
+Objective-C,Go (programming language)
+Objective-C,Haskell
+Objective-C,History of programming languages
+Objective-C,JavaScript
+Objective-C,Java (programming language)
+Objective-C,Julia (programming language)
+Objective-C,Lisp (programming language)
+Objective-C,List of programming languages by type
+Objective-C,MATLAB
+Objective-C,ML (programming language)
+Objective-C,Non-English-based programming languages
+Objective-C,OCaml
+Objective-C,Object Pascal
+Objective-C,PHP
+Objective-C,Pascal (programming language)
+Objective-C,Perl
+Objective-C,Programming language
+Objective-C,Prolog
+Objective-C,Python (programming language)
+Objective-C,R (programming language)
+Objective-C,Raku (programming language)
+Objective-C,Ruby (programming language)
+Objective-C,Rust (programming language)
+Objective-C,SAS language
+Objective-C,SQL
+Objective-C,Scratch (programming language)
+Objective-C,Shell script
+Objective-C,Simula
+Objective-C,Smalltalk
+Objective-C,Standard ML
+Objective-C,Swift (programming language)
+Objective-C,Timeline of programming languages
+Ethereum,C++
+Ethereum,C (programming language)
+Ethereum,C Sharp (programming language)
+Ethereum,Elixir (programming language)
+Ethereum,Erlang (programming language)
+Ethereum,Go (programming language)
+Ethereum,JavaScript
+Ethereum,Java (programming language)
+Ethereum,Nim (programming language)
+Ethereum,Programming language
+Ethereum,Python (programming language)
+Ethereum,Ruby (programming language)
+Ethereum,Rust (programming language)
+Ethereum,Solidity
+Ethereum,Turing completeness
+Ethereum,TypeScript
+Ethereum,WebAssembly
+Godot (game engine),C++
+Godot (game engine),C (programming language)
+Godot (game engine),C Sharp (programming language)
+Objective-C,Vala (programming language)
+Objective-C,Visual Basic
+Objective-C,Visual Basic (classic)
+Objective-C,Zig (programming language)
+Godot (game engine),JavaScript
+Godot (game engine),Nim (programming language)
+Godot (game engine),OpenGL Shading Language
+Godot (game engine),Programming language
+Godot (game engine),Python (programming language)
+Godot (game engine),Rust (programming language)
+Godot (game engine),Scratch (programming language)
+Godot (game engine),Swift (programming language)
+Godot (game engine),WebAssembly
+Swift (programming language),ALGOL
+Swift (programming language),APL (programming language)
+Swift (programming language),Ada (programming language)
+Swift (programming language),Assembly language
+Swift (programming language),BASIC
+Swift (programming language),C++
+Swift (programming language),COBOL
+Swift (programming language),C (programming language)
+Swift (programming language),C Sharp (programming language)
+Swift (programming language),Comparison of programming languages
+Swift (programming language),D (programming language)
+Swift (programming language),Elixir (programming language)
+Swift (programming language),Erlang (programming language)
+Swift (programming language),Forth (programming language)
+Swift (programming language),Fortran
+Swift (programming language),Go (programming language)
+Swift (programming language),Haskell
+Swift (programming language),History of programming languages
+Swift (programming language),Imperative programming
+Swift (programming language),JavaScript
+Swift (programming language),Java (programming language)
+Swift (programming language),Julia (programming language)
+Swift (programming language),Lisp (programming language)
+Swift (programming language),List of programming languages by type
+Swift (programming language),MATLAB
+Swift (programming language),ML (programming language)
+Swift (programming language),Nim (programming language)
+Swift (programming language),Non-English-based programming languages
+Swift (programming language),OCaml
+Swift (programming language),Object Pascal
+Swift (programming language),Objective-C
+Swift (programming language),PHP
+Swift (programming language),Pascal (programming language)
+Swift (programming language),Perl
+Swift (programming language),Programming language
+Swift (programming language),Prolog
+Swift (programming language),Python (programming language)
+Swift (programming language),R (programming language)
+Swift (programming language),Raku (programming language)
+Swift (programming language),Ruby (programming language)
+Swift (programming language),Rust (programming language)
+Swift (programming language),SAS language
+Swift (programming language),SQL
+Swift (programming language),Scratch (programming language)
+Swift (programming language),Shell script
+Swift (programming language),Simula
+Swift (programming language),Smalltalk
+Swift (programming language),Standard ML
+Swift (programming language),Timeline of programming languages
+Swift (programming language),Vim (text editor)
+Swift (programming language),Visual Basic
+Swift (programming language),Visual Basic (classic)
+Swift (programming language),WebAssembly
+TempleOS,BASIC
+TempleOS,C++
+TempleOS,C (programming language)
+TempleOS,Imperative programming
+TempleOS,Programming language
+WebAssembly,Assembly language
+WebAssembly,C++
+WebAssembly,C (programming language)
+WebAssembly,CoffeeScript
+WebAssembly,Dart (programming language)
+WebAssembly,Elm (programming language)
+WebAssembly,Executable
+WebAssembly,Go (programming language)
+WebAssembly,HTML
+WebAssembly,Haskell
+WebAssembly,Haxe
+WebAssembly,JavaScript
+WebAssembly,Java (programming language)
+WebAssembly,Julia (programming language)
+WebAssembly,Lisp (programming language)
+WebAssembly,Nim (programming language)
+WebAssembly,PHP
+WebAssembly,Python (programming language)
+WebAssembly,Ruby (programming language)
+WebAssembly,Rust (programming language)
+WebAssembly,Scheme (programming language)
+WebAssembly,TypeScript
+WebAssembly,Vim (text editor)
+WebAssembly,XML
+WebAssembly,XSLT
+APL (programming language),ALGOL
+APL (programming language),ALGOL 60
+APL (programming language),Ada (programming language)
+APL (programming language),Assembly language
+APL (programming language),BASIC
+APL (programming language),C++
+APL (programming language),COBOL
+APL (programming language),C (programming language)
+APL (programming language),C Sharp (programming language)
+APL (programming language),Comparison of programming languages
+APL (programming language),ECMAScript
+APL (programming language),Elixir (programming language)
+APL (programming language),Erlang (programming language)
+APL (programming language),Forth (programming language)
+APL (programming language),Fortran
+APL (programming language),Go (programming language)
+APL (programming language),HTML
+APL (programming language),Haskell
+APL (programming language),History of programming languages
+ALGOL,ALGOL 60
+ALGOL,ALGOL 68
+ALGOL,APL (programming language)
+ALGOL,Ada (programming language)
+ALGOL,Assembly language
+ALGOL,BASIC
+ALGOL,BCPL
+ALGOL,B (programming language)
+ALGOL,C++
+ALGOL,COBOL
+ALGOL,C (programming language)
+ALGOL,C Sharp (programming language)
+ALGOL,Comparison of programming languages
+ALGOL,Elixir (programming language)
+ALGOL,Erlang (programming language)
+ALGOL,Forth (programming language)
+ALGOL,Fortran
+ALGOL,Go (programming language)
+ALGOL,Haskell
+ALGOL,History of programming languages
+APL (programming language),J (programming language)
+APL (programming language),JavaScript
+APL (programming language),Java (programming language)
+APL (programming language),Julia (programming language)
+APL (programming language),Lisp (programming language)
+APL (programming language),List of programming languages by type
+APL (programming language),MATLAB
+APL (programming language),ML (programming language)
+APL (programming language),Machine code
+APL (programming language),Non-English-based programming languages
+APL (programming language),OCaml
+APL (programming language),Object Pascal
+APL (programming language),PHP
+APL (programming language),Pascal (programming language)
+APL (programming language),Perl
+APL (programming language),Programming language
+APL (programming language),Prolog
+APL (programming language),Python (programming language)
+APL (programming language),R (programming language)
+APL (programming language),Raku (programming language)
+APL (programming language),Ruby (programming language)
+APL (programming language),Rust (programming language)
+APL (programming language),SAS language
+APL (programming language),SQL
+APL (programming language),S (programming language)
+APL (programming language),Scratch (programming language)
+APL (programming language),Shell script
+APL (programming language),Simula
+APL (programming language),Smalltalk
+APL (programming language),Standard ML
+APL (programming language),Swift (programming language)
+APL (programming language),Timeline of programming languages
+APL (programming language),Visual Basic
+APL (programming language),Visual Basic (classic)
+APL (programming language),Wolfram Language
+ALGOL,Imperative programming
+ALGOL,JavaScript
+ALGOL,Java (programming language)
+ALGOL,Julia (programming language)
+ALGOL,Lisp (programming language)
+ALGOL,List of programming languages by type
+ALGOL,MATLAB
+ALGOL,ML (programming language)
+ALGOL,Non-English-based programming languages
+ALGOL,OCaml
+ALGOL,Object Pascal
+ALGOL,PHP
+ALGOL,PL/I
+ALGOL,Pascal (programming language)
+ALGOL,Perl
+ALGOL,Programming language
+ALGOL,Prolog
+ALGOL,Python (programming language)
+ALGOL,R (programming language)
+ALGOL,Raku (programming language)
+ALGOL,Ruby (programming language)
+ALGOL,Rust (programming language)
+ALGOL,SAS language
+ALGOL,SQL
+ALGOL,Scheme (programming language)
+ALGOL,Scratch (programming language)
+ALGOL,Shell script
+ALGOL,Simula
+ALGOL,Smalltalk
+ALGOL,Standard ML
+ALGOL,Swift (programming language)
+ALGOL,Timeline of programming languages
+ALGOL,Visual Basic
+ALGOL,Visual Basic (classic)
+AWK,C (programming language)
+AWK,Common Lisp
+AWK,ECMAScript
+AWK,Java (programming language)
+AWK,Perl
+AWK,Programming language
+AWK,SNOBOL
+AWK,Sed
+BCPL,BASIC
+BCPL,B (programming language)
+BCPL,C++
+BCPL,C (programming language)
+BCPL,D (programming language)
+BCPL,Fortran
+BCPL,Imperative programming
+BCPL,Java (programming language)
+BCPL,Pascal (programming language)
+BCPL,Programming language
+B (programming language),ABC (programming language)
+B (programming language),ALGOL
+B (programming language),ALGOL 68
+B (programming language),APL (programming language)
+B (programming language),Ada (programming language)
+B (programming language),Assembly language
+B (programming language),BASIC
+B (programming language),BCPL
+B (programming language),C++
+B (programming language),COBOL
+B (programming language),C (programming language)
+B (programming language),C Sharp (programming language)
+B (programming language),Comparison of programming languages
+B (programming language),Elixir (programming language)
+B (programming language),Erlang (programming language)
+B (programming language),Forth (programming language)
+B (programming language),Fortran
+B (programming language),Go (programming language)
+B (programming language),Haskell
+B (programming language),History of programming languages
+B (programming language),JavaScript
+B (programming language),Java (programming language)
+B (programming language),Julia (programming language)
+B (programming language),Lisp (programming language)
+B (programming language),List of programming languages by type
+B (programming language),MATLAB
+B (programming language),ML (programming language)
+B (programming language),Non-English-based programming languages
+B (programming language),OCaml
+B (programming language),Object Pascal
+B (programming language),PHP
+B (programming language),PL/I
+B (programming language),Pascal (programming language)
+B (programming language),Perl
+B (programming language),Programming language
+B (programming language),Prolog
+B (programming language),Python (programming language)
+B (programming language),R (programming language)
+B (programming language),Raku (programming language)
+B (programming language),Ruby (programming language)
+B (programming language),Rust (programming language)
+B (programming language),SAS language
+B (programming language),SQL
+B (programming language),Scratch (programming language)
+B (programming language),Shell script
+B (programming language),Simula
+B (programming language),Smalltalk
+B (programming language),Standard ML
+B (programming language),Swift (programming language)
+B (programming language),Timeline of programming languages
+B (programming language),Visual Basic
+B (programming language),Visual Basic (classic)
+Common Lisp,ALGOL 68
+Common Lisp,Ada (programming language)
+Common Lisp,C++
+Common Lisp,C (programming language)
+Common Lisp,Clojure
+Common Lisp,HTML
+Common Lisp,Java (programming language)
+Common Lisp,Julia (programming language)
+Common Lisp,Lisp (programming language)
+Common Lisp,Logo (programming language)
+Common Lisp,Machine code
+Common Lisp,Pascal (programming language)
+Common Lisp,Perl
+Common Lisp,Programming language
+Common Lisp,Prolog
+Common Lisp,Python (programming language)
+Common Lisp,R (programming language)
+Common Lisp,Racket (programming language)
+Common Lisp,SQL
+Common Lisp,Scheme (programming language)
+Common Lisp,Standard ML
+Forth (programming language),ALGOL
+Forth (programming language),APL (programming language)
+Forth (programming language),Ada (programming language)
+Forth (programming language),Assembly language
+Forth (programming language),BASIC
+Forth (programming language),C++
+Forth (programming language),COBOL
+Forth (programming language),C (programming language)
+Forth (programming language),C Sharp (programming language)
+Forth (programming language),Comparison of programming languages
+Forth (programming language),Domain-specific language
+Forth (programming language),Elixir (programming language)
+Forth (programming language),Erlang (programming language)
+Forth (programming language),Fortran
+Forth (programming language),Go (programming language)
+Forth (programming language),Haskell
+Forth (programming language),History of programming languages
+Forth (programming language),JavaScript
+Forth (programming language),Java (programming language)
+Forth (programming language),Julia (programming language)
+Forth (programming language),Lisp (programming language)
+Forth (programming language),List of programming languages by type
+Forth (programming language),MATLAB
+Forth (programming language),ML (programming language)
+Forth (programming language),Machine code
+Forth (programming language),Non-English-based programming languages
+Forth (programming language),OCaml
+Forth (programming language),Object Pascal
+Forth (programming language),PHP
+Forth (programming language),Pascal (programming language)
+Forth (programming language),Perl
+Forth (programming language),Programming language
+Forth (programming language),Prolog
+Forth (programming language),Python (programming language)
+Forth (programming language),R (programming language)
+Forth (programming language),Raku (programming language)
+Forth (programming language),Ruby (programming language)
+Forth (programming language),Rust (programming language)
+Forth (programming language),SAS language
+Forth (programming language),SQL
+Forth (programming language),Scratch (programming language)
+Forth (programming language),Shell script
+Forth (programming language),Simula
+Forth (programming language),Smalltalk
+Forth (programming language),Standard ML
+Forth (programming language),Swift (programming language)
+Forth (programming language),Timeline of programming languages
+Forth (programming language),Visual Basic
+Forth (programming language),Visual Basic (classic)
+Logo (programming language),Clojure
+Logo (programming language),Common Lisp
+Logo (programming language),Lisp (programming language)
+Logo (programming language),Programming language
+Logo (programming language),Python (programming language)
+Logo (programming language),Racket (programming language)
+Logo (programming language),Scheme (programming language)
+Logo (programming language),Scratch (programming language)
+Logo (programming language),Smalltalk
+ML (programming language),ALGOL
+ML (programming language),APL (programming language)
+ML (programming language),Ada (programming language)
+ML (programming language),Assembly language
+ML (programming language),BASIC
+ML (programming language),C++
+ML (programming language),COBOL
+ML (programming language),C (programming language)
+ML (programming language),C Sharp (programming language)
+ML (programming language),Clojure
+ML (programming language),Comparison of programming languages
+ML (programming language),Elixir (programming language)
+ML (programming language),Elm (programming language)
+ML (programming language),Erlang (programming language)
+ML (programming language),F Sharp (programming language)
+ML (programming language),Forth (programming language)
+ML (programming language),Fortran
+ML (programming language),Go (programming language)
+ML (programming language),Haskell
+ML (programming language),Haxe
+ML (programming language),History of programming languages
+ML (programming language),Imperative programming
+ML (programming language),JavaScript
+ML (programming language),Java (programming language)
+ML (programming language),Julia (programming language)
+ML (programming language),Lisp (programming language)
+ML (programming language),List of programming languages by type
+ML (programming language),MATLAB
+ML (programming language),Non-English-based programming languages
+ML (programming language),OCaml
+ML (programming language),Object Pascal
+ML (programming language),PHP
+ML (programming language),Pascal (programming language)
+ML (programming language),Perl
+ML (programming language),Programming language
+ML (programming language),Prolog
+ML (programming language),Python (programming language)
+ML (programming language),R (programming language)
+ML (programming language),Raku (programming language)
+ML (programming language),Ruby (programming language)
+ML (programming language),Rust (programming language)
+ML (programming language),SAS language
+ML (programming language),SQL
+ML (programming language),Scala (programming language)
+ML (programming language),Scratch (programming language)
+ML (programming language),Shell script
+ML (programming language),Simula
+ML (programming language),Smalltalk
+ML (programming language),Standard ML
+ML (programming language),Swift (programming language)
+ML (programming language),Timeline of programming languages
+ML (programming language),Visual Basic
+ML (programming language),Visual Basic (classic)
+Timeline of programming languages,ABAP
+Timeline of programming languages,ABC (programming language)
+Timeline of programming languages,ALGOL
+Timeline of programming languages,ALGOL 60
+Timeline of programming languages,ALGOL 68
+Timeline of programming languages,APL (programming language)
+Timeline of programming languages,AWK
+Timeline of programming languages,ActionScript
+Timeline of programming languages,Ada (programming language)
+Timeline of programming languages,Agda (programming language)
+Timeline of programming languages,Apache Groovy
+Timeline of programming languages,AppleScript
+Timeline of programming languages,Assembly language
+Timeline of programming languages,BASIC
+Timeline of programming languages,BCPL
+Timeline of programming languages,B (programming language)
+Timeline of programming languages,Bash (Unix shell)
+Timeline of programming languages,C++
+Timeline of programming languages,COBOL
+Timeline of programming languages,C (programming language)
+Timeline of programming languages,C Sharp (programming language)
+Timeline of programming languages,Clojure
+Timeline of programming languages,CoffeeScript
+Timeline of programming languages,Common Lisp
+Timeline of programming languages,Comparison of programming languages
+Timeline of programming languages,Crystal (programming language)
+Timeline of programming languages,Cython
+Timeline of programming languages,DBase
+Timeline of programming languages,D (programming language)
+Timeline of programming languages,Dart (programming language)
+Timeline of programming languages,Delphi (software)
+Timeline of programming languages,ECMAScript
+Timeline of programming languages,Eiffel (programming language)
+Timeline of programming languages,Elixir (programming language)
+Timeline of programming languages,Elm (programming language)
+Timeline of programming languages,Erlang (programming language)
+Timeline of programming languages,Ethereum
+Timeline of programming languages,F Sharp (programming language)
+Timeline of programming languages,Forth (programming language)
+Timeline of programming languages,Fortran
+Timeline of programming languages,GNU Octave
+Timeline of programming languages,Go (programming language)
+Timeline of programming languages,Godot (game engine)
+Timeline of programming languages,Hack (programming language)
+Timeline of programming languages,Haskell
+Timeline of programming languages,Haxe
+Timeline of programming languages,History of programming languages
+PL/I,ALGOL
+PL/I,ALGOL 60
+PL/I,Assembly language
+PL/I,BASIC
+PL/I,C++
+PL/I,COBOL
+PL/I,C (programming language)
+Timeline of programming languages,IBM RPG
+Timeline of programming languages,IDL (programming language)
+Timeline of programming languages,J (programming language)
+Timeline of programming languages,JavaScript
+Timeline of programming languages,Java (programming language)
+Timeline of programming languages,Julia (programming language)
+Timeline of programming languages,KornShell
+Timeline of programming languages,LabVIEW
+Timeline of programming languages,Lean (proof assistant)
+Timeline of programming languages,Lisp (programming language)
+Timeline of programming languages,List of programming languages by type
+Timeline of programming languages,Logo (programming language)
+Timeline of programming languages,MATLAB
+Timeline of programming languages,ML (programming language)
+Timeline of programming languages,MUMPS
+Timeline of programming languages,Max (software)
+Timeline of programming languages,Nim (programming language)
+Timeline of programming languages,Non-English-based programming languages
+Timeline of programming languages,OCaml
+Timeline of programming languages,Object Pascal
+Timeline of programming languages,Objective-C
+Timeline of programming languages,PHP
+Timeline of programming languages,PL/I
+Timeline of programming languages,Pascal (programming language)
+Timeline of programming languages,Perl
+Timeline of programming languages,Plankalkül
+Timeline of programming languages,PostScript
+Timeline of programming languages,PowerShell
+Timeline of programming languages,Processing
+Timeline of programming languages,Programming language
+Timeline of programming languages,Prolog
+Timeline of programming languages,Pure Data
+Timeline of programming languages,Python (programming language)
+Timeline of programming languages,Q Sharp
+Timeline of programming languages,R (programming language)
+Timeline of programming languages,Racket (programming language)
+Timeline of programming languages,Raku (programming language)
+Timeline of programming languages,Ruby (programming language)
+Timeline of programming languages,Rust (programming language)
+Timeline of programming languages,SAS language
+Timeline of programming languages,SNOBOL
+Timeline of programming languages,SPARK (programming language)
+Timeline of programming languages,SQL
+Timeline of programming languages,S (programming language)
+Timeline of programming languages,Scala (programming language)
+Timeline of programming languages,Scheme (programming language)
+Timeline of programming languages,Scratch (programming language)
+Timeline of programming languages,Sed
+Timeline of programming languages,Shell script
+Timeline of programming languages,Simula
+Timeline of programming languages,Smalltalk
+Timeline of programming languages,Solidity
+Timeline of programming languages,Standard ML
+Timeline of programming languages,Swift (programming language)
+Timeline of programming languages,TypeScript
+Timeline of programming languages,Vala (programming language)
+Timeline of programming languages,Visual Basic
+Timeline of programming languages,Visual Basic (classic)
+Timeline of programming languages,WebAssembly
+Timeline of programming languages,Wolfram Language
+Timeline of programming languages,Z shell
+Timeline of programming languages,Zig (programming language)
+PL/I,Fortran
+PL/I,Imperative programming
+PL/I,Java (programming language)
+PL/I,Pascal (programming language)
+PL/I,Programming language
+PL/I,SAS (software)
+PL/I,SAS language
+PL/I,Timeline of programming languages
+PostScript,ActionScript
+PostScript,C (programming language)
+PostScript,Forth (programming language)
+PostScript,Lisp (programming language)
+PostScript,TeX
+PostScript,Turing completeness
+Scheme (programming language),ALGOL
+Scheme (programming language),ALGOL 60
+Scheme (programming language),C (programming language)
+Scheme (programming language),Clojure
+Scheme (programming language),Common Lisp
+Scheme (programming language),Fortran
+Scheme (programming language),Haskell
+Scheme (programming language),Imperative programming
+Scheme (programming language),JavaScript
+Scheme (programming language),Java (programming language)
+Scheme (programming language),Julia (programming language)
+Scheme (programming language),Lisp (programming language)
+Scheme (programming language),Logo (programming language)
+Scheme (programming language),Programming language
+Scheme (programming language),Python (programming language)
+Scheme (programming language),R (programming language)
+Scheme (programming language),Racket (programming language)
+Scheme (programming language),Ruby (programming language)
+Scheme (programming language),Rust (programming language)
+Scheme (programming language),S (programming language)
+Scheme (programming language),Scala (programming language)
+Sed,AWK
+Sed,C (programming language)
+Sed,ECMAScript
+Sed,Perl
+Sed,Programming language
+Sed,Shell script
+Sed,Vim (text editor)
+Shell script,ALGOL
+Shell script,APL (programming language)
+Shell script,Ada (programming language)
+Shell script,Assembly language
+Shell script,BASIC
+Shell script,Bash (Unix shell)
+Shell script,C++
+Shell script,COBOL
+Shell script,C (programming language)
+Shell script,C Sharp (programming language)
+Shell script,Comparison of programming languages
+Shell script,Elixir (programming language)
+Shell script,Erlang (programming language)
+Shell script,Forth (programming language)
+Shell script,Fortran
+Shell script,Go (programming language)
+Shell script,Haskell
+Shell script,History of programming languages
+Shell script,JavaScript
+Shell script,Java (programming language)
+Shell script,Julia (programming language)
+Shell script,KornShell
+Shell script,Lisp (programming language)
+Shell script,List of programming languages by type
+Shell script,MATLAB
+Shell script,ML (programming language)
+Shell script,Non-English-based programming languages
+Shell script,OCaml
+Shell script,Object Pascal
+Shell script,PHP
+Shell script,Pascal (programming language)
+Shell script,Perl
+Shell script,PowerShell
+Shell script,Programming language
+Shell script,Prolog
+Shell script,Python (programming language)
+Shell script,R (programming language)
+Shell script,Raku (programming language)
+Shell script,Ruby (programming language)
+Shell script,Rust (programming language)
+Shell script,SAS language
+Shell script,SQL
+Shell script,Scheme (programming language)
+Shell script,Scratch (programming language)
+Shell script,Sed
+Shell script,Simula
+Shell script,Smalltalk
+Shell script,Standard ML
+Shell script,Swift (programming language)
+Shell script,Timeline of programming languages
+Shell script,Visual Basic
+Shell script,Visual Basic (classic)
+Shell script,Z shell
+Smalltalk,ALGOL
+Smalltalk,APL (programming language)
+Smalltalk,Ada (programming language)
+Smalltalk,AppleScript
+Smalltalk,Assembly language
+Smalltalk,BASIC
+Smalltalk,C++
+Smalltalk,COBOL
+Smalltalk,C (programming language)
+Smalltalk,C Sharp (programming language)
+Smalltalk,Comparison of programming languages
+Smalltalk,Dart (programming language)
+Smalltalk,Elixir (programming language)
+Smalltalk,Erlang (programming language)
+Smalltalk,Executable
+Smalltalk,Forth (programming language)
+Smalltalk,Fortran
+Smalltalk,Go (programming language)
+Smalltalk,Haskell
+Smalltalk,History of programming languages
+Smalltalk,JavaScript
+Smalltalk,Java (programming language)
+Smalltalk,Julia (programming language)
+Smalltalk,Lisp (programming language)
+Smalltalk,List of programming languages by type
+Smalltalk,Logo (programming language)
+Smalltalk,MATLAB
+Smalltalk,ML (programming language)
+Smalltalk,Non-English-based programming languages
+Smalltalk,OCaml
+Smalltalk,Object Pascal
+Smalltalk,Objective-C
+Smalltalk,PHP
+Smalltalk,Pascal (programming language)
+Smalltalk,Perl
+Smalltalk,Programming language
+Smalltalk,Prolog
+Smalltalk,Python (programming language)
+Smalltalk,R (programming language)
+Smalltalk,Raku (programming language)
+Smalltalk,Ruby (programming language)
+Smalltalk,Rust (programming language)
+Smalltalk,SAS language
+Smalltalk,SQL
+Smalltalk,Scala (programming language)
+Smalltalk,Scratch (programming language)
+Smalltalk,Shell script
+Smalltalk,Simula
+Smalltalk,Standard ML
+Smalltalk,Swift (programming language)
+Smalltalk,Timeline of programming languages
+Smalltalk,Visual Basic
+Smalltalk,Visual Basic (classic)
+TeX,C (programming language)
+OCaml,ALGOL
+OCaml,APL (programming language)
+OCaml,Ada (programming language)
+OCaml,Assembly language
+OCaml,BASIC
+OCaml,C++
+OCaml,COBOL
+OCaml,C (programming language)
+OCaml,C Sharp (programming language)
+OCaml,Comparison of programming languages
+OCaml,Elixir (programming language)
+OCaml,Elm (programming language)
+OCaml,Erlang (programming language)
+OCaml,F Sharp (programming language)
+OCaml,Forth (programming language)
+OCaml,Fortran
+OCaml,Go (programming language)
+OCaml,Hack (programming language)
+OCaml,Haskell
+OCaml,Haxe
+OCaml,History of programming languages
+OCaml,Imperative programming
+OCaml,JavaScript
+OCaml,Java (programming language)
+OCaml,Julia (programming language)
+OCaml,Lisp (programming language)
+OCaml,List of programming languages by type
+OCaml,MATLAB
+OCaml,ML (programming language)
+OCaml,Machine code
+OCaml,Non-English-based programming languages
+OCaml,Object Pascal
+OCaml,PHP
+OCaml,Pascal (programming language)
+OCaml,Perl
+OCaml,Programming language
+OCaml,Prolog
+OCaml,Python (programming language)
+OCaml,R (programming language)
+OCaml,Raku (programming language)
+TeX,Go (programming language)
+TeX,Pascal (programming language)
+TeX,Turing completeness
+TeX,Vim (text editor)
+Esoteric programming language,ALGOL
+Esoteric programming language,APL (programming language)
+Esoteric programming language,Assembly language
+Esoteric programming language,BASIC
+Esoteric programming language,COBOL
+Esoteric programming language,C (programming language)
+GNU Octave,Bash (Unix shell)
+GNU Octave,C++
+GNU Octave,C (programming language)
+GNU Octave,Fortran
+GNU Octave,IDL (programming language)
+GNU Octave,Julia (programming language)
+GNU Octave,LabVIEW
+GNU Octave,Lisp (programming language)
+GNU Octave,MATLAB
+GNU Octave,Maple (software)
+GNU Octave,OpenCL
+GNU Octave,Python (programming language)
+GNU Octave,R (programming language)
+GNU Octave,SAS (software)
+GNU Octave,Scilab
+GNU Octave,Stata
+OCaml,Ruby (programming language)
+OCaml,Rust (programming language)
+OCaml,SAS language
+OCaml,SQL
+OCaml,Scala (programming language)
+OCaml,Scratch (programming language)
+OCaml,Shell script
+OCaml,Simula
+OCaml,Smalltalk
+OCaml,Standard ML
+OCaml,Swift (programming language)
+OCaml,Timeline of programming languages
+OCaml,Visual Basic
+OCaml,Visual Basic (classic)
+OCaml,WebAssembly
+Esoteric programming language,Fortran
+Esoteric programming language,Imperative programming
+Esoteric programming language,JavaScript
+Esoteric programming language,List of programming languages by type
+Esoteric programming language,Machine code
+Esoteric programming language,PL/I
+Esoteric programming language,Programming language
+Esoteric programming language,SNOBOL
+Esoteric programming language,Turing completeness
+Ladder logic,BASIC
+Ladder logic,C (programming language)
+Ladder logic,Programming language
+List of programming languages by type,ABAP
+List of programming languages by type,ABC (programming language)
+List of programming languages by type,ALGOL
+List of programming languages by type,ALGOL 60
+List of programming languages by type,ALGOL 68
+List of programming languages by type,APL (programming language)
+List of programming languages by type,AWK
+List of programming languages by type,ActionScript
+List of programming languages by type,Ada (programming language)
+List of programming languages by type,Agda (programming language)
+List of programming languages by type,Apache Groovy
+List of programming languages by type,AppleScript
+List of programming languages by type,Assembly language
+List of programming languages by type,AutoHotkey
+List of programming languages by type,BASIC
+List of programming languages by type,BCPL
+List of programming languages by type,B (programming language)
+List of programming languages by type,Bash (Unix shell)
+List of programming languages by type,Batch file
+List of programming languages by type,C++
+List of programming languages by type,COBOL
+List of programming languages by type,C (programming language)
+List of programming languages by type,C Sharp (programming language)
+List of programming languages by type,Clojure
+List of programming languages by type,Common Intermediate Language
+List of programming languages by type,Common Lisp
+List of programming languages by type,Comparison of programming languages
+List of programming languages by type,Computer Sciences Corporation
+List of programming languages by type,Crystal (programming language)
+List of programming languages by type,Cython
+List of programming languages by type,DBase
+List of programming languages by type,D (programming language)
+List of programming languages by type,Dart (programming language)
+List of programming languages by type,Datalog
+List of programming languages by type,Delphi (software)
+List of programming languages by type,Domain-specific language
+List of programming languages by type,ECMAScript
+List of programming languages by type,Eiffel (programming language)
+List of programming languages by type,Elixir (programming language)
+List of programming languages by type,Elm (programming language)
+List of programming languages by type,Erlang (programming language)
+List of programming languages by type,Esoteric programming language
+List of programming languages by type,F Sharp (programming language)
+List of programming languages by type,Forth (programming language)
+List of programming languages by type,Fortran
+List of programming languages by type,GNU Octave
+Z shell,Bash (Unix shell)
+Z shell,C (programming language)
+Z shell,KornShell
+Z shell,Shell script
+List of programming languages by type,Go (programming language)
+List of programming languages by type,Godot (game engine)
+List of programming languages by type,Grasshopper 3D
+List of programming languages by type,Haskell
+List of programming languages by type,History of programming languages
+List of programming languages by type,IBM RPG
+List of programming languages by type,IDL (programming language)
+List of programming languages by type,Imperative programming
+List of programming languages by type,JScript
+List of programming languages by type,J (programming language)
+List of programming languages by type,JavaScript
+List of programming languages by type,Java (programming language)
+List of programming languages by type,Julia (programming language)
+List of programming languages by type,KornShell
+List of programming languages by type,LabVIEW
+List of programming languages by type,Lean (proof assistant)
+List of programming languages by type,Lisp (programming language)
+List of programming languages by type,Logo (programming language)
+List of programming languages by type,MATLAB
+List of programming languages by type,ML (programming language)
+List of programming languages by type,MUMPS
+List of programming languages by type,Machine code
+List of programming languages by type,Maple (software)
+List of programming languages by type,Max (software)
+List of programming languages by type,Nim (programming language)
+List of programming languages by type,Non-English-based programming languages
+List of programming languages by type,OCaml
+List of programming languages by type,Object Pascal
+List of programming languages by type,Objective-C
+List of programming languages by type,OpenCL
+List of programming languages by type,OpenGL Shading Language
+List of programming languages by type,PHP
+List of programming languages by type,PL/I
+List of programming languages by type,Pascal (programming language)
+List of programming languages by type,Perl
+List of programming languages by type,PostScript
+List of programming languages by type,PowerShell
+List of programming languages by type,Processing
+List of programming languages by type,Programming language
+List of programming languages by type,Prolog
+List of programming languages by type,Pure Data
+List of programming languages by type,Python (programming language)
+List of programming languages by type,R (programming language)
+List of programming languages by type,Racket (programming language)
+List of programming languages by type,Raku (programming language)
+List of programming languages by type,Ruby (programming language)
+List of programming languages by type,Rust (programming language)
+List of programming languages by type,SAS (software)
+List of programming languages by type,SAS language
+List of programming languages by type,SNOBOL
+List of programming languages by type,SPARK (programming language)
+List of programming languages by type,SQL
+List of programming languages by type,S (programming language)
+List of programming languages by type,Scala (programming language)
+List of programming languages by type,Scheme (programming language)
+List of programming languages by type,Scilab
+List of programming languages by type,Scratch (programming language)
+List of programming languages by type,Sed
+List of programming languages by type,Shell script
+List of programming languages by type,Simula
+List of programming languages by type,Simulink
+List of programming languages by type,Smalltalk
+List of programming languages by type,Standard ML
+List of programming languages by type,Swift (programming language)
+List of programming languages by type,TempleOS
+List of programming languages by type,Timeline of programming languages
+List of programming languages by type,TypeScript
+F Sharp (programming language),C Sharp (programming language)
+F Sharp (programming language),Clojure
+F Sharp (programming language),Common Intermediate Language
+F Sharp (programming language),Domain-specific language
+F Sharp (programming language),Elm (programming language)
+F Sharp (programming language),Erlang (programming language)
+F Sharp (programming language),Haskell
+F Sharp (programming language),Haxe
+F Sharp (programming language),Imperative programming
+F Sharp (programming language),JavaScript
+F Sharp (programming language),Lean (proof assistant)
+F Sharp (programming language),ML (programming language)
+F Sharp (programming language),OCaml
+F Sharp (programming language),PowerShell
+F Sharp (programming language),Programming language
+F Sharp (programming language),Python (programming language)
+F Sharp (programming language),Q Sharp
+F Sharp (programming language),Scala (programming language)
+F Sharp (programming language),Standard ML
+F Sharp (programming language),TypeScript
+F Sharp (programming language),Vim (text editor)
+List of programming languages by type,Vala (programming language)
+List of programming languages by type,Visual Basic
+List of programming languages by type,Visual Basic (classic)
+List of programming languages by type,Visual FoxPro
+List of programming languages by type,XML
+List of programming languages by type,XSLT
+List of programming languages by type,Z shell
+List of programming languages by type,Zig (programming language)
+ABAP,COBOL
+ABAP,Domain-specific language
+ABAP,Imperative programming
+ABAP,Java (programming language)
+ABAP,Objective-C
+ABAP,SQL
+Autodesk 3ds Max,C++
+Autodesk 3ds Max,C (programming language)
+D (programming language),Assembly language
+D (programming language),BASIC
+D (programming language),C++
+D (programming language),C (programming language)
+D (programming language),C Sharp (programming language)
+D (programming language),Common Intermediate Language
+D (programming language),Domain-specific language
+D (programming language),Eiffel (programming language)
+D (programming language),Go (programming language)
+D (programming language),Imperative programming
+D (programming language),Java (programming language)
+D (programming language),Machine code
+D (programming language),Object Pascal
+D (programming language),Objective-C
+D (programming language),Programming language
+D (programming language),Python (programming language)
+D (programming language),Ruby (programming language)
+D (programming language),Rust (programming language)
+D (programming language),Swift (programming language)
+D (programming language),Vala (programming language)
+D (programming language),Vim (text editor)
+D (programming language),WebAssembly
+D (programming language),Zig (programming language)
+Autodesk 3ds Max,Python (programming language)
+Delphi (software),ALGOL
+Delphi (software),Ada (programming language)
+Delphi (software),Assembly language
+Delphi (software),BASIC
+Delphi (software),C++
+Delphi (software),C (programming language)
+Delphi (software),Comparison of programming languages
+Delphi (software),Eiffel (programming language)
+Delphi (software),Executable
+Delphi (software),Go (programming language)
+Delphi (software),Haxe
+Delphi (software),JavaScript
+Delphi (software),Java (programming language)
+Delphi (software),Object Pascal
+Delphi (software),PHP
+Delphi (software),Pascal (programming language)
+Delphi (software),Programming language
+Delphi (software),Python (programming language)
+Delphi (software),R (programming language)
+Delphi (software),Rust (programming language)
+Delphi (software),Vim (text editor)
+Delphi (software),Visual Basic
+Delphi (software),Visual Basic (classic)
+Delphi (software),XML
+Non-English-based programming languages,ALGOL
+Non-English-based programming languages,ALGOL 68
+Non-English-based programming languages,APL (programming language)
+Non-English-based programming languages,Ada (programming language)
+Non-English-based programming languages,AppleScript
+Non-English-based programming languages,Assembly language
+Non-English-based programming languages,BASIC
+Non-English-based programming languages,C++
+Non-English-based programming languages,COBOL
+Non-English-based programming languages,C (programming language)
+Non-English-based programming languages,C Sharp (programming language)
+Non-English-based programming languages,Comparison of programming languages
+Non-English-based programming languages,Domain-specific language
+Non-English-based programming languages,ECMAScript
+Non-English-based programming languages,Elixir (programming language)
+Non-English-based programming languages,Erlang (programming language)
+Non-English-based programming languages,Esoteric programming language
+Apache Groovy,ALGOL
+Apache Groovy,APL (programming language)
+Apache Groovy,Ada (programming language)
+Apache Groovy,Assembly language
+Apache Groovy,BASIC
+Apache Groovy,C++
+Apache Groovy,COBOL
+Apache Groovy,C (programming language)
+Apache Groovy,C Sharp (programming language)
+Apache Groovy,Clojure
+Apache Groovy,Comparison of programming languages
+Apache Groovy,Domain-specific language
+Apache Groovy,Elixir (programming language)
+Apache Groovy,Erlang (programming language)
+Apache Groovy,Forth (programming language)
+Apache Groovy,Fortran
+Apache Groovy,Go (programming language)
+Non-English-based programming languages,Forth (programming language)
+Non-English-based programming languages,Fortran
+Non-English-based programming languages,Go (programming language)
+Non-English-based programming languages,Haskell
+Non-English-based programming languages,History of programming languages
+Non-English-based programming languages,Imperative programming
+Non-English-based programming languages,J (programming language)
+Non-English-based programming languages,JavaScript
+Non-English-based programming languages,Java (programming language)
+Non-English-based programming languages,Julia (programming language)
+Non-English-based programming languages,LabVIEW
+Non-English-based programming languages,Lisp (programming language)
+Non-English-based programming languages,List of programming languages by type
+Non-English-based programming languages,Logo (programming language)
+Non-English-based programming languages,MATLAB
+Non-English-based programming languages,ML (programming language)
+Non-English-based programming languages,Machine code
+Non-English-based programming languages,OCaml
+Non-English-based programming languages,Object Pascal
+Non-English-based programming languages,PHP
+Non-English-based programming languages,Pascal (programming language)
+Non-English-based programming languages,Perl
+Non-English-based programming languages,Plankalkül
+Non-English-based programming languages,Programming language
+Non-English-based programming languages,Prolog
+Non-English-based programming languages,Python (programming language)
+Non-English-based programming languages,Quantum programming
+Non-English-based programming languages,R (programming language)
+Non-English-based programming languages,Raku (programming language)
+Non-English-based programming languages,Ruby (programming language)
+Non-English-based programming languages,Rust (programming language)
+Non-English-based programming languages,SAS language
+Non-English-based programming languages,SQL
+Non-English-based programming languages,Scheme (programming language)
+Non-English-based programming languages,Scratch (programming language)
+Non-English-based programming languages,Shell script
+Non-English-based programming languages,Simula
+Non-English-based programming languages,Smalltalk
+Non-English-based programming languages,Standard ML
+Non-English-based programming languages,Swift (programming language)
+Non-English-based programming languages,Timeline of programming languages
+Non-English-based programming languages,Visual Basic
+Non-English-based programming languages,Visual Basic (classic)
+Apache Groovy,HTML
+Apache Groovy,Haskell
+Apache Groovy,History of programming languages
+Apache Groovy,Imperative programming
+Apache Groovy,JavaScript
+Apache Groovy,Java (programming language)
+Apache Groovy,Julia (programming language)
+Apache Groovy,Lisp (programming language)
+Apache Groovy,List of programming languages by type
+Apache Groovy,MATLAB
+Apache Groovy,ML (programming language)
+Apache Groovy,Markup language
+Apache Groovy,Non-English-based programming languages
+Apache Groovy,OCaml
+Apache Groovy,Object Pascal
+Apache Groovy,Objective-C
+Apache Groovy,PHP
+Apache Groovy,Pascal (programming language)
+Apache Groovy,Perl
+Apache Groovy,Processing
+Apache Groovy,Programming language
+Apache Groovy,Prolog
+Apache Groovy,Python (programming language)
+Apache Groovy,R (programming language)
+Apache Groovy,Raku (programming language)
+Apache Groovy,Ruby (programming language)
+Apache Groovy,Rust (programming language)
+Apache Groovy,SAS language
+Apache Groovy,SQL
+Apache Groovy,Scala (programming language)
+Apache Groovy,Scratch (programming language)
+Apache Groovy,Shell script
+Apache Groovy,Simula
+Apache Groovy,Smalltalk
+Apache Groovy,Standard ML
+Apache Groovy,Swift (programming language)
+Apache Groovy,Timeline of programming languages
+Apache Groovy,Visual Basic
+Apache Groovy,Visual Basic (classic)
+Apache Groovy,XML
+Datalog,C++
+Datalog,C (programming language)
+Datalog,Clojure
+Datalog,Domain-specific language
+Datalog,Elixir (programming language)
+Datalog,Erlang (programming language)
+Datalog,Go (programming language)
+Datalog,Java (programming language)
+Datalog,OCaml
+Datalog,Programming language
+Datalog,Prolog
+Datalog,Python (programming language)
+Datalog,Racket (programming language)
+Datalog,Ruby (programming language)
+Datalog,Rust (programming language)
+Datalog,SQL
+Datalog,Scheme (programming language)
+Datalog,Turing completeness
+Datalog,WebAssembly
+Datalog,XML
+LabVIEW,C++
+LabVIEW,C (programming language)
+LabVIEW,C Sharp (programming language)
+LabVIEW,Fortran
+LabVIEW,G-code
+LabVIEW,GNU Octave
+LabVIEW,Julia (programming language)
+LabVIEW,MATLAB
+LabVIEW,Machine code
+LabVIEW,Maple (software)
+LabVIEW,Python (programming language)
+LabVIEW,R (programming language)
+LabVIEW,SAS (software)
+LabVIEW,Scilab
+LabVIEW,Simulink
+AutoHotkey,C++
+AutoHotkey,C (programming language)
+AutoHotkey,C Sharp (programming language)
+AutoHotkey,Executable
+AutoHotkey,JScript
+AutoHotkey,Lisp (programming language)
+AutoHotkey,Machine code
+C--,Assembly language
+C--,BCPL
+C--,C++
+C--,C (programming language)
+C--,Imperative programming
+C--,Machine code
+C--,Programming language
+CHIP-8,BASIC
+CHIP-8,Machine code
+CHIP-8,Programming language
+Racket (programming language),C++
+Racket (programming language),Clojure
+Racket (programming language),Common Lisp
+Racket (programming language),Domain-specific language
+Racket (programming language),Eiffel (programming language)
+Racket (programming language),Haskell
+Racket (programming language),Imperative programming
+Racket (programming language),Java (programming language)
+Racket (programming language),Lisp (programming language)
+Racket (programming language),Logo (programming language)
+Racket (programming language),Machine code
+Stata,C (programming language)
+Stata,GNU Octave
+Stata,Julia (programming language)
+Stata,MATLAB
+Stata,Maple (software)
+Stata,Python (programming language)
+Stata,R (programming language)
+Stata,SAS (software)
+Comparison of programming languages,ALGOL
+Comparison of programming languages,ALGOL 60
+Comparison of programming languages,ALGOL 68
+Comparison of programming languages,APL (programming language)
+Comparison of programming languages,ActionScript
+Comparison of programming languages,Ada (programming language)
+Comparison of programming languages,Apache Groovy
+Comparison of programming languages,Assembly language
+Comparison of programming languages,AutoHotkey
+Comparison of programming languages,BASIC
+Comparison of programming languages,BCPL
+Comparison of programming languages,Bash (Unix shell)
+Comparison of programming languages,C++
+Comparison of programming languages,COBOL
+Comparison of programming languages,C (programming language)
+Comparison of programming languages,C Sharp (programming language)
+Comparison of programming languages,Clojure
+Comparison of programming languages,Common Lisp
+Comparison of programming languages,Crystal (programming language)
+Comparison of programming languages,Cython
+Comparison of programming languages,D (programming language)
+Comparison of programming languages,Dart (programming language)
+Comparison of programming languages,Delphi (software)
+Comparison of programming languages,Domain-specific language
+Comparison of programming languages,ECMAScript
+Comparison of programming languages,Eiffel (programming language)
+Comparison of programming languages,Elixir (programming language)
+Comparison of programming languages,Erlang (programming language)
+Comparison of programming languages,F Sharp (programming language)
+Comparison of programming languages,Forth (programming language)
+Comparison of programming languages,Fortran
+Comparison of programming languages,Go (programming language)
+Comparison of programming languages,Haskell
+Comparison of programming languages,Haxe
+Comparison of programming languages,History of programming languages
+Comparison of programming languages,IBM RPG
+Comparison of programming languages,Imperative programming
+Comparison of programming languages,J (programming language)
+Comparison of programming languages,JavaScript
+Comparison of programming languages,Java (programming language)
+Comparison of programming languages,Julia (programming language)
+Comparison of programming languages,KornShell
+Comparison of programming languages,LabVIEW
+Comparison of programming languages,Lisp (programming language)
+Comparison of programming languages,List of programming languages by type
+Comparison of programming languages,MATLAB
+Comparison of programming languages,ML (programming language)
+Comparison of programming languages,MUMPS
+Comparison of programming languages,Maple (software)
+Comparison of programming languages,Nim (programming language)
+Comparison of programming languages,Non-English-based programming languages
+Comparison of programming languages,OCaml
+Comparison of programming languages,Object Pascal
+Comparison of programming languages,Objective-C
+Comparison of programming languages,PHP
+Comparison of programming languages,PL/I
+Comparison of programming languages,Pascal (programming language)
+Comparison of programming languages,Perl
+Comparison of programming languages,PostScript
+Comparison of programming languages,Programming language
+Comparison of programming languages,Prolog
+Comparison of programming languages,Python (programming language)
+Comparison of programming languages,R (programming language)
+Comparison of programming languages,Racket (programming language)
+Comparison of programming languages,Raku (programming language)
+Comparison of programming languages,Ruby (programming language)
+Comparison of programming languages,Rust (programming language)
+Comparison of programming languages,SAS language
+Comparison of programming languages,SNOBOL
+Comparison of programming languages,SQL
+Comparison of programming languages,S (programming language)
+Comparison of programming languages,Scala (programming language)
+Comparison of programming languages,Scheme (programming language)
+Comparison of programming languages,Scratch (programming language)
+Comparison of programming languages,Shell script
+Comparison of programming languages,Simula
+Comparison of programming languages,Smalltalk
+Comparison of programming languages,Standard ML
+Comparison of programming languages,Swift (programming language)
+Comparison of programming languages,Timeline of programming languages
+Comparison of programming languages,Visual Basic
+Comparison of programming languages,Visual Basic (classic)
+Comparison of programming languages,Visual FoxPro
+Comparison of programming languages,Wolfram Language
+Comparison of programming languages,Z shell
+Comparison of programming languages,Zig (programming language)
+Racket (programming language),Programming language
+Racket (programming language),Rust (programming language)
+Racket (programming language),Scheme (programming language)
+Racket (programming language),Standard ML
+Visual Basic (classic),BASIC
+Solidity,ActionScript
+Solidity,C++
+Solidity,ECMAScript
+Solidity,Ethereum
+Solidity,Haxe
+Solidity,Imperative programming
+Solidity,JScript
+Solidity,JavaScript
+Solidity,Programming language
+Solidity,Python (programming language)
+Visual Basic (classic),C Sharp (programming language)
+Visual Basic (classic),Comparison of programming languages
+Visual Basic (classic),Delphi (software)
+Visual Basic (classic),Executable
+Visual Basic (classic),F Sharp (programming language)
+Visual Basic (classic),Fortran
+Visual Basic (classic),JScript
+Visual Basic (classic),JavaScript
+Visual Basic (classic),Java (programming language)
+Visual Basic (classic),Lean (proof assistant)
+Visual Basic (classic),Pascal (programming language)
+Visual Basic (classic),Perl
+Visual Basic (classic),PowerShell
+Visual Basic (classic),Programming language
+Visual Basic (classic),Q Sharp
+Visual Basic (classic),Ruby (programming language)
+Visual Basic (classic),TypeScript
+Visual Basic (classic),Visual FoxPro
+Visual Basic (classic),XML
+Batch file,HTML
+Batch file,JScript
+Batch file,PHP
+Batch file,Perl
+Batch file,PowerShell
+Batch file,Python (programming language)
+Batch file,Ruby (programming language)
+Batch file,Shell script
+Clojure,Apache Groovy
+Clojure,C++
+Clojure,C Sharp (programming language)
+Clojure,Common Lisp
+Clojure,Comparison of programming languages
+Clojure,ECMAScript
+Clojure,Elixir (programming language)
+Clojure,Erlang (programming language)
+Clojure,Go (programming language)
+Clojure,Haskell
+Clojure,JavaScript
+Clojure,Java (programming language)
+Clojure,Lisp (programming language)
+Clojure,Logo (programming language)
+Clojure,ML (programming language)
+Clojure,Processing
+Clojure,Programming language
+Clojure,Prolog
+Clojure,Racket (programming language)
+Clojure,Ruby (programming language)
+Clojure,Rust (programming language)
+Clojure,Scala (programming language)
+Clojure,Scheme (programming language)
+Clojure,Vim (text editor)
+Solidity,TypeScript
+Clojure,Wolfram Language
+Clojure,XML
+Cython,C++
+Cython,C (programming language)
+Cython,Python (programming language)
+Cython,XML
+OpenCL,C++
+OpenCL,C (programming language)
+OpenCL,D (programming language)
+OpenCL,Imperative programming
+OpenCL,JavaScript
+OpenCL,Java (programming language)
+OpenCL,Perl
+OpenCL,Programming language
+OpenCL,Python (programming language)
+OpenCL,Rust (programming language)
+Visual FoxPro,ALGOL
+Visual FoxPro,APL (programming language)
+Visual FoxPro,Ada (programming language)
+Visual FoxPro,Assembly language
+Visual FoxPro,BASIC
+Visual FoxPro,C++
+Visual FoxPro,COBOL
+Visual FoxPro,C (programming language)
+Visual FoxPro,C Sharp (programming language)
+Elixir (programming language),ALGOL
+Elixir (programming language),APL (programming language)
+Elixir (programming language),Ada (programming language)
+Elixir (programming language),Assembly language
+Elixir (programming language),BASIC
+Elixir (programming language),C++
+Elixir (programming language),COBOL
+Elixir (programming language),C (programming language)
+Elixir (programming language),C Sharp (programming language)
+Elixir (programming language),Clojure
+Elixir (programming language),Comparison of programming languages
+Elixir (programming language),Domain-specific language
+Elixir (programming language),Erlang (programming language)
+Elixir (programming language),Forth (programming language)
+Elixir (programming language),Fortran
+Elixir (programming language),Go (programming language)
+Elixir (programming language),Haskell
+Elixir (programming language),History of programming languages
+Elixir (programming language),JavaScript
+Elixir (programming language),Java (programming language)
+Elixir (programming language),Julia (programming language)
+Elixir (programming language),Lisp (programming language)
+Elixir (programming language),List of programming languages by type
+Elixir (programming language),MATLAB
+Elixir (programming language),ML (programming language)
+Elixir (programming language),Non-English-based programming languages
+Elixir (programming language),OCaml
+Elixir (programming language),Object Pascal
+Elixir (programming language),PHP
+Elixir (programming language),Pascal (programming language)
+Elixir (programming language),Perl
+Elixir (programming language),Programming language
+Elixir (programming language),Prolog
+Elixir (programming language),Python (programming language)
+Elixir (programming language),R (programming language)
+Elixir (programming language),Raku (programming language)
+Elixir (programming language),Ruby (programming language)
+Elixir (programming language),Rust (programming language)
+Elixir (programming language),SAS language
+Elixir (programming language),SQL
+Elixir (programming language),Scratch (programming language)
+Elixir (programming language),Shell script
+Elixir (programming language),Simula
+Elixir (programming language),Smalltalk
+Elixir (programming language),Standard ML
+Elixir (programming language),Swift (programming language)
+Elixir (programming language),Timeline of programming languages
+Elixir (programming language),Visual Basic
+Elixir (programming language),Visual Basic (classic)
+Nim (programming language),ALGOL
+Nim (programming language),APL (programming language)
+Nim (programming language),Ada (programming language)
+Nim (programming language),Assembly language
+Nim (programming language),BASIC
+Nim (programming language),C++
+Nim (programming language),COBOL
+Nim (programming language),C (programming language)
+Nim (programming language),C Sharp (programming language)
+Nim (programming language),CoffeeScript
+Nim (programming language),Comparison of programming languages
+Nim (programming language),Crystal (programming language)
+Nim (programming language),D (programming language)
+Nim (programming language),Dart (programming language)
+Nim (programming language),Elixir (programming language)
+Nim (programming language),Elm (programming language)
+Nim (programming language),Erlang (programming language)
+Nim (programming language),Forth (programming language)
+Nim (programming language),Fortran
+Nim (programming language),Go (programming language)
+Nim (programming language),Godot (game engine)
+Nim (programming language),HTML
+Nim (programming language),Haskell
+Nim (programming language),Haxe
+Nim (programming language),History of programming languages
+Nim (programming language),Imperative programming
+Nim (programming language),JavaScript
+Nim (programming language),Java (programming language)
+Nim (programming language),Julia (programming language)
+Nim (programming language),Lisp (programming language)
+Nim (programming language),List of programming languages by type
+Nim (programming language),MATLAB
+Nim (programming language),ML (programming language)
+Visual FoxPro,Comparison of programming languages
+Visual FoxPro,DBase
+Visual FoxPro,Elixir (programming language)
+Visual FoxPro,Erlang (programming language)
+Visual FoxPro,F Sharp (programming language)
+Visual FoxPro,Forth (programming language)
+Visual FoxPro,Fortran
+Visual FoxPro,Go (programming language)
+Visual FoxPro,Haskell
+Visual FoxPro,History of programming languages
+Visual FoxPro,JScript
+Visual FoxPro,JavaScript
+Visual FoxPro,Java (programming language)
+Visual FoxPro,Julia (programming language)
+Visual FoxPro,Lean (proof assistant)
+Visual FoxPro,Lisp (programming language)
+Visual FoxPro,List of programming languages by type
+Visual FoxPro,MATLAB
+Visual FoxPro,ML (programming language)
+Visual FoxPro,Non-English-based programming languages
+Visual FoxPro,OCaml
+Visual FoxPro,Object Pascal
+Visual FoxPro,PHP
+Visual FoxPro,Pascal (programming language)
+Visual FoxPro,Perl
+Visual FoxPro,PowerShell
+Visual FoxPro,Programming language
+Visual FoxPro,Prolog
+Visual FoxPro,Python (programming language)
+Visual FoxPro,Q Sharp
+Visual FoxPro,R (programming language)
+Visual FoxPro,Raku (programming language)
+Visual FoxPro,Ruby (programming language)
+Visual FoxPro,Rust (programming language)
+Visual FoxPro,SAS language
+Visual FoxPro,SQL
+Visual FoxPro,Scratch (programming language)
+Visual FoxPro,Shell script
+Visual FoxPro,Simula
+Visual FoxPro,Smalltalk
+Visual FoxPro,Standard ML
+Visual FoxPro,Swift (programming language)
+Visual FoxPro,Timeline of programming languages
+Visual FoxPro,TypeScript
+Visual FoxPro,Visual Basic
+Visual FoxPro,Visual Basic (classic)
+Lean (proof assistant),C++
+Lean (proof assistant),C (programming language)
+Lean (proof assistant),C Sharp (programming language)
+Lean (proof assistant),F Sharp (programming language)
+Lean (proof assistant),Haskell
+Lean (proof assistant),JScript
+Lean (proof assistant),JavaScript
+Lean (proof assistant),Java (programming language)
+Lean (proof assistant),ML (programming language)
+Nim (programming language),Non-English-based programming languages
+Nim (programming language),OCaml
+Nim (programming language),Object Pascal
+Nim (programming language),Objective-C
+Nim (programming language),PHP
+Nim (programming language),Pascal (programming language)
+Nim (programming language),Perl
+Nim (programming language),Programming language
+Nim (programming language),Prolog
+Nim (programming language),Python (programming language)
+Nim (programming language),R (programming language)
+Nim (programming language),Raku (programming language)
+Nim (programming language),Ruby (programming language)
+Nim (programming language),Rust (programming language)
+Nim (programming language),SAS language
+Nim (programming language),SQL
+Nim (programming language),Scratch (programming language)
+Nim (programming language),Shell script
+Nim (programming language),Simula
+Nim (programming language),Smalltalk
+Nim (programming language),Standard ML
+Nim (programming language),Swift (programming language)
+Nim (programming language),Timeline of programming languages
+Nim (programming language),TypeScript
+Nim (programming language),Vim (text editor)
+Nim (programming language),Visual Basic
+Nim (programming language),Visual Basic (classic)
+Nim (programming language),WebAssembly
+Zig (programming language),ALGOL
+Zig (programming language),APL (programming language)
+Zig (programming language),Ada (programming language)
+Zig (programming language),Assembly language
+Zig (programming language),BASIC
+Zig (programming language),C++
+Zig (programming language),COBOL
+Zig (programming language),C (programming language)
+Zig (programming language),C Sharp (programming language)
+Zig (programming language),Comparison of programming languages
+Zig (programming language),Elixir (programming language)
+Zig (programming language),Erlang (programming language)
+Zig (programming language),Forth (programming language)
+Zig (programming language),Fortran
+Zig (programming language),Go (programming language)
+Zig (programming language),Haskell
+Zig (programming language),History of programming languages
+Zig (programming language),Imperative programming
+Zig (programming language),JavaScript
+Zig (programming language),Java (programming language)
+Zig (programming language),Julia (programming language)
+Zig (programming language),Lisp (programming language)
+Zig (programming language),List of programming languages by type
+Zig (programming language),MATLAB
+Zig (programming language),ML (programming language)
+Zig (programming language),Non-English-based programming languages
+Zig (programming language),OCaml
+Zig (programming language),Object Pascal
+Zig (programming language),PHP
+Zig (programming language),Pascal (programming language)
+Zig (programming language),Perl
+Zig (programming language),Programming language
+Zig (programming language),Prolog
+Zig (programming language),Python (programming language)
+Zig (programming language),R (programming language)
+Zig (programming language),Raku (programming language)
+Zig (programming language),Ruby (programming language)
+Zig (programming language),Rust (programming language)
+Zig (programming language),SAS language
+Zig (programming language),SQL
+Zig (programming language),Scratch (programming language)
+Zig (programming language),Shell script
+Zig (programming language),Simula
+Zig (programming language),Smalltalk
+Zig (programming language),Standard ML
+Zig (programming language),Swift (programming language)
+Zig (programming language),Timeline of programming languages
+Zig (programming language),TypeScript
+Zig (programming language),Visual Basic
+Zig (programming language),Visual Basic (classic)
+Zig (programming language),WebAssembly
+Lean (proof assistant),PowerShell
+Lean (proof assistant),Programming language
+Lean (proof assistant),Q Sharp
+Lean (proof assistant),TypeScript
+Lean (proof assistant),Visual Basic (classic)
+Lean (proof assistant),Visual FoxPro
+Visual Basic,Visual Basic (classic)
+Eiffel (programming language),ALGOL
+Eiffel (programming language),Ada (programming language)
+Eiffel (programming language),C (programming language)
+Eiffel (programming language),C Sharp (programming language)
+Eiffel (programming language),Common Intermediate Language
+Eiffel (programming language),D (programming language)
+Eiffel (programming language),Dart (programming language)
+Eiffel (programming language),ECMAScript
+Eiffel (programming language),JavaScript
+Eiffel (programming language),Java (programming language)
+Eiffel (programming language),Pascal (programming language)
+Eiffel (programming language),Programming language
+Eiffel (programming language),Racket (programming language)
+Eiffel (programming language),Ruby (programming language)
+Eiffel (programming language),Scala (programming language)
+Eiffel (programming language),Simula
+Eiffel (programming language),Smalltalk
+KornShell,Bash (Unix shell)
+KornShell,C (programming language)
+KornShell,Z shell
+MUMPS,ALGOL
+MUMPS,APL (programming language)
+MUMPS,Ada (programming language)
+MUMPS,Assembly language
+MUMPS,BASIC
+MUMPS,C++
+MUMPS,COBOL
+MUMPS,C (programming language)
+MUMPS,C Sharp (programming language)
+MUMPS,Comparison of programming languages
+MUMPS,Elixir (programming language)
+MUMPS,Erlang (programming language)
+MUMPS,Forth (programming language)
+MUMPS,Fortran
+MUMPS,Go (programming language)
+MUMPS,Haskell
+MUMPS,History of programming languages
+MUMPS,Imperative programming
+MUMPS,JavaScript
+MUMPS,Java (programming language)
+MUMPS,Julia (programming language)
+MUMPS,Lisp (programming language)
+MUMPS,List of programming languages by type
+MUMPS,MATLAB
+MUMPS,ML (programming language)
+MUMPS,Non-English-based programming languages
+MUMPS,OCaml
+MUMPS,Object Pascal
+MUMPS,PHP
+MUMPS,Pascal (programming language)
+MUMPS,Perl
+MUMPS,Programming language
+MUMPS,Prolog
+MUMPS,Python (programming language)
+MUMPS,R (programming language)
+MUMPS,Raku (programming language)
+MUMPS,Ruby (programming language)
+MUMPS,Rust (programming language)
+MUMPS,SAS language
+MUMPS,SQL
+MUMPS,Scratch (programming language)
+MUMPS,Shell script
+MUMPS,Simula
+MUMPS,Smalltalk
+MUMPS,Standard ML
+MUMPS,Swift (programming language)
+MUMPS,Timeline of programming languages
+MUMPS,Visual Basic
+MUMPS,Visual Basic (classic)
+SNOBOL,ALGOL
+SNOBOL,AWK
+SNOBOL,Ada (programming language)
+SNOBOL,COBOL
+SNOBOL,Fortran
+SNOBOL,Imperative programming
+SNOBOL,JavaScript
+SNOBOL,Perl
+SNOBOL,Programming language
+SNOBOL,Prolog
+Simula,ALGOL
+Simula,ALGOL 60
+Simula,ALGOL 68
+Simula,APL (programming language)
+Simula,Ada (programming language)
+Simula,Assembly language
+Simula,BASIC
+Simula,C++
+Simula,COBOL
+Simula,C (programming language)
+Simula,C Sharp (programming language)
+Simula,Comparison of programming languages
+Simula,Eiffel (programming language)
+Simula,Elixir (programming language)
+Simula,Erlang (programming language)
+Simula,Forth (programming language)
+Simula,Fortran
+Simula,Go (programming language)
+Simula,Haskell
+Simula,History of programming languages
+Simula,Imperative programming
+Simula,JavaScript
+Simula,Java (programming language)
+Simula,Julia (programming language)
+Simula,Lisp (programming language)
+Simula,List of programming languages by type
+Simula,MATLAB
+Simula,ML (programming language)
+Simula,Non-English-based programming languages
+Simula,OCaml
+Simula,Object Pascal
+Simula,PHP
+Simula,Pascal (programming language)
+Simula,Perl
+Simula,Programming language
+Simula,Prolog
+Simula,Python (programming language)
+Simula,R (programming language)
+Simula,Raku (programming language)
+Simula,Ruby (programming language)
+Simula,Rust (programming language)
+Simula,SAS language
+Simula,SQL
+Simula,Scratch (programming language)
+Simula,Shell script
+Simula,Smalltalk
+Simula,Standard ML
+Simula,Swift (programming language)
+Simula,Timeline of programming languages
+Simula,Visual Basic
+Simula,Visual Basic (classic)
+XSLT,AWK
+XSLT,C++
+XSLT,C (programming language)
+XSLT,Common Lisp
+XSLT,Domain-specific language
+XSLT,HTML
+Common Intermediate Language,C Sharp (programming language)
+Common Intermediate Language,Clojure
+Common Intermediate Language,F Sharp (programming language)
+Common Intermediate Language,PowerShell
+Common Intermediate Language,Programming language
+Common Intermediate Language,Q Sharp
+Common Intermediate Language,Scala (programming language)
+J (programming language),APL (programming language)
+J (programming language),C (programming language)
+J (programming language),Programming language
+Plankalkül,ALGOL
+Plankalkül,APL (programming language)
+Plankalkül,History of programming languages
+Plankalkül,Programming language
+Plankalkül,Timeline of programming languages
+XSLT,Imperative programming
+XSLT,JavaScript
+XSLT,Java (programming language)
+XSLT,PHP
+XSLT,Perl
+XSLT,PostScript
+XSLT,Python (programming language)
+XSLT,Ruby (programming language)
+XSLT,SNOBOL
+XSLT,SQL
+XSLT,Turing completeness
+XSLT,WebAssembly
+XSLT,XML
+AppleScript,JavaScript
+Maple (software),BCPL
+Maple (software),B (programming language)
+Maple (software),C++
+Maple (software),C (programming language)
+Maple (software),C Sharp (programming language)
+Maple (software),Comparison of programming languages
+Maple (software),Fortran
+Maple (software),GNU Octave
+Maple (software),Imperative programming
+Maple (software),JavaScript
+Maple (software),Java (programming language)
+Maple (software),Julia (programming language)
+Maple (software),LabVIEW
+Maple (software),Lisp (programming language)
+Maple (software),MATLAB
+Maple (software),Pascal (programming language)
+Maple (software),Perl
+Maple (software),Programming language
+Maple (software),Python (programming language)
+Maple (software),R (programming language)
+Maple (software),SAS (software)
+Maple (software),SQL
+Maple (software),Scilab
+Maple (software),Stata
+Maple (software),Visual Basic
+ABC (programming language),ALGOL 68
+ABC (programming language),AWK
+ABC (programming language),BASIC
+ABC (programming language),B (programming language)
+ABC (programming language),C (programming language)
+ABC (programming language),Imperative programming
+ABC (programming language),Pascal (programming language)
+ABC (programming language),Programming language
+ABC (programming language),Python (programming language)
+AppleScript,Objective-C
+AppleScript,OpenCL
+AppleScript,Perl
+AppleScript,Programming language
+AppleScript,Python (programming language)
+AppleScript,Ruby (programming language)
+AppleScript,Shell script
+Scilab,C++
+Scilab,C (programming language)
+Scilab,Fortran
+Scilab,GNU Octave
+Scilab,Java (programming language)
+Scilab,Julia (programming language)
+Scilab,LabVIEW
+Scilab,MATLAB
+Scilab,Maple (software)
+Standard ML,ALGOL
+Standard ML,APL (programming language)
+Standard ML,Ada (programming language)
+Standard ML,Assembly language
+Standard ML,BASIC
+Standard ML,C++
+Standard ML,COBOL
+Standard ML,C (programming language)
+Standard ML,C Sharp (programming language)
+Standard ML,Common Lisp
+Standard ML,Comparison of programming languages
+Standard ML,Elixir (programming language)
+Standard ML,Elm (programming language)
+Standard ML,Erlang (programming language)
+Standard ML,F Sharp (programming language)
+Standard ML,Forth (programming language)
+Standard ML,Fortran
+Standard ML,Go (programming language)
+Standard ML,Haskell
+Standard ML,Haxe
+Standard ML,History of programming languages
+Standard ML,Imperative programming
+Standard ML,JavaScript
+Standard ML,Java (programming language)
+Standard ML,Julia (programming language)
+Standard ML,Lisp (programming language)
+Standard ML,List of programming languages by type
+Standard ML,MATLAB
+Standard ML,ML (programming language)
+Standard ML,Non-English-based programming languages
+Standard ML,OCaml
+Standard ML,Object Pascal
+Standard ML,PHP
+Standard ML,Pascal (programming language)
+Standard ML,Perl
+Standard ML,Programming language
+Standard ML,Prolog
+Standard ML,Python (programming language)
+Standard ML,R (programming language)
+Standard ML,Raku (programming language)
+Standard ML,Ruby (programming language)
+Standard ML,Rust (programming language)
+Standard ML,SAS language
+Standard ML,SQL
+Standard ML,Scala (programming language)
+Standard ML,Scratch (programming language)
+Standard ML,Shell script
+Standard ML,Simula
+Standard ML,Smalltalk
+Standard ML,Swift (programming language)
+Standard ML,Timeline of programming languages
+Standard ML,TypeScript
+Standard ML,Visual Basic
+Standard ML,Visual Basic (classic)
+DBase,Assembly language
+DBase,BASIC
+DBase,C (programming language)
+DBase,Imperative programming
+DBase,Programming language
+DBase,SQL
+DBase,Visual FoxPro
+Executable,Assembly language
+Executable,C (programming language)
+Executable,Machine code
+Executable,Objective-C
+Executable,Swift (programming language)
+JScript,ActionScript
+JScript,C Sharp (programming language)
+JScript,ECMAScript
+JScript,HTML
+JScript,Haxe
+JScript,Imperative programming
+JScript,JavaScript
+Scilab,Programming language
+Scilab,Python (programming language)
+Scilab,R (programming language)
+Scilab,SAS (software)
+Scilab,Simulink
+JScript,PowerShell
+JScript,Solidity
+JScript,TypeScript
+JScript,Visual Basic
+SPARK (programming language),Ada (programming language)
+SPARK (programming language),Eiffel (programming language)
+SPARK (programming language),Imperative programming
+SPARK (programming language),Java (programming language)
+SPARK (programming language),Programming language
+SPARK (programming language),Python (programming language)
+SPARK (programming language),Scala (programming language)
+Transact-SQL,PL/SQL
+Transact-SQL,SQL
+Max (programming language),Autodesk 3ds Max
+Max (programming language),C++
+Max (programming language),C (programming language)
+Max (programming language),JavaScript
+ActionScript,C++
+ActionScript,ECMAScript
+IDL (programming language),C (programming language)
+IDL (programming language),Fortran
+IDL (programming language),GNU Octave
+IDL (programming language),Julia (programming language)
+IDL (programming language),LabVIEW
+IDL (programming language),MATLAB
+IDL (programming language),Maple (software)
+IDL (programming language),Perl
+IDL (programming language),Programming language
+IDL (programming language),Python (programming language)
+IDL (programming language),R (programming language)
+IDL (programming language),SAS (software)
+IDL (programming language),Scilab
+IDL (programming language),Smalltalk
+IDL (programming language),Stata
+Pure Data,C (programming language)
+Pure Data,Max (software)
+Pure Data,Python (programming language)
+Pure Data,Scheme (programming language)
+Max (programming language),Java (programming language)
+Max (programming language),Max (software)
+Max (programming language),Pure Data
+ActionScript,Haxe
+ActionScript,Imperative programming
+ActionScript,JScript
+ActionScript,JavaScript
+ActionScript,Java (programming language)
+ActionScript,Programming language
+ActionScript,Solidity
+ActionScript,TypeScript
+ActionScript,XML
+Object Pascal,ALGOL
+Object Pascal,APL (programming language)
+Object Pascal,Ada (programming language)
+Object Pascal,Assembly language
+Object Pascal,BASIC
+Object Pascal,C++
+Object Pascal,COBOL
+Object Pascal,C (programming language)
+Object Pascal,C Sharp (programming language)
+Object Pascal,Comparison of programming languages
+Object Pascal,Delphi (software)
+Object Pascal,ECMAScript
+Object Pascal,Elixir (programming language)
+Object Pascal,Erlang (programming language)
+Object Pascal,Forth (programming language)
+Object Pascal,Fortran
+Object Pascal,Go (programming language)
+Object Pascal,Haskell
+Object Pascal,History of programming languages
+Object Pascal,Imperative programming
+Object Pascal,JavaScript
+Object Pascal,Java (programming language)
+Object Pascal,Julia (programming language)
+Object Pascal,Lisp (programming language)
+Object Pascal,List of programming languages by type
+Object Pascal,MATLAB
+Object Pascal,ML (programming language)
+Processing,Apache Groovy
+Processing,C++
+Processing,Clojure
+Processing,Common Lisp
+Processing,JavaScript
+Processing,Java (programming language)
+Processing,Max (software)
+Processing,Scala (programming language)
+Simulink,C (programming language)
+Simulink,MATLAB
+ALGOL 60,ALGOL
+ALGOL 60,ALGOL 68
+ALGOL 60,Ada (programming language)
+ALGOL 60,BCPL
+ALGOL 60,B (programming language)
+ALGOL 60,C++
+ALGOL 60,COBOL
+ALGOL 60,C (programming language)
+ALGOL 60,C Sharp (programming language)
+IBM RPG,ALGOL
+IBM RPG,APL (programming language)
+IBM RPG,Ada (programming language)
+IBM RPG,Assembly language
+IBM RPG,BASIC
+IBM RPG,C++
+IBM RPG,COBOL
+IBM RPG,C (programming language)
+IBM RPG,C Sharp (programming language)
+IBM RPG,Comparison of programming languages
+IBM RPG,Elixir (programming language)
+IBM RPG,Erlang (programming language)
+IBM RPG,Forth (programming language)
+IBM RPG,Fortran
+IBM RPG,Go (programming language)
+IBM RPG,Haskell
+IBM RPG,History of programming languages
+IBM RPG,JavaScript
+IBM RPG,Java (programming language)
+IBM RPG,Julia (programming language)
+IBM RPG,Lisp (programming language)
+IBM RPG,List of programming languages by type
+IBM RPG,MATLAB
+IBM RPG,ML (programming language)
+IBM RPG,Non-English-based programming languages
+IBM RPG,OCaml
+IBM RPG,Object Pascal
+IBM RPG,PHP
+IBM RPG,Pascal (programming language)
+IBM RPG,Perl
+IBM RPG,Programming language
+IBM RPG,Prolog
+IBM RPG,Python (programming language)
+IBM RPG,R (programming language)
+IBM RPG,Raku (programming language)
+IBM RPG,Ruby (programming language)
+IBM RPG,Rust (programming language)
+IBM RPG,SAS language
+IBM RPG,SQL
+IBM RPG,Scratch (programming language)
+IBM RPG,Shell script
+IBM RPG,Simula
+IBM RPG,Smalltalk
+IBM RPG,Standard ML
+IBM RPG,Swift (programming language)
+IBM RPG,Timeline of programming languages
+IBM RPG,Visual Basic
+IBM RPG,Visual Basic (classic)
+Object Pascal,Nim (programming language)
+Object Pascal,Non-English-based programming languages
+Object Pascal,OCaml
+Object Pascal,PHP
+Object Pascal,Pascal (programming language)
+Object Pascal,Perl
+Object Pascal,Programming language
+Object Pascal,Prolog
+Object Pascal,Python (programming language)
+Object Pascal,R (programming language)
+Object Pascal,Raku (programming language)
+Object Pascal,Ruby (programming language)
+Object Pascal,Rust (programming language)
+Object Pascal,SAS language
+Object Pascal,SQL
+Object Pascal,Scratch (programming language)
+Object Pascal,Shell script
+Object Pascal,Simula
+Object Pascal,Smalltalk
+Object Pascal,Standard ML
+Object Pascal,Swift (programming language)
+Object Pascal,Timeline of programming languages
+Object Pascal,Visual Basic
+Object Pascal,Visual Basic (classic)
+ALGOL 60,ECMAScript
+ALGOL 60,Fortran
+ALGOL 60,HTML
+ALGOL 60,Imperative programming
+ALGOL 60,PL/I
+ALGOL 60,Pascal (programming language)
+ALGOL 60,Programming language
+ALGOL 60,Prolog
+ALGOL 60,Ruby (programming language)
+ALGOL 60,SQL
+ALGOL 60,Scheme (programming language)
+ALGOL 60,Simula
+ALGOL 68,ALGOL
+ALGOL 68,ALGOL 60
+ALGOL 68,APL (programming language)
+ALGOL 68,Ada (programming language)
+ALGOL 68,BCPL
+ALGOL 68,Bash (Unix shell)
+ALGOL 68,C++
+ALGOL 68,C (programming language)
+ALGOL 68,Imperative programming
+ALGOL 68,KornShell
+ALGOL 68,Lisp (programming language)
+ALGOL 68,Pascal (programming language)
+ALGOL 68,Perl
+ALGOL 68,Programming language
+ALGOL 68,Python (programming language)
+ALGOL 68,Simula
+S (programming language),APL (programming language)
+S (programming language),C (programming language)
+S (programming language),Fortran
+S (programming language),Imperative programming
+S (programming language),PostScript
+S (programming language),Programming language
+S (programming language),R (programming language)
+Computer Sciences Corporation,COBOL
+Quantum programming,C++
+Quantum programming,C (programming language)
+Quantum programming,Comparison of programming languages
+Quantum programming,Domain-specific language
+Quantum programming,F Sharp (programming language)
+Raku (programming language),ALGOL
+Raku (programming language),APL (programming language)
+Raku (programming language),Ada (programming language)
+Raku (programming language),Assembly language
+Raku (programming language),BASIC
+Raku (programming language),C++
+Raku (programming language),COBOL
+Raku (programming language),C (programming language)
+Raku (programming language),C Sharp (programming language)
+Raku (programming language),Comparison of programming languages
+Raku (programming language),Elixir (programming language)
+Raku (programming language),Erlang (programming language)
+Raku (programming language),Forth (programming language)
+Raku (programming language),Fortran
+Raku (programming language),Go (programming language)
+Raku (programming language),Haskell
+Raku (programming language),History of programming languages
+Raku (programming language),JavaScript
+Raku (programming language),Java (programming language)
+Raku (programming language),Julia (programming language)
+Raku (programming language),Lisp (programming language)
+Raku (programming language),List of programming languages by type
+Raku (programming language),MATLAB
+Raku (programming language),ML (programming language)
+Raku (programming language),Non-English-based programming languages
+Raku (programming language),OCaml
+Raku (programming language),Object Pascal
+Raku (programming language),PHP
+Raku (programming language),Pascal (programming language)
+Raku (programming language),Perl
+Raku (programming language),Programming language
+Raku (programming language),Prolog
+Raku (programming language),Python (programming language)
+Raku (programming language),R (programming language)
+Raku (programming language),Ruby (programming language)
+Raku (programming language),Rust (programming language)
+Raku (programming language),SAS language
+Raku (programming language),SQL
+Raku (programming language),Scratch (programming language)
+Raku (programming language),Shell script
+Raku (programming language),Simula
+Raku (programming language),Smalltalk
+Raku (programming language),Standard ML
+Raku (programming language),Swift (programming language)
+Raku (programming language),Timeline of programming languages
+Raku (programming language),Visual Basic
+Raku (programming language),Visual Basic (classic)
+Agda (programming language),Ada (programming language)
+Agda (programming language),Elm (programming language)
+Agda (programming language),Haskell
+Agda (programming language),JavaScript
+Agda (programming language),Programming language
+OpenGL Shading Language,C++
+OpenGL Shading Language,C (programming language)
+OpenGL Shading Language,JavaScript
+OpenGL Shading Language,Java (programming language)
+OpenGL Shading Language,OpenCL
+Quantum programming,Haskell
+Quantum programming,Imperative programming
+Quantum programming,List of programming languages by type
+Quantum programming,Non-English-based programming languages
+Quantum programming,Python (programming language)
+Quantum programming,Q Sharp
+Quantum programming,Rust (programming language)
+Quantum programming,Scheme (programming language)
+Quantum programming,Wolfram Language
+Haxe,ActionScript
+Haxe,C++
+Haxe,C Sharp (programming language)
+Haxe,Clojure
+Haxe,CoffeeScript
+Haxe,Dart (programming language)
+Haxe,ECMAScript
+Haxe,Elm (programming language)
+Haxe,F Sharp (programming language)
+Haxe,HTML
+Haxe,Hack (programming language)
+Haxe,JScript
+Haxe,JavaScript
+Haxe,Java (programming language)
+Haxe,ML (programming language)
+Haxe,Nim (programming language)
+Haxe,OCaml
+Haxe,PHP
+Haxe,Programming language
+Haxe,Python (programming language)
+Haxe,Scala (programming language)
+Haxe,Solidity
+Haxe,Standard ML
+Haxe,TypeScript
+Haxe,Vala (programming language)
+Haxe,Vim (text editor)
+Haxe,WebAssembly
+Vala (programming language),C++
+Vala (programming language),C (programming language)
+Vala (programming language),C Sharp (programming language)
+Vala (programming language),D (programming language)
+List of programming languages for artificial intelligence,C++
+List of programming languages for artificial intelligence,C Sharp (programming language)
+List of programming languages for artificial intelligence,Elixir (programming language)
+List of programming languages for artificial intelligence,Erlang (programming language)
+SAS language,ALGOL
+SAS language,APL (programming language)
+SAS language,Ada (programming language)
+SAS language,Assembly language
+SAS language,BASIC
+SAS language,C++
+SAS language,COBOL
+SAS language,C (programming language)
+SAS language,C Sharp (programming language)
+SAS language,Comparison of programming languages
+SAS language,Elixir (programming language)
+SAS language,Erlang (programming language)
+SAS language,Forth (programming language)
+SAS language,Fortran
+SAS language,Go (programming language)
+SAS language,HTML
+SAS language,Haskell
+SAS language,History of programming languages
+SAS language,JavaScript
+SAS language,Java (programming language)
+SAS language,Julia (programming language)
+SAS language,Lisp (programming language)
+SAS language,List of programming languages by type
+SAS language,MATLAB
+SAS language,ML (programming language)
+SAS language,Non-English-based programming languages
+SAS language,OCaml
+SAS language,Object Pascal
+SAS language,PHP
+SAS language,Pascal (programming language)
+SAS language,Perl
+SAS language,Programming language
+SAS language,Prolog
+SAS language,Python (programming language)
+SAS language,R (programming language)
+SAS language,Raku (programming language)
+SAS language,Ruby (programming language)
+SAS language,Rust (programming language)
+SAS language,SAS (software)
+SAS language,SQL
+SAS language,Scratch (programming language)
+SAS language,Shell script
+SAS language,Simula
+SAS language,Smalltalk
+SAS language,Standard ML
+SAS language,Swift (programming language)
+SAS language,Timeline of programming languages
+SAS language,Visual Basic
+SAS language,Visual Basic (classic)
+Vala (programming language),Go (programming language)
+Vala (programming language),Imperative programming
+Vala (programming language),Java (programming language)
+Vala (programming language),Objective-C
+Vala (programming language),Programming language
+Vala (programming language),Python (programming language)
+Vala (programming language),Vim (text editor)
+Vala (programming language),Zig (programming language)
+CoffeeScript,ALGOL
+CoffeeScript,APL (programming language)
+CoffeeScript,Ada (programming language)
+CoffeeScript,Assembly language
+CoffeeScript,BASIC
+CoffeeScript,C++
+CoffeeScript,COBOL
+CoffeeScript,C (programming language)
+CoffeeScript,C Sharp (programming language)
+CoffeeScript,Clojure
+CoffeeScript,Comparison of programming languages
+CoffeeScript,Dart (programming language)
+CoffeeScript,ECMAScript
+CoffeeScript,Elixir (programming language)
+CoffeeScript,Elm (programming language)
+CoffeeScript,Erlang (programming language)
+CoffeeScript,Forth (programming language)
+CoffeeScript,Fortran
+CoffeeScript,Go (programming language)
+CoffeeScript,HTML
+CoffeeScript,Haskell
+CoffeeScript,Haxe
+CoffeeScript,History of programming languages
+CoffeeScript,Imperative programming
+CoffeeScript,JavaScript
+CoffeeScript,Java (programming language)
+CoffeeScript,Julia (programming language)
+CoffeeScript,Lisp (programming language)
+CoffeeScript,List of programming languages by type
+CoffeeScript,MATLAB
+CoffeeScript,ML (programming language)
+CoffeeScript,Nim (programming language)
+CoffeeScript,Non-English-based programming languages
+CoffeeScript,OCaml
+CoffeeScript,Object Pascal
+CoffeeScript,PHP
+CoffeeScript,Pascal (programming language)
+CoffeeScript,Perl
+CoffeeScript,Programming language
+CoffeeScript,Prolog
+CoffeeScript,Python (programming language)
+CoffeeScript,R (programming language)
+CoffeeScript,Raku (programming language)
+CoffeeScript,Ruby (programming language)
+CoffeeScript,Rust (programming language)
+CoffeeScript,SAS language
+CoffeeScript,SQL
+CoffeeScript,Scratch (programming language)
+CoffeeScript,Shell script
+CoffeeScript,Simula
+CoffeeScript,Smalltalk
+CoffeeScript,Standard ML
+CoffeeScript,Swift (programming language)
+CoffeeScript,Timeline of programming languages
+CoffeeScript,TypeScript
+CoffeeScript,Vim (text editor)
+CoffeeScript,Visual Basic
+CoffeeScript,Visual Basic (classic)
+CoffeeScript,WebAssembly
+List of programming languages for artificial intelligence,Haskell
+List of programming languages for artificial intelligence,JavaScript
+List of programming languages for artificial intelligence,Julia (programming language)
+List of programming languages for artificial intelligence,Lisp (programming language)
+List of programming languages for artificial intelligence,MATLAB
+List of programming languages for artificial intelligence,Pascal (programming language)
+List of programming languages for artificial intelligence,Programming language
+List of programming languages for artificial intelligence,Prolog
+List of programming languages for artificial intelligence,Python (programming language)
+List of programming languages for artificial intelligence,R (programming language)
+List of programming languages for artificial intelligence,Rust (programming language)
+List of programming languages for artificial intelligence,Smalltalk
+List of programming languages for artificial intelligence,Wolfram Language
+List of programming languages for artificial intelligence,XML
+Google Apps Script,Dart (programming language)
+Google Apps Script,ECMAScript
+Google Apps Script,Go (programming language)
+Google Apps Script,JavaScript
+PL/SQL,C++
+PL/SQL,Java (programming language)
+PL/SQL,Object Pascal
+Elm (programming language),ALGOL
+Elm (programming language),APL (programming language)
+Elm (programming language),Ada (programming language)
+Elm (programming language),Agda (programming language)
+Elm (programming language),Assembly language
+Elm (programming language),BASIC
+Elm (programming language),C++
+Elm (programming language),COBOL
+Elm (programming language),C (programming language)
+Elm (programming language),C Sharp (programming language)
+Elm (programming language),Comparison of programming languages
+Elm (programming language),Domain-specific language
+Elm (programming language),Elixir (programming language)
+Elm (programming language),Erlang (programming language)
+Elm (programming language),F Sharp (programming language)
+Elm (programming language),Forth (programming language)
+Elm (programming language),Fortran
+Elm (programming language),Go (programming language)
+Elm (programming language),HTML
+Elm (programming language),Haskell
+Elm (programming language),History of programming languages
+Elm (programming language),JavaScript
+Elm (programming language),Java (programming language)
+Elm (programming language),Julia (programming language)
+Elm (programming language),Lisp (programming language)
+Elm (programming language),List of programming languages by type
+Elm (programming language),MATLAB
+Elm (programming language),ML (programming language)
+Elm (programming language),Non-English-based programming languages
+Elm (programming language),OCaml
+Elm (programming language),Object Pascal
+Elm (programming language),PHP
+Elm (programming language),Pascal (programming language)
+Elm (programming language),Perl
+Elm (programming language),Programming language
+Elm (programming language),Prolog
+Elm (programming language),Python (programming language)
+Elm (programming language),R (programming language)
+Elm (programming language),Raku (programming language)
+Elm (programming language),Ruby (programming language)
+Elm (programming language),Rust (programming language)
+Elm (programming language),SAS language
+Elm (programming language),SQL
+Elm (programming language),Scala (programming language)
+Elm (programming language),Scratch (programming language)
+Elm (programming language),Shell script
+Elm (programming language),Simula
+Elm (programming language),Smalltalk
+Elm (programming language),Standard ML
+Elm (programming language),Swift (programming language)
+Elm (programming language),Timeline of programming languages
+Elm (programming language),Visual Basic
+Elm (programming language),Visual Basic (classic)
+Elm (programming language),WebAssembly
+Hack (programming language),ALGOL
+Hack (programming language),APL (programming language)
+Hack (programming language),ActionScript
+Hack (programming language),Ada (programming language)
+Hack (programming language),Assembly language
+Hack (programming language),BASIC
+Hack (programming language),C++
+Hack (programming language),COBOL
+Hack (programming language),C (programming language)
+Hack (programming language),C Sharp (programming language)
+Hack (programming language),Comparison of programming languages
+Hack (programming language),Elixir (programming language)
+Hack (programming language),Erlang (programming language)
+Kivy (framework),Cython
+Kivy (framework),Java (programming language)
+Kivy (framework),Objective-C
+Kivy (framework),Python (programming language)
+PL/SQL,Programming language
+PL/SQL,SQL
+PL/SQL,Transact-SQL
+Wolfram Language,APL (programming language)
+Wolfram Language,C++
+Wolfram Language,C (programming language)
+Wolfram Language,Clojure
+Wolfram Language,Java (programming language)
+Wolfram Language,Julia (programming language)
+Wolfram Language,Lisp (programming language)
+Wolfram Language,Pascal (programming language)
+Wolfram Language,Prolog
+Wolfram Language,Rust (programming language)
+Wolfram Language,Simula
+Wolfram Language,Smalltalk
+Crystal (programming language),Go (programming language)
+Crystal (programming language),Ruby (programming language)
+Hack (programming language),Forth (programming language)
+Hack (programming language),Fortran
+Hack (programming language),Go (programming language)
+Hack (programming language),HTML
+Hack (programming language),Haskell
+Hack (programming language),Haxe
+Hack (programming language),History of programming languages
+Hack (programming language),Imperative programming
+Hack (programming language),JavaScript
+Hack (programming language),Java (programming language)
+Hack (programming language),Julia (programming language)
+Hack (programming language),Lisp (programming language)
+Hack (programming language),List of programming languages by type
+Hack (programming language),MATLAB
+Hack (programming language),ML (programming language)
+Hack (programming language),Non-English-based programming languages
+Hack (programming language),OCaml
+Hack (programming language),Object Pascal
+Hack (programming language),PHP
+Hack (programming language),Pascal (programming language)
+Hack (programming language),Perl
+Hack (programming language),Programming language
+Hack (programming language),Prolog
+Hack (programming language),Python (programming language)
+Hack (programming language),R (programming language)
+Hack (programming language),Raku (programming language)
+Hack (programming language),Ruby (programming language)
+Hack (programming language),Rust (programming language)
+Hack (programming language),SAS language
+Hack (programming language),SQL
+Hack (programming language),Scala (programming language)
+Hack (programming language),Scratch (programming language)
+Hack (programming language),Shell script
+Hack (programming language),Simula
+Hack (programming language),Smalltalk
+Hack (programming language),Standard ML
+Hack (programming language),Swift (programming language)
+Hack (programming language),Timeline of programming languages
+Hack (programming language),Visual Basic
+Hack (programming language),Visual Basic (classic)
+Q Sharp,C Sharp (programming language)
+Q Sharp,Clojure
+Q Sharp,Common Intermediate Language
+Q Sharp,Domain-specific language
+Q Sharp,F Sharp (programming language)
+Q Sharp,Imperative programming
+Q Sharp,JScript
+Q Sharp,JavaScript
+Q Sharp,Java (programming language)
+Q Sharp,Lean (proof assistant)
+Q Sharp,PowerShell
+Q Sharp,Python (programming language)
+Q Sharp,Quantum programming
+Q Sharp,Scala (programming language)
+Q Sharp,TypeScript
+Q Sharp,Visual Basic (classic)
+Q Sharp,Visual FoxPro
+Q Sharp,XML

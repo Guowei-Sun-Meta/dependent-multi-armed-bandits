@@ -183,7 +183,7 @@ That limit tends to 1 as φ → 1 at a fixed confidence level ℓ, and it shrink
 
 ## Empirical status (9 October 2026)
 
-**Coverage test v1** (`experiments/st_toy/coverage.py`; 20 arms, 4 components, T = 5,000, 30 seeds, φ ∈ {0, 0.5, 0.9, 0.97}, independent or correlated shocks; results in `research/st_toy/results/coverage_runs.csv`):
+**Coverage test v1** (`experiments/simulations/certificates_under_persistence/code/coverage.py`; 20 arms, 4 components, T = 5,000, 30 seeds, φ ∈ {0, 0.5, 0.9, 0.97}, independent or correlated shocks; results in `experiments/simulations/certificates_under_persistence/results/coverage_runs.csv`):
 
 | | iid-certified SP-UCB | SP-UCB-ST (B1) |
 | --- | --- | --- |
@@ -196,7 +196,7 @@ That limit tends to 1 as φ → 1 at a fixed confidence level ℓ, and it shrink
 1. **B1 is valid, but its log-determinant confidence width is conservative.** At high persistence its regret approaches the iid policy's; at low persistence it is about 2× worse. The paper needs a tighter practical β, or comparisons at matched nominal coverage.
 2. **B2's failure did not appear under one-at-a-time UCB sampling.** UCB interleaves arms, so repeat pulls are about 20 rounds apart. The correlation between them is φ²⁰ ≈ 0.54 at φ = 0.97, which inflates variance about 1.8×, not the 8× of consecutive pulls. With a conservative union-bound level, the iid certificate still covers. B2's mechanism therefore needs **bursty exposure**: commit blocks, daily slates, batched updates. Its practical form uses variances estimated from the arm's own autocorrelated samples.
 
-**Coverage test v2** adds commit blocks b ∈ {1, 25} (20 seeds; results in `research/st_toy/results/coverage_runs_v2.csv`):
+**Coverage test v2** adds commit blocks b ∈ {1, 25} (20 seeds; results in `experiments/simulations/certificates_under_persistence/results/coverage_runs_v2.csv`):
 
 | Exposure | φ | Runs with a violation, iid SP-UCB | Rounds violated, iid SP-UCB | Runs with a violation, SP-UCB-ST (B1) | Mean regret, iid / B1 (independent shocks) |
 | --- | ---: | ---: | ---: | ---: | --- |
@@ -230,10 +230,12 @@ That limit tends to 1 as φ → 1 at a fixed confidence level ℓ, and it shrink
 
 ## Experiments that test the theory
 
+Each experiment's design, code, results and report are under [experiments/](../../experiments/README.md).
+
 | Claim | Test | Where |
 | --- | --- | --- |
-| B1 validity and regret | Coverage of U_c and mean regret for SP-UCB-ST against iid SP-UCB, across φ ∈ {0, 0.5, 0.9, 0.97} | Toy (to build in `experiments/st_toy/`) |
-| B2 failure | The same runs: miscoverage rate of iid certificates against φ, with the B2 formula overlaid | Toy |
-| B3 slate gain | Compare k-slot designs with high-ρ and low-ρ graph correlation | KuaiRec daily |
-| S5 innovation lower bound | Gap closed by fluctuation-channel policies | Toy (running), KuaiRec daily |
-| A1, A4 on real graphs | Certified against uncertified pooling; energy-to-gap ratio about 5 | KuaiRec Setting A (done) |
+| B1, B1′, B1″ validity and regret | Coverage of U_c and mean regret for SP-UCB with innovation certificates against iid SP-UCB, across φ ∈ {0, 0.5, 0.9, 0.97} | [certificates_under_persistence](../../experiments/simulations/certificates_under_persistence/README.md) (done) |
+| B2 failure | The same runs: miscoverage rate of iid certificates against φ, with the B2 formula overlaid | Same (done) |
+| B3 slate gain | Compare k-slot designs with high-ρ and low-ρ graph correlation | KuaiRec daily (no dedicated test yet) |
+| S5 innovation lower bound | Gap closed by fluctuation-channel policies | [spatiotemporal_benchmark](../../experiments/simulations/spatiotemporal_benchmark/README.md), [KuaiRec daily](../../experiments/kuairec/README.md#daily-trending-slot-the-fluctuation-channel) (done) |
+| A1, A4 on real graphs | Certified against uncertified pooling; energy-to-gap ratio about 5 | [KuaiRec Setting A](../../experiments/kuairec/README.md#setting-a-single-user-bandits-on-item-graphs) (done) |

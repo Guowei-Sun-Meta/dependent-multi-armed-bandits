@@ -558,20 +558,22 @@ iid Thompson sampling & 0.062 & 1.340 & 0.256 & 0.553 \\
 \section{Reproducibility}\label{sec:repro}
 %=====================================================================
 
-From the repository root with the virtual environment of \texttt{experiments/kuairec/requirements.txt}:
+From the repository root with the virtual environment of \texttt{experiments/requirements.txt}:
+{\footnotesize
 \begin{verbatim}
-python -I experiments/kuairec/data.py
-python -I experiments/kuairec/graphs.py --k 5 10 20
-python -I experiments/kuairec/alignment.py --k 10
-python -I experiments/kuairec/setting_a.py --users 60 --horizon 20000
-python -I experiments/kuairec/setting_a2.py --users 30 --subsets 2
-python -I experiments/kuairec/setting_b.py --instances 8
-python -I experiments/kuairec/daily.py --seeds 5 [--extra | --sparse]
-python -I experiments/st_toy/toy.py --seeds 8 [--extra]
-python -I experiments/st_toy/coverage.py --tag {_v2,_elim,_scalar,_plugin}
-python -I experiments/wikipedia/collect.py
-python -I experiments/wikipedia/attention.py [--diagnose]
-python -I experiments/paper_figures.py
-\end{verbatim}
+python -I experiments/kuairec/code/data.py
+python -I experiments/kuairec/code/graphs.py --k 5 10 20
+python -I experiments/kuairec/code/alignment.py --k 10
+python -I experiments/kuairec/code/setting_a.py --users 60 --horizon 20000
+python -I experiments/kuairec/code/setting_a2.py --users 30 --subsets 2
+python -I experiments/kuairec/code/setting_b.py --instances 8
+python -I experiments/kuairec/code/daily.py --seeds 5 [--extra | --sparse]
+python -I experiments/simulations/spatiotemporal_benchmark/code/toy.py --seeds 8 [--extra]
+python -I experiments/simulations/certificates_under_persistence/code/coverage.py \
+    --tag {_v2,_elim,_scalar,_plugin}
+python -I experiments/wikipedia/code/collect.py
+python -I experiments/wikipedia/code/attention.py [--diagnose]
+python -I experiments/paper/paper_figures.py
+\end{verbatim}}
 
 \end{document}

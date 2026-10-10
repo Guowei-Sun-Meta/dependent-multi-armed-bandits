@@ -52,16 +52,16 @@ The present contribution is the integration, explicit estimation and confidence 
 
 ### Reproducible evidence
 
-Use [the executable mean-selection study](../../../../experiments/graph_ar1_mean.py), [findings](../../results/mean_selection/findings.md), [summary](../../results/mean_selection/summary.csv), [paired comparisons](../../results/mean_selection/paired.csv), [metadata](../../results/mean_selection/metadata.json), and [checks](../../results/mean_selection/checks.json).
+Use [the executable mean-selection study](../../../../experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py), [findings](../../results/mean_selection/findings.md), [summary](../../results/mean_selection/summary.csv), [paired comparisons](../../results/mean_selection/paired.csv), [metadata](../../results/mean_selection/metadata.json), and [checks](../../results/mean_selection/checks.json).
 
 The permanent-mean experiment uses six locations, 48 measurements, seven policies, and **200 independent paired runs per configuration** across six configurations. It reports opportunity loss, recommendation PCS, MSE, and interval coverage. Correct AR modeling improves estimation under strong persistence; rolling KG does not consistently beat round robin or the other priors. The diagonal-mean baseline preserves graph-prior marginal variances while removing mean correlations. A permuted mean graph and an iid-noise model separately stress spatial and temporal assumptions.
 
 The script passes **8,888 counted assertions**, including independent dense-likelihood comparisons and three 50,000-draw checks of the exact two-location PCS. The all-time frequentist confidence audit uses each truth's actual norm and energy solely as supplied certificates for graph--AR KG; it does not demonstrate learning these bounds.
 
 ```sh
-python3 experiments/graph_ar1_mean.py --verify
-python3 experiments/graph_ar1_mean.py --runs 200 --budget 48
-python3 experiments/graph_ar1_mean.py --render-only
+python3 experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py --verify
+python3 experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py --runs 200 --budget 48
+python3 experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py --render-only
 cd research/spatiotemporal_bandits
 tectonic --only-cached --keep-logs manuscript.tex
 ```
@@ -72,7 +72,7 @@ Working research development, 9 October 2026. This connects the [graph alignment
 
 **Main conclusion.** Spatial and temporal bandit dependence have already been combined, including an almost exact common-AR(1) predecessor. We can nevertheless develop a coherent extension focused on graph validity, information about reward differences, and the distinction between ongoing reward and final selection. This note supplies exact Gaussian formulas, an implementable reward policy, a selection policy, explicit comparator bounds, and a small reproducible reward experiment. It does not establish a generally optimal policy or a new matching regret theorem.
 
-- [Executable policies and checks](../../../../experiments/spatiotemporal_bandits.py).
+- [Executable policies and checks](../../../../experiments/simulations/theory/spatiotemporal/spatiotemporal_bandits.py).
 - [Experiment findings](../../results/findings.md), [paired comparisons](../../results/paired.csv), [metadata](../../results/metadata.json), and [exact checks](../../results/checks.json).
 - [Illustration of spatial reach, predictive lifetime, and ranking information](../../information.svg).
 
@@ -536,6 +536,6 @@ The current evidence supports a combined model and working algorithms. It does n
 Reproduce from the repository root:
 
 ```sh
-python3 experiments/spatiotemporal_bandits.py --verify
-python3 experiments/spatiotemporal_bandits.py --runs 24 --horizon 1200
+python3 experiments/simulations/theory/spatiotemporal/spatiotemporal_bandits.py --verify
+python3 experiments/simulations/theory/spatiotemporal/spatiotemporal_bandits.py --runs 24 --horizon 1200
 ```

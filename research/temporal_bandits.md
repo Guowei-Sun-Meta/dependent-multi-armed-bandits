@@ -67,7 +67,7 @@ V_i\frac{1+\phi_i}{1-\phi_i}
 
 Thus the large-sample effective count for estimating the mean is approximately $`n(1-\phi_i)/(1+\phi_i)`$. This calculation concerns consecutive stationary observations, not a confidence bound for arbitrary adaptive sampling. At $`\phi=0.95`$, that ratio is about 0.026, while a five-round-old exact observation still leaves only $`1-0.95^{10}\approx0.401`$ of the stationary state variance unresolved.
 
-The [formula illustration](temporal_information.svg), [plotted values](temporal_information.csv), and [regeneration script](../experiments/temporal_information.py) hold stationary variance fixed. Holding innovation variance fixed instead changes the marginal reward scale as persistence changes. Neither comparison supports a universal claim that more correlation always lowers regret.
+The [formula illustration](temporal_information.svg), [plotted values](temporal_information.csv), and [regeneration script](../experiments/simulations/theory/temporal_information/temporal_information.py) hold stationary variance fixed. Holding innovation variance fixed instead changes the marginal reward scale as persistence changes. Neither comparison supports a universal claim that more correlation always lowers regret.
 
 ### Sampling gaps also change learning information
 

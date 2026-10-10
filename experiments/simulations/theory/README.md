@@ -1,0 +1,15 @@
+# Theory Simulations
+
+Numerical checks and small simulations behind the theory notes in [research/](../../../research). Each note is the design and the report for its scripts. The outputs stay inside the note's `results/` folder, because the manuscripts include those tables and figures directly (`\input{results/...}`). Moving them would break the LaTeX builds.
+
+| Folder | Scripts | Design and report | Outputs |
+| --- | --- | --- | --- |
+| [graph_alignment/](graph_alignment) | `alignment_regret.py` (SP-UCB, GDE-UCB and certificate curves), `resistance_geometry.py` (path against clique, resistance radius), `render_geometry_results.py`, `s_index_counterexample.py` (misalignment counterexample) | [alignment_paper](../../../research/alignment_paper/README.md) ([manuscript](../../../research/alignment_paper/manuscript.tex)); [graph_spectral_bandits.md](../../../research/graph_spectral_bandits.md) for the counterexample | [alignment_paper/results](../../../research/alignment_paper/results) |
+| [predictive_ar1/](predictive_ar1) | `predictive_ar1.py` (restless AR(1) policies against a full-state oracle), `render_predictive_ar1.py`, `ar1_policy_improvement.py` (long-horizon knowledge gradient) | [predictive_ar1](../../../research/predictive_ar1/README.md) | [predictive_ar1/results](../../../research/predictive_ar1/results) |
+| [ar_allocation/](ar_allocation) | `two_arm_ar1_allocation.py` (exact two-arm allocations), `ar_p_extension.py` (several heterogeneous AR arms) | [two_arm_ar1](../../../research/two_arm_ar1/README.md), [ar_p_bandits](../../../research/ar_p_bandits/README.md) | [two_arm_ar1/results](../../../research/two_arm_ar1/results), [ar_p_bandits/results](../../../research/ar_p_bandits/results) |
+| [temporal_information/](temporal_information) | `temporal_information.py` (exact AR(1) information formulas) | [temporal_bandits.md](../../../research/temporal_bandits.md) | `research/temporal_information.{csv,svg}` |
+| [spatiotemporal/](spatiotemporal) | `spatiotemporal_bandits.py` (graph-correlated AR(1) policies and bridge checks), `graph_ar1_mean.py` and `graph_ar_mean.py` (graph-smooth means under AR noise), `spatiotemporal_policies.py` and `spatiotemporal_policies_analysis.py` (the AR(20) policy study); `requirements.txt` | [spatiotemporal_bandits](../../../research/spatiotemporal_bandits/README.md) ([manuscript](../../../research/spatiotemporal_bandits/manuscript.tex), [policies.md](../../../research/spatiotemporal_bandits/policies.md)) | [spatiotemporal_bandits/results](../../../research/spatiotemporal_bandits/results) |
+
+Run the scripts from the repository root, for example `python3 experiments/simulations/theory/predictive_ar1/predictive_ar1.py --verify`. Each note's README lists its exact commands. Sibling imports, such as `ar_p_extension.py` importing `two_arm_ar1_allocation.py`, rely on the script's own folder being on `sys.path`, so run them without `-I`.
+
+Most of these scripts use only the standard library; the spatiotemporal policy study needs the packages in [spatiotemporal/requirements.txt](spatiotemporal/requirements.txt).

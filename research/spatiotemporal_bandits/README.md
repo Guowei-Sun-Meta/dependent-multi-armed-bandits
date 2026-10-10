@@ -62,7 +62,7 @@ A hard constraint on the estimate's energy literally enforces a supplied radius,
 
 The [policy derivations](policies.md) distinguish permanent means, predictable current states, and fresh innovations. All arms evolve every calendar round. The exact joint likelihood retains heterogeneous AR filters and spatial innovation covariance. Thompson-style Gaussian draws represent algorithmic uncertainty about a fixed truth, not a randomly generated mean population.
 
-The [new executable study](../../experiments/spatiotemporal_policies.py) compares 14 learning policies and four information benchmarks on 100 arms, AR(20), five dependence configurations, and 32 paired independent noise worlds per configuration. Each world has 1,000 decisions, including initial coverage. The configurations include persistent, weak, lag-20, heterogeneous, and independent-innovation processes. Practical policy scales are fixed across configurations.
+The [new executable study](../../experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py) compares 14 learning policies and four information benchmarks on 100 arms, AR(20), five dependence configurations, and 32 paired independent noise worlds per configuration. Each world has 1,000 decisions, including initial coverage. The configurations include persistent, weak, lag-20, heterogeneous, and independent-innovation processes. Practical policy scales are fixed across configurations.
 
 The [findings](results/policies_ar20/findings.md), [summary](results/policies_ar20/summary.csv), [paired comparisons](results/policies_ar20/paired.csv), and [figures](results/policies_ar20/oracle_regret.pdf) report:
 
@@ -71,17 +71,17 @@ The [findings](results/policies_ar20/findings.md), [summary](results/policies_ar
 - Actual reward regret against always operating the best permanent arm, which can be negative.
 - Fixed-truth PCS, simple regret, and mean estimation MSE.
 
-Continuous-metric intervals use independent noise worlds; PCS uses Wilson intervals. The theory covers the certified mean-UCB policy under supplied bounds and known correct dynamics. The tuned state and selection rules remain heuristics; no general optimality or fixed-budget PCS target is claimed. The [analysis code](../../experiments/spatiotemporal_policies_analysis.py) checks paired-result completeness and counterfactual regret bookkeeping. The separate [numerical checks](results/policies_ar20/checks.json) contain 642 assertions against dense Gaussian likelihood and independent state calculations.
+Continuous-metric intervals use independent noise worlds; PCS uses Wilson intervals. The theory covers the certified mean-UCB policy under supplied bounds and known correct dynamics. The tuned state and selection rules remain heuristics; no general optimality or fixed-budget PCS target is claimed. The [analysis code](../../experiments/simulations/theory/spatiotemporal/spatiotemporal_policies_analysis.py) checks paired-result completeness and counterfactual regret bookkeeping. The separate [numerical checks](results/policies_ar20/checks.json) contain 642 assertions against dense Gaussian likelihood and independent state calculations.
 
-Use the workspace scientific environment or the [recorded dependencies](../../experiments/spatiotemporal_requirements.txt):
+Use the workspace scientific environment or the [recorded dependencies](../../experiments/simulations/theory/spatiotemporal/requirements.txt):
 
 ```sh
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
-  .venv/bin/python -I experiments/spatiotemporal_policies.py --verify
+  .venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py --verify
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
-  .venv/bin/python -I experiments/spatiotemporal_policies.py --runs 32 --horizon 1000 --jobs 4
+  .venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies.py --runs 32 --horizon 1000 --jobs 4
 MPLCONFIGDIR=/private/tmp/dependent-mab-mpl OPENBLAS_NUM_THREADS=1 \
-  .venv/bin/python -I experiments/spatiotemporal_policies_analysis.py
+  .venv/bin/python -I experiments/simulations/theory/spatiotemporal/spatiotemporal_policies_analysis.py
 ```
 
 ## Illustrative AR(2) result
@@ -113,7 +113,7 @@ Publication priority for the specialized results is not established. General opt
 
 ## Evidence and reproduction
 
-Use the [executable study](../../experiments/graph_ar_mean.py), [findings](results/general_ar/findings.md), [summary](results/general_ar/summary.csv), [paired comparisons](results/general_ar/paired.csv), [metadata](results/general_ar/metadata.json), and [checks](results/general_ar/checks.json).
+Use the [executable study](../../experiments/simulations/theory/spatiotemporal/graph_ar_mean.py), [findings](results/general_ar/findings.md), [summary](results/general_ar/summary.csv), [paired comparisons](results/general_ar/paired.csv), [metadata](results/general_ar/metadata.json), and [checks](results/general_ar/checks.json).
 
 The experiment uses six arms, 60 samples, seven policies, and 200 paired independent noise trajectories per configuration. Means are fixed across runs. Dynamics include lag-two AR(2), oscillatory AR(2), and heterogeneous AR(2)/AR(3). The iid model is a misspecification baseline.
 
@@ -122,9 +122,9 @@ The revised script passes **1,525 assertions**, including independent dense like
 All audited graph-policy trajectories satisfy the conservative confidence bound; no terminal certificate passes at budget 60. Reported fixed-budget decisions are uncertified. A contrast rule can improve selection loss while a fixed schedule gives smaller overall estimation MSE; performance depends on the objective and configuration.
 
 ```sh
-python3 experiments/graph_ar_mean.py --verify
-python3 experiments/graph_ar_mean.py --runs 200 --budget 60
-python3 experiments/graph_ar_mean.py --render-only
+python3 experiments/simulations/theory/spatiotemporal/graph_ar_mean.py --verify
+python3 experiments/simulations/theory/spatiotemporal/graph_ar_mean.py --runs 200 --budget 60
+python3 experiments/simulations/theory/spatiotemporal/graph_ar_mean.py --render-only
 cd research/spatiotemporal_bandits
 tectonic --only-cached --keep-logs manuscript.tex
 ```

@@ -582,7 +582,7 @@ The policy comparison also exposes limitations. At matched smooth means and $\ph
 
 Exact calculations are checked independently of the policy experiment. Online information, scores, and posterior updates agree with dense trajectory likelihood calculations across positive, zero, and negative persistence. Constrained estimation enforces its supplied energy; fixed-design contrast bias matches the algebra. A broad two-location grid, including negative spatial correlation, validates the two-observation closed forms and design ordering. Three independent prior-predictive checks use 50,000 draws each; observed PCS agrees with the closed form within Monte Carlo uncertainty. A zero-persistence control verifies removal of transient cross-location information. The full-field effective sample-size identity is checked using independent dense solves. The current script passes 8,888 counted assertions; these are numerical checks, not a substitute for the proofs.
 
-The standard-library script is \path{experiments/graph_ar1_mean.py}. Accompanying data are in this manuscript's \path{results/mean_selection/} directory. The initial known-zero-mean reward experiment is retained separately and is not evidence for the permanent-mean estimates in this manuscript.
+The standard-library script is \path{experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py}. Accompanying data are in this manuscript's \path{results/mean_selection/} directory. The initial known-zero-mean reward experiment is retained separately and is not evidence for the permanent-mean estimates in this manuscript.
 
 \section{Discussion and research agenda}
 The tractable model gives a direct answer to how spatial smoothness should be used. Fit means using the actual covariance of the observed trajectory, regularize differences on the graph, and retain the resulting bias or prior uncertainty. In a frequentist formulation, meaningful smoothing requires a trusted quantitative radius; in a Bayesian formulation, it requires a defensible prior. Neither smoothing a graph nor a small posterior variance verifies that assumption from selected-arm data.
@@ -605,9 +605,9 @@ Stronger mean smoothness shrinks prior difference variances. Comparing Bayesian 
 
 Reproduce from the repository root:
 \begin{verbatim}
-python3 experiments/graph_ar1_mean.py --verify
-python3 experiments/graph_ar1_mean.py --runs 200 --budget 48
-python3 experiments/graph_ar1_mean.py --render-only
+python3 experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py --verify
+python3 experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py --runs 200 --budget 48
+python3 experiments/simulations/theory/spatiotemporal/graph_ar1_mean.py --render-only
 cd research/spatiotemporal_bandits
 tectonic --only-cached --keep-logs manuscript.tex
 \end{verbatim}

@@ -1,0 +1,39 @@
+{
+  "domains": {
+    "NFL": {
+      "candidates": 32,
+      "complete": 31,
+      "kept": 25
+    },
+    "NBA": {
+      "candidates": 30,
+      "complete": 30,
+      "kept": 25
+    },
+    "MLB": {
+      "candidates": 30,
+      "complete": 29,
+      "kept": 25
+    },
+    "Premier League": {
+      "candidates": 51,
+      "complete": 51,
+      "kept": 25
+    },
+    "Countries": {
+      "candidates": 195,
+      "complete": 194,
+      "kept": 25
+    },
+    "Programming languages": {
+      "candidates": 150,
+      "complete": 150,
+      "kept": 25
+    }
+  },
+  "articles": 150,
+  "days": 1461,
+  "directed_links": 3675,
+  "start": "20220101",
+  "end": "20251231"
+}

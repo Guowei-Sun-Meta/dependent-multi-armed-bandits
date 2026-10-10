@@ -730,5 +730,17 @@
   "experiments/st_toy/analyze.py": {
     "sha256": "e8e58c45a4f927e0fb5b81553dbe631e2b11f23c9bb78d44458dd9dd6f5dec66",
     "bytes": 5349
+  },
+  "research/temporal_bandits.md": {
+    "sha256": "914f1eebb9fa109a2aceaa1e9ac669b7eb452d0548258a55779723409288a9ff",
+    "bytes": 20301
+  },
+  "research/graph_spectral_bandits.md": {
+    "sha256": "434f31a46ba47a156c7cbc55a3b34073a5b75deba5c5b6a59103b9b2739d04db",
+    "bytes": 11802
+  },
+  "www/spatiotemporal_experiment_design.md": {
+    "sha256": "d44afeb62891c09598613a35361104ad3bb90eb6f403ae99885b0f321591fbb6",
+    "bytes": 40499
   }
 }

@@ -60,11 +60,31 @@ S_OBS = 0.05
 ORIGINS = (28, 35, 42)
 POLICIES = ("fit_mean", "last_value", "ts_iid", "ar_greedy", "ar_ps", "st_greedy", "st_ps", "st_ts", "st_ucb",
             "st_ps_rewired", "st_ps_nograph")
-DETERMINISTIC = ("fit_mean", "last_value", "ar_greedy", "st_greedy", "st_ucb")
+DETERMINISTIC = ("fit_mean", "last_value", "ar_greedy", "st_greedy", "st_ucb", "st_ucbm1", "st_ucbm2",
+                 "dr1_greedy", "dr2_greedy", "dr3_greedy", "dr1_ucbm1", "dr2_ucbm1", "dr3_ucbm1")
+# Follow-up (9 October evening): joint predictive sampling and tuned UCB, as in the toy, and a
+# drifting long-run level (random walk with per-day variance DRIFTS[k]) for lifecycle drift.
+DRIFTS = {1: 0.0005, 2: 0.002, 3: 0.008}
+EXTRA = ("st_jps", "st_ucbm1", "st_ucbm2") + tuple(f"dr{k}_{kind}" for k in DRIFTS for kind in ("greedy", "jps", "ucbm1"))
 FILTER_CACHE = CACHE / "daily_filters"
 
 
+class DriftFilter(Filter):
+    """Joint filter whose long-run levels follow a random walk: mu_t = mu_{t-1} + omega_t."""
+
+    def __init__(self, *args, drift: float = 0.0, **kw):
+        super().__init__(*args, **kw)
+        self.drift = drift
+
+    def propagate(self):
+        super().propagate()
+        if self.drift:
+            self.P[np.diag_indices(self.N)] += self.drift
+
+
 def variant_of(policy: str) -> str:
+    if policy.startswith("dr"):
+        return f"st_d{policy[2]}"
     if policy.startswith("ar_"):
         return "ar"
     if policy.endswith("_rewired"):
@@ -85,21 +105,29 @@ def burnin(origin: int, variant: str):
     m, a, Q, info = fit_model(Y[:origin], C_G)
     if variant == "ar":
         Q = np.diag(np.diag(Q))
+    drift = DRIFTS[int(variant[-1])] if variant.startswith("st_d") else 0.0
     K_mu = np.eye(N) * Y[:origin].mean(0).var()  # prior spread of long-run means across videos
     # Stationary lag covariance: scalar AR(p) lag covariance (unit innovations) kron Q.
-    flt = Filter(a, N, K_mu, np.kron(stationary_lag_cov(a), Q), Q, S_OBS)
+    flt = DriftFilter(a, N, K_mu, np.kron(stationary_lag_cov(a), Q), Q, S_OBS, drift=drift)
     if path.exists():
         z = np.load(path)
         flt.b, flt.P = z["b"], z["P"]
+        info["fit_loglik_last7"] = float(z["loglik"]) if "loglik" in z else np.nan
         return flt, info
     flt.b[:N] = Y[:origin].mean(0).mean()  # prior mean: platform average
     noise = S_OBS * np.random.default_rng(SEED + 7 * origin).standard_normal((origin, N))
+    loglik = 0.0
     for t in range(origin):
         for i in range(N):
+            if t >= origin - 7:  # one-step predictive log-likelihood on the last 7 fit days
+                m_i = flt.b[i] + flt.b[N + i]
+                v_i = flt.P[i, i] + 2 * flt.P[i, N + i] + flt.P[N + i, N + i] + flt.r
+                loglik += -0.5 * (np.log(2 * np.pi * v_i) + (Y[t, i] + noise[t, i] - m_i) ** 2 / v_i)
             flt.update(i, Y[t, i] + noise[t, i])
         flt.propagate()
     FILTER_CACHE.mkdir(parents=True, exist_ok=True)
-    np.savez(path, b=flt.b, P=flt.P)
+    np.savez(path, b=flt.b, P=flt.P, loglik=loglik)
+    info["fit_loglik_last7"] = loglik
     return flt, info
 
 
@@ -171,15 +199,29 @@ def run(args):
     regret = []
     info = {}
 
-    if policy.startswith(("st_", "ar_")):
+    if policy.startswith(("st_", "ar_", "dr")):
         flt, info = burnin(origin, variant_of(policy))
-        kind = policy.split("_")[1]
+        kind = policy.split("_", 1)[1]
         for t in test:
             mean, S, _ = flt.reward_mean_cov()
             if kind == "greedy":
                 score = mean
             elif kind == "ucb":
                 score = mean + 2.0 * np.sqrt(np.maximum(np.diag(S), 0))
+            elif kind.startswith("ucbm"):
+                score = mean + float(kind[4:]) * np.sqrt(np.maximum(np.diag(S), 0))
+            elif kind == "jps":
+                # Joint predictive sampling (as in experiments/st_toy): sample only the part of the
+                # current-reward uncertainty that next round's rewards would reveal.
+                _, HAP = flt.next_projection()
+                Cn = (HAP[:, :N] + HAP[:, N:2 * N]).T
+                Hb = HAP.reshape(N, flt.p + 1, N)
+                V = Hb[:, 0, :] + np.tensordot(Hb[:, 1:, :], flt.a, axes=([1], [0])) + flt.Q
+                if getattr(flt, "drift", 0.0):
+                    V = V + flt.drift * np.eye(N)
+                B = Cn @ np.linalg.solve(V + 1e-9 * np.eye(N), Cn.T)
+                w, U = np.linalg.eigh((B + B.T) / 2)
+                score = mean + U @ (np.sqrt(np.maximum(w, 0)) * rng.standard_normal(N))
             elif kind == "ts":
                 score = mean + np.linalg.cholesky(S + 1e-9 * np.eye(N)) @ rng.standard_normal(N)
             else:  # ps: sample the long-run means, condition the current fluctuation on them
@@ -227,22 +269,24 @@ def burnin_task(args):
     print(f"burn-in F={origin} {variant}: {time.time() - t0:.0f}s", flush=True)
 
 
-def main(seeds: int, jobs: int) -> None:
+def main(seeds: int, jobs: int, extra: bool = False) -> None:
     panel()
     load_features()
+    variants = ("st", "st_d1", "st_d2", "st_d3") if extra else ("st", "ar", "rewired", "nograph")
     with ProcessPoolExecutor(jobs) as ex:
-        list(ex.map(burnin_task, [(o, v) for o in ORIGINS for v in ("st", "ar", "rewired", "nograph")]))
-    tasks = [(o, s, p) for o in ORIGINS for s in range(seeds) for p in POLICIES
+        list(ex.map(burnin_task, [(o, v) for o in ORIGINS for v in variants]))
+    tasks = [(o, s, p) for o in ORIGINS for s in range(seeds) for p in (EXTRA if extra else POLICIES)
              if not (p in DETERMINISTIC and s > 0)]
     tasks.sort(key=lambda x: not (x[2].startswith("st_") or x[2].startswith("ar_")))
     with ProcessPoolExecutor(jobs) as ex:
         rows = list(ex.map(run, tasks, chunksize=1))
-    pd.DataFrame(rows).to_csv(RESULTS / "daily_runs.csv", index=False)
+    pd.DataFrame(rows).to_csv(RESULTS / ("daily_runs_extra.csv" if extra else "daily_runs.csv"), index=False)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, default=10)
     ap.add_argument("--jobs", type=int, default=3)
+    ap.add_argument("--extra", action="store_true", help="joint predictive sampling, tuned UCB, drifting level")
     a = ap.parse_args()
-    main(a.seeds, a.jobs)
+    main(a.seeds, a.jobs, a.extra)

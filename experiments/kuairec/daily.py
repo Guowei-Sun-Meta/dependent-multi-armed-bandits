@@ -65,8 +65,17 @@ DETERMINISTIC = ("fit_mean", "last_value", "ar_greedy", "st_greedy", "st_ucb", "
 # Follow-up (9 October evening): joint predictive sampling and tuned UCB, as in the toy, and a
 # drifting long-run level (random walk with per-day variance DRIFTS[k]) for lifecycle drift.
 DRIFTS = {1: 0.0005, 2: 0.002, 3: 0.008}
+# Sparse history ("sh_"): in the fit window the learner saw only K_SLOTS random videos per day,
+# so its priors on levels and current states are weak (dynamics still estimated platform-wide).
+SPARSE = ("sh_greedy", "sh_jps", "sh_ucbm1", "sh_ucbm2", "sh_tsiid")
 EXTRA = ("st_jps", "st_ucbm1", "st_ucbm2") + tuple(f"dr{k}_{kind}" for k in DRIFTS for kind in ("greedy", "jps", "ucbm1"))
 FILTER_CACHE = CACHE / "daily_filters"
+
+
+def sparse_history(origin: int, N: int) -> np.ndarray:
+    """The K_SLOTS random videos observed on each fit-window day in the sparse-history variant."""
+    rng = np.random.default_rng(SEED + 13 * origin)
+    return np.stack([rng.choice(N, size=K_SLOTS, replace=False) for _ in range(origin)])
 
 
 class DriftFilter(Filter):
@@ -83,6 +92,8 @@ class DriftFilter(Filter):
 
 
 def variant_of(policy: str) -> str:
+    if policy.startswith("sh_"):
+        return "st_sparse"
     if policy.startswith("dr"):
         return f"st_d{policy[2]}"
     if policy.startswith("ar_"):
@@ -116,9 +127,10 @@ def burnin(origin: int, variant: str):
         return flt, info
     flt.b[:N] = Y[:origin].mean(0).mean()  # prior mean: platform average
     noise = S_OBS * np.random.default_rng(SEED + 7 * origin).standard_normal((origin, N))
+    seen = sparse_history(origin, N) if variant == "st_sparse" else None
     loglik = 0.0
     for t in range(origin):
-        for i in range(N):
+        for i in (range(N) if seen is None else seen[t]):
             if t >= origin - 7:  # one-step predictive log-likelihood on the last 7 fit days
                 m_i = flt.b[i] + flt.b[N + i]
                 v_i = flt.P[i, i] + 2 * flt.P[i, N + i] + flt.P[N + i, N + i] + flt.r
@@ -199,7 +211,22 @@ def run(args):
     regret = []
     info = {}
 
-    if policy.startswith(("st_", "ar_", "dr")):
+    if policy == "sh_tsiid":
+        seen = sparse_history(origin, N)
+        n, s_ = np.zeros(N), np.zeros(N)
+        for t in range(origin):
+            n[seen[t]] += 1
+            s_[seen[t]] += Y[t, seen[t]] + noise[t, seen[t]]
+        var_y = Y[:origin].var(0).mean()
+        prior_m, prior_v = Y[:origin].mean(), Y[:origin].mean(0).var()
+        for t in test:
+            prec = 1 / prior_v + n / var_y
+            post = (prior_m / prior_v + s_ / var_y) / prec
+            chosen = np.argsort(-(post + rng.standard_normal(N) / np.sqrt(prec)))[:K_SLOTS]
+            n[chosen] += 1
+            s_[chosen] += Y[t, chosen] + noise[t, chosen]
+            regret.append(np.sort(Y[t])[-K_SLOTS:].sum() - Y[t, chosen].sum())
+    elif policy.startswith(("st_", "ar_", "dr", "sh_")):
         flt, info = burnin(origin, variant_of(policy))
         kind = policy.split("_", 1)[1]
         for t in test:
@@ -272,15 +299,17 @@ def burnin_task(args):
 def main(seeds: int, jobs: int, extra: bool = False) -> None:
     panel()
     load_features()
-    variants = ("st", "st_d1", "st_d2", "st_d3") if extra else ("st", "ar", "rewired", "nograph")
+    variants = (("st_sparse",) if extra == "sparse" else ("st", "st_d1", "st_d2", "st_d3") if extra
+                else ("st", "ar", "rewired", "nograph"))
     with ProcessPoolExecutor(jobs) as ex:
         list(ex.map(burnin_task, [(o, v) for o in ORIGINS for v in variants]))
     tasks = [(o, s, p) for o in ORIGINS for s in range(seeds) for p in (EXTRA if extra else POLICIES)
-             if not (p in DETERMINISTIC and s > 0)]
+             if not ((p in DETERMINISTIC or p in ("sh_greedy", "sh_ucbm1", "sh_ucbm2")) and s > 0)]
     tasks.sort(key=lambda x: not (x[2].startswith("st_") or x[2].startswith("ar_")))
     with ProcessPoolExecutor(jobs) as ex:
         rows = list(ex.map(run, tasks, chunksize=1))
-    pd.DataFrame(rows).to_csv(RESULTS / ("daily_runs_extra.csv" if extra else "daily_runs.csv"), index=False)
+    name = "daily_runs_sparse.csv" if extra == "sparse" else "daily_runs_extra.csv" if extra else "daily_runs.csv"
+    pd.DataFrame(rows).to_csv(RESULTS / name, index=False)
 
 
 if __name__ == "__main__":
@@ -288,5 +317,6 @@ if __name__ == "__main__":
     ap.add_argument("--seeds", type=int, default=10)
     ap.add_argument("--jobs", type=int, default=3)
     ap.add_argument("--extra", action="store_true", help="joint predictive sampling, tuned UCB, drifting level")
+    ap.add_argument("--sparse", action="store_true", help="sparse-history variant (10 videos seen per fit day)")
     a = ap.parse_args()
-    main(a.seeds, a.jobs, a.extra)
+    main(a.seeds, a.jobs, "sparse" if a.sparse else a.extra)

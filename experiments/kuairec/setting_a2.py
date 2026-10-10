@@ -86,7 +86,9 @@ def run_klucb(mu, U, T, fixed_level=None):
     return regret
 
 
-def run_sp_klucb(mu, U, T, labels, widths, level):
+def run_sp_klucb(mu, U, T, labels, widths, level, warm=False):
+    """SP-UCB with KL bounds. If `widths` is callable, the first K rounds pull every arm once
+    and the widths are then computed from those warm-up rewards (charged to regret)."""
     K, C = len(mu), labels.max() + 1
     members = [np.flatnonzero(labels == c) for c in range(C)]
     n, s = np.zeros(K), np.zeros(K)
@@ -94,9 +96,12 @@ def run_sp_klucb(mu, U, T, labels, widths, level):
     arm_up = np.full(K, np.inf)
     pool_up = np.full(C, np.inf)
     regret, best = np.zeros(T), mu.max()
+    n_init = K if callable(widths) else C
     for t in range(T):
-        if t < C:
-            a = int(members[t][0])
+        if callable(widths) and t == K:
+            widths = widths(s.sum() / n.sum())
+        if t < n_init:
+            a = t if n_init == K else int(members[t][0])
         else:
             best_val, a = -np.inf, -1
             for c in range(C):
@@ -119,6 +124,20 @@ def run_sp_klucb(mu, U, T, labels, widths, level):
 
 def complete_laplacian(K: int) -> sp.csr_matrix:
     return sp.csr_matrix((K * np.eye(K) - np.ones((K, K))) / (K - 1))
+
+
+def calibrated_user(M_tune: np.ndarray, labels: np.ndarray, q: float, k: int = 100):
+    """Per-user calibration: the q-quantile of within-component ranges over the k tuning users
+    whose average reward on these videos is closest to the user's warm-up average."""
+    C = labels.max() + 1
+    levels = np.nanmean(M_tune, axis=1)
+    ranges = np.stack([np.nanmax(M_tune[:, labels == c], 1) - np.nanmin(M_tune[:, labels == c], 1)
+                       for c in range(C)], axis=1)
+
+    def widths(level_hat: float) -> np.ndarray:
+        near = np.argsort(np.abs(levels - level_hat))[:k]
+        return np.nanquantile(ranges[near], q, axis=0)
+    return widths
 
 
 def calibrated(M_tune: np.ndarray, labels: np.ndarray, q: float) -> np.ndarray:
@@ -144,7 +163,8 @@ def cached():
 
 
 def one_instance(args):
-    u_idx, rep, K, T, k = args
+    u_idx, rep, K, T, k = args[:5]
+    user_cal_only = len(args) > 5 and args[5]
     t0 = time.time()
     feats, M, tune_users, _ = cached()
     rng = np.random.default_rng(SEED + 1000 * rep + u_idx)
@@ -164,15 +184,16 @@ def one_instance(args):
                 row[f"regret@{c}"] = float(cum[c - 1])
         runs.append(row)
 
-    record("ts", "-", "-", run_ts(mu, U, T, np.random.default_rng(SEED + 7 * u_idx + rep)))
-    record("klucb", "-", "logt", run_klucb(mu, U, T))
-    record("klucb", "-", "ell", run_klucb(mu, U, T, fixed_level=level))
-    Lc = complete_laplacian(K)
-    for lam in (1.0, 10.0):
-        record("shrink_ts", "complete", lam, run_spectral(mu, U, T, Lc, lam, level, "ts",
-                                                          np.random.default_rng(SEED + 11 * u_idx + rep)))
+    if not user_cal_only:
+        record("ts", "-", "-", run_ts(mu, U, T, np.random.default_rng(SEED + 7 * u_idx + rep)))
+        record("klucb", "-", "logt", run_klucb(mu, U, T))
+        record("klucb", "-", "ell", run_klucb(mu, U, T, fixed_level=level))
+        Lc = complete_laplacian(K)
+        for lam in (1.0, 10.0):
+            record("shrink_ts", "complete", lam, run_spectral(mu, U, T, Lc, lam, level, "ts",
+                                                              np.random.default_rng(SEED + 11 * u_idx + rep)))
 
-    for g in GRAPH_NAMES:
+    for g in (("I-mf", "I-coeng") if user_cal_only else GRAPH_NAMES):
         grng = np.random.default_rng(SEED + 31 * u_idx + 97 * rep + zlib.crc32(g.encode()) % 1000)
         base = g.split("~")[0]
         W = build(feats, base, k, grng, nodes)
@@ -191,6 +212,15 @@ def one_instance(args):
             inst[f"valid_{name}"] = float((w + 1e-12 >= certs["oracle"]).mean())
             inst[f"rejectable_{name}"] = float((w[sub] < comp_gap[sub]).mean())
             inst[f"mean_width_{name}"] = float(w.mean())
+        if user_cal_only:
+            for q in (0.9, 0.75):
+                fn = calibrated_user(M_tune, labels, q)
+                record("sp_klucb", g, f"user{int(q * 100)}", run_sp_klucb(mu, U, T, labels, fn, level))
+                w_u = fn(float(np.nanmean(mu)))  # widths at the true level, for the validity check
+                inst[f"valid_user{int(q * 100)}"] = float((w_u + 1e-12 >= certs["oracle"]).mean())
+                inst[f"mean_width_user{int(q * 100)}"] = float(w_u.mean())
+            insts.append(inst)
+            continue
         insts.append(inst)
         record("spectral_ts", g, 10.0, run_spectral(mu, U, T, L, 10.0, level, "ts",
                                                     np.random.default_rng(SEED + 11 * u_idx + rep)))
@@ -200,9 +230,9 @@ def one_instance(args):
     return runs, insts
 
 
-def main(n_users: int, subsets: int, K: int, T: int, k: int, jobs: int, tag: str) -> None:
+def main(n_users: int, subsets: int, K: int, T: int, k: int, jobs: int, tag: str, user_cal: bool = False) -> None:
     _, _, _, test_users = cached()
-    tasks = [(int(u), rep, K, T, k) for rep in range(subsets) for u in test_users[:n_users]]
+    tasks = [(int(u), rep, K, T, k, user_cal) for rep in range(subsets) for u in test_users[:n_users]]
     with ProcessPoolExecutor(jobs) as ex:
         results = list(ex.map(one_instance, tasks, chunksize=1))
     pd.DataFrame([r for rs, _ in results for r in rs]).to_csv(RESULTS / f"setting_a2_runs{tag}.csv", index=False)
@@ -218,5 +248,6 @@ if __name__ == "__main__":
     ap.add_argument("--k", type=int, default=10)
     ap.add_argument("--jobs", type=int, default=7)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--user-cal", action="store_true", help="only the per-user calibrated certificates")
     a = ap.parse_args()
-    main(a.users, a.subsets, a.arms, a.horizon, a.k, a.jobs, a.tag)
+    main(a.users, a.subsets, a.arms, a.horizon, a.k, a.jobs, a.tag, a.user_cal)

@@ -42,13 +42,13 @@ ELIM_POLICIES = ("se_iid", "se_st")
 SCALAR_POLICIES = ("sp_ucb_iid", "sp_ucb_st", "sp_ucb_st1", "se_iid", "se_st", "se_st1")
 # B1'' (correlated shocks): scalar martingale bounds with other arms' means treated as bounded
 # nuisances, plugged in from their current intervals and iterated from [0, 1].
-PLUGIN_POLICIES = ("sp_ucb_iid", "sp_ucb_st", "sp_ucb_st2", "se_iid", "se_st2")
+PLUGIN_POLICIES = ("sp_ucb_iid", "sp_ucb_st1", "sp_ucb_st2", "se_iid", "se_st2")
 BATCHES = (1, 25)
 PHIS = (0.0, 0.5, 0.9, 0.97)
 CONFIGS = ("independent", "correlated")
 
 
-def world(seed: int, phi: float, config: str, T: int):
+def world(seed: int, phi: float, config: str, T: int, shuffle: bool = False):
     rng = np.random.default_rng(seed)
     labels = np.repeat(np.arange(COMP), N // COMP)
     base = np.array([0.45, 0.25, 0.2, 0.15])
@@ -70,6 +70,10 @@ def world(seed: int, phi: float, config: str, T: int):
         Z[t] = z
         z = phi * z + Lq @ rng.standard_normal(N)
     Y = mu + Z + R_OBS * rng.standard_normal((T, N))
+    if shuffle:
+        # Random arm order, so that no index-based tie-breaking can favour the best arm.
+        perm = rng.permutation(N)
+        mu, labels, C, Y = mu[perm], labels[perm], C[np.ix_(perm, perm)], Y[:, perm]
     return mu, labels, C, q, Y
 
 
@@ -111,6 +115,7 @@ def plugin_bounds(st, members, delta, iters: int = 5):
         mu_hat = (st.q - cross) / Jd
         rad = (stat(Jd) + alpha + off @ h) / Jd
         lo, hi = np.maximum(lo, mu_hat - rad), np.minimum(hi, mu_hat + rad)
+    arm_lo, arm_hi = mu_hat - rad, mu_hat + rad  # unclipped: clipping at 1 creates index ties
     P = np.zeros((N, COMP))
     for c, mem in enumerate(members):
         P[mem, c] = 1.0
@@ -125,7 +130,7 @@ def plugin_bounds(st, members, delta, iters: int = 5):
         th_hat = (qx - (Gx - np.diag(np.diag(Gx))) @ m) / Jx
         rad = (stat(Jx) + alpha + offx @ h + dev) / Jx
         tlo, thi = np.maximum(tlo, th_hat - rad), np.minimum(thi, th_hat + rad)
-    return lo, hi, thi + EPS / 2
+    return arm_lo, arm_hi, th_hat + rad + EPS / 2
 
 
 class InnovationRegression:
@@ -167,8 +172,9 @@ class InnovationRegression:
 def run(args):
     config, phi, seed, policy, T = args[:5]
     batch = args[5] if len(args) > 5 else 1
+    shuffle = args[6] if len(args) > 6 else False
     t0 = time.time()
-    mu, labels, C, q, Y = world(SEED + seed, phi, config, T)
+    mu, labels, C, q, Y = world(SEED + seed, phi, config, T, shuffle=shuffle)
     delta = 0.05
     vstar = mu.max()
     v_c = np.array([mu[labels == c].max() for c in range(COMP)])
@@ -333,10 +339,11 @@ def verify():
 
 def main(seeds, T, jobs, tag=""):
     RESULTS.mkdir(parents=True, exist_ok=True)
+    shuffle = tag.startswith("_plugin")
     pols = (PLUGIN_POLICIES if tag.startswith("_plugin") else SCALAR_POLICIES if tag.startswith("_scalar")
             else ELIM_POLICIES if tag.startswith("_elim") else POLICIES)
     configs = ("independent",) if tag.startswith("_scalar") else CONFIGS
-    tasks = [(c, phi, s, p, T, b) for c in configs for phi in PHIS for s in range(seeds) for p in pols
+    tasks = [(c, phi, s, p, T, b, shuffle) for c in configs for phi in PHIS for s in range(seeds) for p in pols
              for b in BATCHES]
     tasks.sort(key=lambda x: not x[3].endswith("_st"))
     with ProcessPoolExecutor(jobs) as ex:

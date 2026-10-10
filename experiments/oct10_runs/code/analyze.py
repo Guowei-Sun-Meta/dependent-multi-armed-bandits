@@ -41,6 +41,11 @@ def robustness():
     if not f.exists():
         return
     d = pd.read_csv(f)
+    f2 = RESULTS / "robustness" / "runs_elim20k.csv"
+    if f2.exists():
+        e = pd.read_csv(f2)
+        e["batch"] = "25, T = 20,000"
+        d = pd.concat([d, e], ignore_index=True)
     out = ["# Experiment 4: certificates with estimated and misspecified dynamics", "",
            "Share of runs with any certificate violation (an arm or component upper bound below its "
            "target at some round), 95% Wilson interval. SP-UCB checks every round; successive "
@@ -48,9 +53,9 @@ def robustness():
            "eliminated the best arm.", ""]
     order = ["known", "fit365", "fit100", "fit100_cons", "phi_bias", "ignore_corr", "t3", "ar7_as_ar1"]
     for config in ("independent", "correlated"):
-        for batch in sorted(d.batch.unique()):
-            sub = d[(d.config == config) & (d.batch == batch)]
-            out.append(f"## {config} shocks, exposure batch {batch}")
+        for batch in sorted(d.batch.astype(str).unique()):
+            sub = d[(d.config == config) & (d.batch.astype(str) == batch)]
+            out.append(f"## {config} shocks, exposure batch {batch}" + ("" if "T =" in batch else ", T = 5,000"))
             out.append("")
             rows = []
             for policy in ("sp_ucb_st2", "se_st2", "sp_ucb_iid", "se_iid"):

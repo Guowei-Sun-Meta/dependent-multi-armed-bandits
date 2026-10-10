@@ -117,6 +117,29 @@ R3 counts a watch ratio above 2 as a like (mean 1) and everything else as 0.1. U
 - **Personal-taste correlations rise everywhere**, for example U-coeng from 0.020 to 0.067, because liking is more personal than watch time. The order across graphs is similar.
 - **Overall agreement:** the rank correlation of quotients between R1 and R3 is 0.80 across the 16 graphs. Full results are in [alignment_summary_R3_k10.csv](results/alignment_summary_R3_k10.csv).
 
+## Setting A v2: KL bounds and calibrated certificates
+
+The protocol:
+- 30 test users × 2 video subsets of 300 videos, T = 20,000.
+- KL-based bounds remove the σ = 0.5 handicap.
+- The calibrated certificate sets each component's width to a quantile, over held-out tuning users, of that component's within-component range.
+
+Full table: [setting_a2_table.md](results/setting_a2_table.md).
+
+| SP-KLUCB certificate (I-mf graph) | Regret ratio to KL-UCB at the same level (mean / 90th pct.) | Components valid | Suboptimal components rejectable | Mean width |
+| --- | --- | ---: | ---: | ---: |
+| Oracle | 0.78 / 1.05 | 100% | 63% | 0.36 |
+| Calibrated, 50th percentile | 0.81 / 1.05 | 52% | 65% | 0.30 |
+| Calibrated, 90th percentile | 1.00 / 1.05 | 93% | 19% | 0.71 |
+| Energy | 0.98 / 1.05 | 100% | 18% | 0.80 |
+| None (uncertified) | 0.67 / 1.32 | 0% | 98% | 0 |
+
+**Reading.**
+
+- **Oracle-certified pooling cuts regret 22% at no tail cost.** No practical certificate gets there. The energy and 90th-percentile calibrated certificates are valid but too wide (widths 0.71–0.80 against an oracle 0.36). The 50th-percentile calibration is narrow enough to help but valid for only half of the components.
+- **Uncertified pooling is best on average (0.67) but has the heaviest tail (1.32).** It does as well on the rewired graph (0.56), so the gain is from pooling, not graph structure.
+- **Calibration across users is not enough on its own.** Within-component ranges vary too much between users. Per-user certificates estimated from the user's own early data are the next candidate.
+
 ## Setting B: pooling across users with user graphs
 
 The protocol:

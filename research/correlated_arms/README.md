@@ -125,6 +125,34 @@ The scalar construction is valid for any adaptive, restless schedule. With corre
 
 **What the paper can claim.** B1′ makes certified pooling valid under persistence at no material regret cost against uncertified iid pooling, and lower regret when persistence is low. Invalid iid certificates mainly threaten irrevocable decisions, not regret.
 
+### B1″. Correlated shocks: iterated nuisance plug-in
+
+With correlated shocks, each design vector u_t couples arms. Write G = J − αI for the realized information. For arm i:
+
+```math
+q_i-\sum_{j\ne i}G_{ij}m_j=G_{ii}\mu_i+\sum_{j\ne i}G_{ij}(\mu_j-m_j)+W_i
+```
+
+Here $`W_i=\sum_t u_{t,i}\epsilon_t`$ is a scalar martingale with quadratic variation G_ii.
+
+**The interval map.** Take any intervals that contain the true means μ_j, with midpoints m_j and half-widths h_j. Then:
+
+```math
+\hat\mu_i\pm\rho_i,\qquad \hat\mu_i=\frac{q_i-\sum_{j\ne i}G_{ij}m_j}{J_{ii}},\qquad \rho_i=\frac{\sqrt{2J_{ii}\log(\sqrt{J_{ii}/\alpha}/\delta')}+\alpha+\sum_{j\ne i}\lvert G_{ij}\rvert h_j}{J_{ii}}
+```
+
+On the event that every scalar mixture bound holds, this map sends true-containing intervals to true-containing intervals. So iterating from [0, 1] is valid.
+
+**Components.** Write μ_i = θ_c + d_i, with θ_c the component midrange and |d_i| ≤ ε_c/2. The same argument applies to θ with design Pᵀu_t, where P is the membership matrix. The deviation term $`\sum_i\lvert(P^\top G)_{ci}\rvert\,\varepsilon_{c(i)}/2`$ is deterministic given the data. This gives a valid pooled bound θ̂_c + ρ_c + ε_c/2 ≥ v_c. With independent shocks it reduces to SP-UCB's +ε_c structure.
+
+*Implementation note.* Return the unclipped upper bounds. Clipping them at 1 creates ties that index-based argmax breaks toward a fixed arm. The sweep below also shuffles arm order.
+
+**Sweep** (correlated shocks, shuffled arms, 20 seeds; `coverage_runs_plugin.csv`):
+- B1″ is never violated.
+- With one-at-a-time sampling it beats iid pooling up to φ = 0.9 (606 against 642 at φ = 0.9).
+- With bursty exposure it is 9–21% worse at φ ≥ 0.5, where the iid certificate is invalid in 85–90% of runs.
+- Successive elimination with iid certificates wrongly drops the best arm in 35–90% of bursty, high-persistence runs; with B1″, never.
+
 ### B2. iid certificates fail under persistence
 
 **Proposition B2.** Take one arm sampled on n consecutive rounds, with stationary AR(1) persistence φ ∈ (0, 1), r = 0 and Var(z) = V. The sample mean has

@@ -393,8 +393,26 @@ Blocks of 25 & 0.97 & 853 / 1,034 / \textbf{828} & 90\% & 0\% \\
 \item Innovation-regression certificates are never violated in any configuration.
 \item B1 is valid but too wide: it eliminated nothing within 20,000 rounds. B1$'$ removes most of that cost and beats iid pooling when persistence is low (16\% lower regret at $\varphi=0$), is within 6\% at high persistence with one-at-a-time sampling, and is 26--30\% worse at moderate persistence with bursty exposure, where the iid certificate is invalid in up to 75\% of runs.
 \item Irrevocable decisions expose the risk: certified successive elimination with iid certificates wrongly eliminated the best arm in 40--75\% of bursty high-persistence runs (at both $T=5{,}000$ and $20{,}000$), against a nominal 5\%; with innovation-regression certificates, never.
-\item \textit{[Pending: B1$''$ under correlated shocks, from \texttt{coverage\_runs\_plugin.csv}.]}
+\item B1$''$ under correlated shocks (Table~\ref{tab:b1pp}, Figure~\ref{fig:cert}; arm order shuffled, 20 seeds) is never violated. With one-at-a-time sampling it beats iid pooling up to $\varphi=0.9$ (e.g.\ 606 against 642 at $\varphi=0.9$); with bursty exposure it is 9--21\% worse at $\varphi\ge0.5$, exactly where the iid certificate is invalid in 85--90\% of runs. Elimination built on iid certificates wrongly drops the best arm in 35--90\% of bursty high-persistence runs; built on B1$''$, never.
 \end{itemize}
+
+\begin{table}[t]\centering\small
+\begin{tabular}{lcccc}
+\toprule
+Exposure & $\varphi$ & Regret: iid / B1$'$ / B1$''$ & iid violated (runs) & B1$''$ violated \\
+\midrule
+One at a time & 0 & 357 / 317 / \textbf{313} & 0\% & 0\% \\
+One at a time & 0.5 & 460 / 383 / 412 & 0\% & 0\% \\
+One at a time & 0.9 & 642 / 646 / \textbf{606} & 0\% & 0\% \\
+One at a time & 0.97 & 693 / 683 / 760 & 0\% & 0\% \\
+Blocks of 25 & 0 & 372 / 319 / 330 & 0\% & 0\% \\
+Blocks of 25 & 0.5 & 395 / 497 / 479 & 0\% & 0\% \\
+Blocks of 25 & 0.9 & 706 / 841 / 792 & 85\% & 0\% \\
+Blocks of 25 & 0.97 & 816 / 939 / 889 & 90\% & 0\% \\
+\bottomrule
+\end{tabular}
+\caption{Correlated shocks (path-graph innovation covariance), shuffled arm order, 20 seeds. B1$'$ has no guarantee here; B1$''$ does.}\label{tab:b1pp}
+\end{table}
 
 \subsection{Spatiotemporal benchmark}
 

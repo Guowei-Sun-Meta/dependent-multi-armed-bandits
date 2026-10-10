@@ -96,15 +96,12 @@ def fig2_pooling_tails() -> None:
 
 def fig3_certificates() -> None:
     """Certificates under persistence with bursty exposure (blocks of 25): validity and regret."""
-    parts = [pd.read_csv(ST / "coverage_runs_scalar.csv")]
-    if (ST / "coverage_runs_plugin.csv").exists():
-        parts.append(pd.read_csv(ST / "coverage_runs_plugin.csv"))
-    d = pd.concat(parts)
+    d = pd.read_csv(ST / "coverage_runs_plugin.csv")  # all certificates on identical shuffled worlds
     d = d[(d.batch == 25) & d.policy.isin(["sp_ucb_iid", "sp_ucb_st1", "sp_ucb_st2"])]
     d = d.drop_duplicates(["config", "phi", "seed", "policy"])
     series = [("sp_ucb_iid", "iid certificate", ORANGE, "o"),
-              ("sp_ucb_st1", "B1′ (independent shocks)", BLUE, "s"),
-              ("sp_ucb_st2", "B1″ (correlated shocks)", AQUA, "^")]
+              ("sp_ucb_st1", "B1′ scalar (valid for independent shocks)", BLUE, "s"),
+              ("sp_ucb_st2", "B1″ plug-in (valid for both)", AQUA, "^")]
     fig, axes = plt.subplots(1, 2, figsize=(6.9, 2.1))
     for config, ls in (("independent", "-"), ("correlated", ":")):
         for pol, label, color, marker in series:
@@ -113,7 +110,7 @@ def fig3_certificates() -> None:
                 continue
             g = s.groupby("phi").agg(viol=("any_violation", "mean"), reg=("regret", "mean"))
             g.index = [PHI_POS[v] for v in g.index]
-            lab = f"{label}, {config}" if config == "independent" or pol != "sp_ucb_st1" else None
+            lab = label if config == "independent" else None
             axes[0].plot(g.index, 100 * g.viol, ls=ls, color=color, marker=marker, ms=4, lw=1.6, label=lab)
             axes[1].plot(g.index, g.reg, ls=ls, color=color, marker=marker, ms=4, lw=1.6)
     axes[0].set_ylabel("Runs with a violated\ncertificate (%)")

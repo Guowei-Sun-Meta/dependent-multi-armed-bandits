@@ -2,6 +2,8 @@
 
 Every experiment behind the correlated-arms papers ([research/claude_opus_10_09_v2](../research/claude_opus_10_09_v2/README.md)), grouped by data source. Each experiment folder holds its design (`design.md`), report (`README.md`), code (`code/`) and results (`results/`).
 
+The [recommended spatiotemporal experiments](recommended_spatiotemporal_experiments.md) describe five application studies, their priorities, laptop-sized scopes, and the shared validation protocol. These are proposed designs, separate from the completed reports below.
+
 ```
 experiments/
   README.md                          this index

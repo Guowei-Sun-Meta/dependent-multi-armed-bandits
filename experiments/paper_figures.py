@@ -3,7 +3,7 @@
 Usage (from the repo root):
     .venv/bin/python -I experiments/paper_figures.py
 
-Writes research/correlated_arms/figures/fig{1..5}_*.{pdf,png} from saved results only.
+Writes research/claude_opus_10_09/figures/fig{1..6}_*.{pdf,png} from saved results only.
 Colour by role, fixed across figures: iid = neutral gray, spatial only = orange,
 temporal only = aqua, spatiotemporal or certified = blue (first three slots of the
 reference categorical palette, documented to pass all-pairs colour-blind checks in
@@ -24,10 +24,11 @@ import pandas as pd  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 KR = ROOT / "research" / "kuairec_graphs" / "results"
 ST = ROOT / "research" / "st_toy" / "results"
-OUT = ROOT / "research" / "correlated_arms" / "figures"
+OUT = ROOT / "research" / "claude_opus_10_09" / "figures"
 
 BLUE, ORANGE, AQUA, GRAY = "#2a78d6", "#eb6834", "#1baf7a", "#8a8984"
 INK, MUTED, GRID = "#0b0b0b", "#52514e", "#e4e3df"
+PHI_POS = {0.0: 0, 0.5: 1, 0.9: 2, 0.97: 3}  # evenly spaced persistence levels
 FAMILY_COLOR = {"iid": GRAY, "spatial only": ORANGE, "temporal only": AQUA, "spatiotemporal": BLUE}
 
 plt.rcParams.update({
@@ -68,32 +69,28 @@ def fig1_alignment() -> None:
 
 
 def fig2_pooling_tails() -> None:
-    """Uncertified pooling helps the median user but has a heavy tail (Setting A, I-mf)."""
+    """Within the UCB family: SP-UCB without and with an (oracle) certificate, relative to UCB1."""
     r = pd.read_csv(KR / "setting_a_runs.csv")
     col = "regret@20000"
-    ts = r[r.policy == "ts"].set_index("user")[col]
-    rows = [
-        ("UCB1", (r.policy == "ucb"), GRAY),
-        ("Spectral TS, λ=10", (r.policy == "spectral_ts") & (r.graph == "I-mf") & (r.param.astype(str) == "10.0"), ORANGE),
-        ("SP-UCB, no certificate", (r.policy == "sp_ucb") & (r.graph == "I-mf") & (r.param == "none"), ORANGE),
-        ("SP-UCB, oracle certificate", (r.policy == "sp_ucb") & (r.graph == "I-mf") & (r.param == "oracle"), BLUE),
-    ]
-    fig, ax = plt.subplots(figsize=(3.4, 1.9))
-    for k, (label, mask, color) in enumerate(rows):
-        x = (r[mask].set_index("user")[col] / ts).dropna().to_numpy()
-        lo, med, hi = np.quantile(x, [0.1, 0.5, 0.9])
-        ax.hlines(k, lo, hi, color=color, lw=2)
-        ax.scatter([med], [k], s=26, color=color, zorder=3)
-        ax.text(hi * 1.08, k, f"90th pct {hi:.1f}×", va="center", fontsize=7, color=MUTED)
+    ucb = r[r.policy == "ucb"].set_index("user")[col]
+    graphs = ["I-mf", "I-coeng", "I-tag", "I-cat", "I-coauthor"]
+    fig, ax = plt.subplots(figsize=(3.4, 2.3))
+    for k, g in enumerate(graphs):
+        for off, cert, color, label in ((-0.15, "none", ORANGE, "No certificate"), (0.15, "oracle", BLUE, "Oracle certificate")):
+            x = (r[(r.policy == "sp_ucb") & (r.graph == g) & (r.param == cert)].set_index("user")[col] / ucb).dropna()
+            lo, med, hi = np.quantile(x, [0.1, 0.5, 0.9])
+            ax.hlines(k + off, lo, hi, color=color, lw=2)
+            ax.scatter([med], [k + off], s=22, color=color, zorder=3, label=label if k == 0 else None)
     ax.set_xscale("log")
     ax.axvline(1, color=MUTED, lw=0.8, ls="--")
-    ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([r_[0] for r_ in rows])
+    ax.text(1.04, len(graphs) - 0.45, "UCB1", fontsize=7, color=MUTED)
+    ax.set_yticks(range(len(graphs)))
+    ax.set_yticklabels(graphs)
     ax.invert_yaxis()
     ax.grid(axis="y", visible=False)
-    ax.set_xlabel("Regret relative to Thompson sampling (median, 10th–90th pct.)")
-    ax.set_title("Uncertified pooling: good median, heavy tail", loc="left", color=INK)
-    ax.set_xlim(0.2, 60)
+    ax.set_xlabel("SP-UCB / UCB1 regret per user\n(median, 10th–90th percentile)")
+    ax.legend(fontsize=7, loc="upper left", bbox_to_anchor=(0.0, -0.32), ncol=2)
+    ax.set_title("No certificate: lower median, wider spread", loc="left", color=INK)
     save(fig, "fig2_pooling_tails")
 
 
@@ -115,6 +112,7 @@ def fig3_certificates() -> None:
             if s.empty:
                 continue
             g = s.groupby("phi").agg(viol=("any_violation", "mean"), reg=("regret", "mean"))
+            g.index = [PHI_POS[v] for v in g.index]
             lab = f"{label}, {config}" if config == "independent" or pol != "sp_ucb_st1" else None
             axes[0].plot(g.index, 100 * g.viol, ls=ls, color=color, marker=marker, ms=4, lw=1.6, label=lab)
             axes[1].plot(g.index, g.reg, ls=ls, color=color, marker=marker, ms=4, lw=1.6)
@@ -122,9 +120,10 @@ def fig3_certificates() -> None:
     axes[1].set_ylabel("Mean regret (T = 5,000)")
     for ax in axes:
         ax.set_xlabel("Persistence φ")
-        ax.set_xticks([0, 0.5, 0.9, 0.97])
-    axes[0].set_title("Standard certificates fail under persistence", loc="left", color=INK)
-    axes[1].set_title("Valid certificates at similar regret", loc="left", color=INK)
+        ax.set_xticks(list(PHI_POS.values()))
+        ax.set_xticklabels([str(v) for v in PHI_POS])
+    axes[0].set_title("iid certificates fail as persistence grows", loc="left", color=INK)
+    axes[1].set_title("Valid certificates, comparable regret", loc="left", color=INK)
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", ncol=3, fontsize=7, bbox_to_anchor=(0.5, -0.18))
     fig.text(0.99, -0.2, "solid: independent shocks · dotted: correlated shocks", ha="right", fontsize=7, color=MUTED)
@@ -152,7 +151,8 @@ def fig4_toy() -> None:
     ax.grid(axis="y", visible=False)
     ax.set_xlabel("Dynamic regret per round")
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in FAMILY_COLOR.values()]
-    ax.legend(handles, FAMILY_COLOR.keys(), fontsize=6.5, loc="lower right", handlelength=1)
+    ax.legend(handles, FAMILY_COLOR.keys(), fontsize=7, loc="upper left", bbox_to_anchor=(-0.05, -0.2),
+              ncol=4, handlelength=1, columnspacing=0.8)
     ax.set_title("Model the dynamics, explore what persists", loc="left", color=INK)
     save(fig, "fig4_toy_fluctuation_channel")
 

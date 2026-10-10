@@ -181,10 +181,39 @@ def fig5_daily() -> None:
     save(fig, "fig5_kuairec_daily")
 
 
+def fig6_wikipedia() -> None:
+    """Wikipedia attention over the hyperlink graph: regret per day by policy (mean of 3 origins)."""
+    path = ROOT / "research" / "claude_opus_10_09" / "wikipedia" / "results" / "runs.csv"
+    if not path.exists():
+        return
+    d = pd.read_csv(path)
+    m = d.groupby("policy").regret_per_day.mean()
+    rows = [("Model + drift, greedy", "dr_greedy", BLUE), ("Model, joint predictive sampling", "st_jps", BLUE),
+            ("Model, UCB 1 sd", "st_ucbm1", BLUE), ("Model, greedy (hyperlink graph)", "st_greedy", BLUE),
+            ("Model, greedy (rewired graph)", "st_greedy_rewired", BLUE),
+            ("Model, greedy (no graph)", "st_greedy_nograph", BLUE), ("AR filter, greedy", "ar_greedy", AQUA),
+            ("Last observed value", "last_value", GRAY), ("Fit-window means", "fit_mean", GRAY),
+            ("iid Thompson sampling", "ts_iid", GRAY)]
+    fig, ax = plt.subplots(figsize=(3.4, 2.6))
+    y = np.arange(len(rows))
+    ax.barh(y, [m[k] for _, k, _ in rows], color=[c for *_, c in rows], height=0.62)
+    for yy, (_, k, _) in zip(y, rows):
+        ax.text(m[k] + 0.006, yy, f"{m[k]:.3f}", va="center", fontsize=7, color=MUTED)
+    ax.set_yticks(y)
+    ax.set_yticklabels([r[0] for r in rows])
+    ax.invert_yaxis()
+    ax.grid(axis="y", visible=False)
+    ax.set_xlabel("Regret per day\n(10 slots, log views; mean of 3 origins)")
+    ax.set_xlim(0, max(m) * 1.18)
+    ax.set_title("Wikipedia: dynamics matter, links do not", loc="left", color=INK)
+    save(fig, "fig6_wikipedia")
+
+
 if __name__ == "__main__":
     fig1_alignment()
     fig2_pooling_tails()
     fig3_certificates()
     fig4_toy()
     fig5_daily()
+    fig6_wikipedia()
     print("figures written to", OUT)

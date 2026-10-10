@@ -39,7 +39,7 @@ Arms in web decision problems are almost never independent. Similar items share 
 
 On the theory side we (i) reuse certified pooling results for the mean channel, including a path--clique information separation; (ii) show that certified pooling remains valid under persistent, spatially correlated, restless rewards when its confidence sets come from an exact innovation regression, and give tight scalar certificates for independent shocks (B1$'$) and, via iterated nuisance plug-in, for correlated shocks (B1$''$); (iii) show that iid certificates under-cover under bursty persistent exposure (B2); and (iv) state an innovation lower bound for dynamic regret and the principle that exploration should target uncertainty that persists.
 
-Empirically, on KuaiRec (a nearly fully observed short-video matrix) we measure which of sixteen web graphs encode correlated appeal: collaborative and co-engagement graphs do; social, profile, location and demographic graphs barely do. Uncertified pooling has a good median but a heavy tail; certified pooling with oracle certificates halves UCB1's regret without it, while practical certificates remain too wide or invalid. Under bursty persistent exposure, iid certificates are violated in 75--90\% of runs and wrongly eliminate the best arm in 40--75\%, while innovation-regression certificates are never violated, at comparable regret. In a 100-arm AR(20) benchmark, joint predictive sampling closes 37\% of the gap between Thompson sampling and the innovation lower bound without tuning, and spatial correlation adds 15\% on top of persistence. On KuaiRec daily engagement, modelling persistence cuts regret by 38--43\% against iid Thompson sampling. A Wikipedia programming-language attention experiment over the hyperlink graph tests whether shocks travel along web links.
+Empirically, on KuaiRec (a nearly fully observed short-video matrix) we measure which of sixteen web graphs encode correlated appeal: collaborative and co-engagement graphs do; social, profile, location and demographic graphs barely do. Uncertified pooling has a good median but a heavy tail; certified pooling with oracle certificates halves UCB1's regret without it, while practical certificates remain too wide or invalid. Under bursty persistent exposure, iid certificates are violated in 75--90\% of runs and wrongly eliminate the best arm in 40--75\%, while innovation-regression certificates are never violated, at comparable regret. In a 100-arm AR(20) benchmark, joint predictive sampling closes 37\% of the gap between Thompson sampling and the innovation lower bound without tuning, and spatial correlation adds 15\% on top of persistence. On KuaiRec daily engagement, modelling persistence cuts regret by 38--43\% against iid Thompson sampling. On Wikipedia attention over the hyperlink graph (150 programming-language articles, four years of daily views), a drifting-level filter cuts regret 32\% and joint predictive sampling 26\% against iid Thompson sampling; shocks are strongly correlated but through a domain-wide factor, so hyperlinks add nothing beyond it.
 \end{abstract}
 
 \tableofcontents
@@ -290,6 +290,7 @@ I-tag / I-cat & Jaccard on tags; three-level category tree \\
 \subsection{Which graphs encode correlated appeal}
 
 \begin{table}[t]\centering\small
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lcrccc}
 \toprule
 Graph & Side & Edges & Quotient (real / rewired) & Personal-taste corr. (real / random) & Choice cost $\lambda{=}10$ (real / rewired) \\
@@ -309,7 +310,7 @@ U-geo & U2U & 10,263 & 0.946 / 1.002 & 0.007 / 0.000 & 0.350 / 0.301 \\
 U-feat & U2U & 10,789 & 0.972 / 0.989 & 0.006 / 0.001 & 0.305 / 0.303 \\
 U-demo & U2U & 10,934 & 0.988 / 1.000 & 0.002 / 0.000 & 0.328 / 0.304 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{Phase 1 alignment (R1, $k=10$). Personal-taste correlation removes each user's activity and each video's popularity. Choice cost: loss of each user's best-video value after smoothing true means with $(I+\lambda L)^{-1}$, as a share of the best-to-average gap. Compare each graph with its own rewiring; raw quotients are not comparable across degree distributions.}\label{tab:align}
 \end{table}
 
@@ -500,7 +501,40 @@ Joint predictive sampling & 6.14 & 7.53 & 6.89 & 6.85 \\
 
 \subsection{Wikipedia attention over the hyperlink graph}\label{sec:wiki}
 
-\textit{[Pending: design, diagnostics (do shocks travel along hyperlinks?) and results from \texttt{research/claude\_opus\_10\_09/wikipedia}.]}
+\paragraph{Design.} Arms are the 150 most-viewed English Wikipedia articles linked from ``List of programming languages'' with complete data (512 of 691 had complete series). The panel is daily user page views, 1 January 2022 to 31 December 2025 (1,461 days), from the public Wikimedia REST API. The graph is the 3,037 hyperlinks among them (mean degree 40.5), symmetrized. The reward of featuring an article is $\log(1+\text{views})$; ten articles are featured per day. For origins $F\in\{365,730,1095\}$ the model is fitted on the preceding 365 days (AR lags $\{1,2,7\}$, innovation covariance shrunk toward a hyperlink-graph resolvent plus a common shock) and tested on the next 120 days, with real, rewired and no-graph covariances, a drifting level and a sparse-history variant.
+
+\paragraph{Data.} Attention persists with a weekly cycle (lag-1 autocorrelation 0.72, lag-7 0.74, lag-30 0.37; AR spectral radius 0.97). Shocks are strongly correlated but through a domain-wide factor: innovations correlate at 0.218 across all pairs, 0.256 across hyperlinked pairs and 0.250 across rewired pairs.
+
+\begin{table}[t]\centering\small
+\begin{tabular}{lcccc}
+\toprule
+Policy & $F=365$ & $F=730$ & $F=1095$ & Mean \\
+\midrule
+Spatiotemporal filter, drifting level, greedy & 0.045 & 0.828 & 0.254 & \textbf{0.376} \\
+Joint predictive sampling & 0.085 & 0.848 & 0.287 & 0.407 \\
+Spatiotemporal UCB, 1 sd & 0.054 & 0.999 & 0.256 & 0.436 \\
+Spatiotemporal greedy (hyperlink / rewired / no graph) & 0.050 & 1.015 & 0.258 & 0.441 / 0.441 / 0.441 \\
+AR filter (temporal only), greedy & 0.053 & 1.028 & 0.262 & 0.448 \\
+Last observed value & 0.045 & 1.012 & 0.400 & 0.486 \\
+Fit-window means & 0.045 & 1.340 & 0.256 & 0.547 \\
+iid Thompson sampling & 0.062 & 1.340 & 0.256 & 0.553 \\
+\bottomrule
+\end{tabular}
+\caption{Wikipedia attention: regret per day (top-10 log views).}\label{tab:wiki}
+\end{table}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.55\linewidth]{../figures/fig6_wikipedia.pdf}
+\caption{Wikipedia attention over the hyperlink graph, mean regret per day over three origins.}\label{fig:wiki}
+\end{figure}
+
+\paragraph{Findings.}
+\begin{itemize}
+\item Modelling dynamics pays: the drifting-level filter cuts regret 32\% against iid TS and 23\% against the last-value rule.
+\item Exploration pays here, unlike on KuaiRec daily: joint predictive sampling is second best ($-26\%$ against TS, 8\% better than greedy without drift). Each article receives about eight observations in the test window, against about one per video on KuaiRec, consistent with matching exploration to observations per arm.
+\item Hyperlinks add nothing to the fluctuation model: real, rewired and no-graph covariances tie (0.441). Shocks are shared, but domain-wide rather than along links.
+\item Difficulty concentrates where rankings shift (the 2024 window); in stable periods every model is near the oracle.
+\end{itemize}
 
 %=====================================================================
 \section{Discussion}
@@ -512,7 +546,8 @@ Joint predictive sampling & 6.14 & 7.53 & 6.89 & 6.85 \\
 \item Most pooling gains on KuaiRec come from shrinkage rather than graph structure; rewired graphs match real ones. Structure matters for certification (oracle certificates on real graphs reject more components) and for safety, not for average gains.
 \item Uncertified pooling trades a good median for a heavy tail. Certification removes the tail, but practical certificates remain the bottleneck: energy and calibrated certificates are too wide or invalid on real graphs.
 \item Persistence must enter confidence sets. Under bursty exposure iid certificates are routinely invalid, and irrevocable decisions built on them fail; innovation-regression certificates are always valid at comparable regret.
-\item Modelling dynamics pays on real data; exploration must target persistent uncertainty and be matched to the number of observations per arm.
+\item Modelling dynamics pays on real data (KuaiRec $-38$ to $-43\%$, Wikipedia $-32\%$ against iid TS); exploration must target persistent uncertainty and be matched to the number of observations per arm (it helps on Wikipedia, about eight per arm, and not on KuaiRec daily, about one).
+\item Correlated fluctuations on both platforms are dominated by a platform- or domain-wide common shock; neither co-engagement graphs nor hyperlinks carry link-specific shock correlation. Graph-specific fluctuation structure appears in the controlled benchmark (15\% gain) but remains to be found on real web data.
 \end{enumerate}
 
 \paragraph{Limitations.} KuaiRec ground truth uses one observed watch ratio per pair, so measured alignment understates preference alignment. Panel experiments assume that showing an item does not change its organic demand. Dynamics are estimated in a fit window and treated as known in the test window. The toy benchmark fixes the model class; real dynamics show lifecycle drift outside it. Regret bounds for B1$'$ and B1$''$ under correlated shocks are stated through realized information; clean per-pull constants exist only for independent AR(1) arms.

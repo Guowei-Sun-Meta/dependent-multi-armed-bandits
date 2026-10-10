@@ -83,6 +83,15 @@ Details and tables are in [research/kuairec_graphs/README.md](research/kuairec_g
     - **The main open problem is a practical certificate between the oracle and energy bounds.**
 5. **Known handicap.** UCB-style methods use σ = 0.5 while means average about 0.18, so TS beats them by about 8×. Compare within families, or use KL-based indices.
 
+## Compiled findings (9 October 2026, evening)
+
+Everything is compiled in [research/claude_opus_10_09/](research/claude_opus_10_09/README.md):
+- the long working paper `paper/paper.tex` and `paper.pdf` (17 pages; compile with `tectonic`)
+- figures from `experiments/paper_figures.py`
+- the Wikipedia attention application, with code in `experiments/wikipedia/`
+
+The user condenses the paper into the submission.
+
 ## Current status and next steps
 
 Kept up to date by whoever runs experiments. Check `research/kuairec_graphs/README.md` for the latest numbers.

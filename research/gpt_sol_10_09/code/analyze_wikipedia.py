@@ -71,7 +71,7 @@ def main():
     pd.DataFrame(paired).to_csv(OUT / "paired.csv", index=False)
     pivot = summary[summary.order == 7].pivot(index="policy", columns=["panel", "batch"], values="regret")
     order = list(LABELS)
-    tex = ["\\begin{center}\\small", "\\begin{tabular}{lrrrr}", "\\toprule",
+    tex = ["\\noindent Observed current-field oracle regret per slot, averaged over policy seeds where applicable. Smaller values are better; conditional randomization intervals are released in the result CSVs.", "\\begin{center}\\small", "\\begin{tabular}{lrrrr}", "\\toprule",
            "Policy & Astro., $b=1$ & Astro., $b=5$ & Football, $b=1$ & Football, $b=5$ "+ROW_END, "\\midrule"]
     md = ["# Wikipedia attention: completed laptop experiment", "",
           "Two fixed 24-article panels, 2024 fitting and 181 test days in 2025. Graphs use revisions before 2024.", "",
@@ -121,7 +121,7 @@ def main():
             d = daily[(daily.panel==panel)&(daily.order==7)&(daily.batch==5)&(daily.policy==policy)]
             curve = d.groupby("day").cumulative_regret.mean()/5
             ax.plot(curve.index+1, curve, label=LABELS[policy], color=color)
-        ax.set_title(panel.title()+", five observations/day"); ax.set_xlabel("Test day"); ax.set_ylabel("Cumulative regret / slot count per day"); ax.legend(fontsize=7)
+        ax.set_title(panel.title()+", five observations/day"); ax.set_xlabel("Test day"); ax.set_ylabel("Cumulative log-view regret / b"); ax.legend(fontsize=7)
     fig.savefig(OUT / "cumulative.pdf"); fig.savefig(OUT / "cumulative.png", dpi=170); plt.close(fig)
     # Blocks describe variation of a fixed record, not an independent-world CI.
     blocks = daily[daily.order==7].assign(block=lambda x:x.day//30).groupby(["panel", "batch", "policy", "seed", "block"]).regret.mean().reset_index()

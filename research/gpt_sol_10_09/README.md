@@ -2,7 +2,7 @@
 
 9 October 2026. This directory contains the requested long manuscript and a completed second application experiment. Original research manuscripts and experiments were read and collected without being overwritten.
 
-Start with the [compiled paper](manuscript.pdf) or its [editable LaTeX source](manuscript.tex). The [integrated synthesis](sections/synthesis.tex) connects the model, estimators, policies, information limits, selection formulas, simulations, and applications. Five technical appendices retain the full derivations from the spatial/general-AR, graph-alignment, predictive AR(1), two-arm, and multiple-arm/general-AR papers. The main model permits heterogeneous AR orders; AR(1) appears only as a restricted analytical example.
+Start with the **102-page [compiled paper](manuscript.pdf)** or its [editable LaTeX source](manuscript.tex). The [integrated synthesis](sections/synthesis.tex) connects the model, estimators, policies, information limits, selection formulas, simulations, and applications. Five technical appendices retain the full derivations from the spatial/general-AR, graph-alignment, predictive AR(1), two-arm, and multiple-arm/general-AR papers. The main model permits heterogeneous AR orders; AR(1) appears only as a restricted analytical example.
 
 The [evidence index](findings.md) maps findings to their source artifacts. The [source manifest](evidence_manifest.json) fingerprints the collected versions. Older Bayesian or iid results keep their original assumptions. Exploratory findings and incomplete theoretical extensions are explicitly identified, including two corrections to the original pooling/partial-feedback bridge notes.
 
@@ -56,4 +56,3 @@ For later reduction, edit `sections/synthesis.tex` first, choose one primary obj
 ## Verification
 
 [Filter checks](results/wikipedia/checks.json) cover dense transition/update equivalence, complete panels, graph chronology, degree preservation, and positive semidefinite predictive covariance throughout the decisions. [Analysis checks](results/wikipedia/analysis_checks.json) cover complete run combinations, daily bookkeeping, observation budgets, and nonnegative oracle loss. [Package verification](verification.json) records source provenance, data hashes, build checks, and final artifact counts.
-

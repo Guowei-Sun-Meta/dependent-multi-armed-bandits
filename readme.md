@@ -8,6 +8,10 @@ There are two types of dependencies:
 
 Under the two types of dependency, how would the optimal policy of reducing regret change? Do some research and evaluate the value of the idea.
 
+## Extended research collection, 9 October 2026
+
+The [long manuscript](research/gpt_sol_10_09/manuscript.pdf) integrates the graph and temporal theory, UCB and Thompson-style policies, selection formulas, controlled experiments, and KuaiRec findings, with five full technical appendices. The [package overview](research/gpt_sol_10_09/README.md) links source evidence and reproduction commands. A [completed Wikipedia experiment](research/gpt_sol_10_09/results/wikipedia/findings.md) adds two historical-graph attention panels with general AR(7)/AR(20) models, one- and five-reading budgets, and topology controls, using about three minutes and 167 MB of laptop compute.
+
 ## Temporal dependence and predictive rewards
 
 The [temporal-bandit research map](research/temporal_bandits.md) reviews autoregressive and Markovian bandits, distinguishes rested and restless evolution, and compares regret against fixed arms, causal policies, and full-state oracles. It develops an AR(1) starting model with separate parameter and prediction uncertainty, including the effects of observation age and sampling gaps. A [formula illustration](research/temporal_information.svg) shows how persistence preserves forecasts while reducing the information in consecutive samples about the mean.

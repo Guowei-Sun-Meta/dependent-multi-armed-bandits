@@ -1,0 +1,110 @@
+{
+  "generated_utc": "2026-10-10T01:19:36.029738+00:00",
+  "status": "pass",
+  "environment": {
+    "python": "3.9.6",
+    "platform": "macOS-14.6-arm64-arm-64bit",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "scipy": "1.13.1",
+    "matplotlib": "3.9.4"
+  },
+  "source_provenance": {
+    "fingerprints": 186,
+    "verified_frozen_copies": 184,
+    "source_only_large_artifacts": [
+      "research/spatiotemporal_bandits/results/policies_ar20/metadata.json",
+      "research/spatiotemporal_bandits/results/policies_ar20/checkpoints.csv"
+    ],
+    "frozen_hash_mismatches": 0,
+    "alternative_compiled_paper": "context_only_not_an_independent_study"
+  },
+  "data_provenance": {
+    "articles": 48,
+    "raw_hashes_verified": 96,
+    "revision_identity_and_pre2024_cutoff": "pass",
+    "complete_547_day_panels": "pass_in_runner",
+    "executed_runner_sha256": "match"
+  },
+  "fitted_models": {
+    "graph_degree_preservation": "pass_all_four",
+    "innovation_positive_definiteness": "pass_all_families",
+    "AR_stability": "pass_all_four"
+  },
+  "experiment": {
+    "runs": 352,
+    "daily_decisions": 63712,
+    "wall_seconds": 197.92704583300002,
+    "peak_rss_mb": 166.756352,
+    "checks": {
+      "dense_transition_and_update": "pass",
+      "state_dimension": 8,
+      "real_panel_complete": "pass",
+      "graph_cutoffs": "pass",
+      "rewiring_degrees": "pass",
+      "predictable_covariance_psd_every_policy_decision": "pass",
+      "nonnegative_oracle_regret": "pass",
+      "batch_selected_before_feedback": "pass_by_observed_only_score_interface"
+    },
+    "analysis_checks": {
+      "run_cartesian_completeness": "pass",
+      "daily_trace_bookkeeping": "pass",
+      "all_observation_budgets": "pass",
+      "nonnegative_transformed_and_raw_regret": "pass",
+      "randomization_intervals_labelled_conditional": "pass"
+    }
+  },
+  "paper": {
+    "pages": 102,
+    "technical_appendices": 5,
+    "distinct_collected_references": 33,
+    "additional_data_references": 3,
+    "tectonic_cached_build": "pass",
+    "undefined_references": 0,
+    "overfull_boxes": 0,
+    "duplicate_appendix_counters": "removed",
+    "layout_warnings": "Underfull hbox warnings retained; representative pages inspected"
+  },
+  "documentation_links": "pass",
+  "new_scripts_parse": "pass",
+  "artifact_hashes": {
+    "manuscript.pdf": "4abc82a9930eb264f156f447191ff2f9d298304e1a8f6b0114af42dbcf797a36",
+    "manuscript.tex": "554bebd0aa28622d26e0a91f869c9b85080bae6d56b29158f6ed35fc47f5f331",
+    "README.md": "ad86a9666eaf898aa4cb76780af9021ec920187dfc0ba98fdb72659a675162a9",
+    "findings.md": "dcb58c83675e5d0943d4c41799d5c872692038ee16ba231da51b0f00f4d47ad6",
+    "experiment_design.md": "84e2995b612d6191c46f5bd425747bc0ff8090799fba357540bd137a067e8510",
+    "requirements.txt": "0daad8f5b90c21c3d10e511566f6168fcae6da04dac2382baef9f94f8e14346e",
+    "evidence_manifest.json": "a639d4564d9eee11c4372407fbd4dc5e1303932f4536c511fee85ae2f18801e5",
+    "code/analyze_wikipedia.py": "2f2ef2e15a38d3cdc97eae433c75748c9ae1cba3e125bc81b79fc6b6bfe70314",
+    "code/download_wikipedia.py": "6ab72360d272c0ce631fe3b9021f51f2a7acd56b7ffc8b6f2e432f7b1a993eab",
+    "code/wikipedia_experiment.py": "1247a85832c3aa57f39258f0e43be496b3321d988906a3d56bb4183b483c689e",
+    "code/collect_sources.py": "a7b6c4a92b014aed954264b727c45a13fa53b862ad014a2a43045dbff48a4906",
+    "sections/wikipedia_design.tex": "0322000876df05ff325273075cb2941cc3791538d8d39e5b0ae3610319d177a2",
+    "sections/synthesis.tex": "29c7b8d13158752339fdde532aafb88f01289788221c9e041620db09e19173c8",
+    "appendices/predictive_ar1.tex": "eed2e7457726de454f1a8f5d165c10da472d63659a71e0ec8343a1d867594e67",
+    "appendices/alignment_paper.tex": "cfe8dbc3e2bc23188ec926ef54a282cffacba490dacc6db682262e1f061f28d5",
+    "appendices/two_arm_ar1.tex": "39acf13cfa40a3229a90ff6d9bf6de2696ade7b671b945e4f62110d588f5ac08",
+    "appendices/ar_p_bandits.tex": "fa85878773ed212d50d01b30c5446100bbc9d321d1027d18478ee1f7588ba78e",
+    "appendices/spatiotemporal_bandits.tex": "098436bd40149d5ca9827cc523fc62ba741199761645cd8c92acf1dda9e0f58c",
+    "results/wikipedia/cumulative.png": "77c97371d4d9a1109a2c3a46cd45f6c6f3bc42fb709db55891b6432baac6a9d5",
+    "results/wikipedia/football_ar20_model.npz": "7dd5ebbf16c0b928b57a2165658b61cf2af757572e669d5377100fbcbf84cb01",
+    "results/wikipedia/summary.csv": "10f1902f29c52b25dc679ce10f97a371939b5f01b0ba1f2dfdec4ae31235df29",
+    "results/wikipedia/football_ar7_model.npz": "30913363fe16b7cb4343a6607d02067c17579a9561ceef339899e0c893d2b8ad",
+    "results/wikipedia/paired.csv": "d77939b3f3bd5b3084781aa53b30bc730f78c328e09eeee2778c8f3b56cb98e0",
+    "results/wikipedia/cumulative.pdf": "45479d8d5df3bd73a016b72a10d262925d397f457f2921eaa8ce7cfbf2f072f5",
+    "results/wikipedia/runs.csv": "36f2893f8496dd4642d5f6f46e6095aac6ee323f20435c321f61807d5111d579",
+    "results/wikipedia/astronomy_ar20_model.npz": "f0f748c84a24297e4d5e2e5b1fd423ce3696dbf1b7175d0a472bff15f13ddec7",
+    "results/wikipedia/metadata.json": "20a9b5db15a7b57ed430a9abb54ce220effb0666be5476d791e71d8453168c10",
+    "results/wikipedia/comparison.png": "17d02e9f2127b85deafd98c7619e930a6e2839b97ccb4340ad6a490dc647ad0c",
+    "results/wikipedia/comparison.pdf": "fdc02b1128c53a4d3e51378b584f20be6fec0062faa97568712ed416f0905dc0",
+    "results/wikipedia/checks.json": "c3c7544a68806c467e96ce28d345689a68f9eb5daf46cfab0b48d521ad8fabbb",
+    "results/wikipedia/table.tex": "496861f284a8c385284297baefb78b06a41871014771d2a488f803bdc2fd3a75",
+    "results/wikipedia/daily.csv": "b44420f3ea6804c9322b808c0095afd328533049a6d40c006d9fd37dd870394a",
+    "results/wikipedia/paper_results.tex": "37499043276a8774e53bbf9ed590cb4bea345e1dddbe3826ef82926f7d9e5c37",
+    "results/wikipedia/findings.md": "5d752580f066cac20f2e95e8b830001d226725402218739fa218d702e11908b0",
+    "results/wikipedia/astronomy_ar7_model.npz": "897a5088e3cb5c4965e67fa2f1829d4cea1f17e9ecadd2a683b860974940d3bf",
+    "results/wikipedia/abstract_fragment.tex": "8dfa4da5802249d55ed7097d90d71b9726844ba1b301836deb6d6373e44073cb",
+    "results/wikipedia/analysis_checks.json": "ca23d81976de6ff3d2ebb4da1659b501a4493efb73d830c89d3e1f6343963626",
+    "results/wikipedia/calendar_blocks.csv": "363c643e6f64db8cd04f9f36455644207be9ec7cb9205bf8663a0bd9c395befc"
+  }
+}

@@ -92,6 +92,8 @@ Everything is compiled in [research/claude_opus_10_09/](research/claude_opus_10_
 
 The user condenses the paper into the submission.
 
+**Revision 2** (requested: better organization, deeper analysis, theory-to-data bridges, storytelling) is in [research/claude_opus_10_09_v2/](research/claude_opus_10_09_v2/README.md): a paper organized around four questions, analyses from `experiments/deepdive.py`, figures from `experiments/paper_figures_v2.py`, and the six-community Wikipedia experiment (`experiments/wikipedia/collect_multi.py`, `attention.py --dataset multi`). `research/gpt_sol_10_09/` belongs to another agent; do not edit it.
+
 ## Current status and next steps
 
 Kept up to date by whoever runs experiments. Check `research/kuairec_graphs/README.md` for the latest numbers.

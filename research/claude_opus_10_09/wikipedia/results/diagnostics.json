@@ -20,5 +20,31 @@
   "innovation_corr_rewired_edges": 0.2502854887783714,
   "innovation_corr_all_pairs": 0.21775728288832955,
   "level_sd_across_articles": 1.0534697409906146,
-  "deviation_sd": 0.40907487118771524
+  "deviation_sd": 0.40907487118771524,
+  "heldout_loglik_per_day": {
+    "no graph (common shock)": {
+      "by_origin": [
+        62.35927491834726,
+        51.41511748569072,
+        47.51306010352614
+      ],
+      "mean": 53.76248416918804
+    },
+    "hyperlinks": {
+      "by_origin": [
+        61.120092383710094,
+        50.60849745499384,
+        46.91850859911586
+      ],
+      "mean": 52.882366145939926
+    },
+    "rewired hyperlinks": {
+      "by_origin": [
+        61.051376426357,
+        50.53873192205763,
+        46.94609199684466
+      ],
+      "mean": 52.84540011508643
+    }
+  }
 }

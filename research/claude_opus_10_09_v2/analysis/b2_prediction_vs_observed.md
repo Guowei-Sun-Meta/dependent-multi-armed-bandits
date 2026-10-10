@@ -1,0 +1,12 @@
+B2: sampling an AR(1) arm in blocks of b consecutive pulls inflates the sample-mean standard deviation by sqrt(f(b, phi)); per-check miscoverage of the iid radius is 2 Phi(-sqrt(2 ell) / inflation). Observed violation rates are for SP-UCB with iid certificates (24 statistics checked every round).
+
+|   phi | shocks      |   B2 sd inflation (blocks of 25) |   B2 per-check miscoverage |   iid runs violated (blocks) |   iid rounds violated (blocks) |   iid runs violated (one at a time) |   B1'' runs violated (blocks) |
+|------:|:------------|---------------------------------:|---------------------------:|-----------------------------:|-------------------------------:|------------------------------------:|------------------------------:|
+| 0.000 | independent |                            1.000 |                      0.000 |                        0.000 |                          0.000 |                               0.000 |                         0.000 |
+| 0.000 | correlated  |                            1.000 |                      0.000 |                        0.000 |                          0.000 |                               0.000 |                         0.000 |
+| 0.500 | independent |                            1.680 |                      0.001 |                        0.000 |                          0.000 |                               0.000 |                         0.000 |
+| 0.500 | correlated  |                            1.680 |                      0.001 |                        0.000 |                          0.000 |                               0.000 |                         0.000 |
+| 0.900 | independent |                            3.494 |                      0.112 |                        0.850 |                          0.605 |                               0.000 |                         0.000 |
+| 0.900 | correlated  |                            3.494 |                      0.112 |                        0.850 |                          0.677 |                               0.000 |                         0.000 |
+| 0.970 | independent |                            4.418 |                      0.209 |                        0.950 |                          0.897 |                               0.000 |                         0.000 |
+| 0.970 | correlated  |                            4.418 |                      0.209 |                        0.900 |                          0.782 |                               0.000 |                         0.000 |

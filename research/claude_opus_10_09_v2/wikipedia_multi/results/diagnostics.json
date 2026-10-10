@@ -1,0 +1,93 @@
+{
+  "articles": 150,
+  "days": 1461,
+  "hyperlink_edges": 1990,
+  "mean_degree": 26.533333333333335,
+  "isolated": 0,
+  "autocorrelation": {
+    "1": 0.8022300435856826,
+    "2": 0.687864367647163,
+    "7": 0.668704009113412,
+    "30": 0.36544649245565863
+  },
+  "ar_coefficients_lags_1_2_7": [
+    0.5754818529754882,
+    0.059363620098790086,
+    0.24686296459094514
+  ],
+  "ar_radius": 0.957607221763445,
+  "innovation_corr_hyperlink_edges": 0.27268632312611446,
+  "innovation_corr_rewired_edges": 0.051455880949183526,
+  "innovation_corr_all_pairs": 0.05116934014874372,
+  "level_sd_across_articles": 0.9096112818963111,
+  "deviation_sd": 0.4751422218638544,
+  "innovation_corr_within_domain": 0.31988626619022564,
+  "innovation_corr_across_domain": -0.00042430965122081414,
+  "hyperlink_edges_within_domain": 0.8447236180904523,
+  "per_domain": {
+    "NFL": {
+      "articles": 25,
+      "lag1_autocorr": 0.7817016978733257,
+      "lag7_autocorr": 0.6705985044439994
+    },
+    "NBA": {
+      "articles": 25,
+      "lag1_autocorr": 0.7829812967802308,
+      "lag7_autocorr": 0.6298259668116397
+    },
+    "MLB": {
+      "articles": 25,
+      "lag1_autocorr": 0.8569899002505851,
+      "lag7_autocorr": 0.68587114704358
+    },
+    "Premier League": {
+      "articles": 25,
+      "lag1_autocorr": 0.6677621210728372,
+      "lag7_autocorr": 0.47152478325533287
+    },
+    "Countries": {
+      "articles": 25,
+      "lag1_autocorr": 0.8608080182357909,
+      "lag7_autocorr": 0.680830689474586
+    },
+    "Programming languages": {
+      "articles": 25,
+      "lag1_autocorr": 0.8631372273013257,
+      "lag7_autocorr": 0.8735729636513346
+    }
+  },
+  "heldout_loglik_per_day": {
+    "no graph (common shock)": {
+      "by_origin": [
+        23.768404420920533,
+        17.872160916398954,
+        24.110235512495738
+      ],
+      "mean": 21.916933616605075
+    },
+    "hyperlinks": {
+      "by_origin": [
+        24.104122218458127,
+        18.137598596036206,
+        24.238389950334525
+      ],
+      "mean": 22.160036921609617
+    },
+    "rewired hyperlinks": {
+      "by_origin": [
+        23.58171776753361,
+        17.62439845976035,
+        23.811852844316604
+      ],
+      "mean": 21.672656357203522
+    },
+    "domain blocks": {
+      "by_origin": [
+        24.238110065445518,
+        18.1549214132383,
+        23.998395714405262
+      ],
+      "mean": 22.13047573102969
+    }
+  }
+}

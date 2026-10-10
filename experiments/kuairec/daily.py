@@ -303,7 +303,7 @@ def main(seeds: int, jobs: int, extra: bool = False) -> None:
                 else ("st", "ar", "rewired", "nograph"))
     with ProcessPoolExecutor(jobs) as ex:
         list(ex.map(burnin_task, [(o, v) for o in ORIGINS for v in variants]))
-    tasks = [(o, s, p) for o in ORIGINS for s in range(seeds) for p in (EXTRA if extra else POLICIES)
+    tasks = [(o, s, p) for o in ORIGINS for s in range(seeds) for p in (SPARSE if extra == "sparse" else EXTRA if extra else POLICIES)
              if not ((p in DETERMINISTIC or p in ("sh_greedy", "sh_ucbm1", "sh_ucbm2")) and s > 0)]
     tasks.sort(key=lambda x: not (x[2].startswith("st_") or x[2].startswith("ar_")))
     with ProcessPoolExecutor(jobs) as ex:

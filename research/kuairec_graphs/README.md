@@ -201,7 +201,23 @@ Each video's long-run level becomes a random walk with per-day variance 0.0005, 
 
 - **Drift helps modestly overall and strongly late in the window.** The likelihood-selected drift gives the best mean (2.36, 2% better). Larger drift closes most of the gap to last-value at F = 42 (1.10 against 0.93) but hurts earlier origins. Drift appears to grow as videos age; a constant drift is a compromise. Age-dependent drift is the next refinement.
 - **Exploration does not pay here, unlike the toy.** The fit window gives full logs for every video, so long-run means and current states are already well known. Within a 21–35-day test window, exploring costs more than it learns. Joint predictive sampling, the toy's best untuned policy, is the worst model-based policy here, and the 1-sd UCB is slightly worse than greedy.
-- **For the paper:** the value of exploration depends on the learner's prior information, which the model's predictive uncertainty quantifies. Strong priors favour greedy use of the model; weak priors (the toy) favour predictive sampling. A sparse-history variant of KuaiRec daily, where the learner saw only 10 videos per day in the fit window, would test this directly.
+**Sparse-history variant** (`daily_runs_sparse.csv`). In the fit window the learner saw only 10 random videos per day, as a platform with slot-only feedback would. AR dynamics and the shock covariance are still estimated platform-wide.
+
+| Policy | F = 28 | F = 35 | F = 42 | Mean |
+| --- | ---: | ---: | ---: | ---: |
+| Spatiotemporal UCB, 1-sd bonus | 4.23 | 4.23 | 2.30 | **3.59** |
+| Spatiotemporal greedy | 4.35 | 4.03 | 3.42 | 3.93 |
+| Spatiotemporal UCB, 2-sd bonus | 5.17 | 6.69 | 3.31 | 5.06 |
+| iid TS, same sparse history | 6.34 | 6.65 | 6.06 | 6.35 |
+| Joint predictive sampling | 6.14 | 7.53 | 6.89 | 6.85 |
+
+**For the paper:**
+
+- **Modelling the dynamics is the consistent real-data win:** 38% (full history) to 43% (sparse history) less regret than iid TS.
+- **The value of exploration rises as priors weaken.** With full history greedy is best; with sparse history a 1-sd bonus beats greedy by 9%.
+- **The amount must match the horizon.** The test window has about one observation per video, against about 20 per arm in the toy, so heavier exploration (a 2-sd bonus, predictive sampling) over-explores in both variants.
+
+The model's predictive uncertainty tells the learner how much it still has to learn. Whether acting on that uncertainty pays depends on how many observations each arm will get.
 
 ## Caveats
 

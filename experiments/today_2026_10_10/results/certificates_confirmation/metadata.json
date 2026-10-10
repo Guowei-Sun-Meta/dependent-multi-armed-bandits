@@ -1,0 +1,18 @@
+{
+  "seconds": 17.311729542000002,
+  "scope": "follow-up selected after screening, independent worlds",
+  "seed_offset": 10000,
+  "confidence": "anytime joint ellipsoid; pointwise95 is an uncertified diagnostic",
+  "fitted_inflation": "Q multiplied by 1.5, empirical heuristic",
+  "r_obs": 0.01,
+  "delta": 0.05,
+  "true_means": [
+    0.15,
+    0.27,
+    0.39,
+    0.51,
+    0.63,
+    0.75
+  ],
+  "heavy_tails": "not_run_in_this_screen"
+}

@@ -1,0 +1,7 @@
+{
+  "worlds_per_cell": 20000,
+  "length": 100,
+  "seed": 20261010,
+  "seconds": 0.20497741699999983,
+  "scope": "simultaneous equal-variance homogeneous AR(1) contrasts"
+}

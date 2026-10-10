@@ -128,4 +128,18 @@ def main():
     checks.update({'batch_selected_before_feedback':'pass_by_interface','nonnegative_oracle_loss':'pass','future_data_in_fit':'absent_by_prefix_slicing','full_field_refresh_during_test':'none','tuning':'2024 development only; 3 stochastic development seeds','scope':'conditional historical-panel evidence'})
     save_json(dest/'checks.json',checks)
 
-if __name__=='__main__':main()
+def verify_feedback():
+    rng=np.random.default_rng(11);y=5+rng.normal(scale=.2,size=(35,3));wd=np.arange(35)%7
+    fit=base.fit_ar(y[:14],wd[:14],7);engine=base.burnin(y[:14],wd[:14],fit,np.eye(3)*.04);checks={}
+    for policy,param in [('iid_ts',0),('discounted_ts',.98),('window_ts',14),('seasonal',0),('st_ucb',1)]:
+        original=run_policy(y,wd,fit,engine,policy,param,0,1,14);changed=y.copy()
+        for row in original:
+            a=int(row['chosen']);tm=row['date_index'];changed[tm,np.arange(3)!=a]+=20
+        altered=run_policy(changed,wd,fit,engine,policy,param,0,1,14)
+        assert [r['chosen'] for r in original]==[r['chosen'] for r in altered]
+        checks[policy]='hidden-unselected-label invariance passes'
+    save_json(OUT/'wikipedia/feedback_checks.json',checks)
+    return checks
+
+if __name__=='__main__':
+    verify_feedback();main()

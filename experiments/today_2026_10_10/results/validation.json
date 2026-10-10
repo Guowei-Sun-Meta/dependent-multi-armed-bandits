@@ -1,0 +1,31 @@
+{
+  "wikipedia": {
+    "runs": 108,
+    "numeric_raw_results_finite": true
+  },
+  "obd": {
+    "runs": 142,
+    "numeric_raw_results_finite": true
+  },
+  "certificates": {
+    "runs": 480,
+    "numeric_raw_results_finite": true
+  },
+  "certificates_confirmation": {
+    "runs": 400,
+    "numeric_raw_results_finite": true
+  },
+  "false_elimination": {
+    "runs": 600,
+    "numeric_raw_results_finite": true
+  },
+  "factorial": {
+    "runs": 2520,
+    "numeric_raw_results_finite": true
+  },
+  "wikipedia_daily_records": 39420,
+  "obd_hourly_decisions": 10224,
+  "slate_finite_variance_error_under_4_percent": true,
+  "budget_and_slate_checks": "pass",
+  "obd_uniform_position_propensity_identity": "pass"
+}

@@ -47,15 +47,16 @@ class Regression:
         assert np.isfinite(m).all() and np.isfinite(rad).all()
         return m,rad
 
-def simulate(model,mu,T,rng,heavy=False):
+def simulate(model,mu,T,rng,heavy=False,return_latent=False):
     d=model.n*model.p;x=rng.multivariate_normal(np.zeros(d),model.gamma,check_valid='raise');L=np.linalg.cholesky(model.q)
-    out=np.empty((T,model.n))
+    out=np.empty((T,model.n));latent=np.empty_like(out)
     for t in range(T):
-        out[t]=mu+x[:model.n]+np.sqrt(model.r)*rng.normal(size=model.n)
+        latent[t]=mu+x[:model.n]
+        out[t]=latent[t]+np.sqrt(model.r)*rng.normal(size=model.n)
         eps=rng.standard_t(3,size=model.n)/np.sqrt(3) if heavy else rng.normal(size=model.n)
         x=model.rows(x[:,None]).ravel();x[:model.n]+=L@eps
     assert np.isfinite(out).all()
-    return out
+    return (out,latent) if return_latent else out
 
 def fit_model(prefix,order,independent=False,safety=1.):
     n=prefix.shape[1];z=prefix-prefix.mean(0)
@@ -106,12 +107,12 @@ def profile(name,n=6):
     C=.6*np.eye(n)+.4*np.ones((n,n));q=np.asarray(scales)[:,None]*C*np.asarray(scales)[None,:]
     return Model(a,q)
 
-def coverage(worlds=30,T=800):
-    dest=OUT/'certificates';dest.mkdir(parents=True,exist_ok=True);rows=[];start=time.perf_counter()
-    for name in ['ar1','ar7','ar20','heterogeneous']:
+def coverage(worlds=30,T=800,profiles=None,offset=0):
+    dest=OUT/('certificates_confirmation' if offset else 'certificates');dest.mkdir(parents=True,exist_ok=True);rows=[];start=time.perf_counter()
+    for name in (profiles or ['ar1','ar7','ar20','heterogeneous']):
         truth=profile(name);mu=np.linspace(.15,.75,truth.n)
         for seed in range(worlds):
-            rng=np.random.default_rng(SEED+seed);prefix=simulate(truth,mu,365,rng);Y=simulate(truth,mu,T,rng)
+            rng=np.random.default_rng(SEED+offset+seed);prefix=simulate(truth,mu,365,rng);Y=simulate(truth,mu,T,rng)
             models={'known':truth,'fitted':fit_model(prefix,truth.p),'fitted_inflated':fit_model(prefix,truth.p,safety=1.5),'wrong_order_or_diagonal':fit_model(prefix,1,True)}
             for mode,model in models.items():
                 reg=Regression(model);bad=False;count=0
@@ -124,7 +125,7 @@ def coverage(worlds=30,T=800):
     frame=pd.DataFrame(rows);frame.to_csv(dest/'runs.csv',index=False);summ=[]
     for keys,g in frame.groupby(['profile','mode']):
         k=int(g.any_violation.sum());lo,hi=wilson(k,len(g));summ.append({'profile':keys[0],'mode':keys[1],'worlds':len(g),'failures':k,'failure_rate':k/len(g),'ci_low':lo,'ci_high':hi,'mean_final_max_width':g.final_max_width.mean(),'mean_fraction_arms_outside_pointwise95':g.final_fraction_arms_outside_pointwise95.mean(),'mean_pointwise95_max_width':g.final_pointwise95_max_width.mean()})
-    pd.DataFrame(summ).to_csv(dest/'summary.csv',index=False);save_json(dest/'metadata.json',{'seconds':time.perf_counter()-start,'scope':'small-world screening; anytime joint ellipsoid, fixed bursty schedule; fitted inflation is heuristic','r_obs':.01,'delta':.05,'true_means':mu.tolist(),'heavy_tails':'not_run_in_this_screen'})
+    pd.DataFrame(summ).to_csv(dest/'summary.csv',index=False);save_json(dest/'metadata.json',{'seconds':time.perf_counter()-start,'scope':'follow-up selected after screening, independent worlds' if offset else 'small-world screening','seed_offset':offset,'confidence':'anytime joint ellipsoid; pointwise95 is an uncertified diagnostic','fitted_inflation':'Q multiplied by 1.5, empirical heuristic','r_obs':.01,'delta':.05,'true_means':mu.tolist(),'heavy_tails':'not_run_in_this_screen'})
 
 def elimination(worlds=100,T=4000):
     dest=OUT/'false_elimination';dest.mkdir(parents=True,exist_ok=True);rows=[];traces=[];start=time.perf_counter()
@@ -156,7 +157,7 @@ def elimination(worlds=100,T=4000):
     pd.DataFrame(summary).to_csv(dest/'summary.csv',index=False);save_json(dest/'metadata.json',{'seconds':time.perf_counter()-start,'exposure_block':1000,'true_mean_gap':.2,'randomized_arm_order':True,'regret_comparison':'fixed batch exploration persists even after the best arm survives; loss mechanism illustration, not an optimal policy','claim':'finite-horizon evidence, not a proof of linear regret'})
 
 def slate(worlds=20000,length=100):
-    dest=OUT/'slate';dest.mkdir(parents=True,exist_ok=True);rows=[];rng=np.random.default_rng(SEED)
+    dest=OUT/'slate';dest.mkdir(parents=True,exist_ok=True);rows=[];rng=np.random.default_rng(SEED);raw={};start=time.perf_counter()
     for phi in [0.,.8]:
         for rho in [0.,.3,.6,.9]:
             q=(1-phi**2)*np.array([[1.,rho],[rho,1.]])
@@ -164,10 +165,13 @@ def slate(worlds=20000,length=100):
             L=np.linalg.cholesky(q)
             for _ in range(length):sumz+=z;z=phi*z+rng.normal(size=(worlds,2))@L.T
             assert np.isfinite(sumz).all()
-            empirical=float(np.var((sumz[:,0]-sumz[:,1])/length,ddof=1))
+            contrasts=(sumz[:,0]-sumz[:,1])/length;raw[f'phi_{phi}_rho_{rho}']=contrasts
+            empirical=float(np.var(contrasts,ddof=1))
             infl=1+2*sum((1-h/length)*phi**h for h in range(1,length));exact=2*(1-rho)*infl/length
             rows.append({'phi':phi,'rho':rho,'worlds':worlds,'simultaneous_readings_per_world':2*length,'empirical_contrast_variance':empirical,'exact_finite_variance':exact,'long_run_variance':2*(1-rho)*(1+phi)/(1-phi)/length,'empirical_over_exact':empirical/exact})
     pd.DataFrame(rows).to_csv(dest/'summary.csv',index=False)
+    np.savez_compressed(dest/'raw_contrasts.npz',**raw)
+    save_json(dest/'metadata.json',{'worlds_per_cell':worlds,'length':length,'seed':SEED,'seconds':time.perf_counter()-start,'scope':'simultaneous equal-variance homogeneous AR(1) contrasts'})
 
 def factorial(worlds=20,T=500,n=16):
     dest=OUT/'factorial';dest.mkdir(parents=True,exist_ok=True);rows=[];start=time.perf_counter()
@@ -179,10 +183,11 @@ def factorial(worlds=20,T=500,n=16):
     for phi in [0.,.5,.9]:
         for rho in [0.,.4,.8]:
             cov=(1-rho)*np.eye(n)+rho*C;q=(1-phi**2)*cov;model=Model(np.full((n,1),phi),q)
+            base.R=model.r  # Match the true sensor variance in every working filter.
             for gap in [.25,1.]:
                 mu=np.linspace(0,gap,n)
                 for seed in range(worlds):
-                    rng=np.random.default_rng(SEED+seed);Y=simulate(model,mu,T+120,rng)
+                    rng=np.random.default_rng(SEED+seed);Y,latent=simulate(model,mu,T+120,rng,return_latent=True)
                     for policy in policies:
                         kind=policy.split('_')[0];learnerQ=q if kind=='st' else (1-phi**2)*((1-rho)*np.eye(n)+rho*corrupt) if kind=='corrupt' else np.diag(np.diag(q))
                         engine=base.Filter(np.array([phi]),learnerQ);engine.m[:n]=mu.mean()
@@ -194,7 +199,7 @@ def factorial(worlds=20,T=500,n=16):
                             if kind in ['iid','discounted']:score=sums/counts+np.sqrt(var/counts)*prng.normal(size=n)
                             else:
                                 f,c=engine.forecast();score=f+(np.sqrt(np.maximum(np.diag(c-engine.q),0)) if policy.endswith('ucb') else 0)
-                            a=int(np.argmax(score));loss+=Y[t].max()-Y[t,a];mloss+=mu.max()-mu[a]
+                            a=int(np.argmax(score));loss+=latent[t].max()-latent[t,a];mloss+=mu.max()-mu[a]
                             if kind=='discounted':counts*=.98;sums*=.98
                             counts[a]+=1;sums[a]+=Y[t,a]
                             if kind not in ['iid','discounted']:engine.update(a,Y[t,a]);engine.propagate()
@@ -207,13 +212,13 @@ def factorial(worlds=20,T=500,n=16):
         tab=g.pivot(index='world',columns='policy',values='oracle_loss_per_round')
         for policy,ref in [('st_ucb','ar_ucb'),('st_greedy','ar_greedy'),('st_ucb','corrupt_ucb'),('st_ucb','discounted_ts')]:
             m,lo,hi=interval(tab[policy]-tab[ref]);pairs.append({'phi':keys[0],'rho':keys[1],'level_spread':keys[2],'policy':policy,'reference':ref,'difference':m,'ci_low':lo,'ci_high':hi,'worlds':worlds})
-    pd.DataFrame(pairs).to_csv(dest/'paired.csv',index=False);save_json(dest/'metadata.json',{'seconds':time.perf_counter()-start,'arms':n,'truth_fixed_across_policies':True,'stationary_marginal_variance':1.,'scope':'AR(1) mechanism screen; general-AR extension outstanding','ucb_multiplier':1.,'discount':.98,'tuning':'fixed pilot constants, no per-cell optimization','corruption':'fixed degree-preserving node relabeling of cycle graph; record actual changed edges','changed_edge_fraction':float(np.sum((W>0)!=(W[np.ix_(perm,perm)]>0))/2/W.sum())})
+    pd.DataFrame(pairs).to_csv(dest/'paired.csv',index=False);save_json(dest/'metadata.json',{'seconds':time.perf_counter()-start,'arms':n,'truth_fixed_across_policies':True,'stationary_marginal_variance':1.,'r_obs':model.r,'oracle_loss':'latent full-current-field maximum minus selected latent reward; excludes sensor noise','scope':'AR(1) mechanism screen; general-AR extension outstanding','ucb_multiplier':1.,'discount':.98,'tuning':'fixed pilot constants, no per-cell optimization','corruption':'fixed degree-preserving node relabeling of cycle graph; record actual changed edges','changed_edge_fraction':float(np.sum((W>0)!=(W[np.ix_(perm,perm)]>0))/2/W.sum())})
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('study',choices=['coverage','elimination','slate','factorial','verify']);ap.add_argument('--worlds',type=int);ap.add_argument('--horizon',type=int);args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('study',choices=['coverage','elimination','slate','factorial','verify']);ap.add_argument('--worlds',type=int);ap.add_argument('--horizon',type=int);ap.add_argument('--profiles',nargs='+');ap.add_argument('--seed-offset',type=int,default=0);args=ap.parse_args()
     checks=verify();save_json(OUT/'controlled_checks.json',checks)
     if args.study=='verify':print(checks)
-    elif args.study=='coverage':coverage(args.worlds or 30,args.horizon or 800)
+    elif args.study=='coverage':coverage(args.worlds or 30,args.horizon or 800,args.profiles,args.seed_offset)
     elif args.study=='elimination':elimination(args.worlds or 100,args.horizon or 4000)
     elif args.study=='slate':slate()
     elif args.study=='factorial':factorial(args.worlds or 20,args.horizon or 500)

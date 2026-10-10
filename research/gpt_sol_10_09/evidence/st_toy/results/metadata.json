@@ -1,0 +1,31 @@
+{
+  "seeds": 8,
+  "horizon": 2000,
+  "configs": {
+    "main": {
+      "persistence": 0.97,
+      "spatial": true
+    },
+    "weak_persistence": {
+      "persistence": 0.6,
+      "spatial": true
+    },
+    "no_spatial": {
+      "persistence": 0.97,
+      "spatial": false
+    }
+  },
+  "policies": [
+    "ucb",
+    "ts",
+    "swucb",
+    "spectral_ucb",
+    "spectral_ts",
+    "ar_ts",
+    "ar_twostep",
+    "st_greedy",
+    "st_ts",
+    "st_ucb",
+    "st_twostep"
+  ]
+}

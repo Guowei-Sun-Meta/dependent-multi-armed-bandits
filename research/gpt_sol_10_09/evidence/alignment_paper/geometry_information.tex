@@ -1,0 +1,173 @@
+\subsection{A graph-specific information design}
+The diameter bound \eqref{eq:width} can discard statistically useful geometry. Consider a homogeneous suboptimal component with connected Laplacian $L$, $m\ge2$ arms of true mean $a$, gap $\Gamma=\mu^\star-a$, and supplied energy budget $S^2$. Let $s=S/\Gamma$ and let $\mathscr P_m=\{p\ge0:\one^\top p=1\}$. Define
+\begin{align}
+ F_L(p,s)&=\min_{i\in\{1,\ldots,m\}}\ \min_{z\in\mathcal Z_i(s)}
+                 \sum_jp_jz_j^2,\label{eq:designF}\\
+ \mathcal Z_i(s)&=\{z\in[0,1]^m:z_i=1,\ z^\top Lz\le s^2\},\qquad
+ F_L^\star(s)=\max_{p\in\mathscr P_m}F_L(p,s).\nonumber
+\end{align}
+Here $p$ allocates observations, rather than graph edge weights. The least informative alternative $z$ describes a displacement from the true constant vector, normalized by the gap.
+
+\begin{theorem}[Exact information design for a homogeneous graph component]
+When the optimal component is a singleton and all other true components are homogeneous, the program \eqref{eq:info} separates into component contributions
+\begin{equation}
+ C_{L,S,c}(\mu)=\frac{2\sigma^2}{\Gamma_c F_{L_c}^\star(S_c/\Gamma_c)}.
+ \label{eq:generaldesignconstant}
+\end{equation}
+For a fixed graph, $F_L^\star$ is nonincreasing in $s$, lies in $[1/m,1]$, and equals one at $s=0$. For a fixed $s$, $F_L(p,s)$ is concave and continuous in $p$.
+\label{thm:generaldesign}
+\end{theorem}
+\begin{proof}
+Write a component allocation as $x=Xp$, where $X=\sum_jx_j$. Clipping any alternative's displacements to $[0,\Gamma]$ decreases both their squared information cost and graph energy, because clipping is a contraction on every edge. Scaling a displacement that exceeds $\Gamma$ gives a boundary alternative with one coordinate equal to $\Gamma$. Conversely, adding a common arbitrarily small positive displacement to a boundary alternative makes it strictly confusing without changing energy; $\mu^\star<1$ keeps it inside the mean domain. The infimal information rate is therefore $X\Gamma^2F_L(p,s)/(2\sigma^2)$. Minimizing the regret cost $X\Gamma$ proves \eqref{eq:generaldesignconstant}. Changes in other components cannot make this alternative harder to distinguish, so component costs add.
+
+The sets $\mathcal Z_i(s)$ are compact and nonempty, containing $\one$. Each candidate objective is linear in $p$, which gives concavity and continuity of their minimum. Increasing $s$ expands the candidate sets. For uniform $p$, $z_i=1$ implies objective at least $1/m$, while $\one$ gives the upper bound one for every $p$. At zero energy, connectedness forces $z=\one$.
+\end{proof}
+This theorem evaluates the established information framework~\cite{combes2017}; it does not claim that an arbitrary maximizer of \eqref{eq:designF} immediately gives an implementable asymptotically optimal bandit policy.
+
+\begin{lemma}[Resolvent oracle for the least informative alternative]
+For $p_j>0$ and $s>0$, with $D_p=\diag(p)$, the inner minimum in \eqref{eq:designF} equals
+\begin{equation}
+ \sup_{\tau\ge0}\left\{
+ \frac{1}{[(D_p+\tau L)^{-1}]_{ii}}-\tau s^2\right\}.
+ \label{eq:resolventoracle}
+\end{equation}
+For a fixed multiplier, its minimizing vector is
+$z=(D_p+\tau L)^{-1}e_i/[(D_p+\tau L)^{-1}]_{ii}$.
+\label{lem:resolvent}
+\end{lemma}
+\begin{proof}
+Relax the box constraint temporarily and dualize the energy inequality. Minimizing $z^\top(D_p+\tau L)z$ subject to $z_i=1$ gives the displayed inverse formula by a Lagrange multiplier. The free-coordinate equations and the maximum principle imply $0\le z_j\le1$, so removing the box constraint does not alter this minimum. The constant vector is strictly feasible for the energy inequality when $s>0$, giving strong convex duality. For $s=0$ the value follows by the limit $\tau\to\infty$. Designs with zero entries are handled by limits of positive designs, using continuity in $p$.
+\end{proof}
+With uniform design, $(D_p+\tau L)^{-1}=m(I+m\tau L)^{-1}$. Thus the finite-strength spectral resolvent used in the selection index also appears in an exact information calculation, not just in the infinite-smoothing pooling limit. This is a variational connection, not a regret guarantee for selecting the largest fixed-strength index.
+
+\subsection{Resistance geometry determines local alignment sensitivity}
+Let $\mathcal D$ be the matrix of pairwise effective resistances. For a design $p$, define
+\begin{equation}
+ \kappa_L(p)=\max_i\sqrt{(e_i-p)^\top L^\dagger(e_i-p)},\qquad
+ \rho_L=\min_{p\in\mathscr P_m}\kappa_L(p).
+ \label{eq:radiusdesign}
+\end{equation}
+The vectors $v_i=L^{\dagger/2}e_i$ embed the arms into Euclidean space with squared distances $\|v_i-v_j\|^2=\mathcal D_{ij}$. The quantity $\rho_L$ is the radius of their smallest enclosing ball. Its center lies in their convex hull, so it has a probability-vector representation. This geometry and the equivalent maximum graph variance problem are established~\cite{devriendt2022}; the next theorem uses them to quantify bandit information sensitivity.
+
+\begin{lemma}[Computable resistance design and a stopping certificate]
+\begin{equation}
+ \rho_L^2=\max_{p\in\mathscr P_m}\frac12p^\top\mathcal Dp.
+ \label{eq:maxvariance}
+\end{equation}
+For every $p$, $V(p)=p^\top\mathcal Dp/2$ is a lower bound on $\rho_L^2$, and $\kappa_L(p)^2$ is an upper bound, with gap
+\begin{equation}
+ \kappa_L(p)^2-V(p)=\max_i(\mathcal Dp)_i-p^\top\mathcal Dp.
+ \label{eq:designgap}
+\end{equation}
+\label{lem:designradius}
+\end{lemma}
+\begin{proof}
+For any center $v(p)$, the squared distance to arm $i$ is
+$(\mathcal Dp)_i-V(p)$. The variance of any distribution $q$ about its own mean is $V(q)$; its average squared distance about any other center is $V(q)+\|v(q)-v(p)\|^2$. Consequently every enclosing ball has squared radius at least $\max_qV(q)$. At a maximum-variance distribution $p^\star$, simplex optimality gives $(\mathcal Dp^\star)_i\le(p^\star)^\top\mathcal Dp^\star$ for every $i$, with equality on its support. Its center therefore has maximum squared distance $V(p^\star)$, proving equality. Substituting the distance formula gives the gap certificate.
+\end{proof}
+The radius is invariant in the relevant units: rescaling $L$ by $b>0$ changes $\rho_L$ by $b^{-1/2}$ and a consistently scaled $S$ by $b^{1/2}$. A numerical design need not achieve exact optimality; its computed upper radius gives a valid, possibly looser, certificate.
+
+\begin{theorem}[First-order graph alignment sensitivity]
+Let $D=\max_{i,j}\mathcal D_{ij}$. For $s\sqrt D\le1$,
+\begin{equation}
+ 1-2s\rho_L\ \le F_L^\star(s)
+ \le 1-2s\rho_L+s^2D.
+ \label{eq:firstorderF}
+\end{equation}
+For every $s\ge0$,
+\begin{equation}
+ F_L^\star(s)\ge(1-s\rho_L)_+^2.
+ \label{eq:jensenF}
+\end{equation}
+In particular, as $S/\Gamma\downarrow0$,
+\begin{equation}
+ \frac{C_{L,S,c}(\mu)}{2\sigma^2/\Gamma}
+ =1+2\frac S\Gamma\rho_L
+   +O\!\left(\frac{S^2}{\Gamma^2}D\right).
+ \label{eq:sensitivity}
+\end{equation}
+\label{thm:sensitivity}
+\end{theorem}
+\begin{proof}
+For $z\in\mathcal Z_i(s)$, energy Cauchy--Schwarz gives
+$1-p^\top z\le s\sqrt{(e_i-p)^\top L^\dagger(e_i-p)}$.
+Jensen's inequality and nonnegativity then give
+$\sum_jp_jz_j^2\ge(1-s\kappa_L(p))_+^2$. Optimize over $p$ for \eqref{eq:jensenF}.
+
+For the sharper expansion, write $z=\one-su$ with $u_i=0$ and $u^\top Lu\le1$. The largest possible $p^\top u$ is $\kappa_i(p)=\sqrt{(e_i-p)^\top L^\dagger(e_i-p)}$. A maximizer is obtained from the inverse grounded Laplacian applied to $p_{-i}$ and normalized to unit energy. Its coordinates are nonnegative by the maximum principle. Energy Cauchy--Schwarz additionally gives $u_j\le\sqrt{\mathcal D_{ij}}\le\sqrt D$, so $z$ is box-feasible when $s\sqrt D\le1$. The objective equals $1-2sp^\top u+s^2\sum_jp_ju_j^2$. Its nonnegative final term gives the lower bound $1-2s\kappa_L(p)$; taking a maximizing $u$ for an arm attaining $\kappa_L(p)$ gives the upper bound $1-2s\kappa_L(p)+s^2D$. Optimize over $p$. The information expansion follows by inversion for sufficiently small $s$, using $\rho_L^2\le D$.
+\end{proof}
+The leading sensitivity is therefore a graph-wide resistance radius, not the resistance diameter or the number of arms alone. A design minimizing that radius is first-order optimal for this information calculation. No first-order optimality claim is made for the regret constant of the algorithm introduced below.
+
+\subsection{Certified graph perturbations}
+\begin{proposition}[An explicit price for a certified Laplacian error]
+Suppose, on the subspace orthogonal to constants,
+\begin{equation}
+ (1-\eta)L\preceq\widehat L\preceq(1+\eta)L,\qquad 0\le\eta<1.
+ \label{eq:lapperturb}
+\end{equation}
+If $S$ is valid for $L$, then $\widehat S=\sqrt{1+\eta}\,S$ is valid for $\widehat L$, and
+\begin{equation}
+ \widehat S\rho_{\widehat L}
+ \le S\rho_L\sqrt{\frac{1+\eta}{1-\eta}}.
+ \label{eq:perturbradius}
+\end{equation}
+The corresponding homogeneous-component information constants obey
+\begin{equation}
+ C_{L,S,c}\le C_{\widehat L,\widehat S,c}
+ \le C_{L,\,S\sqrt{(1+\eta)/(1-\eta)},c}.
+ \label{eq:perturbinfo}
+\end{equation}
+\label{prop:perturb}
+\end{proposition}
+\begin{proof}
+The upper Loewner inequality certifies the true energy. Inverting the inequalities on the constant-free subspace bounds every resistance quadratic form between factors $(1+\eta)^{-1}$ and $(1-\eta)^{-1}$ of the original form. Minimize their maximum over designs to obtain \eqref{eq:perturbradius}. The original energy ball of radius $S$ is contained in the estimated-graph energy ball of radius $\widehat S$, which in turn is contained in the original ball of radius $S\sqrt{(1+\eta)/(1-\eta)}$. Apply information monotonicity.
+\end{proof}
+For Laplacians with the same constant null space, an operator error bound
+$\|\widehat L-L\|_{\rm op}\le\eta\lambda_2(L)$ suffices for \eqref{eq:lapperturb}. This connects a certified graph error to both an algorithmic bias radius and an information-class comparison. The true reference graph and error bound are additional information; they are not assumed obtainable for free from bandit observations. Related spectral perturbation and mismatch questions already arise in graph-contextual bandits~\cite{mondal2026}.
+
+\subsection{Graphs with identical diameters can have different exploration costs}
+Compare two components with the same number $m\ge3$ of arms:
+\begin{enumerate}
+ \item A complete graph with edge weight $1/m$ has $\mathcal D_{ij}=2$ for distinct arms and $\rho_L^2=(m-1)/m$, attained by the uniform design.
+ \item A path with edge weight $(m-1)/2$ has $\mathcal D_{ij}=2|i-j|/(m-1)$ and $\rho_L^2=1/2$, attained by placing half the design mass at each endpoint.
+\end{enumerate}
+For the path, an embedding with orthogonal successive increments has all its vertices at squared distance $1/2$ from the endpoint midpoint. The endpoints are squared distance two apart, so no smaller ball can enclose them. For the clique, the regular simplex has radius squared $(m-1)/m$. Both graphs have resistance diameter two.
+
+\begin{corollary}[Diameter compression loses an unbounded information factor]
+At a homogeneous instance with supplied $S=\Gamma$, the clique contribution is the unstructured value
+\begin{equation}
+ C_{\rm clique}=\frac{2\sigma^2m}{\Gamma},
+ \label{eq:cliqueseparation}
+\end{equation}
+whereas the path contribution satisfies
+\begin{equation}
+ C_{\rm path}\le
+ \frac{2\sigma^2}{\Gamma(1-1/\sqrt2)^2}.
+ \label{eq:pathinformation}
+\end{equation}
+Their ratio is at least $m(1-1/\sqrt2)^2$, which grows without bound with $m$. The number of arms, true means, supplied energy budget, and resistance diameter are identical.
+\label{cor:informationseparation}
+\end{corollary}
+\begin{proof}
+In the clique, a single-coordinate displacement of $\Gamma$ costs energy $\Gamma^2(m-1)/m< S^2$. Every arm can therefore independently become optimal, requiring its classical information allocation. For the path, use \eqref{eq:jensenF} with $s=1$ and $\rho_L=1/\sqrt2$.
+\end{proof}
+This separation concerns the graph-energy classes, not superiority over all existing spectral algorithms. A bound based solely on $S\sqrt D$ gives the same width $\sqrt2\Gamma$ for both graphs and cannot express it. Nor do the normalized paths and cliques have identical Laplacian spectra: the example isolates the information lost by diameter compression.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.9\linewidth,height=6cm,ymode=log,
+ xlabel={Normalized supplied energy radius $S/\Gamma$},
+ ylabel={Information constant divided by $2\sigma^2/\Gamma$},
+ grid=major,legend columns=2,legend style={font=\small,at={(0.5,1.03)},anchor=south},xmin=0,xmax=1.3]
+\addplot[red,thick] table[x=s,y=clique_constant_ratio,col sep=comma]{results/geometry/information.csv};
+\addlegendentry{Clique: exact information value}
+\addplot[blue,thick,dashed] table[x=s,y=path_constant_upper,col sep=comma]{results/geometry/information.csv};
+\addlegendentry{Path: information upper bound}
+\addplot[black,dotted,thick] table[x=s,y=classical_ratio,col sep=comma]{results/geometry/information.csv};
+\addlegendentry{Unstructured value}
+\end{axis}
+\end{tikzpicture}
+\caption{Analytical information comparison at $m=256$. The path curve is $\min\{m,(1-s/\sqrt2)^{-2}\}$ and bounds the information-program value from above; it is not an attained policy coefficient or an exact path expression. At $s=1$ the clique value is $256$, while the path value is at most $11.66$.}
+\label{fig:geometryinformation}
+\end{figure}

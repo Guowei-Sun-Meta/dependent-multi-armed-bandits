@@ -1,0 +1,23 @@
+{
+  "runs": 200,
+  "budget": 48,
+  "seed": 9112026,
+  "arms": 6,
+  "true_residual_graph": "normalized path resolvent, strength 2, marginal variance 1",
+  "true_mean_prior": "inverse(I + true_strength * path_L)",
+  "fitted_graph_mean_prior": "inverse(I + 2 * path_L)",
+  "unstructured_mean_prior": "I; marginal variances differ from graph prior",
+  "diagonal_mean_prior": "same marginal mean variances as fitted graph prior, zero cross-covariance",
+  "measurement_variance": 0.1,
+  "forced_cadence": 7,
+  "recommendation": "largest posterior mean: opportunity-loss optimal, not generally PCS optimal",
+  "frequentist_confidence_audit": "graph_ar_kg only; uses true norm and graph energy solely for a valid supplied-radius diagnostic; coverage repeated across policy rows",
+  "wrong_mean_graph_permutation": [
+    0,
+    2,
+    4,
+    1,
+    3,
+    5
+  ]
+}

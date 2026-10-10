@@ -1,0 +1,371 @@
+{
+  "seed": 20261009,
+  "seeds_per_stochastic_policy": 10,
+  "orders": [
+    7,
+    20
+  ],
+  "panels": {
+    "astronomy": {
+      "titles": [
+        "Sun",
+        "Moon",
+        "Mars",
+        "Venus",
+        "Jupiter",
+        "Saturn",
+        "Mercury_(planet)",
+        "Neptune",
+        "Uranus",
+        "Earth",
+        "Solar_System",
+        "Milky_Way",
+        "Galaxy",
+        "Black_hole",
+        "Supernova",
+        "Hubble_Space_Telescope",
+        "James_Webb_Space_Telescope",
+        "International_Space_Station",
+        "NASA",
+        "SpaceX",
+        "Apollo_11",
+        "Falcon_9",
+        "Space_Shuttle",
+        "Artemis_program"
+      ],
+      "edges": 134,
+      "isolated_nodes": 0,
+      "rewiring_swaps": 1340,
+      "models": {
+        "7": {
+          "lags": [
+            1,
+            2,
+            7
+          ],
+          "ar_coefficients": [
+            0.6645924227975081,
+            0.08497510822256711,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.102385423901646
+          ],
+          "spectral_radius": 0.9226528789437445,
+          "original_spectral_radius": 0.9226528789437445,
+          "stability_scale": 1.0,
+          "common_residual_correlation": 0.18106413597269644,
+          "validation_log_scores": {
+            "ar": 34.49872181540286,
+            "st": 35.17769378198455,
+            "rewired": 35.21363359751928,
+            "factor": 35.8477067203454,
+            "empirical": 35.8477067203454
+          },
+          "covariance_specs": {
+            "ar": {
+              "gamma": 0.0,
+              "mix": 0.0
+            },
+            "st": {
+              "gamma": 0.5,
+              "mix": 0.5
+            },
+            "rewired": {
+              "gamma": 0.5,
+              "mix": 0.5
+            },
+            "factor": {
+              "gamma": 0.0,
+              "mix": 0.5
+            },
+            "empirical": {
+              "gamma": 0.0,
+              "mix": 0.5
+            }
+          },
+          "ucb_bonuses": {
+            "iid_ucb": 0.5,
+            "sw_ucb": 0.5,
+            "ar_predictive_ucb": 0.5,
+            "st_state_ucb": 0.5,
+            "st_predictive_ucb": 0.5
+          },
+          "state_dimension": 192,
+          "single_covariance_mb": 0.294912
+        },
+        "20": {
+          "lags": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "ar_coefficients": [
+            0.6218737878518399,
+            0.005312180531565055,
+            0.0877341743628231,
+            0.025718206457438615,
+            0.04529799574786651,
+            0.011945095917243494,
+            0.021318828644366166,
+            -0.0048665354502832586,
+            -0.006926794744238134,
+            0.01330931470502939,
+            -0.01422829723808798,
+            0.0189512378285711,
+            -0.008990503638598114,
+            0.03018339615655408,
+            0.022248297014531477,
+            -0.003647205736934493,
+            0.004543669921117867,
+            0.015310100042730371,
+            -0.006409193090615749,
+            0.029323185233433535
+          ],
+          "spectral_radius": 0.9734255264395194,
+          "original_spectral_radius": 0.9734255264395194,
+          "stability_scale": 1.0,
+          "common_residual_correlation": 0.16993343918883982,
+          "validation_log_scores": {
+            "ar": 34.54366622260049,
+            "st": 35.5620912148765,
+            "rewired": 35.5906077593354,
+            "factor": 36.14779402943208,
+            "empirical": 36.14779402943208
+          },
+          "covariance_specs": {
+            "ar": {
+              "gamma": 0.0,
+              "mix": 0.0
+            },
+            "st": {
+              "gamma": 0.5,
+              "mix": 0.5
+            },
+            "rewired": {
+              "gamma": 0.5,
+              "mix": 0.5
+            },
+            "factor": {
+              "gamma": 0.0,
+              "mix": 0.5
+            },
+            "empirical": {
+              "gamma": 0.0,
+              "mix": 0.5
+            }
+          },
+          "ucb_bonuses": {
+            "ar_predictive_ucb": 0.5,
+            "st_predictive_ucb": 0.5
+          },
+          "state_dimension": 504,
+          "single_covariance_mb": 2.032128
+        }
+      }
+    },
+    "football": {
+      "titles": [
+        "UEFA_Champions_League",
+        "FIFA_World_Cup",
+        "Premier_League",
+        "Manchester_United_F.C.",
+        "Manchester_City_F.C.",
+        "Liverpool_F.C.",
+        "Real_Madrid_CF",
+        "FC_Barcelona",
+        "FC_Bayern_Munich",
+        "Borussia_Dortmund",
+        "Arsenal_F.C.",
+        "Chelsea_F.C.",
+        "Juventus_FC",
+        "Paris_Saint-Germain_FC",
+        "Atl\u00e9tico_Madrid",
+        "AC_Milan",
+        "Inter_Milan",
+        "Tottenham_Hotspur_F.C.",
+        "Everton_F.C.",
+        "Cristiano_Ronaldo",
+        "Lionel_Messi",
+        "Kylian_Mbapp\u00e9",
+        "Erling_Haaland",
+        "UEFA_European_Championship"
+      ],
+      "edges": 189,
+      "isolated_nodes": 0,
+      "rewiring_swaps": 474,
+      "models": {
+        "7": {
+          "lags": [
+            1,
+            2,
+            7
+          ],
+          "ar_coefficients": [
+            0.7521036869715616,
+            0.04696629573379749,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.13102934749553066
+          ],
+          "spectral_radius": 0.9640454395043675,
+          "original_spectral_radius": 0.9640454395043675,
+          "stability_scale": 1.0,
+          "common_residual_correlation": 0.12075654309943043,
+          "validation_log_scores": {
+            "ar": 17.721787417450205,
+            "st": 20.0077385503644,
+            "rewired": 19.92984483847787,
+            "factor": 19.660830990253515,
+            "empirical": 19.660830990253515
+          },
+          "covariance_specs": {
+            "ar": {
+              "gamma": 0.0,
+              "mix": 0.0
+            },
+            "st": {
+              "gamma": 8.0,
+              "mix": 0.5
+            },
+            "rewired": {
+              "gamma": 8.0,
+              "mix": 0.5
+            },
+            "factor": {
+              "gamma": 1.0,
+              "mix": 0.9
+            },
+            "empirical": {
+              "gamma": 1.0,
+              "mix": 0.9
+            }
+          },
+          "ucb_bonuses": {
+            "iid_ucb": 0.5,
+            "sw_ucb": 0.5,
+            "ar_predictive_ucb": 0.5,
+            "st_state_ucb": 0.5,
+            "st_predictive_ucb": 0.5
+          },
+          "state_dimension": 192,
+          "single_covariance_mb": 0.294912
+        },
+        "20": {
+          "lags": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "ar_coefficients": [
+            0.7190428146966406,
+            -0.09006763603120209,
+            0.1532502682846348,
+            0.06267570560600663,
+            0.003114114379920979,
+            0.040402637674105256,
+            -0.020833105195842926,
+            0.03471549860647567,
+            -0.0014988501235683987,
+            0.010324222502009,
+            -0.025214847452860432,
+            0.0029570793979811407,
+            0.03204122081228427,
+            0.04286782625350512,
+            -0.012208770596243812,
+            -0.002164635581206488,
+            0.006220751882244651,
+            -0.00876391302302838,
+            -0.017820417094240166,
+            0.03175259918056192
+          ],
+          "spectral_radius": 0.9854916427910367,
+          "original_spectral_radius": 0.9854916427910367,
+          "stability_scale": 1.0,
+          "common_residual_correlation": 0.12246752569143583,
+          "validation_log_scores": {
+            "ar": 18.8788751205025,
+            "st": 21.078857020484993,
+            "rewired": 20.993752387130037,
+            "factor": 20.674735240179864,
+            "empirical": 20.674735240179864
+          },
+          "covariance_specs": {
+            "ar": {
+              "gamma": 0.0,
+              "mix": 0.0
+            },
+            "st": {
+              "gamma": 8.0,
+              "mix": 0.5
+            },
+            "rewired": {
+              "gamma": 8.0,
+              "mix": 0.5
+            },
+            "factor": {
+              "gamma": 1.0,
+              "mix": 0.9
+            },
+            "empirical": {
+              "gamma": 1.0,
+              "mix": 0.9
+            }
+          },
+          "ucb_bonuses": {
+            "ar_predictive_ucb": 0.5,
+            "st_predictive_ucb": 0.5
+          },
+          "state_dimension": 504,
+          "single_covariance_mb": 2.032128
+        }
+      }
+    }
+  },
+  "feedback": "selected exact observed log1p views",
+  "sensor_regularization": 1e-08,
+  "theoretical_mean_pcs_and_floor": "not_identifiable_from_real_panel",
+  "full_history_fit_exposure_per_panel": 8784,
+  "graph_type": "binary undirected within-panel pre-2024 hyperlinks",
+  "code_sha256": "1247a85832c3aa57f39258f0e43be496b3321d988906a3d56bb4183b483c689e",
+  "wall_seconds": 197.92704583300002,
+  "peak_rss_mb": 166.756352,
+  "record_count": 352
+}

@@ -1,0 +1,114 @@
+{
+  "U-soc": {
+    "description": "Friend lists (social_network.csv)",
+    "nodes": 1411,
+    "edges": 47,
+    "isolated_nodes": 1331,
+    "mean_degree": 0.0666194188518781
+  },
+  "U-mf": {
+    "description": "PureSVD user factors, non-evaluation videos",
+    "nodes": 1411,
+    "edges": 21491,
+    "isolated_nodes": 0,
+    "mean_degree": 30.462083628632175
+  },
+  "U-coeng": {
+    "description": "Jaccard on sets of fully watched non-evaluation videos",
+    "nodes": 1411,
+    "edges": 24666,
+    "isolated_nodes": 0,
+    "mean_degree": 34.96243798724309
+  },
+  "U-coeng-idf": {
+    "description": "Cosine on IDF-weighted engagement with non-evaluation videos (popularity down-weighted)",
+    "nodes": 1411,
+    "edges": 21858,
+    "isolated_nodes": 0,
+    "mean_degree": 30.98228206945429
+  },
+  "U-coauthor": {
+    "description": "Cosine on IDF-weighted engagement aggregated by video author",
+    "nodes": 1411,
+    "edges": 21880,
+    "isolated_nodes": 0,
+    "mean_degree": 31.013465627214742
+  },
+  "U-cotag": {
+    "description": "Cosine on per-tag taste profile (tag mean watch ratio minus user mean)",
+    "nodes": 1411,
+    "edges": 21080,
+    "isolated_nodes": 0,
+    "mean_degree": 29.879518072289155
+  },
+  "U-cotime": {
+    "description": "Cosine on hour-of-day activity histogram",
+    "nodes": 1411,
+    "edges": 22107,
+    "isolated_nodes": 0,
+    "mean_degree": 31.335223245924876
+  },
+  "U-feat": {
+    "description": "Jaccard on one-hot profile fields (user_features.csv)",
+    "nodes": 1411,
+    "edges": 21281,
+    "isolated_nodes": 0,
+    "mean_degree": 30.16442239546421
+  },
+  "U-geo": {
+    "description": "Same city (1) or province (0.3)",
+    "nodes": 1411,
+    "edges": 20002,
+    "isolated_nodes": 0,
+    "mean_degree": 28.35152374202693
+  },
+  "U-demo": {
+    "description": "Jaccard on gender, age range, phone brand, price band",
+    "nodes": 1411,
+    "edges": 21454,
+    "isolated_nodes": 0,
+    "mean_degree": 30.40963855421687
+  },
+  "U-soc+mf": {
+    "description": "Union of U-soc and U-mf",
+    "nodes": 1411,
+    "edges": 21518,
+    "isolated_nodes": 0,
+    "mean_degree": 30.500354358610913
+  },
+  "I-mf": {
+    "description": "PureSVD video factors, non-evaluation users",
+    "nodes": 3327,
+    "edges": 50025,
+    "isolated_nodes": 0,
+    "mean_degree": 30.07213706041479
+  },
+  "I-coeng": {
+    "description": "Cosine on IDF-weighted engagement from non-evaluation users",
+    "nodes": 3327,
+    "edges": 63424,
+    "isolated_nodes": 0,
+    "mean_degree": 38.126840997896004
+  },
+  "I-coauthor": {
+    "description": "Same author",
+    "nodes": 3327,
+    "edges": 62261,
+    "isolated_nodes": 0,
+    "mean_degree": 37.42771265404268
+  },
+  "I-tag": {
+    "description": "Jaccard on tag sets",
+    "nodes": 3327,
+    "edges": 57655,
+    "isolated_nodes": 0,
+    "mean_degree": 34.65885181845506
+  },
+  "I-cat": {
+    "description": "Three-level category tree (1 / 0.3 / 0.1)",
+    "nodes": 3327,
+    "edges": 55975,
+    "isolated_nodes": 0,
+    "mean_degree": 33.64893297264803
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "checks": 1525,
+  "means_are_fixed": true,
+  "all_non_iid_validation_orders": [
+    2,
+    3
+  ],
+  "innovation_filter_matches_dense_likelihood": true,
+  "stationary_covariance_matches_impulse_response_sum": true,
+  "full_field_information_identity": true,
+  "general_ar2_schedule_comparison": [
+    {
+      "a": 0.8,
+      "rho": 0.0,
+      "schedule": "AABB",
+      "contrast_variance": 1.1,
+      "gap": 0.4,
+      "fixed_mean_pcs": 0.6485412183773166
+    },
+    {
+      "a": 0.8,
+      "rho": 0.0,
+      "schedule": "ABAB",
+      "contrast_variance": 1.9000000000000001,
+      "gap": 0.4,
+      "fixed_mean_pcs": 0.6141647482281918
+    },
+    {
+      "a": 0.8,
+      "rho": 0.4,
+      "schedule": "AABB",
+      "contrast_variance": 0.78,
+      "gap": 0.4,
+      "fixed_mean_pcs": 0.6746935180336231
+    },
+    {
+      "a": 0.8,
+      "rho": 0.4,
+      "schedule": "ABAB",
+      "contrast_variance": 1.9000000000000001,
+      "gap": 0.4,
+      "fixed_mean_pcs": 0.6141647482281918
+    },
+    {
+      "a": 0.8,
+      "rho": 0.8,
+      "schedule": "AABB",
+      "contrast_variance": 0.45999999999999996,
+      "gap": 0.4,
+      "fixed_mean_pcs": 0.7223268416642888
+    },
+    {
+      "a": 0.8,
+      "rho": 0.8,
+      "schedule": "ABAB",
+      "contrast_variance": 1.9000000000000001,
+      "gap": 0.4,
+      "fixed_mean_pcs": 0.6141647482281918
+    }
+  ],
+  "fixed_mean_pcs_monte_carlo": [
+    {
+      "schedule": "AABB",
+      "trials": 30000,
+      "theoretical_pcs": 0.6942735065232478,
+      "observed_pcs": 0.6916666666666667,
+      "standard_error": 0.002659936118676296
+    },
+    {
+      "schedule": "ABAB",
+      "trials": 30000,
+      "theoretical_pcs": 0.6141647482281918,
+      "observed_pcs": 0.6081666666666666,
+      "standard_error": 0.0028104946792453555
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+For weak dependence, joint predictive UCB has PCS $0.906$, with Wilson interval $[0.758,0.968]$. The full-variance state UCB has smaller mean and oracle regret in this experiment. Selection accuracy and accumulated reward thus favor different decisions.
+
+For lag-20 dependence, contrast LUCB gives PCS $0.844$ versus $0.281$ for round robin. The paired improvement is $0.562$ with approximate interval $[0.339,0.786]$. Joint mean UCB has smaller mean pseudo-regret, while full-state UCB has smaller oracle regret. The PCS-focused rule pays for comparison information rather than only extracting immediate reward.
+
+For persistent dynamics, joint full-state UCB gives oracle regret $1.248$ per round versus $1.397$ for iid UCB. PCS remains poor, and joint mean UCB does not uniformly improve over iid UCB. Persistence helps state prediction while making permanent means harder to estimate. For a fully observed single arm, the long-run mean-noise scale is $q_i/(1-\sum_k a_{i,k})^2$; it is about 156 for the persistent profile. This full-observation scale illustrates the difficulty, without replacing the actual schedule-dependent likelihood.
+
+For the same persistent state-UCB policy, mean pseudo-regret is $0.686$ per round, while actual reward regret against the stationary mean is $-0.308$ with interval $[-0.375,-0.240]$. The policy earns more than the best permanent mean by using predictable fluctuations, despite often choosing inferior permanent locations.
+
+Removing fresh-innovation variance from Thompson draws improves oracle regret by 0.043--0.327 per round across these configurations. It does not uniformly improve the UCB rule. For homogeneous filters, adding a common positive variance inside a square root compresses differences between optimism bonuses; finite-budget performance also depends on exploration scale. These experiments compare fixed practical scales, not optimally tuned policy families.

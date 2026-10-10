@@ -1,0 +1,35 @@
+{
+  "runs": 24,
+  "horizon": 1200,
+  "seed": 9102026,
+  "arms": 6,
+  "measurement_variance": 0.04,
+  "known_means": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "stationary_marginal_variances": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "true_graph": "path",
+  "normalization": "diagonal-normalized resolvent",
+  "terminal_action": "two-step policies maximize current predictive mean on the final round",
+  "wrong_graph_permutation": [
+    0,
+    2,
+    4,
+    1,
+    3,
+    5
+  ],
+  "confidence_intervals": "normal approximation across independent runs; paired differences saved separately"
+}

@@ -1,0 +1,63 @@
+\section{Objective-specific UCB and Thompson-style policies}
+Let $b^*=\argmax_i\mu_i$. We distinguish four cumulative comparators:
+\begin{align}
+R_{\rm oracle}(T)&=\sum_{t\le T}(\max_iX_{i,t}-X_{a_t,t}),\nonumber\\
+R_\mu(T)&=\sum_{t\le T}(\mu_{b^*}-\mu_{a_t}),\label{eq:three-regrets}\\
+R_{\rm stationary}(T)&=T\mu_{b^*}-\sum_{t\le T}X_{a_t,t},\nonumber\\
+R_{\rm fixed}(T)&=\sum_{t\le T}(X_{b^*,t}-X_{a_t,t}).\nonumber
+\end{align}
+Oracle regret and mean pseudo-regret are nonnegative pathwise. The two actual-reward comparators may be negative: adaptive actions can exploit positive predictable deviations. Since the deviation of the fixed arm has mean zero,
+\begin{equation}
+\E R_{\rm stationary}(T)=\E R_{\rm fixed}(T)
+=\E R_\mu(T)-\sum_{t\le T}\E z_{a_t,t}.
+\end{equation}
+Even the full-current-state oracle can have positive mean pseudo-regret. Terminal PCS instead compares the recommendation's permanent mean with $\mu_{b^*}$.
+
+\subsection{A shared inference engine}
+For observations strictly before decision $t$, write their design, covariance and readings as $M,\Xi,Y$. Define
+\begin{align}
+V&=(H+M^\top\Xi^{-1}M)^{-1},&m&=VM^\top\Xi^{-1}Y,\nonumber\\
+K&=\Cov(z_t,\hbox{selected past deviations}),&A&=K\Xi^{-1},\nonumber\\
+W&=I-AM,&f&=AY+Wm,\label{eq:forecast-working}\\
+P&=G_0-K\Xi^{-1}K^\top,&\Sigma&=P+WVW^\top.\nonumber
+\end{align}
+At the true fixed mean, the conditional expected field is $AY+W\mu$, with conditional noise covariance $P$. The matrix $\Sigma$ is a working Gaussian uncertainty for randomized decisions; $V$ remains inverse penalized information, not the repeated-noise sampling covariance. A Gaussian integration of the penalized likelihood produces these same working quantities, without specifying a random physical mean population. Correct frequentist uncertainty uses~\eqref{eq:confidence}, including its regularization allowance.
+
+The selected-history implementation updates $\Xi^{-1}$ by its Schur complement. It is algebraically equivalent to the affine state filter, retains the full AR likelihood, and uses $O(T^2)$ history storage, $O(Nt^2)$ all-arm forecast work, and $O(t^2+N^2)$ selected-update work. The lag-state alternative has dimension $\sum_i p_i$. Neither is a constant-cost solution as all dimensions grow.
+
+\subsection{Permanent-mean UCB and a regret bound}
+Mean UCB chooses
+\begin{equation}
+a_t=\argmax_i\{m_i+c_t\sqrt{V_{ii}}\}.
+\label{eq:mean-ucb}
+\end{equation}
+The certified version uses $c_t=\beta_{t-1}(\delta)$. The practical version uses $c_t=.7\sqrt{2\log(t+1)}$ for one-based decisions. The practical scale has no automatic coverage claim.
+
+After initially measuring each arm, force cyclic probes at square calendar ages: if $t-N=k^2$ for $k\ge1$, select $(k-1)\bmod N$. Other rounds use the policy. Thus the forced count satisfies $F_T\le N+\sqrt T$, and each arm receives $\Omega(\sqrt T/N)$ forced samples eventually.
+
+\begin{theorem}[Conservative stationary mean-regret guarantee]
+Under the assumptions of the confidence theorem and the spectral covariance bounds~\eqref{eq:information-bounds}, certified mean UCB with the preceding probes obeys, with probability at least $1-\delta$,
+\begin{equation}
+\boxed{R_\mu(T)\le 2BF_T+4\beta_T\sqrt{v_+NT}.}
+\label{eq:mean-regret-bound}
+\end{equation}
+Moreover,
+\[
+\beta_T\le\sqrt{N\log(1+T/(\alpha v_-))+2\log(1/\delta)}
++\sqrt{\alpha B^2+\lambda S^2}.
+\]
+This bound is sublinear for fixed $N$ and fixed stable dynamics. It does not claim sharp graph or temporal constants.
+\end{theorem}
+\begin{proof}
+On the simultaneous confidence event, optimism bounds every ordinary action's gap:
+\[
+\mu_{b^*}-\mu_{a_t}\le2\beta_{t-1}\sqrt{V_{a_ta_t}}.
+\]
+After initial coverage, the information sandwich gives $V_{ii}\le v_+/N_i(t-1)$. Summing inverse square-root counts over ordinary rounds gives
+\[
+\sum_{t:\,\text{ordinary}}N_{a_t}(t-1)^{-1/2}
+\le2\sum_i\sqrt{N_i(T)}\le2\sqrt{NT}.
+\]
+Forced actions cost at most $2B$ each. The determinant bound follows from $H\succeq\alpha I$ and the upper information bound.
+\end{proof}
+An expectation bound adds $2BT\delta$; choosing $\delta=1/T$ in a horizon-specific policy makes that remainder bounded. The experiment uses $\delta=.05$ for the certified policy. Because minimum forced counts grow as $\sqrt T$, the confidence widths vanish as $O(\sqrt{\log T}/T^{1/4})$ for fixed dimensions. Applying the confidence theorem with arbitrarily small failure probabilities gives consistent mean estimates and PCS tending to one at a positive fixed gap for every correctly specified joint policy with these probes. This asymptotic statement is not a finite-budget PCS guarantee.

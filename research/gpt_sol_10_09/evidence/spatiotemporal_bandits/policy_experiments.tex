@@ -1,0 +1,52 @@
+\section{One hundred arms with AR(20): regret and PCS}
+We evaluate the objective-specific policies on a $10\times10$ grid. The same deterministic two-peak mean surface is held fixed across configurations and noise replicates; the best-minus-second gap is $.20$, its norm is $3.807$, and its graph energy is $3.672$. Supplied bounds $B=6$, $S=3$ contain this truth. The mean regularizer is $H=.1I+.5L$ and the sensor variance is $.09$.
+
+Innovation spatial correlation is the diagonally normalized resolvent $(I+3L)^{-1}$. Innovation scales are chosen so every marginal stationary deviation variance is one. Each arm has order 20. The configurations are:
+\begin{itemize}
+\item Persistent: $a_k$ proportional to $\exp(-k/6)$, with coefficient sum $.95$.
+\item Weak: the same lag shape with coefficient sum $.35$.
+\item Lag 20: $a_{20}=.85$ and the other coefficients are zero.
+\item Heterogeneous: cyclic assignment of the persistent filter, a positive filter proportional to $\exp(-k/3)$ with sum $.65$, and alternating coefficients proportional to $(-1)^k\exp(-k/6)$ with absolute sum $.80$.
+\item Independent shocks: the persistent filter with diagonal innovation covariance, retaining the same fixed mean surface and mean graph.
+\end{itemize}
+All filters are stable. Heterogeneous stationary cross-covariances use the pairwise companion Lyapunov equations; a separable covariance is not substituted.
+
+There are 32 independent noise worlds per configuration, 1,000 calendar decisions per world, 14 learning rules, and four information benchmarks. Policies share the complete latent path and potential sensor readings within a world, but see only their selected reading after choosing. All learning rules initially measure each arm and then use square-age probes; round robin retains its strict cyclic schedule. The budget includes initial coverage. Gaussian policy draws use separate reproducible seeds. Practical UCB scale $.7$ and Thompson scale one are fixed across configurations.
+
+Benchmarks always choose the true best-mean arm, greedily filter with known means and bandit readings, observe all past lag states, or observe all current rewards. The known-mean greedy filter is not an optimal causal policy. The past-state genie chooses the largest current conditional mean and lacks only fresh innovations. Known-mean benchmarks have artificial PCS one and are excluded from learning-policy PCS comparisons.
+
+\begin{table}[p]
+\centering\scriptsize
+\input{results/policies_ar20/table.tex}
+\caption{AR(20), 100 arms, budget 1,000, and 32 paired noise worlds per configuration. Oracle and permanent mean pseudo-regret are per decision; PCS targets the fixed best mean. Selected policies are shown; CSVs report all policies, Student-$t$ mean intervals, Wilson PCS intervals, actual best-mean-arm reward regret, MSE, and paired differences. Observed rankings are not simultaneous statistical claims.}
+\label{tab:ar20}
+\end{table}
+
+\begin{figure}[p]
+\centering\includegraphics[width=\textwidth]{results/policies_ar20/oracle_regret.pdf}
+\caption{Regret against the full-current-state oracle per decision. Dashed lines estimate the irreducible innovation coefficient. Shading gives pointwise 95\% intervals across independent worlds. The horizon includes 100 initial coverage observations.}
+\label{fig:ar20-oracle}
+\end{figure}
+\begin{figure}[p]
+\centering\includegraphics[width=\textwidth]{results/policies_ar20/mean_regret.pdf}
+\caption{Permanent mean pseudo-regret per decision under the same paths. This comparator differs from both the current-state oracle and actual reward from the best permanent arm. Exploiting fluctuations can increase mean pseudo-regret while improving actual reward.}
+\label{fig:ar20-mean}
+\end{figure}
+\begin{figure}[p]
+\centering\includegraphics[width=\textwidth]{results/policies_ar20/pcs.pdf}
+\caption{Fixed-truth PCS versus budget. Recommendations use permanent mean estimates. With 32 worlds, binomial uncertainty is substantial; Wilson intervals are reported in the CSV and findings. The fixed-budget decisions are not certified recommendations.}
+\label{fig:ar20-pcs}
+\end{figure}
+\begin{figure}[p]
+\centering\includegraphics[width=\textwidth]{results/policies_ar20/stationary_reward_regret.pdf}
+\caption{Actual reward regret against $T\mu_{b^*}$ per decision. Negative values mean the learner earns more than the stationary best mean by exploiting fluctuations. Its expectation equals reward regret against the fixed best-mean arm, but their finite-path realizations differ.}
+\label{fig:ar20-stationary}
+\end{figure}
+
+The innovation-floor coefficients, estimated independently with 200,000 paired stationary Gaussian samples per configuration, are
+\input{results/policies_ar20/floor_text.tex}
+These are expectation bounds; a finite-world sampled regret need not exceed the estimated floor exactly. The full-past genie provides a separate path-simulation check. A declining finite-horizon regret ratio does not establish an asymptotic optimal coefficient.
+
+\input{results/policies_ar20/interpretation.tex}
+
+The study validates computation and compares policies at one fixed mean surface. It does not establish general finite-budget optimality, robustness to incorrect graphs or unknown dynamics, or matching graph-dependent regret constants. The new implementation passes 642 assertions against dense likelihood and independent state calculations; large-model pilots exercise both 100-arm predictive policies. The analysis also checks paired-result completeness, nonnegative oracle/mean regret, and the pathwise identity $R_{\rm oracle}^{\pi}-R_{\rm oracle}^{b^*}=R_{\rm fixed}^{\pi}$.

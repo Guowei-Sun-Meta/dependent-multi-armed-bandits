@@ -1,0 +1,130 @@
+\section{A policy that retains resistance geometry}
+The information separation above motivates a policy that uses a graph-dependent design rather than a component-wide diameter. The goal here is an implementable finite-time result and an achieved separation in arm-count dependence. We do not claim a matching leading information constant for general graphs.
+
+\subsection{Design-based component bounds}
+Fix $p_c\in\mathscr P_{|C_c|}$ before observing rewards and compute
+\begin{equation}
+ a_c=S_c\kappa_{L_c}(p_c),\quad
+ J_c=\{i\in C_c:p_{c,i}>0\},\quad d_c=|J_c|.
+ \label{eq:designbias}
+\end{equation}
+For a singleton set $a_c=0$ and $p_c=1$. These are known policy inputs. The graph-energy bound implies
+\begin{equation}
+ |\mu_i-p_c^\top\mu_c|\le a_c\quad(i\in C_c),\qquad
+ p_c^\top\mu_c\le v_c\le p_c^\top\mu_c+a_c.
+ \label{eq:designtransfer}
+\end{equation}
+The important point is that a convex combination of observations can transfer information more accurately than a bound on every pair of arms separately. A numerical design can use the upper radius in Lemma~\ref{lem:designradius}, preserving validity without exact optimization.
+
+For a design target $n\ge1$, collect
+$n_{c,i}(n)=\lceil np_{c,i}\rceil$ observations from each $i\in J_c$, and let
+\begin{equation}
+ \widehat m_c(n)=\sum_{i\in J_c}p_{c,i}\bar Y_i(n_{c,i}(n)),\qquad
+ h_c(n)=\sigma\sqrt{2\ell\sum_{i\in J_c}
+                     \frac{p_{c,i}^2}{n_{c,i}(n)}}\le b(n).
+ \label{eq:designestimate}
+\end{equation}
+The integer rounding costs at most $d_c$ additional observations. For this policy we assume independent iid arm noise streams with sub-Gaussian proxy $\sigma$, an explicit strengthening of the conditional-noise model sufficient for the weighted fixed-count averages. Component scheduling and elimination may still be adaptive. The target counts themselves are deterministic given the stage and fixed design.
+
+\begin{lemma}[Design confidence and component optimism]
+With probability at least $1-\delta$, simultaneously over all scheduled targets and ordinary arm counts through $T$,
+\begin{equation}
+ |\widehat m_c(n)-p_c^\top\mu_c|\le h_c(n),\qquad
+ |\bar Y_i-\mu_i|\le b(n_i).
+ \label{eq:designevent}
+\end{equation}
+On this event, $\widehat m_c-h_c$ is a lower bound on $\mu^\star$, and $\widehat m_c+h_c+a_c$ is an upper bound on $v_c$.
+\label{lem:designconfidence}
+\end{lemma}
+\begin{proof}
+For any fixed target the weighted noise average is sub-Gaussian with variance proxy $\sigma^2\sum_i p_{c,i}^2/n_{c,i}$. Its two-tail failure probability at the stated radius is at most $2e^{-\ell}$. There are at most $T$ possible targets per component and $T$ counts per arm. The union bound with \eqref{eq:radius} gives the event. This can be defined on the independent potential arm streams even for targets an adaptive policy never collects; conditioning on collection is unnecessary. The final assertions follow from \eqref{eq:designtransfer}.
+\end{proof}
+
+\subsection{Capped graph-design elimination}
+Call the policy graph-design elimination with UCB fallback (GDE-UCB). Let $a_{\max}=\max_ca_c$. If $a_{\max}=0$, every component has a constant mean and we use ordinary UCB on one representative per component. Otherwise set
+\begin{equation}
+ n_{\rm cap}=\min\left\{T,\ 1+
+          \left\lceil\frac{512\sigma^2\ell}{a_{\max}^2}\right\rceil\right\}.
+ \label{eq:designcap}
+\end{equation}
+The numerical constant is conservative and is fixed before running the experiments; it is not tuned using the true gaps.
+\begin{enumerate}
+ \item Start with all components active and target $n=1$.
+ \item Bring every active component to the counts in \eqref{eq:designestimate}. If completing this stage would exceed the remaining horizon, end the design phase before starting it.
+ \item Compute $L_c=\widehat m_c-h_c$ and $U_c=\widehat m_c+h_c+a_c$. Remove components with $U_c<\max_{q\text{ active}}L_q$.
+ \item If one component remains, or $n=n_{\rm cap}$, end the design phase. Otherwise replace $n$ by $\min\{2n,n_{\rm cap}\}$ and repeat.
+ \item Run ordinary arm UCB on the remaining components, reusing all observations. If the only remaining component has $a_c=0$, any representative is optimal and can be selected throughout.
+\end{enumerate}
+The algorithm uses the graph, $S_c$, $\sigma$, $T$, and $\delta$. It does not use true means or gaps. The cap prevents endless design sampling inside a heterogeneous optimal component. Fallback preserves exploration of unsampled members in a surviving component.
+
+\begin{theorem}[Finite-time regret with a resistance design]
+Fix a component $c^\star$ containing an optimal arm and put
+\begin{equation}
+ g_c=\Gamma_c-a_c-a_{c^\star},\qquad
+ d_c^{\rm reg}=\mu^\star-p_c^\top\mu_c,
+ \quad Q_c=\sum_{i\in J_c}\Delta_i.
+\end{equation}
+When $a_{\max}>0$, define
+\begin{equation}
+ B_c=\begin{cases}
+ \min\{n_{\rm cap},\ 1+64\sigma^2\ell/g_c^2\},&g_c>0,\\
+ n_{\rm cap},&g_c\le0.
+ \end{cases}
+ \label{eq:designBc}
+\end{equation}
+On the event \eqref{eq:designevent}, no optimal component is eliminated, design-phase regret from $c$ is at most $B_cd_c^{\rm reg}+Q_c$, and total regret obeys
+\begin{equation}
+ \mathcal R_T\le\sum_c(B_cd_c^{\rm reg}+Q_c)
+       +\sum_{c\in\mathcal A_{\rm end}}A_c.
+ \label{eq:designregret}
+\end{equation}
+Here $A_c$ is \eqref{eq:Ac} and $\mathcal A_{\rm end}$ is the set of surviving components. For an expected-regret bound one may replace the last sum by $\sum_cA_c$ and add $\delta T$.
+\label{thm:designregret}
+\end{theorem}
+\begin{proof}
+All lower bounds are at most $\mu^\star$ and an optimal component has upper bound at least $\mu^\star$, so elimination cannot remove it. At a completed target $n$,
+$U_c\le v_c+2b(n)+a_c$ and
+$L_{c^\star}\ge\mu^\star-a_{c^\star}-2b(n)$.
+Thus $g_c>4b(n)$ suffices for elimination, which holds for
+$n>32\sigma^2\ell/g_c^2$. The doubling schedule overshoots this threshold by at most a factor two, with the first-stage and cap corrections represented by \eqref{eq:designBc}. If the horizon prevents the next stage, previously completed counts are smaller and obey the same bound.
+
+At a target at most $B_c$, component regret is bounded by
+$\sum_{i\in J_c}(B_cp_{c,i}+1)\Delta_i=B_cd_c^{\rm reg}+Q_c$.
+During fallback an optimal arm remains available. On ordinary confidence, a selected suboptimal arm satisfies $\Delta_i\le2b(n_i)$ before its pull. Its additional pulls are therefore at most $1+8\sigma^2\ell/\Delta_i^2$, giving $A_c$ as a conservative bound even when pilot observations are reused. Add the two phases. Outside the event regret is at most $T$.
+\end{proof}
+For any fixed valid instance with $a_{\max}>0$, $\delta=1/T$ gives $n_{\rm cap}=O(\log T)$ and expected regret $O(\log T)$. The all-zero case reduces to the classical component problem. This establishes uniform efficiency on the supplied class, not a minimax bound or an optimal logarithmic coefficient. The dependence on $a_{\max}$ can be conservative when components have very different certificates.
+
+\subsection{An achieved topology separation}
+\begin{corollary}[A path can be rejected using two arms]
+Consider the normalized path of Corollary~\ref{cor:informationseparation}, one optimal singleton, homogeneous path mean $a$, and supplied $S=\Gamma=\mu^\star-a>0$. Use the endpoint design. If $T\ge2n_{\rm cap}+3$, GDE-UCB eliminates the path by its capped stage on \eqref{eq:designevent}, never samples its interior, and satisfies
+\begin{equation}
+ R_T\le\frac{1024\sigma^2\ell}{\Gamma}+4\Gamma+\delta T.
+ \label{eq:achievedpath}
+\end{equation}
+For the clique with the same $m$, means, $S$, and resistance diameter, every uniformly efficient policy on its graph-energy class has
+$\liminf R_T/\log T\ge2\sigma^2m/\Gamma$.
+\label{cor:achievedseparation}
+\end{corollary}
+\begin{proof}
+For the path $a_c=\Gamma/\sqrt2$ and the optimal singleton has zero bias. At the uncensored cap, $b(n_{\rm cap})<a_c/16$. Hence
+$a_c+4b(n_{\rm cap})<5\Gamma/(4\sqrt2)<\Gamma$, which forces elimination. The budget condition permits the stage to finish and prevents the cap from being censored by $T$. Path observation counts are at most $n_{\rm cap}+2$ and every such pull costs $\Gamma$; singleton observations cost zero. Since $n_{\rm cap}\le2+1024\sigma^2\ell/\Gamma^2$, the displayed bound follows. The clique assertion is Corollary~\ref{cor:informationseparation} and \eqref{eq:lower}.
+\end{proof}
+The path upper bound depends on $m$ through the logarithm in $\ell$, while the clique lower-bound coefficient grows linearly in $m$. For fixed $m$ and increasing horizon this gives an achieved separation in the arm-count dependence of the logarithmic term. The constants are loose, and this result does not assert that GDE-UCB reaches the path information upper bound in \eqref{eq:pathinformation}. It also does not compare different policies on the same unrestricted reward class: the two graphs impose different energy constraints.
+
+\subsection{The limit of treating a graph as untrusted advice}
+\begin{proposition}[No free recovery of the structured logarithmic constant]
+Fix an arbitrary candidate graph. For Gaussian rewards with variance $\sigma^2$, a policy uniformly efficient over all of $[0,1]^K$ satisfies, at every instance with a unique best arm and $\mu^\star<1$,
+\begin{equation}
+ \liminf_{T\to\infty}\frac{R_T}{\log T}
+       \ge\sum_{i:\Delta_i>0}\frac{2\sigma^2}{\Delta_i},
+ \label{eq:untrustedlower}
+\end{equation}
+even if the true means are exactly constant on each candidate component.
+\label{prop:untrusted}
+\end{proposition}
+\begin{proof}
+For any suboptimal $i$, the unrestricted class includes an alternative changing only $\mu_i$ to $\mu^\star+\eta<1$. The history change-of-measure constraint gives
+$\liminf\E[n_i(T)]/\log T\ge2\sigma^2/(\Delta_i+\eta)^2$.
+Let $\eta\downarrow0$, multiply by $\Delta_i$, and sum. Other arm observations cannot distinguish this alternative.
+\end{proof}
+This is a direct application of the established lower-bound framework, not a new impossibility principle~\cite{combes2017,lattimore2020}. Clus-UCB also discusses the corresponding obstruction to learning unrestricted widths~\cite{gore2025}. It excludes a promise of the smaller structured logarithmic constant together with logarithmic regret on every arbitrary graph violation using only standard bandit feedback. It does not exclude finite-horizon benefits, weaker robustness guarantees, restricted graph errors, or additional informative data. The perturbation certificate in Proposition~\ref{prop:perturb} is one explicit way to restrict such errors.

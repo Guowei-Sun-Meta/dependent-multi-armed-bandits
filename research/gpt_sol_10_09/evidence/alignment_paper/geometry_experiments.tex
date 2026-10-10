@@ -1,0 +1,78 @@
+\section{Experiments isolating the value of graph geometry}
+\subsection{Protocol and model-matched width comparators}
+The main experiment directly tests the path--clique construction. Each instance has one singleton of mean $0.8$ and one component of $m\in\{16,64,256\}$ arms with homogeneous mean $0.6$. The learner receives the fixed prior energy radius $S=0.2$ for that component, rather than its zero true energy. The algorithm does not receive the gap. Path edge weights are $(m-1)/2$ and clique weights are $1/m$. Both have resistance diameter two and the same implied diameter certificate $\varepsilon=0.2\sqrt2$. The graph and certificate are supplied, not estimated from selected-arm feedback.
+
+There are 40 independent replications at horizon $T=20{,}000$, with Gaussian noise $\sigma=0.05$ and $\delta=1/T$. Policies use the same $\ell$ from \eqref{eq:radius}, and share independent per-arm noise streams by arm identity and pull number within a replication. The implementation is standard-library Python and stores per-run counts, pilot counts, eliminated components, confidence diagnostics, and trajectories. Cross-policy and cross-graph results within a seed are coupled; independence is across replications within a condition. Error bars are $1.96$ standard errors of simulated mean regret.
+
+We compare ordinary UCB, the diameter-based SP-UCB policy, GDE-UCB, and a Gaussian width-profile UCB motivated by Clus-UCB~\cite{gore2025}. The last comparator uses the index
+\begin{equation}
+ u_i^{\rm width}=\sup\left\{q:
+ n_i(q-\bar Y_i)_+^2+
+ \sum_{\substack{j\in C_c\\j\ne i}}n_j(q-\bar Y_j-\varepsilon_c)_+^2
+ \le2\sigma^2\ell\right\},\quad i\in C_c.
+ \label{eq:widthprofile}
+\end{equation}
+It initializes every arm. This is an explicitly specified one-sided Gaussian analogue, not a reproduction of the published Bernoulli algorithm or a claim that its asymptotic theorem transfers unchanged. The upper root is solved as a piecewise quadratic using sorted breakpoints, with an independent bisection check. Both width-only methods receive exactly the same inputs for the two normalized graphs, so their trajectories are identical under the shared streams. These identical conditions are replayed in the output rather than treated as independent datasets.
+
+GDE-UCB uses the analytic endpoint design for paths and uniform design for cliques, with cap constant 512 as in \eqref{eq:designcap}. No policy parameters are fitted to realized rewards or selected retrospectively. The design phase is exploratory, so its cost is expected to outweigh its benefit on some small instances.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Graph & $m$ & UCB & Width profile & GDE-UCB & GDE arms\\
+\midrule
+\inputtable results/geometry/results_table.tex
+\bottomrule
+\end{tabular}
+\caption{Mean final regret with $1.96$ standard-error half-widths; the final column is the mean number of distinct sampled suboptimal arms. SP-UCB's values equal UCB's in these conditions and are retained in the CSV data. The graph-energy certificate is the same positive $S=0.2$ in every main condition.}
+\label{tab:geometryresults}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.94\linewidth,height=7cm,xmode=log,log basis x=2,
+ xlabel={Suboptimal component size $m$},ylabel={Mean final cumulative regret},
+ grid=major,legend columns=2,legend style={font=\small,at={(0.5,1.03)},anchor=south},xtick={16,64,256}]
+\addplot[black,thick,mark=*,error bars/.cd,y dir=both,y explicit]
+ table[x=m,y=ucb,y error=ucb_ci,col sep=comma]{results/geometry/path_scaling.csv};
+\addlegendentry{UCB, either graph}
+\addplot[teal,dashed,thick,mark=triangle*,error bars/.cd,y dir=both,y explicit]
+ table[x=m,y=width_profile,y error=width_profile_ci,col sep=comma]{results/geometry/path_scaling.csv};
+\addlegendentry{Gaussian width profile, either graph}
+\addplot[blue,thick,mark=square*,error bars/.cd,y dir=both,y explicit]
+ table[x=m,y=design,y error=design_ci,col sep=comma]{results/geometry/path_scaling.csv};
+\addlegendentry{GDE-UCB, path}
+\addplot[red,thick,mark=diamond*,error bars/.cd,y dir=both,y explicit]
+ table[x=m,y=design,y error=design_ci,col sep=comma]{results/geometry/clique_scaling.csv};
+\addlegendentry{GDE-UCB, clique}
+\end{axis}
+\end{tikzpicture}
+\caption{The graph geometry matters even when diameter certificates are identical. GDE-UCB samples only the two path endpoints, whereas its uniform clique design incurs substantial overhead. The figure supports the achieved path regime, not universal superiority of the policy.}
+\label{fig:geometryscaling}
+\end{figure}
+
+
+
+\subsection{Results, overhead, and certificate failure}
+\input{results/geometry/findings.tex}
+
+These comparisons isolate a failure of diameter compression. They do not imply that the graph-design algorithm dominates spectral bandits. In particular, the spectral baseline in the supplementary experiment uses a different exact certificate, and is not a matched comparison in this positive-energy experiment. A tuned spectral comparison on the same energy class, more varied graphs, and application datasets remain needed for an empirical superiority claim.
+
+A separate stress test makes the assumption boundary explicit. The graph is a path of eight arms with means $(0.4,0.4,0.4,0.9,0.4,0.4,0.4,0.4)$ plus a singleton of mean $0.8$. A valid supplied radius is computed from this synthetic vector's energy and labeled oracle information. An invalid zero radius forces the representative-based policy to ignore the hidden optimal arm. Table~\ref{tab:certificatestress} compares two horizons; its approximately constant regret per round in the invalid case demonstrates linear loss. Ordinary observation confidence can hold throughout while the structural assumption fails.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Certificate & Horizon & Mean regret & Regret per round\\
+\midrule
+\inputtable results/geometry/stress_table.tex
+\bottomrule
+\end{tabular}
+\caption{Certificate stress test. The valid certificate is explicitly oracle-supplied; the invalid certificate asserts exact equality despite a hidden peak. This experiment illustrates a limitation, not a method for learning the correct certificate.}
+\label{tab:certificatestress}
+\end{table}
+
+Numerical checks cover the resolvent's least informative alternatives, clique agreement, resistance-radius primal/dual gaps, the first-order inequalities on a nonsymmetric weighted graph, confidence coverage, and fallback when the optimal component is heterogeneous. They also compare the width-profile oracle to direct scalar bisection. These checks help detect implementation and algebra errors; they do not replace independent proof review.

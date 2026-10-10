@@ -1,0 +1,7 @@
+{
+  "run_cartesian_completeness": "pass",
+  "daily_trace_bookkeeping": "pass",
+  "all_observation_budgets": "pass",
+  "nonnegative_transformed_and_raw_regret": "pass",
+  "randomization_intervals_labelled_conditional": "pass"
+}

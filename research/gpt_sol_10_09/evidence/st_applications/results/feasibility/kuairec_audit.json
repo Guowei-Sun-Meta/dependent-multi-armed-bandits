@@ -1,0 +1,151 @@
+{
+  "status": "exploratory_feasibility_audit_not_policy_evidence",
+  "sources": {
+    "daily": "data/kuairec_raw/KuaiRec 2.0/data/item_daily_features.csv",
+    "daily_sha256": "45943d63c44652b6403f3a4f78c7225e1afe7916bab17d9a674d7979245e085b",
+    "evaluation_ids": "data/kuairec_cache/eval_matrix.npz",
+    "evaluation_ids_sha256": "64072c1c76601f95c782cc2e048b7cf5980fd5ce8b415c18b7304817075dbf77"
+  },
+  "daily": {
+    "rows": 343341,
+    "videos": 10728,
+    "days": 63,
+    "first_date": 20200705,
+    "last_date": 20200905,
+    "duplicate_video_days": 0,
+    "zero_play_video_days": 23091,
+    "all_videos_complete_by_presence": 925,
+    "evaluation_videos_complete_by_presence": 253,
+    "retrospective_cohort_zero_play_cells": 6,
+    "retrospective_cohort_videos_with_any_zero_play": 2,
+    "warning": "Complete-by-presence uses future survival; zero plays are unobserved quality."
+  },
+  "origins": [
+    {
+      "fit_days": 28,
+      "cutoff_date": 20200801,
+      "test_days": 35,
+      "prefix_eligible_eval_videos_min_play_10": 255,
+      "eligible_missing_test_video_days": 13,
+      "eligible_zero_play_test_video_days": 7,
+      "retrospective_cohort_training_ar": {
+        "lags": [
+          1,
+          2,
+          7
+        ],
+        "coefficients": [
+          0.8170712513431619,
+          -0.04223247665927635,
+          -0.04390659666377852
+        ],
+        "spectral_radius": 0.7858950108284132,
+        "pooled_lag1_correlation": 0.7610963748558237,
+        "innovation_time_rows": 21,
+        "centered_covariance_rank_upper_bound": 20
+      },
+      "ar20_innovation_time_rows": 8
+    },
+    {
+      "fit_days": 35,
+      "cutoff_date": 20200808,
+      "test_days": 28,
+      "prefix_eligible_eval_videos_min_play_10": 252,
+      "eligible_missing_test_video_days": 13,
+      "eligible_zero_play_test_video_days": 7,
+      "retrospective_cohort_training_ar": {
+        "lags": [
+          1,
+          2,
+          7
+        ],
+        "coefficients": [
+          0.8219794089721899,
+          0.03473030724820333,
+          -0.04914736884291948
+        ],
+        "spectral_radius": 0.8071540999826449,
+        "pooled_lag1_correlation": 0.8001614421623544,
+        "innovation_time_rows": 28,
+        "centered_covariance_rank_upper_bound": 27
+      },
+      "ar20_innovation_time_rows": 15
+    },
+    {
+      "fit_days": 42,
+      "cutoff_date": 20200815,
+      "test_days": 21,
+      "prefix_eligible_eval_videos_min_play_10": 247,
+      "eligible_missing_test_video_days": 13,
+      "eligible_zero_play_test_video_days": 2,
+      "retrospective_cohort_training_ar": {
+        "lags": [
+          1,
+          2,
+          7
+        ],
+        "coefficients": [
+          0.7275010448796352,
+          0.10988762555181937,
+          -0.02940958454117332
+        ],
+        "spectral_radius": 0.7525250238181204,
+        "pooled_lag1_correlation": 0.8022688091765074,
+        "innovation_time_rows": 35,
+        "centered_covariance_rank_upper_bound": 34
+      },
+      "ar20_innovation_time_rows": 22
+    }
+  ],
+  "interaction_graph_audit": {
+    "file": "data/kuairec_raw/KuaiRec 2.0/data/big_matrix.csv",
+    "rows_scanned": 12530806,
+    "first_date": 20200705,
+    "last_date": 20200905,
+    "missing_dates": 0,
+    "cached_item_graph_input_rows_by_cutoff": {
+      "20200801": {
+        "rows": 10272525,
+        "post_cutoff_rows": 8127889,
+        "post_cutoff_fraction": 0.7912260130785761
+      },
+      "20200808": {
+        "rows": 10272525,
+        "post_cutoff_rows": 3585584,
+        "post_cutoff_fraction": 0.34904602325134276
+      },
+      "20200815": {
+        "rows": 10272525,
+        "post_cutoff_rows": 2558742,
+        "post_cutoff_fraction": 0.24908598421517592
+      }
+    },
+    "interpretation": "graphs.py excludes evaluation pairs, but has no time cutoff; rebuild for temporal tests."
+  },
+  "existing_daily_results": {
+    "file": "research/kuairec_graphs/results/daily_runs.csv",
+    "sha256": "480978d6980a251e4c83e87ba41508a62c0f7a5410a84970c984903d80716811",
+    "rows": 105,
+    "origins": [
+      28,
+      35,
+      42
+    ],
+    "seed_count": 5,
+    "mean_regret_per_day": {
+      "ar_greedy": 2.436121603105587,
+      "ar_ps": 2.6465762162482993,
+      "fit_mean": 4.905924822123128,
+      "last_value": 2.8832370350564402,
+      "st_greedy": 2.4114572193426578,
+      "st_ps": 2.6303544280389675,
+      "st_ps_nograph": 2.6147188859485992,
+      "st_ps_rewired": 2.6351789603874036,
+      "st_ts": 4.576225167327483,
+      "st_ucb": 2.742060661862023,
+      "ts_iid": 3.9016924584609547
+    },
+    "st_greedy_relative_gain_over_ar_greedy": 0.010124446879616666,
+    "warning": "Overlapping test windows, synthetic noise, and full-period graph; descriptive pilot only."
+  }
+}

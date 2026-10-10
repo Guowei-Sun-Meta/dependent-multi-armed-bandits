@@ -1,0 +1,24 @@
+{
+  "articles": 150,
+  "days": 1461,
+  "hyperlink_edges": 3037,
+  "mean_degree": 40.49333333333333,
+  "isolated": 1,
+  "autocorrelation": {
+    "1": 0.7206304954414203,
+    "2": 0.5133856832007804,
+    "7": 0.7390041029977381,
+    "30": 0.36924438922316
+  },
+  "ar_coefficients_lags_1_2_7": [
+    0.45631790182794474,
+    -0.045249435388131524,
+    0.4727303289295173
+  ],
+  "ar_radius": 0.971618963196903,
+  "innovation_corr_hyperlink_edges": 0.25557732019353385,
+  "innovation_corr_rewired_edges": 0.2502854887783714,
+  "innovation_corr_all_pairs": 0.21775728288832955,
+  "level_sd_across_articles": 1.0534697409906146,
+  "deviation_sd": 0.40907487118771524
+}

@@ -1,0 +1,73 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,booktabs,array,longtable,fontspec,unicode-math,graphicx,xcolor,pgfplots}
+\setmainfont{texgyrepagella-regular.otf}[BoldFont=texgyrepagella-bold.otf,ItalicFont=texgyrepagella-italic.otf]
+\setmathfont{latinmodern-math.otf}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\pgfplotsset{compat=1.18}
+\emergencystretch=3em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newenvironment{proof}{\par\noindent\textit{Proof.}\ }{\hfill$\mdlgwhtsquare$\par\medskip}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\PCS}{\operatorname{PCS}}
+\newcommand{\KL}{\operatorname{KL}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\one}{\mathbf1}
+\newcommand{\pos}[1]{\left(#1\right)_+}
+\title{Learning from Correlated and Persistent Web Rewards:\\Graph Alignment, General Autoregressive Bandits,\\Prediction, Regret, and Correct Selection}
+\author{Extended working manuscript}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Web alternatives share both long-run structure and persistent fluctuations. We collect a research program on sequential decisions with fixed unknown means, graph restrictions on their differences, and heterogeneous autoregressive deviations driven by spatially correlated innovations. The two graph roles are distinct: a covariance of transient shocks does not certify similar permanent means. We develop graph-regularized likelihood estimation, adaptive innovation regression, simultaneous confidence, correct stopping, and objective-specific UCB and correlated Gaussian sampling policies. A conservative certified-UCB bound gives sublinear stationary mean pseudo-regret under known stable dynamics; regret against an oracle observing every current state has an irreducible linear innovation term. Graph-energy information design distinguishes normalized paths from cliques even when their resistance diameters agree. Exact short-horizon control and Gaussian selection calculations clarify why sampling for immediate reward differs from sampling for final identification. We synthesize fixed-truth 100-arm AR(20) simulations, smaller general-AR schedule experiments, an alternative Bayesian toy, and KuaiRec graph and daily-engagement studies. A new laptop-sized Wikipedia experiment uses two fixed 24-article panels, pre-2024 hyperlink graphs, 2024 fitting, and selectively observed 2025 attention.
+\input{results/wikipedia/abstract_fragment.tex}
+Full derivations and source evidence accompany this deliberately uncompressed manuscript. Known-parameter guarantees, fitted-model heuristics, and exploratory application evidence are stated separately.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/synthesis.tex}
+\clearpage
+\appendix
+\section{Complete fixed-mean spatial and heterogeneous-AR derivations}
+\label{app:st}
+This appendix preserves the current technical source, with its original assumptions and detailed proofs. Labels and references are namespaced. Its numerical experiments are the fixed-truth studies summarized in the main text.
+\input{appendices/spatiotemporal_bandits.tex}
+\clearpage
+\section{Complete graph-alignment and resistance-design derivations}
+\label{app:alignment}
+The following results initially assume iid noise. Their graph information constants are not automatically a regret theorem for arbitrary restless sampling schedules.
+\input{appendices/alignment_paper.tex}
+\clearpage
+\section{Predictive AR(1) control and policy-improvement findings}
+\label{app:predictive}
+This restricted model provides intuition and exact comparator calculations. General AR dynamics remain the main model. The known-mean control study has a different objective and initialization from the fixed-mean-learning experiment.
+\input{appendices/predictive_ar1.tex}
+\clearpage
+\section{Two-arm Gaussian allocation and terminal identification}
+\label{app:two}
+This source includes both fixed-truth, fixed-schedule results and explicitly prior-averaged Bayesian theorems. The symmetric Gaussian mean prior in those particular theorems is not imposed on the main physical model.
+\input{appendices/two_arm_ar1.tex}
+\clearpage
+\section{Multiple arms, heterogeneous orders, and allocation obstructions}
+\label{app:arp}
+Restless calendar sampling and separately advanced simulation streams are different experiments. The closed-form asymptotic allocation results below specify the rested-stream condition rather than assuming it for Web attention.
+\input{appendices/ar_p_bandits.tex}
+\clearpage
+\begin{thebibliography}{99}
+\input{collected_references.tex}
+\bibitem{wikiapi} Wikimedia Foundation. Page-view analytics API and access policy. Public human-traffic data under CC0. \url{https://doc.wikimedia.org/generated-data-platform/aqs/analytics-api/reference/page-views.html}.
+\bibitem{wikihistory} Wikimedia Foundation. MediaWiki revisions API. \url{https://www.mediawiki.org/wiki/API:Revisions}.
+\bibitem{kuairecdata} C. Gao et al. KuaiRec: A Fully-observed Dataset and Insights for Evaluating Recommender Systems. CIKM 2022. Dataset and daily-feature documentation: \url{https://github.com/chongminggao/KuaiRec}.
+\end{thebibliography}
+\end{document}

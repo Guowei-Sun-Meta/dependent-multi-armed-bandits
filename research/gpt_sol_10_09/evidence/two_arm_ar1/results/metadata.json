@@ -1,0 +1,30 @@
+{
+  "stationary_noise_variance": 1,
+  "mean_prior_variance": 0.25,
+  "budget": 10,
+  "runs": 40000,
+  "checks": {
+    "matrix_and_exhaustive_checks": 13665,
+    "odd_budget_alternation_counterexample": true,
+    "two_period_greedy_counterexample": {
+      "means": [
+        0.05,
+        0
+      ],
+      "variances": [
+        0.01990000000000003,
+        1
+      ],
+      "phi": 0.99,
+      "scores": [
+        0.13392845702729916,
+        0.42019644584281585
+      ]
+    },
+    "novelty_claim": false
+  },
+  "sampling_clock": "restless, one exact observation each calendar round",
+  "state_target": "largest state at budget+1",
+  "mean_target": "largest latent long-run mean",
+  "intervals": "approximate binomial 95% intervals, no asymptotic policy claim"
+}

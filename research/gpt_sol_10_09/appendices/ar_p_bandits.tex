@@ -1,0 +1,468 @@
+\subsection{Model, notation, and scope}
+There are $L\geq2$ independent arms and $T$ total observations. This distinguishes arm count from the preceding note's sample budget $K$. Arm $i\in\{1,\ldots,L\}$ follows
+\begin{equation}
+X_{i,t}-\mu_i=\sum_{r=1}^{p_i}a_{i,r}(X_{i,t-r}-\mu_i)+\eta_{i,t},\qquad
+\eta_{i,t}\sim N(0,q_i),\quad q_i>0.
+\label{ar_p_bandits:eq:ar}
+\end{equation}
+Innovations are independent across arms and time. Orders, coefficients, and innovation variances are known. Means are known for the initial reward and state-tracking calculations and unknown for mean identification. Initialization is stationary conditional on the means.
+
+Except in the explicitly rested sections, every arm evolves each calendar round. Before seeing current states, a learner chooses one arm, collects its current reward, and observes that scalar reward exactly. No other lag or current state is directly revealed. Different objectives are kept distinct: cumulative reward against a full-current-state oracle, identification of the larger long-run mean, and identification of the larger future state.
+
+Gaussian filtering~\cite{collected33}, knowledge-gradient information values~\cite{collected30}, Predictive Sampling~\cite{collected10}, and error-exponent allocation~\cite{collected32} are established ideas. Related optimal-allocation theory for iid fixed-confidence identification~\cite{collected12} does not directly establish an AR fixed-budget theorem. We make no publication-novelty claim for the derivations below.
+
+\subsection{A finite-dimensional Gaussian belief}
+Let $e_i$ select the first coordinate and define
+\[
+Z_{i,t}=(X_{i,t}-\mu_i,\ldots,X_{i,t-p_i+1}-\mu_i)^\top.
+\]
+With companion matrix $F_i$, whose first row is $(a_{i,1},\ldots,a_{i,p_i})$ and whose subdiagonal entries are one,
+\begin{equation}
+Z_{i,t+1}=F_iZ_{i,t}+e_i\eta_{i,t+1}.
+\end{equation}
+Assume $\rho(F_i)<1$. The stationary covariance is the unique solution
+\begin{equation}
+\Gamma_i=F_i\Gamma_iF_i^\top+q_ie_ie_i^\top,
+\qquad V_i=e_i^\top\Gamma_ie_i,
+\qquad \gamma_i(h)=e_i^\top F_i^{|h|}\Gamma_ie_i.
+\label{ar_p_bandits:eq:stationary}
+\end{equation}
+
+For known means, before decision $t$ the full observation history gives independent Gaussian arm beliefs $N(z_i,P_i)$ for the lag vectors. Write
+\begin{equation}
+m_i=\mu_i+e_i^\top z_i,\qquad v_i=e_i^\top P_ie_i.
+\end{equation}
+Observing the selected arm at value $x$ gives
+\begin{align}
+z_i^+&=z_i+\frac{P_ie_i}{v_i}(x-m_i),\\
+P_i^+&=P_i-\frac{P_ie_ie_i^\top P_i}{v_i}.
+\label{ar_p_bandits:eq:update}
+\end{align}
+Unselected arm beliefs are unchanged during observation. Then propagate every arm through
+\begin{equation}
+z_i'=F_iz_i^+,\qquad
+P_i'=F_iP_i^+F_i^\top+q_ie_ie_i^\top.
+\label{ar_p_bandits:eq:propagate}
+\end{equation}
+The selected observation updates the entire latent lag vector, rather than just a scalar state. Independence conditional on the complete history follows from independent arm models and non-anticipating actions: recorded action probabilities add no parameter- or state-dependent term once the observations driving those decisions are fixed.
+
+For unknown Gaussian means, append $\mu_i$ as a static state and use raw lag coordinates. With $c_i=1-\sum_ra_{i,r}$, the augmented transition and observation projection are
+\begin{equation}
+\mathcal A_i=\begin{pmatrix}1&0\\c_ie_i&F_i\end{pmatrix},\qquad
+h_i=\begin{pmatrix}0\\e_i\end{pmatrix}.
+\end{equation}
+If $\mu_i\sim N(m_{i,0},\tau_i^2)$, the stationary conditional initialization induces augmented covariance
+\[
+\begin{pmatrix}
+\tau_i^2&\tau_i^2\mathbf1^\top\\
+\tau_i^2\mathbf1&\Gamma_i+\tau_i^2\mathbf1\mathbf1^\top
+\end{pmatrix}.
+\]
+Scalar Gaussian conditioning and the augmented transition retain both mean uncertainty and lag-state uncertainty. Unknown AR coefficients would generally destroy this exact Gaussian closure and are outside the present results.
+
+\subsection{Reward control and temporal information}
+\begin{proposition}[Prediction-error reduction]
+At a known-mean belief, an exact current observation of arm $i$ reduces the conditional variance of $X_{i,t+s}$ by
+\begin{equation}
+\boxed{\Delta_i(s)=\frac{(e_i^\top F_i^sP_ie_i)^2}{v_i},\qquad s\geq1.}
+\label{ar_p_bandits:eq:reduction}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The covariance between the current and future reward is $e_i^\top F_i^sP_ie_i$; innovations after time $t$ are independent of the current state. Conditioning a joint Gaussian on its current scalar coordinate reduces the future variance by squared covariance divided by current variance.
+\end{proof}
+Thus the predictive information profile can peak at delayed horizons and can change sign before squaring. A single positive persistence parameter no longer describes it.
+
+Let $\mathcal T_i(b,x)$ denote the next joint belief after selecting arm $i$ and applying~\eqref{ar_p_bandits:eq:update}--\eqref{ar_p_bandits:eq:propagate}. For known parameters, exact finite-horizon reward control satisfies
+\begin{equation}
+J_0(b)=0,\qquad
+J_r(b)=\max_i\left\{m_i+\E_{X_i\sim N(m_i,v_i)}J_{r-1}(\mathcal T_i(b,X_i))\right\}.
+\label{ar_p_bandits:eq:bellman}
+\end{equation}
+Each action requires a scalar Gaussian integral, but continuation values depend on all lag beliefs.
+
+\begin{theorem}[Exact two-period reward policy]
+Set
+\[
+\ell_i=\mu_i+e_i^\top F_iz_i,\quad
+c_{i,1}=e_i^\top F_iP_ie_i,\quad
+w_i=|c_{i,1}|/\sqrt{v_i},\quad C_i=\max_{j\ne i}\ell_j.
+\]
+With $g(d,s)=s\varphi(d/s)-d\Phi(-d/s)$ and $g(d,0)=0$, the optimal action with two rounds remaining maximizes
+\begin{equation}
+\boxed{Q_i=m_i+\max(\ell_i,C_i)+g(|\ell_i-C_i|,w_i).}
+\label{ar_p_bandits:eq:two-period}
+\end{equation}
+\end{theorem}
+\begin{proof}
+After observing the selected reward, the next forecast for this arm is
+$\ell_i+(c_{i,1}/v_i)(X_i-m_i)$, whose pre-observation distribution is $N(\ell_i,w_i^2)$. Other arms' next forecast means remain fixed. With one final round, choose the largest forecast, so the continuation value is $\E\max(C_i,N(\ell_i,w_i^2))$. Gaussian integration yields the displayed expression.
+\end{proof}
+The same regression form applies to unknown Gaussian means using augmented current and next reward projections. Rolling this two-period rule is a feasible approximation, not a proof of arbitrary-horizon optimality.
+
+\begin{corollary}[Initial two-pull reward optimum]
+For $L$ identical zero-mean AR arms, let $M_L=\E\max_{i\leq L}G_i$ for iid standard normal $G_i$. From stationary initialization,
+\begin{equation}
+\boxed{R_2^*=2\sqrt V\,M_L-\frac{|\gamma(1)|}{\sqrt{2\pi V}}.}
+\end{equation}
+Choose any arm first; repeat it after reward $x$ when $\gamma(1)x\geq0$, and otherwise choose an unobserved arm.
+\end{corollary}
+\begin{proof}
+The first reward has mean zero. The observed arm's next forecast is $\gamma(1)x/V$; every unobserved arm has forecast zero. Hence the last expected reward is $|\gamma(1)|/\sqrt{2\pi V}$. The oracle earns $\sqrt V M_L$ each round.
+\end{proof}
+
+\subsubsection{Predictive Sampling with a finite future vector}
+Published Predictive Sampling draws from the law of $\E[X_{i,t}\mid H_t,X_{i,t+1:\infty}]$~\cite{collected10}. For known means and AR parameters, let
+\[
+Y_i=(X_{i,t+1},\ldots,X_{i,t+p_i})^\top,\quad
+c_i=\Cov(Y_i,X_{i,t}\mid H_t),\quad
+\Omega_i=\Var(Y_i\mid H_t).
+\]
+
+\begin{proposition}[AR($p_i$) predictive score]
+Independent draws
+\begin{equation}
+\boxed{\widetilde X_i\sim N(m_i,c_i^\top\Omega_i^{-1}c_i)}
+\label{ar_p_bandits:eq:ps}
+\end{equation}
+followed by selecting the largest implement Predictive Sampling in the known-parameter model.
+\end{proposition}
+\begin{proof}
+The $p_i$ consecutive future states reconstruct the lag vector at $t+p_i$. The AR Markov property screens $X_{i,t}$ from all subsequent states given this vector and known parameters. Gaussian conditioning on $Y_i$ gives a conditional expectation with pre-observation mean $m_i$ and variance $c_i^\top\Omega_i^{-1}c_i$.
+\end{proof}
+Explicitly, for $r,s\in\{1,\ldots,p_i\}$,
+\begin{align}
+c_i[r]&=e_i^\top F_i^rP_ie_i,\\
+\Omega_i[r,s]&=e_i^\top F_i^rP_i(F_i^s)^\top e_i
++q_i\sum_{k=1}^{\min(r,s)}(e_i^\top F_i^{r-k}e_i)(e_i^\top F_i^{s-k}e_i).
+\end{align}
+At order one, the score variance reduces to $\phi_i^2v_i^2/(\phi_i^2v_i+q_i)$. With unknown means, the finite future vector alone does not screen the remaining future's information about the mean; the stated finite-vector specialization requires known means.
+
+\subsubsection{Bounds for full-state oracle regret}
+Define, for independent standard normal $G_i$,
+\begin{equation}
+G=\E\max_i(\mu_i+\sqrt{V_i}G_i),\qquad
+G_{\mathrm{past}}=\E\max_i(\mu_i+\sqrt{V_i-q_i}G_i).
+\end{equation}
+
+\begin{proposition}[Innovation bound for heterogeneous AR arms]
+Every causal policy in the known-parameter model satisfies
+\begin{equation}
+\boxed{R_T^\pi\geq T(G-G_{\mathrm{past}}).}
+\end{equation}
+For $L\geq2$ and positive independent innovation variances, $G-G_{\mathrm{past}}>0$.
+\end{proposition}
+\begin{proof}
+A stronger observer sees every arm's complete past lag vector. Its current predictive reward is $\mu_i+e_i^\top F_iZ_{i,t-1}$. By stationarity and~\eqref{ar_p_bandits:eq:stationary}, this has variance $V_i-q_i$, and arms are independent. Its optimal expected reward is $G_{\mathrm{past}}$, an upper bound on the learner's reward. Fresh Gaussian innovations have positive probability of reversing any predicted ranking, so the expected conditional maximum strictly exceeds the maximum conditional expectation. Average and sum over rounds.
+\end{proof}
+For common zero mean, $V$, and $q$, the coefficient bound is
+$M_L[\sqrt V-\sqrt{V-q}]$. It reflects complete-past predictability, rather than resolving the additional loss from sparse monitoring. Together with finite stationary reward moments it implies linear-order full-state regret for fixed nondegenerate parameters. A sharp general coefficient and a closed arbitrary-horizon optimal policy are not obtained here.
+
+\begin{proposition}[A constructive refresh upper bound]
+Assume known common zero mean, and let $B=\sum_i p_i$. For any integer period $H\geq B$, probe each arm for $p_i$ consecutive rounds, then select the largest predictive mean for the remaining $H-B$ rounds. Repeat this period. Define
+\begin{equation}
+u_H=\max_i q_i\sum_{r=0}^{H-1}(e_i^\top F_i^re_i)^2.
+\end{equation}
+Its full-state oracle regret coefficient obeys
+\begin{equation}
+\boxed{c_{\mathrm{refresh}}\leq
+\frac BH G+\left(1-\frac BH\right)\sqrt{2u_H\log L}.}
+\label{ar_p_bandits:eq:refresh}
+\end{equation}
+Consequently $G-G_{\mathrm{past}}\leq c^*\leq\min\{G,\inf_{H\geq B}c_{\mathrm{refresh}}^{\mathrm{bound}}(H)\}$.
+\end{proposition}
+\begin{proof}
+Consecutive exact observations reconstruct the complete lag state of each arm at the end of its probe block. At age $h$ after this reconstruction, without additional observations, its current reward variance is
+$q_i\sum_{r=0}^{h-1}(e_i^\top F_i^re_i)^2$. Every exploitation age is at most $H$, and subsequent selected observations can only decrease forecast covariance. Hence conditional residual reward variances are at most $u_H$.
+
+On an exploitation round write $X_i=m_i+\epsilon_i$. For the greedy forecast action, conditional expected regret is at most $\E\max_i\epsilon_i\leq\sqrt{2u_H\log L}$ by the Gaussian exponential-moment bound. The probe sequence is predetermined, so each zero-mean probe reward has unconditional expectation zero and regret $G$. Average the two round types. An incomplete last period has bounded expected contribution for fixed $H$, which vanishes after dividing by the horizon. A fixed arm has coefficient $G$, giving the other upper bound.
+\end{proof}
+The sum of AR orders determines the cost of complete refresh, while the impulse responses determine how prediction error accumulates afterwards. These lower and upper bounds need not match; the upper bound certifies a feasible policy family, not Predictive Sampling or an optimal coefficient.
+
+\subsection{Mean likelihood and exact multi-arm PCS}
+For a fixed schedule $\mathcal T_i=(t_{i,1},\ldots,t_{i,n_i})$, set
+\begin{equation}
+\Sigma_i[r,s]=\gamma_i(t_{i,r}-t_{i,s}),\qquad
+I_i=\mathbf1^\top\Sigma_i^{-1}\mathbf1.
+\label{ar_p_bandits:eq:info}
+\end{equation}
+Distinct observations have a positive definite covariance under the nondegenerate stable AR model. Set $I_i=0$ if no observation is made.
+
+\begin{proposition}[Exact Gaussian mean likelihood]
+For fixed schedules observing every arm, the GLS estimates
+\begin{equation}
+\widehat\mu_i=I_i^{-1}\mathbf1^\top\Sigma_i^{-1}Y_i
+\end{equation}
+are independent $N(\mu_i,I_i^{-1})$ random variables.
+\end{proposition}
+\begin{proof}
+The observation vector has law $N(\mu_i\mathbf1,\Sigma_i)$. Completing its quadratic likelihood gives the estimator and precision. Its variance is $I_i^{-2}\mathbf1^\top\Sigma_i^{-1}\Sigma_i\Sigma_i^{-1}\mathbf1=I_i^{-1}$. Independent arm observation vectors give independent estimates.
+\end{proof}
+
+\begin{theorem}[A one-dimensional PCS formula]
+If $b$ is the unique best mean, put $\Delta_i=\mu_b-\mu_i>0$ and $\sigma_i^2=I_i^{-1}$. Recommending the largest GLS estimate has
+\begin{equation}
+\boxed{\PCS=
+\int_{-\infty}^{\infty}\varphi(z)
+\prod_{i\ne b}\Phi\left(\frac{\Delta_i+\sigma_bz}{\sigma_i}\right)\,dz.}
+\label{ar_p_bandits:eq:pcs}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Condition on $\widehat\mu_b=\mu_b+\sigma_bz$. Each other estimate is smaller independently with probability $\Phi((\Delta_i+\sigma_bz)/\sigma_i)$. Integrate the product over the standard normal $z$.
+\end{proof}
+At two arms this is $\Phi(\Delta/\sqrt{\sigma_1^2+\sigma_2^2})$. For more arms the comparison errors share the best arm's estimation error, so multiplying unconditioned pairwise PCS values would be incorrect.
+
+\subsubsection{Sequential computation and adaptive Gaussian posteriors}
+Dense inversion is unnecessary for information updates. Run the known-mean noise-state Kalman filter treating $\mu_i$ as a symbolic parameter. Before an observation, let $P^-$ be the noise-state covariance and $d^-$ the derivative of its predicted conditional mean with respect to $\mu_i$. The predicted raw reward has mean derivative
+\[
+\alpha=1+e_i^\top d^-,\qquad u=e_i^\top P^-e_i.
+\]
+The innovation contributes $\alpha^2/u$ to mean information. With gain $k=P^-e_i/u$, update $d^+=d^--k\alpha$ and propagate this derivative with the state transition between observations. Initialization has $d=0$. The independent Gaussian innovation decomposition proves that the sum of contributions equals~\eqref{ar_p_bandits:eq:info}; the script checks these independently computed expressions.
+
+For independent priors $\mu_i\sim N(m_{i,0},\tau_i^2)$, a complete adaptive history still gives independent Gaussian mean posteriors with
+\begin{equation}
+\Var(\mu_i\mid H)=(\tau_i^{-2}+I_i(H))^{-1}.
+\end{equation}
+Action probabilities are functions of already recorded data and contribute no mean-dependent likelihood factor. This does not give an adaptively selected frequentist estimator the fixed-schedule sampling distribution.
+
+If a posterior target vector has independent Gaussian coordinates with means $M_i$ and variances $s_i^2$, the posterior best probability is
+\begin{equation}
+p_i(H)=\int\varphi(z)\prod_{j\ne i}
+\Phi\left(\frac{M_i-M_j+s_iz}{s_j}\right)\,dz.
+\label{ar_p_bandits:eq:posterior-pcs}
+\end{equation}
+The PCS-optimal terminal recommendation is $\argmax_i p_i(H)$. Unlike the two-arm case, unequal variances can make this differ from the largest posterior mean. For posterior means $(.1,0,-.2)$ and variances $(.04,.04,4)$, the probabilities are approximately $(.367370,.205720,.426910)$.
+
+The exact Bayesian mean-identification recursion is
+\begin{equation}
+W_0(b)=\max_i p_i(b),\qquad
+W_r(b)=\max_i\E W_{r-1}(\mathcal T_i(b,X_i)).
+\label{ar_p_bandits:eq:selection-bellman}
+\end{equation}
+Here $b$ includes augmented mean and lag-state beliefs. For state identification at $T+1$, use the Gaussian forecasts at that fixed terminal time in the terminal function. A one-step PCS rule maximizes the expectation in~\eqref{ar_p_bandits:eq:selection-bellman} with one sample remaining; repeatedly applying it is a feasible approximation, not a general optimality theorem.
+
+\subsection{Round-robin information for many homogeneous AR(1) arms}
+For common $\phi\in[0,1)$ and $V$, define $f(h)=(1-\phi^h)/(1+\phi^h)$ and suppose $T\geq L$. The AR(1) likelihood gives
+\[
+I_i=\frac1V\left[1+\sum_{r=2}^{n_i}f(t_{i,r}-t_{i,r-1})\right]
+\]
+for each observed arm.
+
+\begin{theorem}[Round-robin information and squared error]
+If $T$ is divisible by $L$, strict round-robin achieves equal per-arm information
+\begin{equation}
+I_*^{(L)}=\frac{1+(T/L-1)f(L)}V.
+\end{equation}
+Every action sequence satisfies $\sum_iI_i\leq L I_*^{(L)}$. Among fixed schedules observing all arms, round-robin minimizes total GLS variance, maximum GLS variance, and covariance determinant. With independent equal Gaussian mean priors, it minimizes prior-averaged total squared mean-estimation error even among adaptive policies.
+\end{theorem}
+\begin{proof}
+If every arm is observed, there are $T-L$ gaps. The first observation times have sum at least $L(L+1)/2$ and the last times have sum at most $LT-L(L-1)/2$. Total gap length is therefore at most $L(T-L)$. Increasing concavity of $f$ gives $\sum_iVI_i\leq L+(T-L)f(L)$.
+
+If only $m<L$ arms are observed, the same argument gives upper bound $m+(T-m)f(m)$. For $0<\phi<1$, the real function $x+(T-x)f(x)$ is increasing for $0<x\leq T$ because its derivative is $1-f(x)+(T-x)f'(x)>0$. At $\phi=0$ the bound is $T$ for every observed count. Thus the same $L$-arm bound holds pathwise. Round-robin attains it with equal information and all gaps equal to $L$.
+
+For fixed schedules, $\sum_iI_i^{-1}\geq L^2/\sum_iI_i$, and $\min_iI_i\leq\sum_iI_i/L$. Also $\prod_iI_i\leq(\sum_iI_i/L)^L$. Equal information attains each resulting bound. For the Bayesian squared-loss objective, the conditional risk obeys
+\[
+\sum_i(\tau^{-2}+I_i(H))^{-1}
+\geq\frac{L^2}{L\tau^{-2}+\sum_iI_i(H)}
+\geq\frac L{\tau^{-2}+I_*^{(L)}}.
+\]
+Round-robin attains this constant risk, so no adaptive policy improves its expectation.
+\end{proof}
+These estimation optima do not establish PCS optimality. Total information does not determine how uncertainty is distributed among the plausible best arms.
+
+\subsection{A three-arm obstruction to balanced PCS optimality}
+\begin{theorem}[Adaptive improvement over balanced PCS]
+Take three iid Gaussian arms with independent $N(0,1)$ mean priors and observation noise variance one. With budget three, an adaptive policy has strictly greater prior-averaged PCS than every design that samples each arm once.
+\end{theorem}
+\begin{proof}
+Observe arms 1 and 2 first, as in a balanced design. Histories with observed rewards $(2a,2a)$ give posterior means $(a,a,0)$ and variances $(1/2,1/2,1)$. Let $V_i(a)$ denote optimal conditional PCS after one additional observation on arm $i$.
+
+As $a\to\infty$, the probability that arm 3 is best tends to zero. Sampling arm 3 does not change the difference between the first two means, which remains centered Gaussian with variance one. Hence $V_3(a)\to1/2$.
+
+Resampling arm 1 reduces its posterior mean variance from $1/2$ to $1/3$. The target difference between means 1 and 2 then has constant posterior variance $5/6$ and pre-observation variance one. Its posterior mean varies as $N(0,1/6)$. Gaussian equal-sign probability gives
+\[
+V_1(a)\ \longrightarrow\ \frac12+\frac1\pi\arcsin\sqrt{1/6}
+\simeq .633860>\frac12.
+\]
+The vanishing probability that arm 3 is best changes either limiting two-arm correct-selection value by at most that probability. The conditional values are continuous in the first two observed rewards. Therefore a finite open neighborhood of some sufficiently large $(2a,2a)$ has $V_1>V_3$. This neighborhood has positive prior probability.
+
+Use the balanced design outside this neighborhood and resample arm 1 within it, always making the Bayes-optimal terminal recommendation. This improves conditional PCS strictly on a positive-probability event and never changes it elsewhere. Therefore prior-averaged PCS is strictly larger. By exchangeability every balanced design has the same prior-averaged value.
+\end{proof}
+
+This formal counterexample lies inside the AR(1) class at coefficient zero. Thus the previous two-arm adaptive optimality theorem cannot be extended to arbitrary arm counts solely from symmetry and shared covariance. Numerically, at $a=1$ resampling already has conditional PCS about $.566712$, compared with $.459138$ for sampling arm 3. These values are illustrations of the proof, not a claim that a particular screening heuristic is globally optimal.
+
+\subsection{AR(2) changes the role of gaps and observation age}
+Consider the stable delayed process
+\begin{equation}
+X_t-\mu=a(X_{t-2}-\mu)+\eta_t,\qquad 0<a<1,
+\qquad q=V(1-a^2).
+\label{ar_p_bandits:eq:delayed}
+\end{equation}
+Odd and even subsequences are independent AR(1) noise processes conditional on the mean. Their stationary autocovariances satisfy
+$\gamma(2r)=a^rV$ and $\gamma(2r+1)=0$.
+
+\begin{proposition}[Gap-information and terminal-freshness counterexamples]
+For two arms obeying~\eqref{ar_p_bandits:eq:delayed}, two consecutive observations provide mean information $2/V$, whereas a gap of two provides $2/[V(1+a)]$. At budget four, $AABB$ supplies more information on both means than $ABAB$.
+
+With known common zero mean and terminal state target at round five, $AABB$ gives posterior difference variance $V(2-a^2-a^4)$, while $BABA$ gives $V(2-a^2)$. Consequently the last-two-different-arms condition alone no longer characterizes optimal terminal-state observation schedules.
+\end{proposition}
+\begin{proof}
+For two observations with covariance correlation $\rho$, direct inversion gives information $2/[V(1+\rho)]$. The consecutive pair has $\rho=0$ and the gap-two pair has $\rho=a$.
+
+Round-five target states belong to each arm's odd-time subsequence, so even-time observations provide no prediction information when means are known. Schedule $AABB$ observes different arms at useful times one and three. Their target predictable variance shares are $a^4V$ and $a^2V$. Schedule $BABA$ observes only arm B at both useful times; its later odd observation supersedes the earlier one, leaving shares zero and $a^2V$. Subtract from prior difference variance $2V$.
+\end{proof}
+With two arms, the corresponding fixed-schedule PCS values are $1/2+\arcsin\sqrt{(a^2+a^4)/2}/\pi$ and $1/2+\arcsin(a/\sqrt2)/\pi$. Here $AABB$ is actually an optimal terminal-state policy: only the two odd observation times matter, and the earlier two-arm theorem applies to their AR(1) subsequences with coefficient $a$. The last two actual observations can both be on B. A newer scalar reward can be less informative than an older one because higher-order dynamics distinguish lag phases.
+
+\subsection{Exact mean information in separately advanced streams}
+Now each arm advances only when sampled. Its $n_i$ local observations are consecutive, regardless of global interleaving. Write
+\begin{equation}
+c_i=1-\sum_ra_{i,r},\qquad
+\kappa_i=\frac{q_i}{c_i^2},\qquad
+A_i=\mathbf1^\top\Sigma_{i,p_i}^{-1}\mathbf1,\qquad
+\beta_i=\kappa_iA_i-p_i.
+\end{equation}
+Here $\kappa_i$ is the long-run variance of the stationary noise process; equivalently it is the sum of its autocovariances. The stable AR transfer function at frequency zero gives $q_i/(1-\sum_ra_{i,r})^2$.
+
+\begin{theorem}[Affine precision for local observations]
+For consecutive local observations and $n_i\geq p_i$,
+\begin{equation}
+\boxed{I_i(n_i)=A_i+(n_i-p_i)\frac{c_i^2}{q_i}
+=\frac{n_i+\beta_i}{\kappa_i}.}
+\label{ar_p_bandits:eq:affine}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The initial stationary block of $p_i$ observations has precision $A_i$. Every subsequent innovation
+$X_{i,t}-\sum_ra_{i,r}X_{i,t-r}$ is $N(c_i\mu_i,q_i)$. These innovations are independent of each other and the initial lag block conditional on the mean. Each adds $c_i^2/q_i$ precision.
+\end{proof}
+For $n_i<p_i$, use the covariance formula directly. Stability excludes $c_i=0$, and $n_i+\beta_i>0$ in the stated regime.
+
+\begin{corollary}[Exact two-arm finite-budget count allocation]
+Subject to $n_i\geq p_i$ and $n_1+n_2=T$, the continuous counts maximizing fixed-count two-arm GLS PCS are
+\begin{equation}
+n_i^*=\frac{\sqrt{\kappa_i}}{\sqrt{\kappa_1}+\sqrt{\kappa_2}}
+(T+\beta_1+\beta_2)-\beta_i
+\end{equation}
+when both lower bounds are inactive. Otherwise clamp $n_1$ to $[p_1,T-p_2]$. Comparing the neighboring feasible integers gives an exact integer solution in this regime.
+\end{corollary}
+\begin{proof}
+PCS increases as comparison variance
+$\kappa_1/(n_1+\beta_1)+\kappa_2/(T-n_1+\beta_2)$ decreases. This function is strictly convex on the feasible interval. Its zero derivative gives $(n_1+\beta_1)/(n_2+\beta_2)=\sqrt{\kappa_1/\kappa_2}$, proving the formula and the endpoint/rounding rule.
+\end{proof}
+
+For $L$ arms, minimizing \emph{total estimation variance} gives
+\begin{equation}
+n_i=\max\{p_i,\lambda\sqrt{\kappa_i}-\beta_i\},\qquad
+\sum_i n_i=T,
+\end{equation}
+with a scalar multiplier $\lambda$. In integer counts, start at each $p_i$ and repeatedly allocate to the largest marginal reduction
+$\kappa_i/[(n_i+\beta_i)(n_i+1+\beta_i)]$. Decreasing marginal gains prove optimality for this separable variance objective by an exchange argument. This is not generally a multi-arm PCS allocation. Gaussian mean priors simply add prior precision to~\eqref{ar_p_bandits:eq:affine} for posterior-variance objectives.
+
+\subsection{A scalar equation for the optimal multi-arm error exponent}
+Suppose the true means have unique best arm $b$, gaps $\Delta_i>0$, and fixed local proportions $n_i/T\to w_i>0$. Parameters and gaps are supplied to evaluate the allocation benchmark. We optimize among fixed-proportion GLS designs, rather than claiming an adaptive fixed-budget lower bound.
+
+\begin{theorem}[Exact Gaussian error exponent]
+Under the rested model,
+\begin{equation}
+\lim_{T\to\infty}-\frac1T\log(1-\PCS_T)
+=E(w):=\min_{i\ne b}\frac{\Delta_i^2}
+{2(\kappa_b/w_b+\kappa_i/w_i)}.
+\label{ar_p_bandits:eq:exponent}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The event that competitor $i$'s estimate exceeds the best estimate has probability
+\[
+\Pr(\widehat\mu_i\geq\widehat\mu_b)
+=\Phi\left(-\frac{\Delta_i}{\sqrt{I_b^{-1}+I_i^{-1}}}\right).
+\]
+By~\eqref{ar_p_bandits:eq:affine}, its exponential rate is the corresponding term in~\eqref{ar_p_bandits:eq:exponent}. The error event is the union of these finitely many events. Its probability lies between their largest probability and their sum; both have the minimum pairwise exponential rate, regardless of correlations between comparisons.
+\end{proof}
+
+\begin{theorem}[Optimal fixed-proportion allocation]
+Let $r$ be the unique solution in $(0,\min_{i\ne b}\Delta_i^2)$ of
+\begin{equation}
+\boxed{\frac{\kappa_b}{r^2}
+=\sum_{i\ne b}\frac{\kappa_i}{(\Delta_i^2-r)^2}.}
+\label{ar_p_bandits:eq:root}
+\end{equation}
+Define
+\begin{equation}
+D(r)=\frac{\kappa_b}{r}+\sum_{i\ne b}\frac{\kappa_i}{\Delta_i^2-r}.
+\end{equation}
+The unique optimal positive proportions and optimal exponent are
+\begin{equation}
+\boxed{w_b^*=\frac{\kappa_b/r}{D(r)},\qquad
+w_i^*=\frac{\kappa_i/(\Delta_i^2-r)}{D(r)}.}
+\label{ar_p_bandits:eq:weights}
+\end{equation}
+The optimal exponent is $E^*=1/[2D(r)]$.
+\end{theorem}
+\begin{proof}
+To attain exponent at least $E>0$, put $r=2E\kappa_b/w_b$. Each pairwise constraint requires $0<r<\Delta_i^2$ and
+$w_i\geq2E\kappa_i/(\Delta_i^2-r)$, while $w_b=2E\kappa_b/r$. Since the weights sum to one, $2E D(r)\leq1$. Thus every allocation has exponent at most $1/[2\min_r D(r)]$.
+
+The function $D$ diverges at both endpoints and is strictly convex. Its derivative is $-\kappa_b/r^2+\sum_i\kappa_i/(\Delta_i^2-r)^2$, so its unique minimizer satisfies~\eqref{ar_p_bandits:eq:root}. The weights~\eqref{ar_p_bandits:eq:weights} sum to one and make every competitor constraint an equality at $E^*$, attaining the bound.
+\end{proof}
+
+\begin{corollary}[Elementary allocation for equal competitor gaps]
+If every competitor has the same gap $\Delta$, put $K_-:=\sum_{i\ne b}\kappa_i$. Then
+\begin{align}
+w_b^*&=\frac{\sqrt{\kappa_b}}{\sqrt{\kappa_b}+\sqrt{K_-}},\qquad
+w_i^*=\frac{\kappa_i}{\sqrt{K_-}(\sqrt{\kappa_b}+\sqrt{K_-})},\\
+E^*&=\frac{\Delta^2}{2(\sqrt{\kappa_b}+\sqrt{K_-})^2}.
+\end{align}
+With common $\kappa$, this gives
+\begin{equation}
+\boxed{w_b^*=\frac1{1+\sqrt{L-1}},\qquad
+w_i^*=\frac1{\sqrt{L-1}(1+\sqrt{L-1})}.}
+\end{equation}
+\end{corollary}
+For three equal-variance arms, the proportions are approximately $(.414214,.292893,.292893)$. The best arm deserves more samples because its estimation error appears in every comparison. This is an exact optimal \emph{asymptotic exponent}, not a finite-$T$ PCS formula or a proof that plugging in estimated gaps preserves that exponent.
+
+The rested clock is essential. In a restless model, sampling proportions change gaps and hence the covariance information per observation. For example, homogeneous cyclic AR(1) sampling uses $f(L)$ rather than $f(1)$. General AR($p_i$) restless schedule design must use~\eqref{ar_p_bandits:eq:info}; substituting rested long-run variances alone misses the observation calendar.
+
+\subsection{Verification and unresolved questions}
+The standard-library script \texttt{experiments/ar\_p\_extension.py} checks covariance-based information against independently derived innovation filtering, exact affine precision, finite-future predictive sufficiency, prediction-error reduction, the AR(1) two-period reduction, and integer variance allocation. Exhaustive three- and four-arm AR(1) schedules check the information and Bayesian mean-square bounds. The saved verification count is 46,606, in addition to auxiliary counterexample and allocation assertions.
+
+Table~\ref{ar_p_bandits:tab:conditional} evaluates the conditional one-sample PCS choices in the three-arm proof. The inner best-probability integrals use composite Simpson quadrature with normal truncation at nine standard deviations and 160 intervals. The outer expectation uses adaptive Simpson quadrature with target tolerance $2\times10^{-8}$ to resolve changes in the maximizing recommendation. Doubling the inner resolution gives agreement beyond seven decimal places in the $a=1$ check. These calculations illustrate the limiting proof; they are not certified numerical integration bounds. The unequal-variance recommendation example uses 640 intervals to resolve its sharper transitions.
+
+\begin{table}[htbp]
+\centering
+\caption{One sample remaining, posterior means $(a,a,0)$ and variances $(1/2,1/2,1)$. Terminal recommendations maximize posterior best probability.}
+\label{ar_p_bandits:tab:conditional}
+\begin{tabular}{rrr}
+\toprule
+$a$ & Resample arm 1 & Sample arm 3\\
+\midrule
+
+0 & 0.433658 & 0.488470 \\
+1 & 0.566712 & 0.459138 \\
+2 & 0.623042 & 0.490949 \\
+3 & 0.632981 & 0.499220 \\
+5 & 0.633860 & 0.499999 \\
+10 & 0.633860 & 0.500000 \\
+
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+An independent stationary simulation uses three heterogeneous arms with coefficients $(.85)$, $(.3,.6)$, and $(.4,.15,.1)$, each with stationary noise variance one. Means are $(.35,0,-.3)$, and a fixed 12-observation round-robin schedule is evaluated by GLS. The exact PCS integral is $.528698$; 40,000 independent replications give $.528175\pm.004892$, an approximate 95\% binomial interval. This checks schedule evaluation, not PCS optimality of round-robin in this heterogeneous setting.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.9\textwidth,height=5.6cm,xmin=0,xmax=1,ymin=.6,ymax=.72,
+xlabel={Lag-two coefficient $a$},ylabel={Mean-identification PCS},
+legend style={at={(.03,.03)},anchor=south west,font=\small},grid=major]
+\addplot[blue,thick] table[col sep=comma,x=lag2,y=mean_block]{evidence/ar_p_bandits/results/ar2_pcs.csv};\addlegendentry{$AABB$}
+\addplot[red,thick] table[col sep=comma,x=lag2,y=mean_cycle]{evidence/ar_p_bandits/results/ar2_pcs.csv};\addlegendentry{$ABAB$}
+\end{axis}
+\end{tikzpicture}
+\caption{For the delayed AR(2) model, two adjacent observations are independent conditional on the mean, while gap-two observations are positively correlated. At budget four, stationary variance one and true mean gap $.5$, blocks beat alternation. Curves are exact formulas.}
+\end{figure}
+
+The main conclusions are exact Gaussian information and belief-control formulas, restricted design optima, a rested fixed-proportion allocation theorem, and explicit failures of universal balanced/freshness extensions. General finite-budget optimal PCS and reward policies for heterogeneous restless AR arms remain belief-control problems. Unknown dynamics, noisy rewards, cross-arm dependence, and model-order uncertainty require additional analysis. A natural next computational target is to evaluate the PCS Bellman continuation for a few arms and compare it with exact one-step PCS and two-period reward policies, with separate control of numerical approximation error.
+

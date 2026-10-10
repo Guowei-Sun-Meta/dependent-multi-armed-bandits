@@ -1,0 +1,37 @@
+\subsection{Current-reward optimism and predictable-state sampling}
+The full-variance reward heuristic selects $\argmax_i\{f_i+c_t\sqrt{\Sigma_{ii}}\}$. A more targeted rule replaces $\Sigma$ by $\Sigma-Q_G$. Indeed,
+\[
+z_t=CFs_{t-1}+\eta_t,\qquad
+P-Q_G=\Var(CFs_{t-1}\mid\mathcal H_t,\mu)\succeq0.
+\]
+The fresh innovation is independent of every past reading. Sampling can reveal permanent means and past lag states, but cannot predict that current innovation. Removing it from the exploration variance retains all learnable state and mean uncertainty. With zero temporal dependence, this predictive rule reduces to a mean rule.
+
+A conservative upper bound covering actual current rewards uses
+\begin{equation}
+U_{i,t}=f_i+\beta_{t-1}(\delta/2)\sqrt{W_iVW_i^\top}
++\kappa_t\sqrt{P_{ii}},\qquad
+\kappa_t=\sqrt{2\log\{2\pi^2Nt^2/(3\delta)\}}.
+\end{equation}
+The mean confidence event and a conditional two-sided Gaussian tail union bound give $|X_{i,t}-f_i|\le U_{i,t}-f_i$ simultaneously with probability at least $1-\delta$. On non-forced rounds choosing the largest $U_{i,t}$ gives oracle regret at most twice the selected width. Forced rounds contribute their realized oracle gap separately. Since $P\succeq Q_G$, this bound does not remove the irreducible linear oracle term and need not be sharp. The experiment evaluates the practical full and predictive variance rules, not this conservative current-field certificate.
+
+\subsection{Correlated Gaussian perturbations}
+Mean Thompson-style sampling draws $\widetilde\mu=m+\tau V^{1/2}\xi$, $\xi\sim N(0,I)$, and chooses its largest coordinate. Full-state sampling draws $f+\tau \Sigma^{1/2}\xi$, while predictable-state sampling draws
+\begin{equation}
+\widetilde f=f+\tau(\Sigma-Q_G)^{1/2}\xi.
+\end{equation}
+All joint draws preserve spatial covariance. The experiment uses $\tau=1$. These are algorithmic uncertainty draws at a fixed physical truth. Their covariance does not by itself calibrate regularization bias or adaptive frequentist uncertainty.
+
+Randomized optimistic linear policies~\cite{abeille2017} motivate the construction. Their regret results do not automatically transfer: the whitened information vector differs from the physical mean reward coordinate, and the forecast experiment changes with the observation history. The predictive variant is a one-step rule, distinct from future-information Predictive Sampling~\cite{liu2023}. It can undervalue readings whose benefit occurs only at later AR lags. No optimal restless-bandit control result or Thompson regret theorem is asserted.
+
+\subsection{Two PCS-oriented designs}
+Put $B_{\rm cross}=VW^\top$. For a permanent contrast $c$, measuring arm $a$ decreases $c^\top Vc$ by
+\begin{equation}
+g_t(c,a)=\frac{(c^\top B_{{\rm cross},:,a})^2}{\Sigma_{aa}+r}.
+\end{equation}
+Contrast LUCB takes $b=\argmax_i m_i$ and chooses
+\[
+j=\argmax_{j\ne b}\left\{m_j-m_b+c_t\sqrt{(e_b-e_j)^\top V(e_b-e_j)}\right\}.
+\]
+It measures the arm maximizing $g_t(e_b-e_j,a)$. This is a UCB challenger variant of the earlier standardized-gap rule.
+
+Top-two Thompson contrast design draws a plausible mean winner $b$ and redraws until a different winner $j$ appears. It caps this search at 64 draws, using the LUCB challenger as fallback, and maximizes the same contrast gain. A third location can be the selected measurement. The design is inspired by top-two sampling~\cite{russo2016}, but differs in correlated draws, indirect observations, and time-varying information. Published asymptotic optimality is not imported. Both rules recommend the largest permanent estimate at the budget and remain finite-budget PCS heuristics.

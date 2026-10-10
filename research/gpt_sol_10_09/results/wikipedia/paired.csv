@@ -1,0 +1,17 @@
+panel,batch,policy,baseline,improvement,conditional_mc_halfwidth
+astronomy,1,st_predictive_ts,ar_predictive_ts,0.01951986063053111,0.007490536498120253
+astronomy,1,st_predictive_ts,st_state_ts,0.01690381728381447,0.008075407461225375
+astronomy,1,st_predictive_ts,rewired_predictive_ts,0.0,0.0
+astronomy,1,st_predictive_ts,factor_predictive_ts,0.00841802824855634,0.007112722623875649
+astronomy,5,st_predictive_ts,ar_predictive_ts,0.015434265287773396,0.0017886930534971052
+astronomy,5,st_predictive_ts,st_state_ts,0.01485206038655884,0.003779287744872131
+astronomy,5,st_predictive_ts,rewired_predictive_ts,-0.0010041100028480563,0.0020192857447832234
+astronomy,5,st_predictive_ts,factor_predictive_ts,0.0053398298462723325,0.001531635456112978
+football,1,st_predictive_ts,ar_predictive_ts,0.1402341812667512,0.01789717341619806
+football,1,st_predictive_ts,st_state_ts,0.09611991486232072,0.017663633167763912
+football,1,st_predictive_ts,rewired_predictive_ts,-0.004016684463821007,0.009887177416837742
+football,1,st_predictive_ts,factor_predictive_ts,0.03911180794725877,0.017482631377893302
+football,5,st_predictive_ts,ar_predictive_ts,0.028288160807474993,0.0047256786399169845
+football,5,st_predictive_ts,st_state_ts,0.04610962818213386,0.004494618186402271
+football,5,st_predictive_ts,rewired_predictive_ts,0.0005057951720700532,0.0019404512617360883
+football,5,st_predictive_ts,factor_predictive_ts,0.005308474185595699,0.004027035176825789

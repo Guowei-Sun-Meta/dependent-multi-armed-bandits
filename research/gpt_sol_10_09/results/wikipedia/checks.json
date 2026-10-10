@@ -1,0 +1,10 @@
+{
+  "dense_transition_and_update": "pass",
+  "state_dimension": 8,
+  "real_panel_complete": "pass",
+  "graph_cutoffs": "pass",
+  "rewiring_degrees": "pass",
+  "predictable_covariance_psd_every_policy_decision": "pass",
+  "nonnegative_oracle_regret": "pass",
+  "batch_selected_before_feedback": "pass_by_observed_only_score_interface"
+}

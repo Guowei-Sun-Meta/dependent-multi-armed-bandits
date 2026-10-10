@@ -1,0 +1,50 @@
+\begin{tabular}{llrrr}
+\toprule
+Dynamics & Policy & Oracle/$T$ & Mean/$T$ & PCS\\
+\midrule
+Persistent & IID UCB & 1.397 & 0.668 & 0.188\\
+ & Independent AR UCB & 1.429 & 0.701 & 0.250\\
+ & Joint mean UCB & 1.453 & 0.680 & 0.125\\
+ & Joint predictive UCB & 1.426 & 0.715 & 0.125\\
+ & Joint full-state UCB & 1.248 & 0.686 & 0.219\\
+ & Joint predictive TS & 1.675 & 0.768 & 0.219\\
+ & Contrast LUCB & 1.646 & 0.734 & 0.188\\
+ & Top-two contrast TS & 2.064 & 0.809 & 0.250\\
+\midrule
+Weak & IID UCB & 2.131 & 0.607 & 0.719\\
+ & Independent AR UCB & 1.890 & 0.367 & 0.656\\
+ & Joint mean UCB & 1.994 & 0.487 & 0.812\\
+ & Joint predictive UCB & 2.008 & 0.493 & 0.906\\
+ & Joint full-state UCB & 1.838 & 0.321 & 0.531\\
+ & Joint predictive TS & 2.160 & 0.608 & 0.719\\
+ & Contrast LUCB & 2.088 & 0.570 & 0.844\\
+ & Top-two contrast TS & 2.251 & 0.710 & 0.781\\
+\midrule
+Lag 20 & IID UCB & 2.160 & 0.622 & 0.531\\
+ & Independent AR UCB & 1.841 & 0.545 & 0.656\\
+ & Joint mean UCB & 1.943 & 0.427 & 0.688\\
+ & Joint predictive UCB & 1.838 & 0.549 & 0.750\\
+ & Joint full-state UCB & 1.760 & 0.534 & 0.688\\
+ & Joint predictive TS & 2.230 & 0.773 & 0.562\\
+ & Contrast LUCB & 2.025 & 0.502 & 0.844\\
+ & Top-two contrast TS & 2.269 & 0.715 & 0.719\\
+\midrule
+Heterogeneous & IID UCB & 1.717 & 0.705 & 0.000\\
+ & Independent AR UCB & 1.725 & 0.518 & 0.406\\
+ & Joint mean UCB & 1.659 & 0.624 & 0.125\\
+ & Joint predictive UCB & 1.617 & 0.700 & 0.250\\
+ & Joint full-state UCB & 1.647 & 0.397 & 0.469\\
+ & Joint predictive TS & 1.897 & 0.758 & 0.344\\
+ & Contrast LUCB & 1.817 & 0.605 & 0.406\\
+ & Top-two contrast TS & 2.211 & 0.751 & 0.562\\
+\midrule
+Independent shocks & IID UCB & 1.453 & 0.582 & 0.188\\
+ & Independent AR UCB & 1.381 & 0.640 & 0.281\\
+ & Joint mean UCB & 1.506 & 0.498 & 0.281\\
+ & Joint predictive UCB & 1.491 & 0.633 & 0.375\\
+ & Joint full-state UCB & 1.270 & 0.583 & 0.312\\
+ & Joint predictive TS & 1.767 & 0.711 & 0.250\\
+ & Contrast LUCB & 1.691 & 0.581 & 0.250\\
+ & Top-two contrast TS & 2.151 & 0.724 & 0.375\\
+\bottomrule
+\end{tabular}

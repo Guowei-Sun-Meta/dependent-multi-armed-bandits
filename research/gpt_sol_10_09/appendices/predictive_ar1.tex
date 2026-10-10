@@ -1,0 +1,388 @@
+\subsection{Model, comparator, and objective}
+Arm $i$ has exogenous dynamics
+\begin{equation}
+X_{i,t}=\mu_i+\phi_i(X_{i,t-1}-\mu_i)+\eta_{i,t},\qquad
+\eta_{i,t}\sim N(0,q_i),\quad q_i>0,\quad |\phi_i|<1.
+\label{predictive_ar1:eq:model}
+\end{equation}
+Innovations are independent across arms and time. Parameters are known and initial states are independent stationary Gaussians with means $\mu_i$ and variances $V_i=q_i/(1-\phi_i^2)$. Before seeing current states, a non-anticipating learner chooses $A_t$, receives $X_{A_t,t}$, and observes this state exactly. All arms evolve each round regardless of selection. The oracle observes all current states before choosing and therefore earns $\max_iX_{i,t}$. There is no separate measurement noise in this model.
+
+Define
+\begin{equation}
+R_T^\pi=\E\sum_{t=1}^T[\max_iX_{i,t}-X_{A_t,t}],\qquad
+c_\pi=\limsup_{T\to\infty}\frac{R_T^\pi}{T},\qquad
+c^*=\inf_\pi c_\pi.
+\end{equation}
+The limsup avoids assuming that every time-varying policy has a limiting rate. Actions do not affect the state trajectories, so the oracle and all policies can be evaluated on the same exogenous realization.
+
+The observation clock matters: unplayed rested arms freeze, while the restless arms here continue evolving. Known parameters do not eliminate the value of monitoring changing states. Markov restless-bandit research already studies this distinction and the value of non-myopic state observations~\cite{collected29}. Kuhn, Mandjes, and Nazarathy~\cite{collected28} study the closely matching Gaussian autoregressive reward-observation model and develop Whittle and parametric index policies. Predictive Sampling already targets information according to its remaining lifetime~\cite{collected10}. Our development specializes that policy, changes its evaluation comparator, and supplies elementary bounds and controlled comparisons. It does not claim a new sampling principle or an optimal linear coefficient.
+
+\subsection{Persistence and the value of an observation}
+Let $H_t$ contain all selected-arm observations before round $t$. Conditional on this history, current states have independent Gaussian beliefs $N(m_i,v_i)$. If the latest exact observation of arm $i$ was $x$ at age $h$, then
+\begin{equation}
+m_i=\mu_i+\phi_i^h(x-\mu_i),\qquad
+v_i=V_i(1-\phi_i^{2h}).
+\label{predictive_ar1:eq:belief}
+\end{equation}
+An unobserved arm retains its stationary prior. Adaptively chosen observations do not add a likelihood term beyond the recorded rewards when parameters are known and selection is non-anticipating.
+
+\begin{proposition}[Prediction-error reduction]
+Observing arm $i$ at round $t$ reduces the conditional variance of $X_{i,t+s}$ by $\phi_i^{2s}v_i$ for every $s\geq1$.
+\end{proposition}
+\begin{proof}
+Without the observation, the variance is
+$\phi_i^{2s}v_i+q_i\sum_{j=0}^{s-1}\phi_i^{2j}$.
+After an exact observation it is $q_i\sum_{j=0}^{s-1}\phi_i^{2j}$, independently of the observed value. Subtracting proves the statement.
+\end{proof}
+The cumulative variance reduction over $H$ future rounds is $v_i\sum_{s=1}^H\phi_i^{2s}$. It vanishes when $\phi_i=0$. This measures improved prediction, not the value of information in reward units: improved prediction only benefits allocation when it changes decisions.
+
+For $\phi=0.99$ and innovation standard deviation $0.01$, $q=10^{-4}$ and $V\simeq0.005025$. A one-round-old observation leaves only $q/V=0.0199$ of stationary variance unresolved. At $\phi=0.1$ with the same $q$, that fraction is $0.99$. Both have one-step conditional variance $q$, but their predictable shares of stationary variation differ substantially.
+
+Comparisons must identify which scale is held fixed. At fixed $V$, increasing persistence implies decreasing innovation variance. At fixed $q$, $V$ increases as $\phi$ approaches one. For consecutive stationary observations, $n\Var(\bar X_n)\to V(1+\phi)/(1-\phi)$: preserving state forecasts and estimating the long-run mean are distinct information problems. We focus on the former with parameters supplied.
+
+\subsection{An exact Gaussian predictive sampling rule}
+Predictive Sampling~\cite{collected10} samples the distribution of
+\begin{equation}
+\E[X_{i,t}\mid H_t,X_{i,t+1:\infty}].
+\end{equation}
+In the exact-observation Markov model, $X_{i,t+1}$ is sufficient for the entire future sequence in this conditional expectation.
+
+\begin{proposition}[Gaussian PS specialization]
+The predictive sampling score has distribution
+\begin{equation}
+\widetilde X_{i,t}\sim N(m_i,s_i^2),\qquad
+s_i^2=\frac{\phi_i^2v_i^2}{\phi_i^2v_i+q_i}.
+\label{predictive_ar1:eq:ps}
+\end{equation}
+Independent score draws followed by $A_t\in\argmax_i\widetilde X_{i,t}$ implement PS for this model.
+\end{proposition}
+\begin{proof}
+Conditional on $H_t$, the next state has mean $\mu_i+\phi_i(m_i-\mu_i)$ and variance $\phi_i^2v_i+q_i$, and its covariance with the current state is $\phi_iv_i$. Gaussian regression gives
+\[
+\E[X_{i,t}\mid H_t,X_{i,t+1}]
+=m_i+\frac{\phi_iv_i}{\phi_i^2v_i+q_i}
+[X_{i,t+1}-\mu_i-\phi_i(m_i-\mu_i)].
+\]
+Its conditional variance is the squared covariance divided by the next-state variance, yielding~\eqref{predictive_ar1:eq:ps}. This also follows from the zero-measurement-noise case of Proposition 3 of Liu et al.~\cite{collected10}.
+\end{proof}
+
+The implementation maintains means and variances, samples~\eqref{predictive_ar1:eq:ps}, observes the selected state, sets that arm's current posterior variance to zero, and propagates all arms using
+\[
+m_i\leftarrow\mu_i+\phi_i(m_i-\mu_i),\qquad
+v_i\leftarrow\phi_i^2v_i+q_i.
+\]
+Ordinary state-posterior Thompson Sampling samples variance $v_i$. PS retains the fraction $s_i^2/v_i=\phi_i^2v_i/(\phi_i^2v_i+q_i)$. With $\phi_i=0$, PS assigns the arm its known mean rather than sampling unforecastable innovations. Its auxiliary draws do not reveal actual current or future states. Our comparator observes current states; it differs from the future-information comparator analyzed in~\cite{collected10}, so that paper's regret theorem does not transfer directly.
+
+\subsection{The irreducible linear coefficient}
+Put
+\begin{equation}
+G=\E\max_i(\mu_i+\sqrt{V_i}Z_i),\qquad
+G_{\mathrm{past}}=\E\max_i(\mu_i+\phi_i\sqrt{V_i}Z_i),
+\end{equation}
+where the $Z_i$ are independent standard normals.
+
+\begin{proposition}[All-past-state lower bound]
+For every non-anticipating policy and horizon,
+\begin{equation}
+R_T^\pi\geq T(G-G_{\mathrm{past}}).
+\label{predictive_ar1:eq:lower}
+\end{equation}
+If $K\geq2$ and all $q_i>0$, then $G-G_{\mathrm{past}}>0$. Expected regret is therefore $\Theta(T)$ for fixed parameters.
+\end{proposition}
+\begin{proof}
+Give an observer all arms' states at round $t-1$. Conditional on that vector and the learner's independent internal randomization, current innovations have zero means, so the learner's expected current reward is at most $\max_i[\mu_i+\phi_i(X_{i,t-1}-\mu_i)]$. Stationarity makes its expectation $G_{\mathrm{past}}$ every round, while the full-current-state reward has expectation $G$. This proves~\eqref{predictive_ar1:eq:lower}.
+
+For any finite past state vector, positive independent Gaussian innovations give positive probability that a nonmaximal conditional-mean arm exceeds the predicted best arm. Thus the conditional expected maximum strictly exceeds the maximal conditional mean. Averaging gives a strictly positive gap. Finally, any realized selected reward lies between the realized minimum and maximum, so
+$R_T^\pi\leq T\E[\max_iX_i-\min_iX_i]<\infty$.
+\end{proof}
+The decomposition
+\begin{equation}
+R_T^\pi=T(G-G_{\mathrm{past}})+
+\sum_{t=1}^T[G_{\mathrm{past}}-\E X_{A_t,t}]
+\end{equation}
+separates fresh-innovation loss from the additional loss due to incomplete monitoring and policy choices. The all-past-state observer is stronger than the feasible learner; it is not an achievable coefficient claim.
+
+\begin{corollary}[Homogeneous arms]
+For common $\mu=0,V,\phi\in[0,1)$ and $M_K=\E\max_{i\leq K}Z_i$,
+\begin{equation}
+c_\pi\geq(1-\phi)\sqrt V M_K,
+\qquad c_{\mathrm{fixed}}=\sqrt V M_K.
+\end{equation}
+For $K=2$, $M_2=1/\sqrt\pi$. When $\phi=0$, every causal policy attains the fixed-arm coefficient because current states are independent of the history.
+
+For two homogeneous arms, the separate \href{../two_arm_ar1/manuscript.pdf}{two-arm allocation note} proves a stronger bound using the one-observation-per-round restriction. With $\rho=\phi\sqrt{(1+\phi^2)/2}$ and $T\geq2$,
+\[
+R_T^\pi\geq\sqrt{V/\pi}\left[T-\phi/\sqrt2-(T-2)\rho\right],
+\qquad c_\pi\geq\sqrt{V/\pi}(1-\rho).
+\]
+The learner cannot have observed both arms in the previous round, so its freshest possible pair of predictive ages is one and two. A Gaussian refinement argument bounds the expected predictive gap for every adaptive policy. The bound is exact at $T=2$; no general attainability claim is made. The note also gives exact mean- and state-identification allocations, which solve different terminal objectives.
+\end{corollary}
+The positive lower bound excludes one arm and zero-innovation degeneracies. Exact $\phi=1,q>0$ is a nonstationary random walk and has no finite stationary variance. Horizon-dependent parameters also require a separate asymptotic analysis.
+
+\subsection{A feasible upper bound}
+For homogeneous arms, consider deterministic blocks of $H\geq K$ rounds. Probe each arm once in the first $K$ rounds, then choose the largest predictive mean until the next block.
+
+\begin{proposition}[Periodic refresh]
+The periodic policy satisfies
+\begin{equation}
+c_{\mathrm{refresh}}\leq
+\frac K H\sqrt V M_K+
+\left(1-\frac K H\right)\sqrt{2V(1-\phi^{2H})\log K}.
+\label{predictive_ar1:eq:upper}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Each predetermined probe has expected reward zero by stationarity, hence expected regret $\sqrt V M_K$. In an exploitation round, every arm has been observed within $H$ rounds, and conditional residual variances are at most $v_{\max}=V(1-\phi^{2H})$. Write $X_i=m_i+e_i$. Since $\max_i(m_i+e_i)\leq\max_i m_i+\max_i e_i$, choosing the maximal predictive mean incurs conditional expected regret at most $\E\max_i e_i$. For centered Gaussian residuals with variances at most $v_{\max}$, the exponential-moment maximum bound gives $\E\max_i e_i\leq\sqrt{2v_{\max}\log K}$. Average over the two round types; a partial final block has bounded expected contribution for fixed $H$.
+\end{proof}
+
+Consequently,
+\begin{equation}
+(1-\phi)\sqrt V M_K\leq c^*\leq
+\min\left\{\sqrt V M_K,\inf_{H\geq K}\text{right side of~\eqref{predictive_ar1:eq:upper}}\right\}.
+\end{equation}
+For fixed $K,V$ and $\delta=1-\phi\downarrow0$, use $1-\phi^{2H}\leq2H\delta$ and choose $H$ of order $\delta^{-1/3}$. Then $c^*=O_K(\sqrt V\delta^{1/3})$, while~\eqref{predictive_ar1:eq:lower} gives $\Omega_K(\sqrt V\delta)$. Thus the optimal coefficient tends to zero despite linear regret for every fixed $\phi<1$. The persistence exponents do not match. This upper bound concerns periodic refresh, not PS.
+
+\subsection{A two-period comparator and immediate exploration cost}
+Let
+\[
+\ell_i=\mu_i+\phi_i(m_i-\mu_i),\qquad b_i=|\phi_i|\sqrt{v_i},
+\qquad C_i=\max_{j\ne i}\ell_j.
+\]
+After observing arm $i$ now, its next predictive mean is $N(\ell_i,b_i^2)$ while competitors' projected means remain unchanged. An exact two-period terminal score is
+\begin{equation}
+Q_i=m_i+C_i+(\ell_i-C_i)\Phi(z_i)+b_i\varphi(z_i),\quad
+z_i=(\ell_i-C_i)/b_i,
+\end{equation}
+using the deterministic positive-part limit if $b_i=0$. Here $\Phi$ and $\varphi$ are the standard Gaussian distribution and density. Repeatedly choosing the largest score gives a rolling two-period policy. It is not an optimal average-reward policy.
+
+For two arms, put $d=m_1-m_2$, $u=\sqrt{v_1+v_2}$, and $w=\sqrt{s_1^2+s_2^2}$. PS's immediate conditional oracle gap is
+\begin{equation}
+r_{\mathrm{PS}}(b)=u\varphi(|d|/u)-|d|\Phi(-|d|/u)
++|d|\Phi(-|d|/w),
+\end{equation}
+with a zero last term if $w=0$. The first two terms are the greedy immediate gap; the last is the cost of choosing a smaller predictive mean. Any long-run benefit must arise from changing future information, rather than improving immediate reward at the same belief.
+
+\subsection{Reproducible experiments}
+The experiment has 40 independent replications per case, each with 5,000 burn-in rounds followed by 30,000 measured rounds. Non-oracle actions are chosen before current innovations are generated. Policies share every exogenous trajectory; their beliefs use only selected rewards. TS and PS use common auxiliary Gaussian draws for paired comparisons. Initial states are stationary. All parameters are supplied, so results isolate state tracking rather than parameter learning. Intervals are approximate normal 95\% intervals over independent replications.
+
+The main sweep uses five homogeneous zero-mean arms with $V=1$, so $q=1-\phi^2$. The fixed-arm expected coefficient is $M_5\simeq1.1630$. The refresh comparator selects a block length minimizing its constructive bound over $H=K,\ldots,2000$, or uses a fixed arm if that bound is larger. No PS temperature or two-period exploration weight is tuned.
+
+\begin{table}[ht]
+\centering
+\caption{Measured regret per round against the full-current-state oracle. The lower bound is exact; remaining entries are empirical means and 95\% interval halfwidths.}
+\resizebox{\textwidth}{!}{\begin{tabular}{rrrrrrr}
+\toprule
+$\phi$ & Lower bound & Greedy & Thompson & PS & Two-step & Refresh\\
+\midrule
+
+0 & 1.1630 & $1.1636\pm0.0017$ & $1.1616\pm0.0021$ & $1.1636\pm0.0017$ & $1.1636\pm0.0017$ & $1.1636\pm0.0017$ \\
+0.1 & 1.0467 & $1.1196\pm0.0017$ & $1.1590\pm0.0020$ & $1.1409\pm0.0020$ & $1.1196\pm0.0021$ & $1.1638\pm0.0018$ \\
+0.5 & 0.5815 & $0.8926\pm0.0018$ & $1.0881\pm0.0019$ & $1.0203\pm0.0020$ & $0.8927\pm0.0019$ & $1.1646\pm0.0026$ \\
+0.9 & 0.1163 & $0.4613\pm0.0025$ & $0.6159\pm0.0017$ & $0.5669\pm0.0017$ & $0.4334\pm0.0022$ & $1.1695\pm0.0069$ \\
+0.99 & 0.0116 & $0.2687\pm0.0060$ & $0.1548\pm0.0009$ & $0.1495\pm0.0010$ & $0.1997\pm0.0050$ & $0.6031\pm0.0041$ \\
+0.995 & 0.0058 & $0.2566\pm0.0094$ & $0.0979\pm0.0011$ & $0.0951\pm0.0010$ & $0.1795\pm0.0079$ & $0.4322\pm0.0046$ \\
+
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+With $\phi=0.99$, Predictive Sampling has measured regret per round $0.1495\pm0.0010$, compared with Thompson Sampling's $0.1548\pm0.0009$, greedy predictions' $0.2687\pm0.0060$, and two-step control's $0.1997\pm0.0050$. The point estimate is 3.5\% lower than Thompson Sampling's. This comparison is empirical and does not establish an optimal policy.
+
+For $\phi=0.99$ and innovation variance $q=10^{-4}$, scale equivariance gives a PS coefficient $0.010595\pm0.000071$, a lower bound $0.000824$, and a fixed-arm coefficient $0.082440$. This is a rescaling, not an independent experiment.
+
+In the white-noise-arm case, PS has coefficient $0.5852\pm0.0044$ and Thompson $0.8086\pm0.0032$. They select the white-noise arm in 11.2\% and 34.7\% of measured rounds, respectively.
+
+
+
+\begin{figure}[p]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.95\textwidth,height=5.5cm,xmode=log,xmin=1,xmax=240,ymin=0,ymax=1.3,
+xlabel={Memory scale $1/(1-\phi)$},ylabel={Measured regret per round},
+legend style={at={(0.5,-0.38)},anchor=north,legend columns=3,font=\small},grid=major]
+\addplot+[blue,mark=*,error bars/.cd,y dir=both,y explicit] table[col sep=comma,x=memory,y=ps,y error=ps_ci]{evidence/predictive_ar1/results/coefficient_plot.csv};\addlegendentry{PS}
+\addplot+[red,mark=square*,error bars/.cd,y dir=both,y explicit] table[col sep=comma,x=memory,y=ts,y error=ts_ci]{evidence/predictive_ar1/results/coefficient_plot.csv};\addlegendentry{Thompson}
+\addplot+[green!50!black,mark=triangle*,error bars/.cd,y dir=both,y explicit] table[col sep=comma,x=memory,y=greedy,y error=greedy_ci]{evidence/predictive_ar1/results/coefficient_plot.csv};\addlegendentry{Greedy}
+\addplot+[magenta,mark=diamond*,error bars/.cd,y dir=both,y explicit] table[col sep=comma,x=memory,y=two_step,y error=two_step_ci]{evidence/predictive_ar1/results/coefficient_plot.csv};\addlegendentry{Two-step}
+\addplot[gray,dashed] table[col sep=comma,x=memory,y=blind]{evidence/predictive_ar1/results/coefficient_plot.csv};\addlegendentry{Fixed-arm coefficient}
+\addplot[black,dashed] table[col sep=comma,x=memory,y=lower]{evidence/predictive_ar1/results/coefficient_plot.csv};\addlegendentry{Lower bound}
+\end{axis}
+\end{tikzpicture}
+\caption{Persistence comparisons hold stationary variance fixed. PS has a smaller coefficient in the highly persistent cases; greedy predictions outperform PS at moderate persistence. The remaining gap to the lower bound is not resolved.}
+\medskip
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.95\textwidth,height=5.5cm,xlabel={Measured rounds after burn-in},ylabel={Cumulative oracle regret},
+legend style={at={(0.5,-0.38)},anchor=north,legend columns=3,font=\small},grid=major]
+\addplot[blue,mark=*] table[col sep=comma,x=t,y=ps]{evidence/predictive_ar1/results/cumulative_plot.csv};\addlegendentry{PS}
+\addplot[red,mark=square*] table[col sep=comma,x=t,y=ts]{evidence/predictive_ar1/results/cumulative_plot.csv};\addlegendentry{Thompson}
+\addplot[green!50!black,mark=triangle*] table[col sep=comma,x=t,y=greedy]{evidence/predictive_ar1/results/cumulative_plot.csv};\addlegendentry{Greedy}
+\addplot[magenta,mark=diamond*] table[col sep=comma,x=t,y=two_step]{evidence/predictive_ar1/results/cumulative_plot.csv};\addlegendentry{Two-step}
+\addplot[gray,dashed] table[col sep=comma,x=t,y=blind]{evidence/predictive_ar1/results/cumulative_plot.csv};\addlegendentry{Fixed-arm expectation}
+\addplot[black,dashed] table[col sep=comma,x=t,y=lower]{evidence/predictive_ar1/results/cumulative_plot.csv};\addlegendentry{Lower bound}
+\end{axis}
+\end{tikzpicture}
+\caption{At $\phi=0.99$, increasing the measured horizon preserves approximately constant regret rates. This is a finite-horizon comparison, not a proof of a limiting empirical coefficient.}
+\end{figure}
+
+The heterogeneous case has four persistent zero-mean arms with $\phi=0.99,V=1$ and a white-noise arm with $\mu=0.2,\phi=0,V=4$. Greedy stays on the white-noise arm; PS excludes its unretained uncertainty. Complete paired and horizon comparisons are in the generated research note.
+
+\clearpage
+
+\subsection{What is the optimal policy?}
+\label{predictive_ar1:sec:optimal-control}
+For known parameters, minimizing the full-state regret coefficient is equivalent to maximizing causal average reward. Since the states are stationary and exogenous,
+\begin{equation}
+c_\pi=G-\liminf_{T\to\infty}\frac1T\E_\pi\sum_{t=1}^TX_{A_t,t}.
+\label{predictive_ar1:eq:gain-equivalence}
+\end{equation}
+The current beliefs $b=((m_i,v_i))_{i=1}^K$ are a sufficient state for this control problem. Observing $x$ from arm $i$ produces the next-round belief $\mathcal T_i(b,x)$ given by
+\begin{align}
+m_i'&=\mu_i+\phi_i(x-\mu_i), &v_i'&=q_i,\nonumber\\
+m_j'&=\mu_j+\phi_j(m_j-\mu_j), &v_j'&=\phi_j^2v_j+q_j\quad(j\ne i).
+\label{predictive_ar1:eq:belief-transition}
+\end{align}
+Thus only the selected arm's next predictive mean is random at this transition. Unselected arms still accumulate uncertainty.
+
+\begin{proposition}[Exact finite-horizon control]
+Let $J_n(b)$ be the largest expected total reward over $n$ remaining rounds from belief $b$. Then $J_0=0$ and
+\begin{equation}
+J_n(b)=\max_i\left\{m_i+\E_{x\sim N(m_i,v_i)}J_{n-1}(\mathcal T_i(b,x))\right\}.
+\label{predictive_ar1:eq:finite-bellman}
+\end{equation}
+Selecting a maximizing arm at each remaining horizon is optimal for that finite-horizon problem.
+\end{proposition}
+\begin{proof}
+Given the belief and first action $i$, the current expected reward is $m_i$ and the observed reward has distribution $N(m_i,v_i)$. Equation~\eqref{predictive_ar1:eq:belief-transition} is its complete next-round sufficient statistic. Conditional optimization of the remaining $n-1$ actions followed by maximization over the first action proves the recursion by induction.
+\end{proof}
+This is an exact policy characterization, not a computed solution for the experimental cases. Each action expectation is one-dimensional, but its continuation value depends on the joint belief of every arm. Recursive integration and representation of that joint value are the main computational obstacles.
+
+The information bonus can also be isolated explicitly. Let $b^-$ be the hypothetical next-round belief if no current state were observed: every mean and variance undergo the unselected-arm update in~\eqref{predictive_ar1:eq:belief-transition}. Then
+\[
+I_{i,n}(b)=\E J_{n-1}(\mathcal T_i(b,X_i))-J_{n-1}(b^-),
+\qquad A\in\argmax_i\{m_i+I_{i,n}(b)\}.
+\]
+Here $I_{i,n}\geq0$: a continuation policy can always ignore the new observation and reproduce the no-observation continuation. Unlike a variance bonus, this information value depends on decision gaps and the opportunity to obtain further observations. For $n=1$ it is zero; for $n=2$ it recovers the exact two-period information value.
+
+For the linear coefficient, the corresponding average-reward optimality equation is
+\begin{equation}
+g+h(b)=\max_i\left\{m_i+\E h(\mathcal T_i(b,X_i))\right\},
+\qquad X_i\sim N(m_i,v_i).
+\label{predictive_ar1:eq:average-bellman}
+\end{equation}
+Here $h$ measures the future advantage of a belief relative to the average reward $g$. A maximizing selector is average optimal if a solution has the transversality property
+\begin{equation}
+\frac{\E_\pi|h(B_{T+1})|}{T}\longrightarrow0
+\label{predictive_ar1:eq:transversality}
+\end{equation}
+for all admissible policies from our initial belief. The next section proves this assertion by telescoping. We do not establish existence of such a solution in the unbounded Gaussian belief space. Writing the equation alone is therefore not an average-optimality theorem for an implemented algorithm.
+
+The continuation term is the appropriate information bonus: it values an observation in the context of competitors, their uncertainties, and subsequent observations. Positive persistence alone does not justify a universally optimal independent-arm index. General restless Markov counterexamples already invalidate universal optimality of independent-arm indices~\cite{collected29}; those examples do not prove nonexistence of an optimal index for this particular Gaussian family. A Whittle policy would require a separate indexability argument and performance analysis.
+
+\subsection{Certifying the regret coefficient of a candidate}
+\label{predictive_ar1:sec:certificate}
+An approximate continuation function can be useful even without solving~\eqref{predictive_ar1:eq:average-bellman}. For a trial function $h$, define
+\begin{equation}
+D_h(b,i)=m_i+\E h(\mathcal T_i(b,X_i))-h(b),\qquad
+r_h(b)=\max_iD_h(b,i),
+\end{equation}
+and let $\pi_h$ choose a maximizing arm. The residual $r_h$ is an average-reward Bellman residual, rather than an empirical regret estimate.
+
+\begin{proposition}[Residual certificate]
+Suppose $h$ satisfies~\eqref{predictive_ar1:eq:transversality} for all admissible policies, all expectations above are finite, and
+$\ell\leq r_h(b)\leq u$ on every reachable belief. Then
+\begin{equation}
+G-u\leq c^*\leq c_{\pi_h}\leq G-\ell,\qquad
+c_{\pi_h}-c^*\leq u-\ell.
+\label{predictive_ar1:eq:certificate}
+\end{equation}
+In particular, an exact constant residual certifies optimality.
+\end{proposition}
+\begin{proof}
+For any policy, the conditional expected reward plus expected change in $h$ is at most $r_h(B_t)\leq u$. Summing gives
+\[
+\E_\pi\sum_{t=1}^TX_{A_t,t}\leq Tu+h(B_1)-\E_\pi h(B_{T+1}).
+\]
+For $\pi_h$ the conditional expression equals $r_h(B_t)\geq\ell$, yielding the reverse inequality with $T\ell$. Divide by $T$, use transversality, and apply~\eqref{predictive_ar1:eq:gain-equivalence}. Infimizing over policies and subtracting the two bounds proves~\eqref{predictive_ar1:eq:certificate}.
+\end{proof}
+
+The Gaussian setting also admits a useful weighted version. Write $W(b)=\sum_i|m_i-\mu_i|$. Under stationary exogenous states, for every policy and round,
+\begin{equation}
+\E_\pi W(B_t)\leq\sqrt{2/\pi}\sum_i\sqrt{V_i}=:C_V,
+\label{predictive_ar1:eq:belief-moment}
+\end{equation}
+by $m_i=\E[X_{i,t}\mid H_t]$ and conditional Jensen's inequality. Consequently $|h(b)|\leq C_0+C_1W(b)$ suffices for transversality. If a globally verified residual bound has the form
+\begin{equation}
+|r_h(b)-g|\leq\epsilon_0+\epsilon_1W(b),
+\end{equation}
+the same telescoping argument gives, with $\epsilon=\epsilon_0+\epsilon_1C_V$,
+\begin{equation}
+G-g-\epsilon\leq c^*\leq c_{\pi_h}\leq G-g+\epsilon,
+\qquad c_{\pi_h}-c^*\leq2\epsilon.
+\end{equation}
+This allows unbounded means while bounding average error. A residual checked only on sampled beliefs or a finite grid is not a global certificate; interpolation, integration errors, and omitted Gaussian tails also need control. No numerical certificate is claimed here.
+
+There is a related conditional improvement guarantee. If a baseline $\pi_0$ has gain $g_0$ and a bias $h_0$ satisfying its policy evaluation equation
+\[
+g_0=\sum_i\pi_0(i\mid b)D_{h_0}(b,i),
+\]
+then $r_{h_0}(b)\geq g_0$. Under the same transversality conditions, greedifying with respect to $h_0$ gives $c_{\pi_{h_0}}\leq G-g_0=c_{\pi_0}$. This suggests evaluating PS's bias and improving its actions, with a separate residual certificate for closeness to the optimum. A fitted bias or a truncated Monte Carlo rollout does not inherit this guarantee without error control. A discounted-return improvement alone also does not certify improvement of our average-reward objective.
+
+\subsection{A lifetime-weighted information rule and its limit}
+\label{predictive_ar1:sec:long-kg}
+To test whether a simple long-horizon correction improves the two-period policy, consider common mean $\mu$ and common $\phi\in[0,1)$. Put $C_i=\max_{j\ne i}m_j$, $d_i=|m_i-C_i|$, and define the expected improvement in the largest predictive mean after one exact observation by
+\begin{align}
+\mathrm{KG}_i(b)
+&=\E\max\{C_i,X_i\}-\max_jm_j\nonumber\\
+&=\sqrt{v_i}\varphi\left(\frac{d_i}{\sqrt{v_i}}\right)
+-d_i\Phi\left(-\frac{d_i}{\sqrt{v_i}}\right).
+\label{predictive_ar1:eq:kg}
+\end{align}
+Knowledge-gradient measurement policies are established in Bayesian information collection~\cite{collected30}; their ranking-and-selection guarantees do not apply to this restless reward problem.
+
+Suppose the continuation retains this one observation but ignores every later observation. At lag $s$, all predictive means share the same affine contraction toward $\mu$. The expected improvement in the best predictive mean is therefore exactly $\phi^s\mathrm{KG}_i(b)$. The cumulative improvement is
+\begin{equation}
+\sum_{s=1}^\infty\phi^s\mathrm{KG}_i(b)
+=\frac\phi{1-\phi}\mathrm{KG}_i(b).
+\end{equation}
+This continuation calculation is finite for $\phi<1$ and yields the illustrative action rule
+\begin{equation}
+A_t\in\argmax_i\left\{m_i+\frac\phi{1-\phi}\mathrm{KG}_i(b)\right\}.
+\label{predictive_ar1:eq:long-kg}
+\end{equation}
+It is deterministic, accounts for decision gaps as well as variance, and has no fitted multiplier. The information term vanishes at $\phi=0$. For common parameters the two-period rule uses $\phi\mathrm{KG}_i$ instead; at $\phi=0.99$ the lifetime multiplier is $99$, compared with $0.99$ for the two-period rule. Predictive mean improvements decay as $\phi^s$, whereas prediction-variance improvements decay as $\phi^{2s}$: their lifetime factors measure different quantities.
+
+Equation~\eqref{predictive_ar1:eq:long-kg} is not a solution of~\eqref{predictive_ar1:eq:average-bellman}. Replanning after every observation uses information that the continuation calculation discarded, so it can count benefits that subsequent observations would replace. Heterogeneous means or persistence also break its common-contraction simplification.
+
+The additional comparison reuses the original six homogeneous cases, all 40 independent trajectories per case, and the same burn-in and measured horizon. An exact replay of a saved PS replication verifies that running the new policy separately preserves the common state trajectory. No multiplier is selected from the results.
+\begin{table}[ht]
+\centering
+\caption{Additional common-trajectory comparison. Smaller coefficients are better; positive paired PS minus KG differences favor KG. Intervals are approximate 95\% intervals.}
+\resizebox{\textwidth}{!}{\begin{tabular}{rrrrrr}
+\toprule
+$\phi$ & Greedy & Two-step & PS & Long-horizon KG & PS minus KG\\
+\midrule
+
+0 & 1.1636 & $1.1636\pm0.0017$ & $1.1636\pm0.0017$ & $1.1636\pm0.0017$ & $0.0000\pm0.0000$ \\
+0.1 & 1.1196 & $1.1196\pm0.0021$ & $1.1409\pm0.0020$ & $1.1195\pm0.0021$ & $0.0214\pm0.0020$ \\
+0.5 & 0.8926 & $0.8927\pm0.0019$ & $1.0203\pm0.0020$ & $0.8932\pm0.0018$ & $0.1271\pm0.0025$ \\
+0.9 & 0.4613 & $0.4334\pm0.0022$ & $0.5669\pm0.0017$ & $0.4574\pm0.0016$ & $0.1095\pm0.0018$ \\
+0.99 & 0.2687 & $0.1997\pm0.0050$ & $0.1495\pm0.0010$ & $0.1659\pm0.0011$ & $-0.0164\pm0.0010$ \\
+0.995 & 0.2566 & $0.1795\pm0.0079$ & $0.0951\pm0.0010$ & $0.1171\pm0.0011$ & $-0.0219\pm0.0009$ \\
+
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
+At $\phi=0.99$, long-horizon KG has measured coefficient $0.1659\pm0.0011$, higher than PS's $0.1495\pm0.0010$. This is a paired comparison on the same exogenous trajectories. It does not establish optimality of either policy.
+
+
+The lifetime rule improves on PS at moderate persistence, but two-period control remains stronger at $\phi=0.9$ and PS remains stronger at $\phi=0.99$ and $0.995$. These results rule out presenting this geometric bonus as a uniformly better policy. They motivate estimating the actual average-reward continuation value, whose information benefit accounts for future refreshes and competing observations.
+
+
+\subsection{Scope and next theoretical target}
+The study formalizes a full-state linear-coefficient objective, an exact PS specialization, an innovation lower bound, a stronger two-arm sparse-monitoring bound developed in the separate allocation note, a feasible persistence-sensitive upper bound, and exact finite-horizon belief control. It also supplies conditional bias-based policy improvement and a Bellman-residual route to certifying an average coefficient. It does not compute an optimal average-reward bias, certify PS or the lifetime rule, match the persistence exponents, or handle unknown parameters and noisy observations. The immediate computational target is to evaluate PS's average-reward continuation value for a small number of arms, improve its action choices, and bound the residual including Gaussian tails. The lifetime-rule comparison shows why a large persistence multiplier alone is insufficient. Improving the probing upper bound, extending the sparse-monitoring bound beyond two arms, and establishing sharpness would further distinguish hidden-arm costs from fresh-innovation costs.
+

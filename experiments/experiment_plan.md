@@ -14,9 +14,14 @@ The recommended file's most important point is one my review missed: **the KuaiR
 - **KuaiRec daily.** `daily.py` builds its I-coeng graph from the full interaction log. At the first cutoff (1 August 2020), 79.1% of the graph's input rows are later than the cutoff ([audit](../research/gpt_sol_10_09/evidence/st_applications/results/feasibility/findings.md)). The panel also keeps only videos observed on all 63 days.
 - **Wikipedia.** Articles were selected by 2022–2025 popularity and completeness, and the hyperlinks are a 2026 snapshot.
 
-The recommended file says nothing about the mean channel or certificates, which are the paper's distinctive bridge (Q2, Q3). So my certificate experiments stay in the set. Of its five datasets, only Retailrocket earns a place, and only conditionally. RIPE Atlas and the Open Bandit Dataset are deferred.
+The recommended file says nothing about the mean channel or certificates, which are the paper's distinctive bridge (Q2, Q3). So my certificate experiments stay in the set. Of its five datasets, two earn a place:
 
-**The optimal set: nine experiments, four of them required.**
+- **The Open Bandit Dataset**, in a limited form: certified pooling calibrated on its real e-commerce click rates. Its click signal is too thin for the full logged-feedback study.
+- **Retailrocket**, conditionally.
+
+RIPE Atlas is deferred.
+
+**The optimal set: ten experiments, four of them required.**
 
 | # | Experiment | From | Priority | Work | Compute |
 | --- | --- | --- | --- | --- | --- |
@@ -27,8 +32,9 @@ The recommended file says nothing about the mean channel or certificates, which 
 | 5 | [Controlled factorial](#5-controlled-factorial-separate-spatial-from-temporal): innovation correlation × persistence × learner-graph corruption × gap profile | Recommended (gaps 1, 2), trimmed; absorbs my E5 | Recommended | 1 day | about 20 CPU-hours (pilot first) |
 | 6 | [Two theory instances](#6-two-theory-instances): B2 regret consequence, B3 slate gain | Mine (E6) | Recommended | 2 hours | minutes |
 | 7 | [Setting A v2 at 120 users × 3 subsets](#7-setting-a-v2-at-120-users--3-subsets) | Mine (E4) | Recommended | none | one night |
-| 8 | [Retailrocket e-commerce panel](#8-retailrocket-conditional) | Recommended | If ahead on 16 October | 1.5–2 days | a few CPU-hours |
-| 9 | [Scale timing table](#9-scale-timing) | Mine (E8), reduced | Optional | 2 hours | minutes |
+| 8 | [Open Bandit Dataset](#8-open-bandit-dataset-e-commerce-click-rates): certified pooling on real e-commerce click rates, after a feasibility check | Both, limited form | Recommended | 2 hours + half a day | a few CPU-hours (pilot first) |
+| 9 | [Retailrocket e-commerce panel](#9-retailrocket-conditional) | Recommended | If ahead on 16 October | 1.5–2 days | a few CPU-hours |
+| 10 | [Scale timing table](#10-scale-timing) | Mine (E8), reduced | Optional | 2 hours | minutes |
 
 ## How the two plans compare
 
@@ -47,7 +53,7 @@ The recommended file says nothing about the mean channel or certificates, which 
 | Certificates on real dynamics; B2 and B3 instances; mean-channel depth | Mine | Keep | The recommended file covers the fluctuation channel only. Q2 and Q3 are what the paper adds beyond prior spatiotemporal bandits |
 | Retailrocket | Recommended | Conditional | The best new dataset: e-commerce, sessions give a dated co-view graph, and several disjoint test windows. Worth adding only after 1–4 are finished |
 | RIPE Atlas DNS | Recommended | Defer | Historical coverage is unverified, it has only 13 arms per client, and it needs a new pipeline. Use it as motivation in the text instead |
-| Open Bandit Dataset | Both | Defer | Needs a Bernoulli observation filter, and a censored-learner estimand for restless replay. Neither is ready in time |
+| Open Bandit Dataset | Both | **Adopt in a limited form** (experiment 8) | A real e-commerce recommender with randomized logging, known to WWW reviewers. Its uniform-random logs hold only about 60 clicks per item over 7 days (All campaign: 1,374,327 impressions, 80 items, 0.35% click rate). That fits a calibrated mean-channel instance, but not the fluctuation channel or an online-learner replay |
 
 ## The experiments
 
@@ -152,7 +158,54 @@ Both use the existing `coverage.py`.
 
 This stabilises the 90th-percentile tails and the certificate-gap table. It needs no new code, so it can run tonight.
 
-### 8. Retailrocket (conditional)
+### 8. Open Bandit Dataset: e-commerce click rates
+
+ZOZOTOWN fashion recommendations, 7 days in late November 2019, logged by a uniform-random policy and by Bernoulli Thompson sampling, with known propensities. Each step is gated by the one before.
+
+Published figures for the uniform-random logs, from Table 1 of [Saito et al., arXiv:2008.07146](https://arxiv.org/abs/2008.07146). Clicks are computed as impressions × click rate:
+
+| Campaign | Impressions | Items | Click rate | Clicks per item over 7 days |
+| --- | ---: | ---: | ---: | ---: |
+| All | 1,374,327 | 80 | 0.35% | about 60 |
+| Men's | 452,949 | 34 | 0.51% | about 68 |
+| Women's | 864,585 | 46 | 0.48% | about 90 |
+
+**a. Feasibility check (2 hours).**
+- Download the archive (about 413 MB) into the git-ignored `data/obd/`, and stream the uniform-random logs of the three campaigns.
+- Count impressions and clicks per item, position and day.
+- Measure three things:
+    - the spread of item click rates against their sampling error, using a random-effects variance estimate (is there a ranking to learn?);
+    - position effects;
+    - whether daily item click rates move beyond binomial noise.
+- Check the release's licence terms.
+- **Go** to step b if the spread of click rates is clearly larger than the sampling error.
+
+**b. Calibrated certified pooling (half a day; the main use).**
+- **Truth.** Each item's click rate, estimated from the uniform-random logs of days 4–7 for one position. As in KuaiRec Setting A, the estimates are treated as the true means; we say so.
+- **Graphs.** Built from days 1–3 only, so they never see the data that defines the truth:
+    - an item-attribute graph from the released item features;
+    - an audience-response graph, from each item's click profile across user-feature segments;
+    - degree-preserving rewirings of both.
+- **Policies.** Reuse Setting A v2 (`setting_a2.py`), which already has bounds for 0/1 rewards:
+    - KL-UCB and Bernoulli Thompson sampling;
+    - graph-free shrinkage;
+    - SP-KLUCB with oracle, calibrated, energy and no certificate. The calibrated widths come from days 1–3.
+- **Horizon.** Click rates are low, so regret needs long horizons. Target T = 200,000 rounds with 20 seeds per campaign, after a timing pilot.
+- **Outcome.** Q2 in a real recommender at click rates near 0.4%, the regime where pooling should matter most. Does uncertified pooling still fail by dilution, and how wide is the certificate gap there?
+- **Labelling.** Report it as semi-synthetic: real click rates, simulated feedback. It is not logged-feedback evidence.
+
+**c. Replay sanity check (optional; one hour after step b).**
+- Replay the step-b policies on the uniform-random logs (Li et al., WSDM 2011).
+- A single-slot policy matches about 1 in 80 impressions in the All campaign, so a replay sees about 17,000 rounds and about 60 clicks.
+- **Expectation:** underpowered. Use it only to check that the rankings do not contradict step b. Report it in the appendix only if its intervals are informative.
+
+**Not attempted before the deadline:**
+- fluctuation-channel policies on clicks, which would need a Bernoulli observation filter;
+- replay of restless learners, which compresses calendar time and needs a censored-learner estimand.
+
+**Where.** A new folder, `experiments/open_bandit/`, with `README.md`, `design.md`, `code/` and `results/`.
+
+### 9. Retailrocket (conditional)
 
 **Go** on 16 October only if experiments 1–4 are finished and analysed.
 
@@ -166,7 +219,7 @@ This stabilises the 90th-percentile tails and the certificate-gap table. It need
 
 **Outcome.** A third real platform, in e-commerce, with a chronologically valid web graph.
 
-### 9. Scale timing
+### 10. Scale timing
 
 One table: the exact filter's step time and memory for N ∈ {64, 256, 1,024} with 3 lags. The low-rank approximation is deferred.
 
@@ -175,7 +228,7 @@ One table: the exact filter's step time and memory for N ∈ {64, 256, 1,024} wi
 | Item | Reason |
 | --- | --- |
 | RIPE Atlas DNS | Coverage pilot first; new pipeline; small arm set. Post-submission |
-| Open Bandit Dataset | Bernoulli filter and a restless off-policy estimand needed. Post-submission |
+| Open Bandit Dataset: fluctuation channel, and replay of restless learners | Needs a Bernoulli observation filter and a censored-learner estimand, and each item gets only about 9 clicks a day. Post-submission |
 | PCS at 200 worlds; N × T × budget grids | For the spatiotemporal manuscript, not the long paper |
 | More seeds on the AR(20) grid | Superseded by experiment 5's 100-world contrasts |
 | Featuring-effect sensitivity (my E7) | Made unnecessary by the monitoring framing |
@@ -187,19 +240,19 @@ One table: the exact filter's step time and memory for N ∈ {64, 256, 1,024} wi
 | Date | Daytime | Overnight |
 | --- | --- | --- |
 | 10 Oct | KuaiRec chronology (1); inflation check (3a) on the current panels as a pilot | Setting A v2 expansion (7) |
-| 11 Oct | Wikipedia chronology: dated links, prefix selection, new panel lists and collection; harness masks, panels and windows (1) | — |
+| 11 Oct | Wikipedia chronology: dated links, prefix selection, new panel lists and collection; harness masks, panels and windows (1). Open Bandit Dataset download and feasibility check (8a) | — |
 | 12 Oct | Baselines (2); chronological runs (1, 2) | Remaining runs of 1 and 2 |
 | 13 Oct | **Gate A**; certificate robustness (4); factorial code and timing pilot (5) | Factorial screen (5) |
 | 14 Oct | Certificates on real dynamics (3b); theory instances (6) | Factorial primary contrasts; filter robustness (4, 5) |
-| 15 Oct | 3b runs and analysis | Longer 3b horizons |
-| 16 Oct | Tables and figures with intervals; **Gates B and C** | — |
-| 17–18 Oct | **Abstract**; Retailrocket ingestion, if go (8) | Retailrocket runs |
-| 19–20 Oct | Retailrocket analysis; scale table (9); update the paper | — |
+| 15 Oct | 3b runs and analysis; Open Bandit Dataset calibrated instance, code and timing pilot (8b) | Longer 3b horizons; 8b runs |
+| 16 Oct | Tables and figures with intervals; replay check (8c), optional; **Gates B and C** | — |
+| 17–18 Oct | **Abstract**; Retailrocket ingestion, if go (9) | Retailrocket runs |
+| 19–20 Oct | Retailrocket analysis; scale table (10); update the paper | — |
 | 21 Oct | **Experiment freeze** | — |
 
 - **Gate A (13 October).** Do the chronological results change a headline: the dynamics gain over iid TS, or the six-community hyperlink advantage? If so, revise the Q1 and Q4 claims before drafting the abstract.
 - **Gate B (16 October).** Fix the abstract's three uncertain claims: real-data certificate behaviour (3), the conservative-estimation qualifier (4), and modelling against forgetting (2).
-- **Gate C (16 October).** Retailrocket goes ahead only if experiments 1–4 are finished.
+- **Gate C (16 October).** Retailrocket goes ahead only if experiments 1–4 are finished. The Open Bandit Dataset instance (8b) does not wait for this gate: it reuses existing code and is cheap.
 
 ## Your decision: who builds the chronological harness
 

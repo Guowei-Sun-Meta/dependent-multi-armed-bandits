@@ -111,7 +111,7 @@ Kept up to date by whoever runs experiments. Check `experiments/kuairec/README.m
 - [x] **Setting B.** 300 users × 100 videos, users arrive at random, T = 100,000. User graphs U-coeng, U-mf, U-coauthor, U-geo, the U-coeng rewiring, and a complete graph. Policies: per-user TS, global TS, user-graph Gaussian TS, and user-side SP-KLUCB with oracle, calibrated and no certificate.
 - [ ] **Merged paper, theory:** B1 validity and regret (done given [A] and [S]); B1 with correlated shocks; B2 linear-regret instance; B3 write-up. See research/correlated_arms.
 - [x] **Merged paper, experiments:** certificates under persistence (B1, B1′, B1″ against iid); KuaiRec daily panel; Wikipedia one domain and six communities.
-- [ ] **Experiment gaps** (10 October): stronger baselines on the real panels, certificates with estimated or misspecified dynamics, logged-feedback replay, more seeds and confidence intervals.
+- [ ] **Experiment gaps** (10 October): plan and priorities in [experiments/next_experiments.md](experiments/next_experiments.md). Tier 1 by 16 October: E1 certificates on real dynamics, E2 estimated or misspecified dynamics, E3 standard baselines on the real panels, E4 rolling origins with paired intervals.
 - [ ] **Spatiotemporal thread** (now part of the long paper):
     - [Algorithm catalog and toy benchmark](experiments/simulations/spatiotemporal_benchmark/README.md): 100-arm grid, AR(20), joint-Kalman policies against UCB, TS and Spectral; code in `experiments/simulations/spatiotemporal_benchmark/code/`. Done.
     - [Application scenarios and experiment designs](www/st_applications.md): Wikipedia attention with the clickstream graph, the KuaiRec daily trending slot, the Yahoo! R6 news slot, NYC taxi zones, and others.

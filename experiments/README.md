@@ -17,9 +17,12 @@ experiments/
     certificates_under_persistence/  validity of certified-pooling certificates under persistence (B1, B2)
     theory/                          numerical checks behind the theory notes in research/
   paper/                             cross-experiment analyses and paper figures
+  next_experiments.md                gaps in the evidence and the next experiments to run
 ```
 
 `st_apps/` belongs to another agent's work and is not part of this organization.
+
+**What to run next:** [next_experiments.md](next_experiments.md) reviews whether the evidence supports the paper's claims and ranks the next experiments (E1–E11) against the October deadlines.
 
 ## Experiments
 

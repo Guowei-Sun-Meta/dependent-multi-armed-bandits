@@ -181,7 +181,27 @@ The protocol (`experiments/kuairec/daily.py`):
 1. **Modelling persistence is the gain.** Filter-based greedy policies have 38% less regret than iid TS and 51% less than a static ranking.
 2. **The graph adds about 1%.** The spatiotemporal and AR-only filters perform almost the same, and real, rewired and no-graph covariances tie. This matches the weak graph correlation of shocks on KuaiRec.
 3. **Exploring the wrong uncertainty is costly.** Thompson sampling on the current-state posterior samples the fresh daily shock, which will not persist. It is the worst learning policy (4.58). Persistent sampling, which samples only the long-run means (the Predictive Sampling principle), recovers most of that loss (2.63). With strong priors from the fit window, greedy is best at this horizon.
-4. **Lifecycle drift.** At F = 42 the stale "last value" rule beats every model (0.93 against 1.31). Late in the window, engagement drifts with each video's lifecycle instead of reverting to a fixed mean. A local-level (random-walk) mean in the state is the planned fix.
+4. **Lifecycle drift.** At F = 42 the stale "last value" rule beats every model (0.93 against 1.31). Late in the window, engagement drifts with each video's lifecycle instead of reverting to a fixed mean.
+
+**Follow-up: drifting levels and the toy's exploration policies** (`daily_runs_extra.csv`).
+
+Each video's long-run level becomes a random walk with per-day variance 0.0005, 0.002 or 0.008 (dr1–dr3). The filter also gets joint predictive sampling and UCB with 1- and 2-sd bonuses, as in the toy.
+
+| Policy | F = 28 | F = 35 | F = 42 | Mean |
+| --- | ---: | ---: | ---: | ---: |
+| Drift 0.0005 (chosen by fit-window likelihood at every origin), greedy | 2.79 | 3.01 | 1.28 | **2.36** |
+| Drift 0.0005, UCB 1 sd | 2.85 | 2.94 | 1.44 | 2.41 |
+| No drift, greedy (from above) | 3.08 | 2.84 | 1.31 | 2.41 |
+| No drift, UCB 1 sd | 3.04 | 3.11 | 1.57 | 2.57 |
+| Drift 0.002, greedy | 3.71 | 3.29 | 1.14 | 2.71 |
+| Drift 0.008, greedy | 3.83 | 3.49 | 1.10 | 2.80 |
+| Last observed value | 4.27 | 3.46 | 0.93 | 2.88 |
+| Joint predictive sampling, no drift | 3.81 | 4.87 | 3.43 | 4.04 |
+| Joint predictive sampling, drift 0.0005 | 4.01 | 4.81 | 3.71 | 4.18 |
+
+- **Drift helps modestly overall and strongly late in the window.** The likelihood-selected drift gives the best mean (2.36, 2% better). Larger drift closes most of the gap to last-value at F = 42 (1.10 against 0.93) but hurts earlier origins. Drift appears to grow as videos age; a constant drift is a compromise. Age-dependent drift is the next refinement.
+- **Exploration does not pay here, unlike the toy.** The fit window gives full logs for every video, so long-run means and current states are already well known. Within a 21–35-day test window, exploring costs more than it learns. Joint predictive sampling, the toy's best untuned policy, is the worst model-based policy here, and the 1-sd UCB is slightly worse than greedy.
+- **For the paper:** the value of exploration depends on the learner's prior information, which the model's predictive uncertainty quantifies. Strong priors favour greedy use of the model; weak priors (the toy) favour predictive sampling. A sparse-history variant of KuaiRec daily, where the learner saw only 10 videos per day in the fit window, would test this directly.
 
 ## Caveats
 

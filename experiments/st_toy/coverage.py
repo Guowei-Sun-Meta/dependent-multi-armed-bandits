@@ -40,6 +40,9 @@ ELIM_POLICIES = ("se_iid", "se_st")
 # component is a scalar martingale; use the one-dimensional mixture bound with a union over the
 # N + M arms and components instead of the N-dimensional log-determinant ellipsoid.
 SCALAR_POLICIES = ("sp_ucb_iid", "sp_ucb_st", "sp_ucb_st1", "se_iid", "se_st", "se_st1")
+# B1'' (correlated shocks): scalar martingale bounds with other arms' means treated as bounded
+# nuisances, plugged in from their current intervals and iterated from [0, 1].
+PLUGIN_POLICIES = ("sp_ucb_iid", "sp_ucb_st", "sp_ucb_st2", "se_iid", "se_st2")
 BATCHES = (1, 25)
 PHIS = (0.0, 0.5, 0.9, 0.97)
 CONFIGS = ("independent", "correlated")
@@ -82,6 +85,47 @@ def scalar_bounds(st, members, delta):
         Jc = alpha + (Jd[m] - alpha).sum()
         pool[c] = st.q[m].sum() / Jc + (np.sqrt(2 * np.log(np.sqrt(Jc / alpha) / dlt)) + np.sqrt(alpha)) / np.sqrt(Jc)
     return mu_i - rad_i, mu_i + rad_i, pool + EPS
+
+
+def plugin_bounds(st, members, delta, iters: int = 5):
+    """B1'': valid with correlated shocks.
+
+    Arms: q_i - sum_{j!=i} G_ij m_j = G_ii mu_i + sum_{j!=i} G_ij (mu_j - m_j) + W_i, with
+    G = J - alpha I, W_i a scalar martingale (quadratic variation G_ii). On the event that every
+    scalar mixture bound holds, intervals containing the truth map to intervals containing it,
+    so iterating from [0, 1] stays valid. Components: write mu_i = theta_c + d_i with theta_c the
+    component midrange and |d_i| <= eps_c / 2; the same argument on theta with design P'u gives
+    a pooled bound theta_hat_c + rad_c + eps_c / 2 >= v_c. With independent shocks this reduces
+    to SP-UCB's pooled index."""
+    alpha = st.H[0, 0]
+    J = st.J
+    G = J - alpha * np.eye(N)
+    dlt = delta / (N + COMP)
+    stat = lambda x: np.sqrt(2 * x * np.log(np.sqrt(x / alpha) / dlt))  # noqa: E731
+    lo, hi = np.zeros(N), np.ones(N)
+    Jd = np.diag(J)
+    off = np.abs(G - np.diag(np.diag(G)))
+    for _ in range(iters):
+        m, h = (lo + hi) / 2, (hi - lo) / 2
+        cross = (G - np.diag(np.diag(G))) @ m
+        mu_hat = (st.q - cross) / Jd
+        rad = (stat(Jd) + alpha + off @ h) / Jd
+        lo, hi = np.maximum(lo, mu_hat - rad), np.minimum(hi, mu_hat + rad)
+    P = np.zeros((N, COMP))
+    for c, mem in enumerate(members):
+        P[mem, c] = 1.0
+    Gx = P.T @ G @ P
+    Jx = np.diag(Gx) + alpha
+    qx = P.T @ st.q
+    offx = np.abs(Gx - np.diag(np.diag(Gx)))
+    dev = np.abs(P.T @ G) @ np.full(N, EPS / 2)  # sum_i |(P'G)_ci| eps / 2
+    tlo, thi = np.zeros(COMP), np.ones(COMP)
+    for _ in range(iters):
+        m, h = (tlo + thi) / 2, (thi - tlo) / 2
+        th_hat = (qx - (Gx - np.diag(np.diag(Gx))) @ m) / Jx
+        rad = (stat(Jx) + alpha + offx @ h + dev) / Jx
+        tlo, thi = np.maximum(tlo, th_hat - rad), np.minimum(thi, th_hat + rad)
+    return lo, hi, thi + EPS / 2
 
 
 class InnovationRegression:
@@ -136,7 +180,7 @@ def run(args):
     ell = np.log(2 * (N + COMP) * T / delta)
     reg = np.zeros(T)
     viol_rounds = 0
-    st = InnovationRegression(phi, q * C, C, alpha=1.0 / N) if policy.endswith(("_st", "_st1")) else None
+    st = InnovationRegression(phi, q * C, C, alpha=1.0 / N) if policy.endswith(("_st", "_st1", "_st2")) else None
     if policy.startswith("se_"):
         return run_elimination(policy, config, phi, seed, T, batch, mu, labels, members, Y, st, sigma2, ell, delta, t0)
     for t in range(T):
@@ -153,6 +197,8 @@ def run(args):
             pool = np.where(Nc > 1, Sc / np.maximum(Nc, 1) + np.sqrt(np.maximum(var_c, 1e-6) * lvl / np.maximum(Nc, 1)) + EPS, np.inf)
         elif policy.endswith("_st1"):
             _, U_i, pool = scalar_bounds(st, members, delta)
+        elif policy.endswith("_st2"):
+            _, U_i, pool = plugin_bounds(st, members, delta)
         else:
             mu_hat, Jinv, beta = st.estimate(delta, np.sqrt(N))
             sd = np.sqrt(np.maximum(np.diag(Jinv), 0))
@@ -169,7 +215,7 @@ def run(args):
             comp_up = np.array([min(U_i[m].max(), pool[c]) for c, m in enumerate(members)])
             viol = (U_i < mu - 1e-12).any() or (comp_up < v_c - 1e-12).any()
             if decide:
-                if not policy.endswith(("_st", "_st1")) and t < COMP * batch:
+                if not policy.endswith(("_st", "_st1", "_st2")) and t < COMP * batch:
                     a = int(members[t // batch][0])
                 else:
                     c = int(np.argmax(comp_up))
@@ -219,6 +265,8 @@ def run_elimination(policy, config, phi, seed, T, batch, mu, labels, members, Y,
                 pool = np.where(Nc > 0, Sc / np.maximum(Nc, 1) + np.sqrt(2 * sigma2 * ell / np.maximum(Nc, 1)) + EPS, np.inf)
             elif policy == "se_st1":
                 lo, hi, pool = scalar_bounds(st, members, delta)
+            elif policy == "se_st2":
+                lo, hi, pool = plugin_bounds(st, members, delta)
             else:
                 mu_hat, Jinv, beta = st.estimate(delta, np.sqrt(N))
                 sd = np.sqrt(np.maximum(np.diag(Jinv), 0))
@@ -285,7 +333,8 @@ def verify():
 
 def main(seeds, T, jobs, tag=""):
     RESULTS.mkdir(parents=True, exist_ok=True)
-    pols = SCALAR_POLICIES if tag.startswith("_scalar") else ELIM_POLICIES if tag.startswith("_elim") else POLICIES
+    pols = (PLUGIN_POLICIES if tag.startswith("_plugin") else SCALAR_POLICIES if tag.startswith("_scalar")
+            else ELIM_POLICIES if tag.startswith("_elim") else POLICIES)
     configs = ("independent",) if tag.startswith("_scalar") else CONFIGS
     tasks = [(c, phi, s, p, T, b) for c in configs for phi in PHIS for s in range(seeds) for p in pols
              for b in BATCHES]

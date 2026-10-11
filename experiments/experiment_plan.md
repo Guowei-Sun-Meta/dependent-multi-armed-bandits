@@ -11,6 +11,21 @@ Experiments freeze on 21 October. The abstract is due 18 October and the paper 2
 
 [optimal_experiment_plan.md](optimal_experiment_plan.md) is folded in here; this file is the single plan. First results for experiments 3a, 4, 6 and 8 are in [oct10_runs/](oct10_runs/README.md).
 
+**Status, 10 October evening.**
+
+| Experiment | Status | Results |
+| --- | --- | --- |
+| 1 + 2 on KuaiRec | Done | [oct10_evening](oct10_evening/README.md) |
+| 1 + 2 on Wikipedia | Not done: needs chronological re-selection and dated links | — |
+| 3a | Done for Wikipedia | [oct10_runs](oct10_runs/README.md) |
+| 3b | Done | [oct10_evening](oct10_evening/README.md) |
+| 4, 6, 8 | Done | [oct10_runs](oct10_runs/README.md) |
+| 7 | Running overnight | [oct10_evening](oct10_evening/README.md) |
+| 5 | Screen only, in the parallel run | [today_2026_10_10](today_2026_10_10/README.md) |
+| 9, 10 | Not started | — |
+
+New binding problem: the valid certificates are too wide to act on with real dynamics. Anytime inflation is β ≈ 20 against about 2 pointwise.
+
 **Open Bandit Dataset: the limited form (experiment 8) stands.** The censored-feedback, calendar-time study in [open_bandit/design.md](open_bandit/design.md) is deferred. The feasibility check settles it:
 - Item click rates do vary from day to day more than binomial noise allows, with Pearson dispersion about 2.
 - But the day-to-day residuals do not persist. Their lag-1 autocorrelation is −0.14 to −0.22 by day and about 0 by 6-hour bin.

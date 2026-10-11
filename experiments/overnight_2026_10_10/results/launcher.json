@@ -1,0 +1,6 @@
+{
+  "source_experiment_pid": 52973,
+  "monitor_pid": 53978,
+  "awake_guard_pid": 53979,
+  "awake_guard_scope": "Prevent idle sleep until the existing overnight experiment exits"
+}

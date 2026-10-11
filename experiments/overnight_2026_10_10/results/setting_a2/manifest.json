@@ -1,0 +1,18 @@
+{
+  "setting_a2_runs_120x3.csv": {
+    "source": "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3.csv",
+    "sha256": "789f10d95587b07f0c7f28d14816bebb7a956140a5368e996e741992eb66b264"
+  },
+  "setting_a2_instances_120x3.csv": {
+    "source": "experiments/oct10_evening/results/setting_a2/setting_a2_instances_120x3.csv",
+    "sha256": "c3d0b02f6a76a0762d8159bdc691e18e68e984683e8f344d683693bbe52a13d8"
+  },
+  "setting_a2_runs_120x3_usercal.csv": {
+    "source": "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3_usercal.csv",
+    "sha256": "caf5b37f128cb8759a2e748c499fbefe3ec346262c6ff76e5da63e48d6f7a7fb"
+  },
+  "setting_a2_instances_120x3_usercal.csv": {
+    "source": "experiments/oct10_evening/results/setting_a2/setting_a2_instances_120x3_usercal.csv",
+    "sha256": "6a9d681a7e6252b9f475eccbc516af68c88a55b58cc3a93227c86293946a5260"
+  }
+}

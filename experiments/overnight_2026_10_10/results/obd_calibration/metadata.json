@@ -1,0 +1,12 @@
+{
+  "seed": 20261011,
+  "posterior_draws": 5000,
+  "posterior": "independent Jeffreys Beta(clicks+0.5, impressions-clicks+0.5) on held-out counts",
+  "prefix_bounds": "Clopper-Pearson, Bonferroni over K items, family alpha=0.05",
+  "scope": "Sensitivity analysis under pooled binomial rates; no future-drift guarantee or new policy runs",
+  "sources_sha256": {
+    "data/obd/open_bandit_dataset/random/all/all.csv": "f24fdf91e38de41dcd15f2482279358766556be04155b35882e327b465d104b7",
+    "data/obd/open_bandit_dataset/random/women/women.csv": "d1a4eafa28376a752a9ce4b20bc90003e6a2cda2879b6b24467e42a295620383"
+  },
+  "seconds": 4.806707083000001
+}

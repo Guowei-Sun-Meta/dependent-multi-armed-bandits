@@ -1,0 +1,13 @@
+{
+  "updated_utc": "2026-10-11T07:04:01.036270+00:00",
+  "status": "complete",
+  "completed_phases": [
+    "main",
+    "usercal"
+  ],
+  "logged_instances_completed": 720,
+  "workers": 5,
+  "target_instances_per_phase": 360,
+  "source_log": "data/logs/setting_a2_120x3.log",
+  "source_results": "experiments/oct10_evening/results/setting_a2"
+}

@@ -1,0 +1,6 @@
+{
+  "overnight_analysis": "synthetic verification passed: 120 user clusters, exact paired ratios, both phases and four raw snapshots",
+  "obd_audit": "passed: 12 splits, 72 graph/width comparisons; finite values and probability ranges checked",
+  "certificate_batch": "passed: 4800 unique runs, 100 worlds per cell; finite regret outputs",
+  "idle_sleep_guard": "verified through pmset: caffeinate assertion on behalf of PID 52973"
+}

@@ -1,4 +1,4 @@
-# 10 October evening runs: experiments 1, 2, 3b and 7
+# 10 October evening runs: experiments 1, 2, 3b and 7 (7 finished overnight)
 
 These follow [oct10_runs](../oct10_runs/README.md), from [experiment_plan.md](../experiment_plan.md). The KuaiRec raw data was downloaded from Zenodo record 18164998 and the caches were rebuilt. The rebuilt graph metadata matches the committed `graphs_meta_k10.json` exactly.
 
@@ -6,7 +6,7 @@ These follow [oct10_runs](../oct10_runs/README.md), from [experiment_plan.md](..
 | --- | --- | --- | --- | --- |
 | 1 + 2 | KuaiRec daily slot, chronological protocol, with standard baselines | `code/daily_chrono.py`, `code/analyze_daily.py` | `results/daily_chrono/` | Done |
 | 3b | Certified pooling in worlds calibrated to Wikipedia attention | `code/certificates_real.py`, `code/analyze_certs.py` | `results/certificates_real/` | Done |
-| 7 | Setting A v2 at 120 users × 3 subsets | `code/setting_a2_expand.py`, `code/analyze_a2.py` | `results/setting_a2/` | **Running overnight** (about 6 h, then the per-user calibration pass) |
+| 7 | Setting A v2 at 120 users × 3 subsets | `code/setting_a2_expand.py`, `code/analyze_a2.py` | `results/setting_a2/` | Done (11 October, 03:03) |
 
 Experiment 1 covers KuaiRec only. The Wikipedia half needs the article lists re-selected chronologically and links taken from dated revisions; the parallel run in [today_2026_10_10](../today_2026_10_10/README.md) did part of that.
 
@@ -108,7 +108,37 @@ Paired contrasts, with 95% intervals:
 
 ## 7. Setting A v2 at 120 users × 3 subsets (`results/setting_a2/`)
 
-Running overnight on 5 workers, at about 200–240 s per instance. When it finishes, `code/analyze_a2.py` writes `results/setting_a2/tables.md`, covering the full 360 instances and the committed 30 × 2 subset.
+The run finished at 03:03 on 11 October: 360 instances (120 test users × 3 subsets of 300 videos, T = 20,000), plus the per-user calibration pass. The first 30 users × 2 subsets reproduce the committed v2 table exactly. Full tables are in `results/setting_a2/tables.md`.
+
+Each cell gives the mean ratio, then the 90th percentile in brackets.
+
+| Policy (graph) | ÷ TS | ÷ KL-UCB at a fixed level | Components valid | Suboptimal components rejectable |
+| --- | --- | --- | --- | --- |
+| SP-KLUCB, oracle certificate (I-coeng) | 1.14 (1.76) | **0.78 (1.04)** | 100% | 61% |
+| SP-KLUCB, oracle certificate (I-mf) | 1.20 (1.90) | 0.80 (1.04) | 100% | 61% |
+| SP-KLUCB, oracle certificate (I-mf rewired) | 1.28 (2.10) | 0.83 (1.04) | 100% | — |
+| SP-KLUCB, per-user calibrated q = 0.75 (I-coeng) | 1.40 (2.46) | 0.88 (1.04) | 74% | — |
+| SP-KLUCB, per-user calibrated q = 0.9 (I-coeng) | 1.63 (2.92) | 0.96 (1.04) | 89% | — |
+| SP-KLUCB, calibrated 90th percentile (I-coeng) | 1.72 (2.99) | 0.99 (1.04) | 90% | 19% |
+| SP-KLUCB, energy certificate (I-coeng) | 1.71 (3.02) | 0.99 (1.04) | 100% | 18% |
+| SP-KLUCB, no certificate (I-coeng) | 0.83 (1.30) | 0.63 (1.13) | 0% | 95% |
+| SP-KLUCB, no certificate (I-mf rewired) | 0.78 (1.05) | 0.62 (1.04) | 0% | — |
+| SP-KLUCB, no certificate (I-tag) | 1.18 (**2.41**) | 0.89 (**1.74**) | 0% | — |
+| Shrinkage TS, complete graph, λ = 10 | **0.92** (1.32) | 0.90 (1.61) | — | — |
+| Spectral TS (I-coeng), λ = 10 | 2.81 (**4.89**) | 2.91 (4.49) | — | — |
+
+**What 360 instances add to the committed 60**
+- **The earlier conclusions hold.**
+  - Oracle-certified pooling cuts KL-UCB's regret by about 20%, with no blow-ups (90th percentile 1.04).
+  - Per-user calibration at q = 0.75 recovers about half of that gain (0.88 against 0.78) while being valid for 74% of components.
+  - Practical certificates that are about 90% valid (calibrated q = 0.9, per-user q = 0.9) are too wide to reject anything and gain nothing.
+- **Shrinkage, not structure.**
+  - Uncertified pooling on the rewired I-mf graph is as good as on real graphs (0.78 against 0.80–0.83 × TS).
+  - Graph-free shrinkage TS is the best average performer against TS (0.92).
+- **Tails are the cost of uncertified pooling, and they grow with the larger sample.**
+  - Spectral TS on I-coeng: 90th percentile 4.89 × TS, against 4.02 at the committed size.
+  - Uncertified SP-KLUCB on I-tag: 2.41 × TS.
+  - Certified variants never exceed 1.04 × KL-UCB at the 90th percentile.
 
 ## What this changes
 

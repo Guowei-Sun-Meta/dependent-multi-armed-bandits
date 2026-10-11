@@ -40,6 +40,14 @@ def main():
         if not r.exists():
             continue
         runs, insts = pd.read_csv(r), pd.read_csv(OUT / f"setting_a2_instances{tag}.csv")
+        if tag.endswith("usercal"):
+            # The calibration pass has no baselines and no rejectability columns: take the
+            # baselines from the main pass (same instances, same seeds).
+            main_runs = pd.read_csv(OUT / "setting_a2_runs_120x3.csv")
+            base = main_runs[main_runs.policy.isin(["ts", "klucb"])]
+            runs = pd.concat([base, runs], ignore_index=True)
+            for c in [c for c in insts.columns if c.startswith("valid_")]:
+                insts[c.replace("valid_", "rejectable_")] = insts.get(c.replace("valid_", "rejectable_"), float("nan"))
         text, summary = table(runs, insts)
         summary.to_csv(OUT / f"setting_a2_summary{tag}.csv", index=False)
         users = sorted(runs.user.unique())[:30]

@@ -20,7 +20,7 @@ Experiments freeze on 21 October. The abstract is due 18 October and the paper 2
 | 3a | Done for Wikipedia | [oct10_runs](oct10_runs/README.md) |
 | 3b | Done | [oct10_evening](oct10_evening/README.md) |
 | 4, 6, 8 | Done | [oct10_runs](oct10_runs/README.md) |
-| 7 | Running overnight | [oct10_evening](oct10_evening/README.md) |
+| 7 | Done | [oct10_evening](oct10_evening/README.md) |
 | 5 | Screen only, in the parallel run | [today_2026_10_10](today_2026_10_10/README.md) |
 | 9, 10 | Not started | — |
 

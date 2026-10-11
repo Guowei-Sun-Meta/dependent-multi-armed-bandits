@@ -1,0 +1,14 @@
+platform,policy,real_over_rewired,ci_low,ci_high,units
+"KuaiRec Setting A v2 (I-mf, 360 instances)","SP-KLUCB, oracle certificate",0.915519061247029,0.9046054321866718,0.9256893923101047,360
+"KuaiRec Setting A v2 (I-mf, 360 instances)","SP-KLUCB, no certificate",1.027964665505621,0.95696539763737,1.0987185940204751,360
+"KuaiRec Setting A v2 (I-mf, 360 instances)","Spectral TS, λ = 10",1.0028560657723506,0.956922216936883,1.0472674637566841,360
+"OBD all (attribute groups, 20 seeds)","SP-KLUCB, oracle certificate",0.958100567928075,0.914061185589485,1.0076441021270826,20
+"OBD all (attribute groups, 20 seeds)","SP-KLUCB, no certificate",1.6185555900120185,1.2669776371060317,2.1377148694052472,20
+"OBD all (attribute groups, 20 seeds)",TS pooled to component mean,0.8081166872385761,0.5687380495661263,1.2411086908699134,20
+"OBD women (attribute groups, 20 seeds)","SP-KLUCB, oracle certificate",1.0360779382085006,1.01278116814707,1.0607857231750228,20
+"OBD women (attribute groups, 20 seeds)","SP-KLUCB, no certificate",3.33138626118106,3.156172244775581,3.515049528720946,20
+"OBD women (attribute groups, 20 seeds)",TS pooled to component mean,1.5311541980261996,1.1832823207101812,1.9749237338876127,20
+"KuaiRec daily, chronological (k = 1, 15 units)","Joint filter, UCB",1.0136460114393373,0.9112255326426532,1.092318864481297,15
+"KuaiRec daily, chronological (k = 5, 15 units)","Joint filter, UCB",0.9860633479931376,0.9404041112392255,1.0331913908336052,15
+"KuaiRec Setting B (U-coeng, 8 instances, no interval)","Gaussian TS pooled over users, λ = 10",1.0192635310129925,,,8
+"KuaiRec Setting B (U-coeng, 8 instances, no interval)","SP-KLUCB over user clusters, oracle",0.9874766350051595,,,8

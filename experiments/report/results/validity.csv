@@ -1,0 +1,33 @@
+setting,certificate,violated,runs,rate,ci_low,ci_high,note
+"Toy, one at a time, φ = 0.9",iid,0,40,0.0,0.0,0.08762453925039232,
+"Toy, one at a time, φ = 0.9","innovation (B1′/B1″, known)",0,80,0.0,0.0,0.0458197362645751,
+"Toy, one at a time, φ = 0.97",iid,0,40,0.0,0.0,0.08762453925039232,
+"Toy, one at a time, φ = 0.97","innovation (B1′/B1″, known)",0,80,0.0,0.0,0.0458197362645751,
+"Toy, bursty (blocks of 25), φ = 0.9",iid,34,40,0.85,0.7092737396097997,0.9293890829149256,
+"Toy, bursty (blocks of 25), φ = 0.9","innovation (B1′/B1″, known)",0,80,0.0,0.0,0.0458197362645751,
+"Toy, bursty (blocks of 25), φ = 0.97",iid,37,40,0.925,0.8013546984090248,0.9741644432281419,
+"Toy, bursty (blocks of 25), φ = 0.97","innovation (B1′/B1″, known)",0,80,0.0,0.0,0.0458197362645751,
+"Robustness sweep, bursty, φ = 0.9",iid,46,60,0.7666666666666667,0.6456348865960799,0.8556056838156894,
+"Robustness sweep, bursty, φ = 0.9","innovation, known",0,60,0.0,0.0,0.06017393047793289,
+"Robustness sweep, bursty, φ = 0.9","innovation, fitted (365-round prefix)",0,60,0.0,0.0,0.06017393047793289,
+"Robustness sweep, bursty, φ = 0.9","innovation, fitted (100-round prefix)",1,60,0.016666666666666666,0.002948083860873682,0.08855338226779477,
+"Robustness sweep, bursty, φ = 0.9","innovation, fitted 100 + 2 SE",1,60,0.016666666666666666,0.002948083860873682,0.08855338226779477,
+"Robustness sweep, bursty, φ = 0.97",iid,53,60,0.8833333333333333,0.7782097940014187,0.9423235259654995,
+"Robustness sweep, bursty, φ = 0.97","innovation, known",0,60,0.0,0.0,0.06017393047793289,
+"Robustness sweep, bursty, φ = 0.97","innovation, fitted (365-round prefix)",0,60,0.0,0.0,0.06017393047793289,
+"Robustness sweep, bursty, φ = 0.97","innovation, fitted (100-round prefix)",8,60,0.13333333333333333,0.06914026978309641,0.24165394590072103,
+"Robustness sweep, bursty, φ = 0.97","innovation, fitted 100 + 2 SE",3,60,0.05,0.01714919117914121,0.13700734625099836,
+"Robustness sweep, bursty, AR(7) truth",iid,46,60,0.7666666666666667,0.6456348865960799,0.8556056838156894,
+"Robustness sweep, bursty, AR(7) truth","innovation, AR(1) fitted (wrong order)",14,60,0.23333333333333334,0.1443943161843107,0.3543651134039202,
+"Wikipedia-calibrated AR(7), k = 5",iid,56,100,0.56,0.4622792771125631,0.6532813459903167,
+"Wikipedia-calibrated AR(7), k = 5","innovation, known",0,100,0.0,0.0,0.03699480747600191,
+"Wikipedia-calibrated AR(7), k = 5","innovation, fitted AR(7)",0,100,0.0,0.0,0.03699480747600191,
+"Wikipedia-calibrated AR(7), k = 5","innovation, fitted AR(1)",0,100,0.0,0.0,0.03699480747600191,
+"Wikipedia-calibrated AR(7), k = 10",iid,95,100,0.95,0.8882480347279118,0.9784566385436864,
+"Wikipedia-calibrated AR(7), k = 10","innovation, known",0,100,0.0,0.0,0.03699480747600191,
+"Wikipedia-calibrated AR(7), k = 10","innovation, fitted AR(7)",0,100,0.0,0.0,0.03699480747600191,
+"Wikipedia-calibrated AR(7), k = 10","innovation, fitted AR(1)",0,100,0.0,0.0,0.03699480747600191,
+"Parallel run: dense AR(20), bursty","innovation, known",1,100,0.01,0.0017673865655472645,0.0544875247609346,today_2026_10_10
+"Parallel run: dense AR(20), bursty","innovation, fitted",5,100,0.05,0.02154336145631356,0.11175196527208817,today_2026_10_10
+"Parallel run: dense AR(20), bursty","innovation, fitted, Q × 1.5",3,100,0.03,0.010254338223414816,0.08452078080402699,today_2026_10_10
+"Parallel run: dense AR(20), bursty","innovation, wrong order",40,100,0.4,0.3093997461136028,0.4979992153815976,today_2026_10_10

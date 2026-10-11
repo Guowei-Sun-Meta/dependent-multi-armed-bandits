@@ -23,6 +23,8 @@ experiments/
 
 `st_apps/` belongs to another agent's work and is not part of this organization.
 
+**Report (11 October):** [report/](report/README.md) maps every experiment so far to the theory results (A1–A4, N1, B1–B3, S3–S6, P1), with verdicts, cross-experiment analyses and figures.
+
 **What to run next:** [experiment_plan.md](experiment_plan.md) is the current plan to the 21 October freeze. It merges the evidence review in [next_experiments.md](next_experiments.md) with the recommended application studies.
 
 The [prioritized assessment](optimal_experiment_plan.md) evaluates both proposals and the merged plan, with corrections for model assumptions, chronological evaluation, and uncertainty. It selects four core studies and prioritizes a bounded Open Bandit Dataset study as the first new application; see [its design](open_bandit/design.md).

@@ -28,7 +28,7 @@ The evidence behind every number is in [experiments/report](../../experiments/re
 
 ## Compile
 
-The PDF was built with tectonic 0.15. This machine has no system TeX, so a standalone binary was used. From `research/claude_opus_10_12_v3/paper`:
+The PDF was built with tectonic 0.15, installed at `~/.local/bin/tectonic`. From `research/claude_opus_10_12_v3/paper`:
 
 ```sh
 tectonic -X compile paper.tex

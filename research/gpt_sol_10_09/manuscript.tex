@@ -23,14 +23,15 @@
 \newcommand{\argmin}{\operatorname*{arg\,min}}
 \newcommand{\one}{\mathbf1}
 \newcommand{\pos}[1]{\left(#1\right)_+}
+\newcommand{\latestExperimentRoot}{../../experiments/report_2026_10_11}
 \title{Learning from Correlated and Persistent Web Rewards:\\Graph Alignment, General Autoregressive Bandits,\\Prediction, Regret, and Correct Selection}
 \author{Extended working manuscript}
-\date{9 October 2026}
+\date{Updated 12 October 2026; experiments through 11 October}
 \begin{document}
 \maketitle
 \begin{abstract}
 Web alternatives share both long-run structure and persistent fluctuations. We collect a research program on sequential decisions with fixed unknown means, graph restrictions on their differences, and heterogeneous autoregressive deviations driven by spatially correlated innovations. The two graph roles are distinct: a covariance of transient shocks does not certify similar permanent means. We develop graph-regularized likelihood estimation, adaptive innovation regression, simultaneous confidence, correct stopping, and objective-specific UCB and correlated Gaussian sampling policies. A conservative certified-UCB bound gives sublinear stationary mean pseudo-regret under known stable dynamics; regret against an oracle observing every current state has an irreducible linear innovation term. Graph-energy information design distinguishes normalized paths from cliques even when their resistance diameters agree. Exact short-horizon control and Gaussian selection calculations clarify why sampling for immediate reward differs from sampling for final identification. We synthesize fixed-truth 100-arm AR(20) simulations, smaller general-AR schedule experiments, an alternative Bayesian toy, and KuaiRec graph and daily-engagement studies. A new laptop-sized Wikipedia experiment uses two fixed 24-article panels, pre-2024 hyperlink graphs, 2024 fitting, and selectively observed 2025 attention.
-\input{results/wikipedia/abstract_fragment.tex}
+The completed updates add a 120-user, three-subset static KuaiRec expansion, a prefix-graph daily rerun, a full-year historical Wikipedia extension, general-AR coverage stress tests and OBD click-rate studies. Oracle I-mf pooling has mean regret 0.640 times matched conservative KL-UCB but 1.456 times Bernoulli TS. Chronological KuaiRec reduces loss 49--54\% against iid TS without establishing a gain over last value. Known-model confidence remains compatible with nominal coverage in the tested configurations, but misspecification can fail and valid elimination can retain every arm. OBD graph-free empirical-Bayes shrinkage is strongest in the tested semi-synthetic instances; an actual sparse censored-log pilot is underpowered. These findings narrow the practical claims: safety, useful confidence and algorithm superiority require separate evidence.
 Full derivations and source evidence accompany this deliberately uncompressed manuscript. Known-parameter guarantees, fitted-model heuristics, and exploratory application evidence are stated separately.
 \end{abstract}
 \clearpage

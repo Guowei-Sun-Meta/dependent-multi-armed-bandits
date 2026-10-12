@@ -1,0 +1,15 @@
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+SP-UCB confidence & Violations, k=5 & Mean regret, k=5 & Violations, k=10 & Mean regret, k=10 \\
+\midrule
+Known AR(7) & 0/100 & 441.0 & 0/100 & 466.6 \\
+Fitted AR(7) & 0/100 & 459.4 & 0/100 & 506.4 \\
+Fitted AR(1) & 0/100 & 210.6 & 0/100 & 511.1 \\
+IID confidence & 56/100 & 37.8 & 94/100 & 44.6 \\
+\bottomrule
+\end{tabular}}
+\caption{Centered Gaussian worlds calibrated to 30 Wikipedia articles: 730 days, 100 worlds per cell, oracle community widths. Violations check arm/component upper bounds; mean regret sums slate gaps over the horizon. Low empirical violation rates do not establish a fitted-model theorem.}
+\label{tab:latest-realcert}
+\end{table}

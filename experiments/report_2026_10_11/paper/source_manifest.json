@@ -1,0 +1,13 @@
+{
+  "manuscript_update_date": "2026-10-12",
+  "experiment_snapshot": "2026-10-10 through 2026-10-11",
+  "sources_sha256": {
+    "experiments/report_2026_10_11/results/overnight_comparisons.csv": "68bc56f30dc8646fab71f84ac523e905331af95df8b1f574aa47f3effab8ebf6",
+    "experiments/report_2026_10_11/results/overnight_certificates.csv": "8f1f09617ed612b0e6166994b4792129a77b1bfff8b3895bdd66fd01e5960398",
+    "experiments/report_2026_10_11/results/real_panel_baselines.csv": "3af7045b71bf95d724b278b060f0a78e0be33b37ff44279e5e3c9bbad22e8ca5",
+    "experiments/today_2026_10_10/results/certificates_confirmation/summary.csv": "436f3d5cb4362eabdf89319ec9fa0635493444497ed20904fd5af856dc6c3d23",
+    "experiments/report_2026_10_11/results/real_dynamics_certificates.csv": "5f44066cd732b94d2ca9ede9c70dc9252ccda1ca0c9d2b299c47c62d3a4a35b3",
+    "experiments/report_2026_10_11/results/obd_semisynthetic.csv": "12a29f89c9bd639504cfeeec01e4d7b0984a17a0c5d1c861bb2244d34979419f",
+    "experiments/report_2026_10_11/results/slate_contrasts.csv": "d60ac22227308601e29c65d4524737ff54b53ca117e17b5bc1b76711528eae3f"
+  }
+}

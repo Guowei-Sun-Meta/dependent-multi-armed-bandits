@@ -1,0 +1,21 @@
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Policy & Mean loss / TS & 95\% user interval & Mean loss / fixed KL & Mean paired ratio / fixed KL & Valid components \\
+\midrule
+Graph-free shrinkage TS & 0.688 & [0.644, 0.734] & 0.302 & 0.902 & -- \\
+Spectral TS, real I-mf & 0.794 & [0.723, 0.889] & 0.349 & 1.168 & -- \\
+Spectral TS, rewired I-mf & 0.792 & [0.722, 0.880] & 0.348 & 1.164 & -- \\
+SP-KLUCB, oracle & 1.456 & [1.393, 1.518] & 0.640 & 0.802 & 100.0\% \\
+SP-KLUCB, energy & 2.184 & [2.093, 2.274] & 0.960 & 0.977 & 100.0\% \\
+SP-KLUCB, global 90\% & 2.244 & [2.146, 2.334] & 0.986 & 0.992 & 89.7\% \\
+SP-KLUCB, global 50\% & 1.580 & [1.521, 1.634] & 0.695 & 0.825 & 47.3\% \\
+SP-KLUCB, user 90\% & 2.153 & [2.061, 2.237] & 0.947 & 0.969 & 89.3\% \\
+SP-KLUCB, user 75\% & 1.864 & [1.775, 1.945] & 0.819 & 0.898 & 73.6\% \\
+SP-KLUCB, zero width & 0.842 & [0.791, 0.899] & 0.370 & 0.622 & 0.0\% \\
+\bottomrule
+\end{tabular}}
+\caption{Completed Setting A v2: 120 held-out users, three subsets each, 300 videos, $T=20{,}000$. Ratios of mean losses differ from means of instance ratios. Intervals bootstrap users after averaging subsets. User-calibration validity is evaluated at the true user level, not the realized noisy warm-up; it is diagnostic, not a simultaneous certificate guarantee.}
+\label{tab:latest-pooling}
+\end{table}

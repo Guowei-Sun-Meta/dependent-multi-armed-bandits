@@ -7,6 +7,8 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \setlist{nosep,leftmargin=*}
+\emergencystretch=3em
+\newcommand{\latestExperimentRoot}{../../../experiments/report_2026_10_11}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -25,7 +27,7 @@
 
 \title{When Can a Bandit Trust Correlation?\\[2pt]
 \large Certified Pooling and Persistent Dynamics for Correlated Arms on the Web}
-\author{Working long version, 9 October 2026 (revision 2)\\
+\author{Working long version, updated 12 October 2026 (revision 3)\\
 \small Compiled from the \texttt{dependent\_mab} repository, to be condensed into a WWW 2027 submission}
 \date{}
 
@@ -35,7 +37,7 @@
 \begin{abstract}
 A short-video platform filling a daily trending slot faces arms that are correlated in two ways: videos watched by the same people tend to be liked by the same people, and a video's engagement today predicts its engagement for days. Platforms hold many graphs that seem to encode such structure, from co-engagement logs to social networks to hyperlinks, and graph bandits invite the learner to pool information along them. We ask when that trust is warranted.
 
-We model every reward as $f_{i,t}=\mu_i+z_{i,t}$, with a \emph{mean channel} (long-run appeal $\mu$, restricted by a graph certificate) and a \emph{fluctuation channel} (persistent deviations $z$ with graph-correlated shocks), and organize theory and evidence around four questions. \textbf{Which correlation is real?} On KuaiRec, collaborative graphs carry personal taste while social, profile and location graphs carry almost none; for fluctuations, hyperlinks carry shock correlation five times that of random pairs, but only when the arms span communities with different rhythms. \textbf{How can a learner pool safely?} Certified pooling gains exactly where its theory says it should: the median regret ratio to UCB1 falls from 0.84 to 0.40 as the share of rejectable components rises. Uncertified pooling fails precisely when a best item sits in a weaker community, which happens on informative graphs and never on random ones. \textbf{What breaks when rewards persist?} We prove that certified pooling stays valid under persistent, correlated, restless sampling when its confidence sets come from an exact innovation regression, give tight scalar certificates for independent and correlated shocks, and show that iid certificates fail under bursty exposure; the predicted variance inflation (3.5--4.4$\times$) matches observed violation rates of 85--93\%, while innovation certificates are never violated. \textbf{How should a learner act on persistent fluctuations?} Modelling dynamics cuts regret by 24--43\% against iid Thompson sampling on both platforms; heavy exploration of persistent uncertainty pays only when arms receive many observations and the top is well separated, while mild optimism helps where priors are weak or rankings turn over; and a graph improves the fluctuation model only when shocks are community-specific, changing decisions by at most 3\% even then, because long-run levels rather than shocks decide which items lead.
+We model reward as $f_{i,t}=\mu_i+z_{i,t}$, separating graph-certified permanent means from persistent, spatially correlated fluctuations. Certified pooling is valid under correctly specified innovation likelihoods and supplied valid widths; converting its realized information into regret bounds requires schedule-specific growth. Experiments support the mechanisms while exposing practical limitations. In a completed KuaiRec expansion with 120 held-out users and three subsets per user, oracle I-mf pooling has mean regret 0.640 times conservative matched KL-UCB, but 1.456 times Bernoulli Thompson sampling (TS); practical widths retain substantially less gain. Graph-free shrinkage explains much of spectral performance, although oracle pooling improves on a rewiring by 8.45\%. Bursty persistence breaks iid confidence; innovation bounds can preserve coverage while remaining too wide to eliminate arms. A fresh AR(20) confirmation records 1/100 failures with known dynamics versus 40/100 with wrong-order, diagonalized dynamics. A chronological KuaiRec daily rerun reduces loss 49--54\% against iid TS but does not establish an advantage over last observed value or over rewired/common-factor covariance. Full-year historical Wikipedia results depend on panel and budget. The Open Bandit Dataset supplies complementary mean-channel simulations in which graph-free empirical-Bayes TS is strongest, while an actual censored-log pilot is underpowered. The evidence supports conditional safety and information mechanisms, not universal algorithm superiority or a learned-model coverage theorem.
 \end{abstract}
 
 \tableofcontents
@@ -58,10 +60,10 @@ We model every reward as $f_{i,t}=\mu_i+z_{i,t}$, with a \emph{mean channel} (lo
 \toprule
 Question & Theory that makes it testable & Answer from the evidence \\
 \midrule
-Q1. Which correlation is real? (\S\ref{sec:q1}) & Graph energy relative to gaps; smoothing changes the argmax; random graphs act as uniform shrinkage & Collaborative graphs carry taste; social, profile, location graphs barely do. Fluctuations: links carry shocks only across communities with different rhythms. \\
-Q2. How can a learner pool safely? (\S\ref{sec:q2}) & Certified pooling regret; gains only from components with width below gap & Gains track the rejectable share (0.84 $\to$ 0.40 of UCB1). Uncertified pooling fails when a best item sits in a weaker community. Practical certificates remain the bottleneck. \\
-Q3. What breaks when rewards persist? (\S\ref{sec:q3}) & Innovation regression; certificates B1, B1$'$, B1$''$; failure result B2 & iid certificates fail under bursty exposure as B2 predicts (85--93\% of runs); innovation certificates are never violated, at comparable regret. \\
-Q4. How should a learner act on persistent fluctuations? (\S\ref{sec:q4}) & Innovation lower bound; exploration should target uncertainty that persists & Modelling dynamics: $-24$ to $-43\%$ regret. Heavy exploration needs many observations per arm and clear gaps; mild optimism helps when rankings move. Graph-shrunk shocks matter only when fluctuations decide the ranking. \\
+Q1. Which correlation is real? (\S\ref{sec:q1}) & Mean restrictions and innovation covariance are separate; graph fit need not improve decisions & Collaborative graphs carry taste; sparse social coverage limits conclusions. Dynamic topology gains are unresolved after common-factor and rewiring controls. \\
+Q2. How can a learner pool safely? (\S\ref{sec:q2}) & Supplied valid widths permit component rejection below the gap & Oracle pooling gains within a matched conservative family; practical widths are wide or incomplete. Strong graph-free shrinkage remains competitive. \\
+Q3. What breaks when rewards persist? (\S\ref{sec:q3}) & Innovation confidence assumes correct dynamics; B2 quantifies iid failure & Bursty iid confidence can fail badly. Known-model coverage is compatible with its target; fitting and misspecification require separate audits. Valid elimination can make no decisions. \\
+Q4. How should a learner act on persistent fluctuations? (\S\ref{sec:q4}) & Current reward, mean regret and PCS have different information objectives & Persistence helps selected panels, but simple last-value/EWMA rules capture much of the gain. Performance depends on panel, budget, model and comparator. \\
 \bottomrule
 \end{tabularx}
 \caption{Roadmap: four questions, the theory behind each, and the answers.}\label{tab:roadmap}
@@ -70,9 +72,9 @@ Q4. How should a learner act on persistent fluctuations? (\S\ref{sec:q4}) & Inno
 \paragraph{Contributions.}
 \begin{enumerate}
 \item A two-channel model of correlated arms that contains iid bandits, static graph bandits and restless autoregressive bandits as special cases, and separates what a graph can encode (\S\ref{sec:model}).
-\item \textbf{Theory bridging the channels} (\S\ref{sec:q3}, proofs in Appendix~\ref{app:proofs}): certified pooling is valid under persistent, correlated, restless sampling when built on an exact innovation regression (B1); tight scalar certificates for independent shocks (B1$'$) and, by iterated nuisance plug-in, for correlated shocks (B1$''$); a quantitative failure result for iid certificates (B2); and long-run substitution of the mean-channel constants (B3).
+\item \textbf{Theory bridging the channels} (\S\ref{sec:q3}, proofs in Appendix~\ref{app:proofs}): conditional validity through exact innovation regression (B1); scalar independent-shock bounds (B1$'$) and iterated nuisance bounds for correlated shocks (B1$''$); a quantitative consecutive-sampling failure calculation for iid confidence (B2); and long-run information and restricted slate-contrast formulas (B3). Practical narrowness and learned-model validity are distinct open questions.
 \item \textbf{Predictions tested against data.} Each theoretical statement yields a prediction that we test: certified gains track rejectable components (\S\ref{sec:q2}); uncertified pooling fails through dilution (\S\ref{sec:q2}); B2's variance inflation matches observed violation rates (\S\ref{sec:q3}); exploration pays with enough future observations per arm (\S\ref{sec:q4}).
-\item \textbf{Measurements on two web platforms} (KuaiRec short video; Wikipedia attention in one and in six communities) and a controlled 100-arm spatiotemporal benchmark, including a hypothesis-driven experiment showing when hyperlinks carry correlated shocks (\S\ref{sec:q1}, \S\ref{sec:q4}).
+\item \textbf{Evidence on three Web datasets} (KuaiRec, Wikipedia and OBD), plus controlled spatial/temporal simulations. Section~\ref{sec:latest} adds the completed 120-user expansion, chronological daily rerun, historical full-year extension, coverage stress tests and sparse-click studies, preserving the distinction between real panels, semi-synthetic feedback and actual logged feedback.
 \end{enumerate}
 
 \paragraph{Provenance.} Results proved in companion manuscripts in the repository are labelled \src{A} (graph alignment and certified pooling), \src{S} (spatiotemporal filtering and confidence), \src{P} (predictive and AR bandits) and \src{N} (a repository note on the selection index). Results first stated here are labelled \src{New}.
@@ -104,7 +106,7 @@ Every arm evolves every round (restless); only pulled arms are observed.
 For the mean channel, a graph helps only if long-run appeal is smooth on it relative to the gaps that matter. Two facts sharpen this \src{A,N}. Smoothing on a complete graph shrinks all arms toward a common value and preserves every ranking; smoothing on an informative graph pulls an arm toward its neighbourhood's level, which can change the best arm (the misalignment example: $\mu=(1,0.9,0)$ with arms 1 and 3 linked makes arm 2 best after smoothing). So a graph can be \emph{smoother than chance} and still \emph{unsafe to smooth}. For the fluctuation channel, a graph helps only if shocks are correlated along its edges beyond what a single common factor explains.
 
 \begin{prediction}\label{pred:q1}
-(a) Graphs built from collaborative signals align with personal taste more than graphs built from profiles or content. (b) Fixed smoothing on informative graphs changes users' best items more than smoothing on rewired graphs. (c) A graph improves the shock model only if shocks are community-specific.
+(a) Collaborative signals may align with personal taste more than profile or content features. (b) Fixed smoothing can change the best item even on a globally aligned graph. (c) A graph-specific decision gain should survive common-factor and rewiring controls; better shock likelihood alone need not improve ranking. These are empirical hypotheses rather than consequences of the confidence theorem.
 \end{prediction}
 
 \subsection{Evidence: the mean channel on KuaiRec}
@@ -144,7 +146,9 @@ U-soc (social; 47 edges) & user & not comparable & 0.035 per edge & -- \\
 \item User graphs are dominated by a shared popularity component: users' rows correlate at 0.38 even for random pairs.
 \end{itemize}
 
-\subsection{Evidence: the fluctuation channel on three panels}
+\subsection{Legacy diagnostics: the fluctuation channel on three panels}
+
+These original KuaiRec and 150-article Wikipedia panels used future interaction inputs or retrospective cohort/link selection. Their covariance diagnostics are retained as exploratory mechanism evidence. The chronological KuaiRec and historical 24-article Wikipedia updates in Section~\ref{sec:latest} govern current policy conclusions.
 
 Table~\ref{tab:shocks} compares shock correlation along graph edges, along rewired edges and across all pairs, and the held-out likelihood of the innovation covariance under each graph target, on three daily panels: KuaiRec (253 videos, 63 days), Wikipedia programming-language articles (150 articles, 2022--2025) and Wikipedia articles from six communities (NFL, NBA, MLB, Premier League, countries, programming languages; 25 each). The six-community panel was designed after the first two returned a null, to test Prediction~\ref{pred:q1}c directly.
 
@@ -168,7 +172,7 @@ Wikipedia, six domains & hyperlinks & \textbf{0.273} / 0.051 / 0.051 & 0.320 / 0
 \item With six communities, the picture reverses (Prediction~\ref{pred:q1}c). Shocks correlate at 0.32 within a community and 0.00 across; 84\% of hyperlinks stay within a community, so hyperlinked pairs correlate at 0.273 against 0.051 for rewired pairs. Hyperlinks give the best held-out fit at all three origins, matching an oracle community-block graph (22.13).
 \end{itemize}
 
-\answer{For long-run appeal, trust collaborative graphs (factorization, co-engagement) and treat profile, location, social and content graphs as popularity signals. Even a good graph is not safe to smooth with a fixed strength. For fluctuations, a graph adds information only when the arms span communities with different rhythms; within one community, a common factor captures the shared shocks.}
+\answer{Collaborative graphs carry useful preference signal in these data, but alignment does not certify safe smoothing. Social-graph coverage is too sparse for a broad conclusion. For fluctuations, compare topology against a common factor and rewiring: stronger shock fit does not by itself establish better decisions.}
 
 %=====================================================================
 \section{Q2. How can a learner pool safely?}\label{sec:q2}
@@ -191,7 +195,7 @@ Graph geometry, not diameter, sets the value of a certificate: a path and a cliq
 
 \subsection{Evidence}
 
-\paragraph{Design (Setting A).} For each of 60 test users, 300 videos are sampled and each item graph is rebuilt on them; SP-UCB uses a 20-component spectral partition; rewards are Bernoulli with the user's true means; $T=20{,}000$; common random numbers across policies. Setting A v2 repeats this with KL-based bounds (30 users $\times$ 2 subsets) and adds practical certificates.
+\paragraph{Legacy design (Setting A).} For each of 60 test users, 300 videos are sampled and each item graph is rebuilt on them; SP-UCB uses a 20-component spectral partition; rewards are Bernoulli with the user's data-derived means; $T=20{,}000$; common random numbers across policies. The original Setting A v2 used 30 users $\times$ 2 subsets. It is now superseded for headline performance by the completed 120-user $\times$ 3-subset expansion in Section~\ref{sec:latest}; the older mechanism tables below retain their original cohort.
 
 \begin{table}[t]\centering\small
 \resizebox{\linewidth}{!}{%
@@ -204,7 +208,7 @@ $\le$ 40\% & 54 & 0.84 & 0.78--0.91 \\
 60--80\% & 119 & 0.52 & 0.41--0.61 \\
 $>$ 80\% & 120 & 0.40 & 0.30--0.83 \\
 \midrule
-\multicolumn{4}{l}{Spearman correlation of the rejectable share with the log ratio: $-0.48$ ($p\approx10^{-22}$)} \\
+\multicolumn{4}{l}{Descriptive Spearman correlation: $-0.48$; users recur across graph instances.} \\
 \bottomrule
 \end{tabular}}
 \caption{Certified gains track the theorem's rejectability condition (Prediction~\ref{pred:q2}a).}\label{tab:rejectable}
@@ -237,12 +241,12 @@ Energy (from the graph) & 0.98 / 1.05 & 100\% & 0.80 \\
 None (zero width) & 0.67 / 1.32 & 0\% & 0 \\
 \bottomrule
 \end{tabular}}
-\caption{The certificate gap (Setting A v2, KL bounds). Per-user certificates calibrate widths on the 100 tuning users whose overall reward level is closest to the user's, after a one-pull-per-video warm-up charged to regret.}\label{tab:certgap}
+\caption{Legacy certificate gap: 30 users $\times$ 2 subsets, KL bounds. Entries average paired instance ratios; KL-UCB uses the matched fixed confidence level. Per-user diagnostics use the true user level while policies use a paid noisy warm-up. Table~\ref{tab:latest-pooling} reports the completed expansion and distinguishes ratios of mean losses.}\label{tab:certgap}
 \end{table}
 
-\paragraph{The certificate gap.} Table~\ref{tab:certgap} shows the practical bottleneck. Valid certificates derived from the graph (energy) or calibrated across users are too wide to reject components; narrow calibrated certificates are invalid for a quarter to a half of components. Matching each user to held-out users of similar overall level narrows the 90th-percentile width from 0.71 to 0.60 at almost the same validity and recovers about half of the oracle's gain at the 75th percentile.
+\paragraph{The certificate gap.} Table~\ref{tab:certgap} shows the original practical bottleneck. Truth-supplied energy widths are valid but wide. Population and level-matched quantile widths have empirical component coverage below one; a calibration quantile is not a simultaneous guarantee for a new user. The completed expansion retains this tradeoff: level-matching improves performance within the conservative KL-UCB family but neither matches oracle widths nor establishes an advantage over Bernoulli TS.
 
-\answer{Pool only with a certificate, and expect gains exactly where certificates are narrower than gaps. Uncertified pooling looks best on average but fails on informative graphs when a best item sits in a weaker community. The open problem is a certificate that is both valid and narrow; level-matched calibration closes about half of the gap.}
+\answer{A valid width below a component gap makes certified group rejection possible. Incorrect widths can cause dilution failures, while wide widths remove much of the gain. Oracle pooling helps the matched conservative baseline; practical calibration remains empirically incomplete, and graph-free shrinkage is a strong comparator.}
 
 %=====================================================================
 \section{Q3. What breaks when rewards persist?}\label{sec:q3}
@@ -265,7 +269,7 @@ With valid certificates and correctly specified dynamics, the innovation-based a
 B1 is valid but wide: its width carries an $N$-dimensional log-determinant (about 12 standard errors with 20 arms and $T=20{,}000$, against about 5.5 for a per-arm bound).
 
 \begin{proposition}[B1$'$: independent shocks \src{New}]\label{prop:b1p}
-If $Q_G$ is diagonal, the innovation information is diagonal and every arm and component statistic is a scalar martingale; one-dimensional mixture bounds with a union over the $N+M$ statistics are valid and about as narrow as iid bounds.
+If $Q_G$ is diagonal, the innovation information is diagonal and every arm and component statistic is a scalar martingale; one-dimensional mixture bounds with a union over the $N+M$ statistics are valid under the stated model. Their practical width depends on the realized information and does not guarantee useful elimination at a given horizon.
 \end{proposition}
 
 \begin{proposition}[B1$''$: correlated shocks \src{New}]\label{prop:b1pp}
@@ -273,15 +277,15 @@ With correlated shocks, other arms' means enter each arm's regression as bounded
 \end{proposition}
 
 \begin{proposition}[B2: iid certificates under persistence \src{New}]\label{prop:b2}
-If an AR(1) arm with persistence $\varphi$ is pulled in blocks of $b$ consecutive rounds, the sample mean's standard deviation is inflated by $\sqrt{f(b,\varphi)}$, $f(b,\varphi)=\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^b)}{b(1-\varphi)^2}$, so the iid radius $\sqrt{2\sigma^2\ell/n}$ has per-check miscoverage $2\Phi(-\sqrt{2\ell}/\sqrt{f(b,\varphi)})$.
+For $b$ consecutive observations of a stationary AR(1) arm with persistence $0\le\varphi<1$, marginal variance $V$ and no sensor noise, $\Var(\bar Y_b)=(V/b)f(b,\varphi)$, where $f(b,\varphi)=\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^b)}{b(1-\varphi)^2}$. The radius $\sqrt{2V\ell/b}$ therefore has exact per-check miscoverage $2\Phi(-\sqrt{2\ell}/\sqrt{f(b,\varphi)})$. Multiple separated blocks require their cross-block autocovariances; the same expression is only an approximation when those terms are negligible.
 \end{proposition}
 
 \begin{proposition}[B3: long-run substitution \src{New}]\label{prop:b3}
-Under long runs or full slates with common AR coefficients, all mean-channel constants of \src{A} hold with $\sigma^2$ replaced by the long-run variance $q/c^2$, $c=1-\sum_ra_r$ (for AR(1), $V(1+\varphi)/(1-\varphi)$); two arms observed in the same slate with shock correlation $\rho$ have long-run contrast variance reduced by the factor $1-\rho$.
+For a continuously observed field with common AR coefficients, the long-run covariance is $\Omega=Q_G/c^2$, $c=1-\sum_ra_r$, and the corresponding Gaussian information is its inverse. For a continuously observed subset $S$, use $Q_{SS}/c^2$ and precision $c^2(Q_{SS})^{-1}$, not $c^2(Q_G^{-1})_{SS}$. Two arms with equal marginal innovation variance $q$ and matched coefficients have long-run contrast variance $2q(1-\rho)/c^2$. With unequal variances or coefficients, use $\Omega_{ii}+\Omega_{jj}-2\Omega_{ij}$; arbitrary partial restless schedules need their conditional likelihood. This information substitution is not an unconditional transfer of all count-based regret constants.
 \end{proposition}
 
 \begin{prediction}\label{pred:q3}
-(a) iid certificates are violated under bursty exposure at rates that grow with $\varphi$ as B2's inflation predicts, and stay valid under interleaved one-at-a-time exposure. (b) Innovation-based certificates (B1, B1$'$, B1$''$) are never violated. (c) The scalar certificates cost little regret against iid pooling. (d) Irrevocable decisions built on iid certificates inherit their failures.
+(a) Bursty persistence can invalidate iid confidence; interleaving may reduce the effect but is not a universal coverage remedy. (b) Correct-model innovation bounds obey their nominal probability statement; zero simulated violations are not a theorem of zero failure. (c) Narrower constructions may improve on the joint ellipsoid, but useful rejection and regret must be measured separately. (d) Invalid confidence can lead to irreversible errors when the optimal arm or component is under-covered.
 \end{prediction}
 
 \subsection{Evidence}
@@ -329,12 +333,12 @@ Blocks of 25 & 0.97 & 853$^\dagger$ / 1,034 / 828 & 816$^\dagger$ / 939 / 889 \\
 \paragraph{Findings.}
 \begin{itemize}
 \item \emph{B2 predicts the failure} (Prediction~\ref{pred:q3}a; Table~\ref{tab:b2}, Figure~\ref{fig:b2}). Blocks of 25 inflate the sample-mean standard deviation by 1.7, 3.5 and 4.4 at $\varphi=0.5$, 0.9, 0.97; the iid certificate is then violated in 0\%, 85\% and 90--95\% of runs. One-at-a-time exposure interleaves arms (repeat pulls about 20 rounds apart, correlation $\varphi^{20}\approx0.54$ at 0.97), so the inflation is small and the conservative union-bound level still covers.
-\item \emph{Innovation certificates are always valid} (Prediction~\ref{pred:q3}b): B1, B1$'$ and B1$''$ were never violated in any of several thousand runs.
-\item \emph{Tight certificates cost little} (Prediction~\ref{pred:q3}c; Table~\ref{tab:b1regret}). B1$'$ and B1$''$ remove most of B1's cost and beat iid pooling when persistence is low or exposure is interleaved (16\% lower regret at $\varphi=0$). They are 9--30\% worse under bursty exposure at $\varphi=0.5$--0.9, which is exactly where the iid certificate is invalid; regret does not reward validity there because the iid violations mostly under-cover suboptimal components.
+\item \emph{Correct-model confidence is supported conditionally} (Prediction~\ref{pred:q3}b): the original sweeps record no innovation violations under their tested model assumptions. The fresh confirmation records 1/100 known-model failures and 5/100 fitted-model failures; wrong order plus diagonal innovations gives 40/100. Section~\ref{sec:latest} separates these from the earlier sweeps. B1$'$ is guaranteed only for independent shocks.
+\item \emph{Narrower constructions help selected toy settings} (Prediction~\ref{pred:q3}c; Table~\ref{tab:b1regret}), but their advantage does not generalize to real-calibrated dynamics. At day 730 in the latest Wikipedia-derived study, median B1$''$ width is 1.74 against a best--second gap of 0.135, and innovation elimination retains every arm. Validity and useful power are different requirements.
 \item \emph{Irrevocable decisions inherit the failure} (Prediction~\ref{pred:q3}d). Successive elimination with iid certificates wrongly eliminated the best arm in 35--90\% of bursty high-persistence runs, against a nominal 5\%; with innovation certificates, never. The price is caution: at these gaps (0.1--0.4 against unit fluctuation variance) valid certificates eliminate almost nothing within 5,000--20,000 rounds.
 \end{itemize}
 
-\answer{Persistence must enter confidence sets. Under bursty exposure, which is the norm for slates and batched updates, iid certificates are violated most of the time, in the amount B2 predicts, and irrevocable decisions built on them fail. Innovation-regression certificates are always valid, and their scalar versions cost little regret.}
+\answer{Confidence must account for the actual temporal sampling schedule. Bursty iid bounds can fail and can trigger irreversible errors. Innovation bounds have conditional guarantees under correct dynamics and valid supplied widths; estimating the model or misspecifying it needs a separate audit. Even empirically well-covered bounds can be too wide to eliminate arms or lower finite-horizon regret.}
 
 %=====================================================================
 \section{Q4. How should a learner act on persistent fluctuations?}\label{sec:q4}
@@ -348,10 +352,10 @@ Blocks of 25 & 0.97 & 853$^\dagger$ / 1,034 / 828 & 816$^\dagger$ / 939 / 889 \\
 With stationary covariance $K_0$ and innovation covariance $Q_G$, every causal policy has dynamic regret at least $T\{\mathcal G(\mu,K_0)-\mathcal G(\mu,K_0-Q_G)\}$, $\mathcal G(\mu,K)=\E\max_i(\mu_i+Z_i)$.
 \end{proposition}
 
-\paragraph{Which uncertainty to explore.} Current-state Thompson sampling draws the fresh innovation, which no future observation will reveal; exploring it is pure cost. Predictive sampling \src{P} draws only the part that next round's rewards would reveal, $B=CV^{-1}C^\top$ with $C=\Cov(f_t,f_{t+1})$, $V=\Var(f_{t+1})$. Exploration of any kind pays only if enough future observations remain to use what it learns.
+\paragraph{Which uncertainty to explore.} Full-state randomization can pay a cost for uncertainty with little useful continuation value. One-step predictive sampling \src{P} uses $B=CV^{-1}C^\top$, with $C=\Cov(f_t,f_{t+1})$ and $V=\Var(f_{t+1})$, to emphasize uncertainty related to the next field. This differs from subtracting fresh innovation covariance from a forecast, and from the older KuaiRec rule that perturbs only permanent means. Current innovations can influence later states through the AR dynamics; their information value is not universally zero. The full impulse profile and remaining horizon matter, and these heuristics have no general optimality guarantee.
 
 \begin{prediction}\label{pred:q4}
-(a) Modelling dynamics beats iid policies on persistent data. (b) Current-state Thompson sampling underperforms policies that explore persistent uncertainty. (c) Predictive exploration beats greedy use of the model only when each arm receives enough future observations. (d) A graph-shrunk shock covariance improves decisions only where Q1 found community-specific shocks.
+(a) Temporal inference can improve on iid decisions, but should also be compared with last value, EWMA, discounting and static ranking. (b) Full-state and predictive sampling may trade off differently by objective and persistence. (c) The value of exploration depends on future information, gaps and initialization. (d) Any topology claim must survive a matched temporal rule, a common factor and rewired graphs. These are hypotheses tested in specific regimes, not uniform performance theorems.
 \end{prediction}
 
 \subsection{Evidence: a controlled benchmark}
@@ -385,7 +389,9 @@ Innovation lower bound & & 0.298 & 0.323 & 1.276 \\
 
 \paragraph{Findings.} Joint predictive sampling, which has no tuning parameter, cuts dynamic regret 27\% against Thompson sampling and 13\% against UCB1, closing 37\% of the gap to the lower bound (tuned UCB closes 46\%; its multiplier was chosen on the same runs). Mis-targeted exploration is as harmful as having no model: greedy, current-state Thompson sampling and the theory-constant UCB all lose to UCB1 (Prediction~\ref{pred:q4}b). Predictive sampling leads greedy at every horizon in Figure~\ref{fig:toy}, because priors are weak and each arm receives 20 observations. Correlated shocks add 15\% on top of persistence (joint against persistence-only predictive sampling); with independent shocks the gain disappears (Prediction~\ref{pred:q4}d). Here fluctuations dominate the decision: their standard deviation (1.0) is twice the spread of long-run means (0.5). With weak persistence the lower bound is already high and all gains shrink.
 
-\subsection{Evidence: two web platforms}
+\subsection{Legacy exploratory evidence: two web platforms}
+
+The following panels are retained to explain the original hypotheses. The daily KuaiRec graph used all interaction dates and the cohort conditioned on presence throughout the observation period. The 150-article Wikipedia cohorts and link snapshots were selected retrospectively. Their apparent policy gains are not the current chronological headline; Section~\ref{sec:latest} supplies the corrected KuaiRec and historical Wikipedia comparisons.
 
 \paragraph{Designs.} \emph{KuaiRec daily:} 253 videos observed on all 63 days; reward the logit daily complete-play rate; ten slots per day; models fitted on the first $F\in\{28,35,42\}$ days; a sparse-history variant sees only ten videos per fit day. \emph{Wikipedia:} log daily views of 150 articles; ten featured slots per day; models fitted on a rolling 365-day window and tested on the next 120 days at three origins (January 2023, January 2024, December 2024); one-domain and six-domain panels. All panels assume that showing an item does not change its organic engagement.
 
@@ -447,12 +453,16 @@ KuaiRec daily, sparse history & 1.1 & 0.02 & 33\% & 0.85 & 1.74 & \textbf{0.91} 
 
 \paragraph{What the synthesis shows.}
 \begin{itemize}
-\item \emph{Modelling dynamics always pays}: the best model-based policy has 24--44\% less regret than iid Thompson sampling in every environment (Prediction~\ref{pred:q4}a).
+\item \emph{Temporal information helps in selected environments}: the legacy panels suggested 24--44\% lower loss than iid TS. The chronological KuaiRec rerun supports persistence-aware rules but does not distinguish the full model from last value; full-year Wikipedia gains depend on panel and budget. The original universal headline is therefore withdrawn.
 \item \emph{How much to explore depends on observations per arm and on gaps} (Prediction~\ref{pred:q4}c, refined). Heavy exploration of persistent uncertainty (predictive sampling) beats greedy only where arms receive many observations and the top is well separated or dominated by fluctuations (benchmark, one-domain Wikipedia). With near-ties and fast turnover it shuffles near-equal items at a cost, even with eight observations per arm (six-domain Wikipedia). Mild optimism helps wherever priors are weak or rankings move (benchmark, six-domain Wikipedia, sparse KuaiRec) and is roughly neutral otherwise; with strong priors and about one observation per arm (full-history KuaiRec), greedy is best.
 \item \emph{The graph helps the fluctuation channel in proportion to how much fluctuations decide the ranking} (Prediction~\ref{pred:q4}d, refined): 15\% in the benchmark, where fluctuations dominate; at most $\pm3\%$ on six-domain Wikipedia, where links carry shocks but levels decide the top ten; nothing where shocks are not community-specific.
 \end{itemize}
 
-\answer{Model the dynamics: it is the largest and most consistent gain on real data (24--44\% less regret than iid Thompson sampling everywhere). Explore only uncertainty that persists, and match the amount to the setting: heavy exploration when arms receive many observations and the top is well separated, mild optimism when priors are weak or rankings turn over, greedy use of the model when priors are strong and observations per arm are few. A graph belongs in the shock covariance only when shocks are community-specific, and it pays only to the extent that fluctuations, rather than long-run levels, decide which items lead.}
+\answer{Use temporal information when it improves the intended objective, and retain simple persistence and static controls. The chronological KuaiRec filter improves on iid TS but does not establish a gain over last value. Historical Wikipedia results vary by panel and budget. A better covariance fit or a joint-versus-iid gain alone does not establish that the actual graph topology improves decisions.}
+
+\clearpage
+\input{\latestExperimentRoot/paper/latest_results.tex}
+\clearpage
 
 %=====================================================================
 \section{Lessons, limitations and open problems}
@@ -461,15 +471,15 @@ KuaiRec daily, sparse history & 1.1 & 0.02 & 33\% & 0.85 & 1.74 & \textbf{0.91} 
 \paragraph{A checklist for practitioners.}
 \begin{enumerate}
 \item \emph{Measure before trusting.} Compare each candidate graph with its rewiring on held-out data: neighbour agreement after removing popularity (mean channel) and held-out likelihood of shocks (fluctuation channel).
-\item \emph{Certify pooling.} Uncertified pooling wins on average and fails on informative graphs exactly where a best item sits in a weaker community. Use certificates, and expect gains in proportion to the components they can reject.
+\item \emph{Audit pooling widths and strong controls.} Wrong widths can cause dilution failures; wide valid widths remove much of the benefit. Compare oracle and practical widths separately, and retain Bernoulli TS and graph-free shrinkage.
 \item \emph{Account for persistence in every confidence statement,} especially when exposure is bursty. Use innovation-regression certificates for any irrevocable decision.
-\item \emph{Model dynamics, target exploration.} Explore persistent uncertainty only; use heavy exploration when arms will be observed often and gaps are clear, mild optimism when rankings move, and the model greedily when priors are strong.
+\item \emph{Match the policy to the objective.} Current reward, permanent-mean regret and correct final selection need different information. Test modelling against last value, EWMA and discounting before attributing a gain to the full filter.
 \item \emph{Check what decides the ranking.} If long-run levels dominate fluctuations, a graph in the shock model will barely change decisions even when it fits shocks better.
 \end{enumerate}
 
-\paragraph{Limitations.} KuaiRec ground truth uses one watch ratio per user--video pair, which understates preference alignment. Panel experiments assume that showing an item does not change its organic demand. Dynamics are estimated in a fit window and then treated as known. The benchmark fixes the model class, while real engagement shows cohort drift outside it. Regret bounds for B1$'$ and B1$''$ under correlated shocks are stated through realized information.
+\paragraph{Limitations.} Static KuaiRec and OBD treat noisy data-derived rates as simulation truth. The daily panels emulate exogenous monitoring, not promotion lift. Legacy cohort/link look-ahead, the corrected KuaiRec fallback metric and its three-window uncertainty, fitted dynamics, residual-centering errors in empirical-resampling worlds and underpowered logged clicks are disclosed in Section~\ref{sec:latest}. Correct-model guarantees do not transfer automatically to fitted likelihoods or quantile widths. B1$'$ assumes independent shocks; correlated-noise regret needs realized-information growth rather than an unverified per-pull factor.
 
-\paragraph{Open problems.} (1) A valid and narrow certificate for the mean channel on real graphs; level-matched calibration closes about half of the gap to the oracle. (2) Per-pull information constants under correlated shocks, and the path rate of graph-design elimination under persistence. (3) Learning dynamics online while keeping certificates valid. (4) Drift models for engagement lifecycles. (5) Testing community-specific shocks on platforms with live feedback.
+\paragraph{Open problems.} (1) Practical component widths and contrast confidence that are both calibrated and useful; level-matched quantiles do not close this gap. (2) Information-growth constants under partial correlated sampling and geometry-aware elimination under persistence. (3) Confidence under estimated dynamics and drift. (4) Broader predefined chronological panels and the focused general-AR factorial confirmation. (5) Evaluation with sufficient real logged signal and an explicitly specified platform utility.
 
 \appendix
 
@@ -483,9 +493,9 @@ KuaiRec daily, sparse history & 1.1 & 0.02 & 33\% & 0.85 & 1.74 & \textbf{0.91} 
 
 \paragraph{B1$''$ (Proposition~\ref{prop:b1pp}).} Let $G=J-\alpha I$. Then $q_i-\sum_{j\ne i}G_{ij}m_j=G_{ii}\mu_i+\sum_{j\ne i}G_{ij}(\mu_j-m_j)+W_i$, where $W_i=\sum_tu_{t,i}\epsilon_t$ is a scalar martingale with quadratic variation $G_{ii}$. On the event $E$ that all scalar mixture bounds hold, and given intervals $[l_j,h_j]\ni\mu_j$ with midpoints $m_j$ and half-widths $\rho_j$, the error of $\hat\mu_i=(q_i-\sum_{j\ne i}G_{ij}m_j)/J_{ii}$ is at most $(\sqrt{2J_{ii}\log(\sqrt{J_{ii}/\alpha}/\delta')}+\alpha+\sum_{j\ne i}|G_{ij}|\rho_j)/J_{ii}$. Starting from $[0,1]$, which contains the truth, induction keeps every interval true-containing on $E$. For components, write $\mu_i=\theta_c+d_i$ with $\theta_c$ the midrange and $|d_i|\le\varepsilon_c/2$; the design $P^\top u_t$ ($P$ the membership matrix) gives the same argument for $\theta$, with a deterministic deviation term $\sum_i|(P^\top G)_{ci}|\varepsilon_{c(i)}/2$, so $\hat\theta_c+\rho_c+\varepsilon_c/2\ge v_c$. With independent shocks $G$ is diagonal, the cross terms vanish and the deviation term equals $\varepsilon_c/2$ times the information, recovering SP-UCB's structure. In implementation, upper bounds must not be clipped at 1, since ties created by clipping are broken by index.
 
-\paragraph{B2 (Proposition~\ref{prop:b2}).} Within a block of $b$ consecutive pulls the autocovariances are $V\varphi^{|s-u|}$; summing gives $\Var(\sum)=V[b\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^b)}{(1-\varphi)^2}]$. Blocks separated by other arms' blocks are nearly independent, so $n$ pulls in blocks have variance $(V/n)f(b,\varphi)$. The sample mean is Gaussian, giving the stated miscoverage.
+\paragraph{B2 (Proposition~\ref{prop:b2}).} Within one block of $b$ consecutive pulls the autocovariances are $V\varphi^{|s-u|}$; summing gives $\Var(\sum)=V[b\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^b)}{(1-\varphi)^2}]$. Divide by $b^2$ and use Gaussian tails for the exact stated miscoverage. For arbitrary fixed observation times $\tau_1,\ldots,\tau_n$, the variance is $Vn^{-2}\sum_{s,u}\varphi^{|\tau_s-\tau_u|}$. Dropping nonnegligible cross-block terms is not exact. Run-level adaptive simultaneous violations are measured separately from this fixed-block calculation.
 
-\paragraph{B3 (Proposition~\ref{prop:b3}).} Part (1): after the initial lags, the full-field innovation transform $X_t-\sum_k\mathrm{diag}(a_k)X_{t-k}=D_c\mu+\eta_t$ adds information $D_cQ_G^{-1}D_c$ per field \src{S}; substituting this information for the count-based information in the change-of-measure program of \src{A} replaces $\sigma^2$ by $q/c^2$. Part (2) is the Gaussian variance of a contrast of two arms observed in the same round.
+\paragraph{B3 (Proposition~\ref{prop:b3}).} After the initial lags, the full-field innovation transform $X_t-\sum_k\mathrm{diag}(a_k)X_{t-k}=D_c\mu+\eta_t$ adds information $D_cQ_G^{-1}D_c$ per field \src{S}. With common coefficients this identifies the long-run covariance $Q_G/c^2$. A subset observation marginalizes unobserved coordinates, so its covariance is $Q_{SS}$ and its precision $(Q_{SS})^{-1}$; the block $(Q_G^{-1})_{SS}$ instead conditions on unavailable coordinates. Equal-pair contrast variance gives the restricted factor $1-\rho$; heterogeneous pairs use the full long-run covariance. Inverse pooled variance increases through the sum of arm information: one scalar reading has the independent-arm information lower bound, not a component-size multiple of it. General partial schedules need the conditional filter and a separately justified information-growth condition.
 
 %=====================================================================
 \section{Data and graph construction}\label{app:data}

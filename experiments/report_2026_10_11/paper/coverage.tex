@@ -1,0 +1,15 @@
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+Learner & Anytime failures & 95\% Wilson interval & Final maximum width \\
+\midrule
+Known model & 1/100 & [0.002, 0.054] & 5.01 \\
+Fitted AR(20) & 5/100 & [0.022, 0.112] & 4.92 \\
+Fitted, Q times 1.5 & 3/100 & [0.010, 0.085] & 5.88 \\
+AR(1), diagonal shocks & 40/100 & [0.309, 0.498] & 2.72 \\
+\bottomrule
+\end{tabular}}
+\caption{Fresh AR(20) confirmation after screening: six arms, 800 rounds, burst length 25, an independent 365-round fitting prefix, 100 paired worlds. The last row bundles wrong lag order and diagonalized innovations. Covariance inflation is an empirical heuristic.}
+\label{tab:latest-coverage}
+\end{table}

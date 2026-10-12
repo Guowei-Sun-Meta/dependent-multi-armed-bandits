@@ -1,0 +1,18 @@
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrr}
+\toprule
+Policy & All: ratio to fixed KL-UCB & Women: ratio to fixed KL-UCB \\
+\midrule
+Standard log-t KL-UCB & 0.684 & 0.746 \\
+Beta TS & 0.353 & 0.382 \\
+Graph-free empirical-Bayes TS & 0.206 & 0.290 \\
+Oracle pooling, attributes & 0.837 & 0.982 \\
+Oracle pooling, audience & 0.702 & 0.965 \\
+Prefix pooling, attributes & 0.862 & 1.011 \\
+Prefix pooling, audience & 0.775 & 0.809 \\
+\bottomrule
+\end{tabular}}
+\caption{OBD semi-synthetic study: day 4--7 estimated click rates treated as fixed means; components and priors from days 1--3; two million simulated impressions in batches of 100, 20 seeds. Attribute metadata have retrospective provenance. The conservative fixed-confidence KL-UCB comparator is distinct from standard log-t KL-UCB.}
+\label{tab:latest-obd}
+\end{table}

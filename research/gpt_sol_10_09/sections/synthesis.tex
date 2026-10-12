@@ -6,7 +6,7 @@ On the Web, navigation and co-engagement graphs arise naturally, while observati
 
 The research began with similarity-based ranking and selection and developed along two streams. The graph stream asks how a supplied restriction eliminates statistically difficult alternatives and when graph construction is accurate enough to justify pooling. The temporal stream asks how sampling loses or preserves predictive information when unobserved arms continue evolving. Their combination retains fixed unknown means and a joint spatial innovation distribution, while allowing general, heterogeneous AR orders.
 
-This document is a full research manuscript and evidence collection for later reduction. It includes the current mathematical results, algorithm definitions, experiments, negative findings, and application limitations. Appendices preserve complete technical derivations rather than omitting them for a conference page limit. An evidence manifest fingerprints the source versions used in the collection.
+This document is a full research manuscript and evidence collection for later reduction. Its main text is updated on 12 October with completed 10--11 October experiment results in Section~\ref{sec:latest}. Appendices preserve the original complete technical derivations and source history; their older empirical statements are interpreted with the qualifications in the updated main text. The frozen evidence manifest records the original collection, while a separate latest-results manifest fingerprints the new quantitative inputs.
 
 \subsection{Results and assumptions at a glance}
 \begin{center}\small
@@ -21,7 +21,7 @@ Current-state oracle floor & Positive expected linear innovation coefficient & S
 Graph information geometry & General design, resistance sensitivity, path--clique separation & Trusted graph-energy class; iid Gaussian information calculation \\
 Selection formulas & Exact fixed-design Gaussian PCS and special allocation optima & Specific clock, prior, gap and observation conditions \\
 Practical sampling & Mean, state, predictable-state and contrast rules & UCB/TS variants without a general optimality claim \\
-Web data & Temporal modelling and topology controls on KuaiRec and Wikipedia & Exploratory selective-observation emulation \\
+Web data & Pooling, persistence and topology controls on KuaiRec, Wikipedia and OBD & Real-panel emulation, simulated feedback and a sparse censored-log pilot kept distinct \\
 \bottomrule
 \end{tabular}\end{center}
 
@@ -389,7 +389,7 @@ The path--clique simulations measure the overhead of geometry-aware elimination 
 
 \section{KuaiRec: static structure and persistent engagement}
 
-KuaiRec~\cite{kuairecdata} supplies both a nearly complete static user--video matrix and daily aggregate engagement. These are different observation experiments. The repository's raw data and scripts are local; application results below are the existing pilot evidence, preserved without rerunning or altering them.
+KuaiRec~\cite{kuairecdata} supplies both a nearly complete static user--video matrix and daily aggregate engagement. These are different observation experiments. The original pilot evidence below is preserved under its original protocol. Section~\ref{sec:latest} adds the completed 120-user static expansion and chronological daily replication, which supersede older headline performance and leakage claims.
 
 \subsection{Static graph alignment and pooling}
 Sixteen user/item graphs are assessed with mean-degree-normalized Laplacians and degree-preserving nulls. Co-engagement is the best user graph: smoothness quotient .649 against .791 for its rewiring. Item factorization and co-engagement carry personal-taste signal, whereas author, tag and category links mostly group popularity. The social graph covers only eighty evaluation users with forty-seven edges, insufficient for a broad social claim.
@@ -398,7 +398,7 @@ Mean-square smoothness is not safe-ranking evidence. Smoothing on real item grap
 
 Graph-free shrinkage is a necessary control. A rewired item graph matches real I-mf performance for spectral methods. In the 300-user by 100-video cold-user experiment, complete-graph shrinkage has mean regret ratio .726 to per-user TS versus .759 for co-engagement and .745 for its rewiring. Population shrinkage explains much of the gain. Energy certificates are typically too loose: the energy-to-gap ratio is about five. UCB-style comparisons also used a conservative noise proxy that disadvantages them against Bernoulli TS; new application comparisons must match variances or use appropriate KL indices.
 
-\subsection{Daily engagement pilot}
+\subsection{Legacy retrospective daily engagement pilot}
 The existing daily study uses 253 evaluation videos with records on all 63 dates, ten daily slots, full prefixes of 28, 35 or 42 days, pooled lags $\{1,2,7\}$, and five stochastic seeds. The reward is a transformed daily completion rate. Averaging origins gives:
 \begin{center}\small
 \begin{tabular}{lr}
@@ -423,26 +423,32 @@ The newly executed audit finds 343,341 video-days, 10,728 videos and 63 dates, w
 
 The static graph pipeline excludes evaluation pairs, but it uses all interaction dates. At the earliest daily cutoff, 79.1\% of item-graph side-input rows occur later than the cutoff; the later origins still include 34.9\% and 24.9\% later rows. Consequently, the daily graph comparison cannot be treated as a leakage-free chronological result. The three windows overlap, and algorithm seeds do not create independent data fields.
 
-The pilot remains useful exploratory evidence. A corrected replication must rebuild co-engagement, IDF and factors using only dated prefix interactions, distinguish missing/zero-play quality, and disclose any hindsight survivor cohort. It cannot infer exact permanent means, PCS or a stationary innovation floor from this short drifting panel. Those endpoints remain controlled-model measurements.
+The pilot remains exploratory evidence. A corrected co-engagement replication has now been completed with prefix-only graph construction and eligibility, disclosed unavailability handling and disjoint windows; Section~\ref{sec:latest} gives its results. That replication supports persistence-aware decisions but does not establish superiority over last value or an incremental topology benefit. Neither version identifies exact permanent means, PCS or a stationary innovation floor from the short drifting panel.
 
-\section{A new laptop-sized Wikipedia experiment}
+\section{Historical half-year Wikipedia study and its full-year extension}
 \label{sec:wiki}
 \input{sections/wikipedia_design.tex}
 \input{results/wikipedia/paper_results.tex}
+
+The preceding protocol and tables describe the original 181-day evaluation. The 365-day extension in Section~\ref{sec:latest} uses the same two historical panels and is not an independent Web replication. Its stronger forgetting/static controls and date-block sensitivities qualify the original conditional comparisons.
+
+\clearpage
+\input{\latestExperimentRoot/paper/latest_results.tex}
+\clearpage
 
 \section{Synthesis, practical implications and unresolved questions}
 
 The results support objective-specific use of dependence. Persistent states can make a recently observed arm valuable for reward prediction while making its permanent mean difficult to identify. Correlated innovations can cancel in comparisons, but a graph that predicts permanent preferences need not predict transient shocks. The exact selected-history likelihood accounts for both effects without changing fixed physical means into a random population.
 
-The strongest theoretical statements are conditional guarantees with explicit assumptions: graph-energy information geometry, predictable innovation regression, all-time fixed-mean confidence, correct stopping, a conservative mean-UCB bound, the current-oracle innovation floor, and exact restricted allocation cases. The strongest empirical statements are qualified by their designs: graph-free shrinkage accounts for much of KuaiRec's static gain; temporal modelling explains most of its daily pilot improvement; the fixed-truth AR(20) study shows different policy leaders for regret and selection; and the new Wikipedia evaluation tests learned general-AR models using genuinely historical graphs.
+The strongest theoretical statements remain conditional guarantees with explicit assumptions: graph-energy geometry, predictable innovation regression, all-time fixed-mean confidence, correct stopping, a conservative mean-UCB bound, the current-oracle innovation floor and exact restricted allocation cases. The expanded evidence supports these mechanisms more strongly than a claim of universal algorithm superiority. Oracle pooling improves within a conservative family, but practical widths leave a substantial gap and graph-free shrinkage is strong. Chronological KuaiRec supports persistence without establishing an advantage over last value. Historical Wikipedia is panel- and budget-dependent. OBD supplies a mean-channel semi-synthetic example and a separate underpowered actual-log pilot. Coverage under fitted dynamics remains empirical, and useful elimination can fail even when confidence is conservative.
 
 No graph benefit should be inferred from a joint-versus-iid comparison alone. The relevant test holds the temporal inference and decision rule fixed while comparing real topology with diagonal, common-factor, learned covariance and degree-preserving controls. A benefit in average prediction may also fail to change the top decision. Conversely, a small forecast improvement near a top-arm tie can have a useful decision effect.
 
-Open theoretical questions include matching graph-and-time regret constants, finite-budget optimal contrast allocation, robust learned-model confidence, endogenous exposure and graph learning, and efficient long-horizon belief planning. Open application questions include identifying the actual observation cost, testing catalog births/deaths and drift, and validating whether measured attention is the intended business utility. Our public-data emulation provides counterfactual observed-field evaluation under selective masking; it does not constitute an online randomized platform deployment.
+Open theoretical questions include confidence that is both calibrated and useful after dynamics estimation, matching graph-and-time regret constants, finite-budget optimal contrast allocation, endogenous exposure/graph learning and efficient long-horizon belief planning. Open application questions include broader predefined chronological panels, source-mean uncertainty, catalog births/deaths and drift, and sufficient real logged signal for policy evaluation. The empirical-residual centering audit and partial-observation precision correction must also govern future replications. Public-data emulation and data-calibrated simulations do not constitute an online randomized platform deployment.
 
 \section{Reproducibility and source provenance}
 
-The package contains this manuscript, compiled PDF, editable sections, generated tables, raw Wikipedia API responses, historical revision identifiers and hashes, model matrices, daily action traces, per-run summaries, conditioning checks, and acquisition/run/analysis scripts. The evidence directory freezes compact source results and the five original technical derivations. Large original raw simulation runs are fingerprinted or linked rather than duplicated indiscriminately. The file \texttt{evidence\_manifest.json} records the source versions used in this synthesis.
+The package contains this manuscript, compiled PDF, editable sections, generated tables, raw Wikipedia API responses, historical revision identifiers and hashes, model matrices, daily action traces, per-run summaries, conditioning checks and acquisition/run/analysis scripts. The evidence directory and \texttt{evidence\_manifest.json} freeze the original collection and five derivations. The new shared section and source fingerprints are under \texttt{experiments/report\_2026\_10\_11/paper/}. Its generator reads saved quantitative tables; copied runs and repeated analyses do not become independent experiments. Large raw files remain linked rather than indiscriminately duplicated.
 
 The Wikipedia acquisition is sequential and cached, with an identifying user agent and rate-limit backoff. Page-view data use human traffic across access methods; missing dates are not filled with zero. Historical hyperlinks come only from revisions before 1 January 2024. The graph preserves isolated vertices and does not use current redirects to recover missing edges. Public attention data are CC0; revision material retains Wikipedia attribution/share-alike conditions and revision URLs.
 

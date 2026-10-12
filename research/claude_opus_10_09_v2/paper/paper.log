@@ -345,31 +345,31 @@ File: l3backend-xetex.def 2022-02-07 L3 backend support: XeTeX
 ) (paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 32.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 34.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 3
-2.
+4.
  (ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -405,7 +405,7 @@ LaTeX Font Info:    ... okay on input line 32.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 32.
+Package hyperref Info: Link coloring OFF on input line 34.
 (nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (refcount.sty
@@ -415,20 +415,20 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count302
 )
-LaTeX Info: Redefining \ref on input line 32.
-LaTeX Info: Redefining \pageref on input line 32.
-LaTeX Info: Redefining \nameref on input line 32.
+LaTeX Info: Redefining \ref on input line 34.
+LaTeX Info: Redefining \pageref on input line 34.
+LaTeX Info: Redefining \nameref on input line 34.
  (paper.out) (paper.out)
 \@outlinefile=\write3
 \openout3 = `paper.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 34.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 36.
 
 
 (umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 34.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 36.
 
  (umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -439,58 +439,38 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout4 = `paper.toc'.
 
  [2]
-Underfull \hbox (badness 10000) in paragraph at lines 66--66
+Underfull \hbox (badness 10000) in paragraph at lines 68--68
 []|\TU/lmr/m/n/10 Theory that makes it
  []
 
 
-Underfull \hbox (badness 2111) in paragraph at lines 66--66
+Underfull \hbox (badness 2111) in paragraph at lines 68--68
 \TU/lmr/m/n/10 relation is real?
  []
 
 
-Underfull \hbox (badness 1331) in paragraph at lines 66--66
-[]|\TU/lmr/m/n/10 Graph energy relative to
- []
-
-
-Underfull \hbox (badness 2134) in paragraph at lines 66--66
-\TU/lmr/m/n/10 gaps; smoothing changes
- []
-
-
-Underfull \hbox (badness 2334) in paragraph at lines 66--66
+Underfull \hbox (badness 2334) in paragraph at lines 68--68
 []|\TU/lmr/m/n/10 Q2. How can
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 66--66
+Underfull \hbox (badness 10000) in paragraph at lines 68--68
 \TU/lmr/m/n/10 a learner pool
  []
 
 
-Underfull \hbox (badness 8075) in paragraph at lines 66--66
-[]|\TU/lmr/m/n/10 Certified pooling regret;
+Underfull \hbox (badness 5316) in paragraph at lines 68--68
+\TU/lmr/m/n/10 mit component rejection
  []
 
 
-Underfull \hbox (badness 3503) in paragraph at lines 66--66
-\TU/lmr/m/n/10 gains only from compo-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 66--66
+Underfull \hbox (badness 10000) in paragraph at lines 68--68
 \TU/lmr/m/n/10 when rewards
  []
 
 
-Underfull \hbox (badness 6412) in paragraph at lines 66--66
-[]|\TU/lmr/m/n/10 Innovation lower bound;
- []
-
-
-Underfull \hbox (badness 2027) in paragraph at lines 66--66
-\TU/lmr/m/n/10 exploration should target
+Underfull \hbox (badness 2080) in paragraph at lines 68--68
+[]|\TU/lmr/m/n/10 Innovation confidence as-
  []
 
 [3] [4]
@@ -500,21 +480,63 @@ File: ../figures/f1_alignment.pdf Graphic file (type pdf)
 File: ../figures/f2_pooling_bridge.pdf Graphic file (type pdf)
 <use ../figures/f2_pooling_bridge.pdf>
  [7] [8] [9]
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 280.
 File: ../figures/f3_b2_bridge.pdf Graphic file (type pdf)
 <use ../figures/f3_b2_bridge.pdf>
  [10] [11]
 File: ../figures/f4_toy_curves.pdf Graphic file (type pdf)
 <use ../figures/f4_toy_curves.pdf>
- [12] [13]
+ [12] [13] [14]
 File: ../figures/f6_wikipedia_multi.pdf Graphic file (type pdf)
 <use ../figures/f6_wikipedia_multi.pdf>
 File: ../figures/f5_synthesis.pdf Graphic file (type pdf)
 <use ../figures/f5_synthesis.pdf>
- [14] [15] [16] [17] [18]
-(paper.aux)
+ [15] [16]
+(../../../experiments/report_2026_10_11/paper/latest_results.tex
+(../../../experiments/report_2026_10_11/paper/pooling.tex) [17
+
+]
+File: ../../../experiments/report_2026_10_11/figures/01_overnight_pooling.pdf G
+raphic file (type pdf)
+<use ../../../experiments/report_2026_10_11/figures/01_overnight_pooling.pdf>
+ [18]
+(../../../experiments/report_2026_10_11/paper/daily.tex) [19]
+(../../../experiments/report_2026_10_11/paper/wikipedia.tex)
+File: ../../../experiments/report_2026_10_11/figures/02_real_panel_baselines.pd
+f Graphic file (type pdf)
+<use ../../../experiments/report_2026_10_11/figures/02_real_panel_baselines.pdf
+>
+
+(../../../experiments/report_2026_10_11/paper/coverage.tex) [20] [21]
+(../../../experiments/report_2026_10_11/paper/realcert.tex)
+File: ../../../experiments/report_2026_10_11/figures/03_coverage_and_usefulness
+.pdf Graphic file (type pdf)
+<use ../../../experiments/report_2026_10_11/figures/03_coverage_and_usefulness.
+pdf>
+ [22]
+(../../../experiments/report_2026_10_11/paper/slates.tex) [23]
+(../../../experiments/report_2026_10_11/paper/obd.tex) [24]
+File: ../../../experiments/report_2026_10_11/figures/07_obd_pooling_and_calibra
+tion.pdf Graphic file (type pdf)
+<use ../../../experiments/report_2026_10_11/figures/07_obd_pooling_and_calibrat
+ion.pdf>
+)
+Underfull \hbox (badness 1005) in paragraph at lines 106--465
+\TU/lmr/m/n/10.95 ing \TU/lmtt/m/n/10.95 build_latest.py\TU/lmr/m/n/10.95 ; \TU
+/lmtt/m/n/10.95 source_manifest.json \TU/lmr/m/n/10.95 fingerprints their input
+s. The quantitative
+ []
+
+[25] [26] [27
+
+]
+Underfull \hbox (badness 2318) in paragraph at lines 498--499
+ []\TU/lmr/bx/n/10.95 B3 (Proposition []7[]).[] \TU/lmr/m/n/10.95 After the ini
+tial lags, the full-field innovation transform $\OML/cmm/m/it/10.95 X[] \OMS/cm
+sy/m/n/10.95 ^^@
+ []
+
+[28] [29] (paper.aux)
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: BE3C7592C63FEFEB6CE31894C14610A4;4326.
+(rerunfilecheck)             Checksum: 57B4698CAEC15E183F0E049F9EDB6A45;7352.
  )
-Output written on paper.xdv (18 pages, 475952 bytes).
+Output written on paper.xdv (29 pages, 767300 bytes).

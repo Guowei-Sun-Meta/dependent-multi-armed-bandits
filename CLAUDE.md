@@ -99,6 +99,8 @@ Everything is compiled in [research/claude_opus_10_09/](research/claude_opus_10_
 
 The user condenses the paper into the submission.
 
+**Revision 3 (12 October, current)** is in [research/claude_opus_10_12_v3/](research/claude_opus_10_12_v3/README.md): revision 2 updated with the 10–11 October experiments (chronological KuaiRec, 360-instance Setting A v2, Open Bandit Dataset, certificates with estimated and real-calibrated dynamics), following the verdicts in [experiments/report](experiments/report/README.md). No system TeX on this machine; compile with a standalone tectonic binary.
+
 **Revision 2** (requested: better organization, deeper analysis, theory-to-data bridges, storytelling) is in [research/claude_opus_10_09_v2/](research/claude_opus_10_09_v2/README.md): a paper organized around four questions, analyses from `experiments/paper/deepdive.py`, figures from `experiments/paper/paper_figures_v2.py`, and the six-community Wikipedia experiment (now in `experiments/wikipedia/`). `research/gpt_sol_10_09/` belongs to another agent; do not edit it.
 
 ## Current status and next steps

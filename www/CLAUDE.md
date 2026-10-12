@@ -1,6 +1,14 @@
 # Correlated Arms on the Web: Research Proposal (WWW 2027 long paper)
 
-As of 9 October 2026; restructured to merge the spatiotemporal work. Working title: *Certified Learning with Correlated Arms: When Web Graphs and Persistence Make Bandits Share Information*.
+As of 12 October 2026 (restructured on 9 October to merge the spatiotemporal work). Title of the submission draft: *When Can a Bandit Trust Correlation? Certified Pooling under Persistent Web Rewards*.
+
+## Submission files (12 October)
+
+| File | What it is |
+| --- | --- |
+| [submission/main.pdf](submission/main.pdf) ([source](submission/main.tex), [notes and to-do](submission/README.md)) | **The submission draft**: ACM `sigconf`, anonymous, 6 pages of main text, then references and a 2-page appendix. Condensed from [revision 3](../research/claude_opus_10_12_v3/README.md) following the verdicts in [experiments/report](../experiments/report/README.md) |
+| [submission/abstract.md](submission/abstract.md) | The OpenReview abstract for 18 October (248 words), with the source of each number |
+| [related_work_abstracts.md](related_work_abstracts.md) | Indexed abstracts of 30 related papers (15 WWW, 15 other venues), with venues checked and a relevance note for each; the basis of the related-work section |
 
 Target: The ACM Web Conference 2027 (Dublin, 10–14 May 2027). **Abstract due 18 October 2026, full paper due 25 October 2026**, AoE, on OpenReview (`Conference_Long_Papers`). 8 pages plus references and appendix, double-blind. Reviewers need not read past page 8, so theorem statements go in the main text and proofs in the appendix. Recommended track: "Search, Recommendation, and Retrieval-Augmented AI" (it lists online learning for recommendation). The alternative is "Graph Algorithms and Modeling for the Web".
 
@@ -31,7 +39,12 @@ Y_t=f_{a_t,t}+\xi_t,\qquad f_{i,t}=\mu_i+z_{i,t},\qquad z_t=\sum_{r=1}^{p}A_r z_
 - Persistence makes every observation worth less for learning means (the long-run variance) and more for predicting near-term rewards.
 - Methods that ignore persistence produce invalid certificates. Methods that trust an unverified graph incur linear regret.
 
-We give certified policies and guarantees for both channels, lower bounds, and evidence on KuaiRec.
+We give certified policies and guarantees for both channels, lower bounds, and evidence on KuaiRec, Wikipedia and the Open Bandit Dataset.
+
+**What the evidence changed (12 October; [experiments/report §10](../experiments/report/README.md#10-what-this-means-for-the-paper)).** The claims are now:
+- "Graphs help" became "shrinkage helps; graph structure helps only through certified rejection".
+- "Modelling dynamics pays" became "persistence pays; the last observed value captures most of it on real panels".
+- Innovation certificates are valid, including with long-prefix estimated dynamics, but too wide to act on at Web persistence. A tighter anytime-valid certificate is the main open problem.
 
 ## Contributions
 
@@ -100,15 +113,17 @@ Existing results are in [experiments/kuairec/README.md](../experiments/kuairec/R
 | Experiment | Purpose | Status |
 | --- | --- | --- |
 | KuaiRec Phase 1: alignment of 16 graphs | Which web graphs encode the mean channel | Done |
-| KuaiRec Setting A: item-graph pooling | Uncertified tails; certified pooling gains | Done (v1); v2 with KL bounds and calibrated certificates running |
-| KuaiRec Setting B: user graphs | Pooling across users | Running; appendix |
-| Toy: 100-arm grid, AR(20) | Fluctuation-channel policies against iid, spatial-only and temporal-only baselines | Running |
-| **Toy coverage (B1 against B2)** | Certificates under persistence: iid radius against innovation-regression radius; coverage and regret against φ | **To build** |
-| **KuaiRec daily** | Real correlated persistence: 253 videos × 63 days, 10 daily slots, co-engagement Q_G; ST policies and certified pooling | **To build** |
+| KuaiRec Setting A: item-graph pooling | Uncertified tails; certified pooling gains | Done: v1 (60 users) and v2 (360 instances, KL bounds, calibrated certificates) |
+| KuaiRec Setting B: user graphs | Pooling across users | Done; appendix |
+| Open Bandit Dataset | Second mean-channel platform (semi-synthetic) | Done; A1 and N1 replicate |
+| Toy: 100-arm grid, AR(20) | Fluctuation-channel policies against iid, spatial-only and temporal-only baselines | Done |
+| Toy coverage (B1 against B2), estimated dynamics | Certificates under persistence | Done; plus robustness to fitted and misspecified dynamics |
+| Wikipedia inflation and calibrated worlds | B2 and B3 on real dynamics | Done |
+| KuaiRec daily, chronological | Real correlated persistence with standard baselines | Done (15 panel-window units) |
 
 Cut from the long paper:
 - Setting C (product graph), Last.fm, and theory T4/T5 for user-graph products: future work.
-- Wikipedia, Yahoo! R6, NYC taxi: follow-up work; designs in [st_applications.md](st_applications.md).
+- Yahoo! R6, NYC taxi: follow-up work; designs in [st_applications.md](st_applications.md). Wikipedia is in the paper for B2/B3 (real dynamics); its retrospective policy panels are in the appendix only.
 
 ## Schedule
 
@@ -116,7 +131,8 @@ Cut from the long paper:
 | --- | --- |
 | 9–11 Oct | Merged proposal (this file); theory map and B1–B3 statements; toy coverage experiment |
 | 11–14 Oct | KuaiRec daily panel; B1 proof; B2 proof |
-| 14–18 Oct | KuaiRec daily runs; B3; **abstract submitted by 18 Oct** under the unified framing |
+| 12 Oct | Submission draft and abstract written ([submission/](submission/README.md)); related-work index |
+| 14–18 Oct | Fill the 2 free pages; path-against-clique proof; **abstract submitted by 18 Oct** under the unified framing |
 | 18–20 Oct | **Go/no-go on B1**; experiment figures |
 | 20–25 Oct | Writing; appendix proofs; reproducibility; **paper submitted by 25 Oct** |
 

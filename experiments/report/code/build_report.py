@@ -13,6 +13,7 @@ Every number the report derives across experiments is computed here from the raw
                          AR(20) confirmation. Tests B1 validity and B2.
 4. inflation.csv       - Wikipedia block-mean inflation, observed vs predicted (B2, B3 part 1).
 5. dynamics.csv        - regret relative to iid TS on the chronological KuaiRec panel (S5, P1).
+Figures: figures/*.png (titled, for the report) and figures/paper/*.pdf (untitled, for papers).
 Ratios of means use a user (or seed) bootstrap; shares use Wilson intervals.
 """
 
@@ -51,6 +52,17 @@ def style(ax, xlabel, ylabel, title):
     ax.set_xlabel(xlabel, color=INK2, fontsize=10)
     ax.set_ylabel(ylabel, color=INK2, fontsize=10)
     ax.figure.suptitle(title, x=0.012, ha="left", color=INK, fontsize=11)
+
+
+def save(fig, name):
+    """Report PNG with its title, plus a title-free vector PDF for papers (figures/paper/)."""
+    fig.savefig(FIG / f"{name}.png")
+    if fig._suptitle is not None:
+        fig._suptitle.set_visible(False)
+    fig.tight_layout()
+    (FIG / "paper").mkdir(exist_ok=True)
+    fig.savefig(FIG / "paper" / f"{name}.pdf")
+    plt.close(fig)
 
 
 def wilson(k, n, z=1.96):
@@ -156,8 +168,7 @@ def dose_response():
           "Certified pooling gains in proportion to what it can reject (A1)")
     ax.legend(frameon=False, fontsize=8, loc="lower left")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(FIG / "fig1_dose_response.png")
-    plt.close(fig)
+    save(fig, "fig1_dose_response")
     return df, rho, binned
 
 
@@ -222,8 +233,7 @@ def real_vs_rewired():
     style(ax, "Real ÷ rewired regret (95% interval, log scale)", "",
           "Real graphs rarely beat rewired nulls; uncertified pooling on real groups can be far worse")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(FIG / "fig2_real_vs_rewired.png")
-    plt.close(fig)
+    save(fig, "fig2_real_vs_rewired")
     return df
 
 
@@ -311,8 +321,7 @@ def validity():
           "iid certificates fail under persistence; innovation certificates hold (B1, B2)")
     ax.legend(frameon=False, fontsize=7.5, loc="upper center", bbox_to_anchor=(0.45, -0.16), ncol=1)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(FIG / "fig3_validity.png")
-    plt.close(fig)
+    save(fig, "fig3_validity")
     return df
 
 
@@ -348,8 +357,7 @@ def inflation():
           "Real attention is in B2's regime; full-ACF fits predict it")
     ax.legend(frameon=False, fontsize=8, loc="upper left")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(FIG / "fig4_inflation.png")
-    plt.close(fig)
+    save(fig, "fig4_inflation")
     return summ
 
 
@@ -376,8 +384,7 @@ def widths():
     style(ax, "Median arm interval width after 730 days (means lie in [0, 1])", "",
           "Real-calibrated dynamics: the information is there, the valid bounds are not")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(FIG / "fig5_widths.png")
-    plt.close(fig)
+    save(fig, "fig5_widths")
     return w
 
 

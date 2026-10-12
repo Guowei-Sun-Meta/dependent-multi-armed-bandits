@@ -1,0 +1,33 @@
+{
+  "primary": {
+    "pdf": "research/claude_opus_10_09_v2/paper/paper.pdf",
+    "sha256": "e0301bfe3a61bec80da01077b74f039e78fb411c00c1205caecd261789ff47d1",
+    "pages": 28,
+    "required_results_present": true,
+    "undefined_references": 0,
+    "missing_glyph_warnings": 0,
+    "overfull_boxes": 0,
+    "all_pages_rendered": true,
+    "visual_review": "Contact sheets and selected full-resolution pages inspected",
+    "tex_log": "research/claude_opus_10_09_v2/paper/paper.log"
+  },
+  "extended": {
+    "pdf": "research/gpt_sol_10_09/manuscript.pdf",
+    "sha256": "906f94038485087eb5690d40b07268aaff224cf7fdb573bf78a3bce42c98fd79",
+    "pages": 112,
+    "required_results_present": true,
+    "undefined_references": 0,
+    "missing_glyph_warnings": 0,
+    "overfull_boxes": 0,
+    "all_pages_rendered": true,
+    "visual_review": "Contact sheets and selected full-resolution pages inspected",
+    "tex_log": "research/gpt_sol_10_09/manuscript.log"
+  },
+  "update_date": "2026-10-12",
+  "table_inputs_verified": 7,
+  "generated_tables": 7,
+  "shared_figures": 5,
+  "renderer": "macOS PDFKit, 1.5x rasterization",
+  "compiler": "Tectonic 0.15.0",
+  "new_experiment_runs": 0
+}

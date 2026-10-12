@@ -1,0 +1,32 @@
+{
+  "report_date": "2026-10-11",
+  "generated_utc": "2026-10-11T15:32:55.379975+00:00",
+  "source_sha256": {
+    "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3.csv": "789f10d95587b07f0c7f28d14816bebb7a956140a5368e996e741992eb66b264",
+    "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3_usercal.csv": "caf5b37f128cb8759a2e748c499fbefe3ec346262c6ff76e5da63e48d6f7a7fb",
+    "experiments/oct10_evening/results/setting_a2/setting_a2_instances_120x3.csv": "c3d0b02f6a76a0762d8159bdc691e18e68e984683e8f344d683693bbe52a13d8",
+    "experiments/oct10_evening/results/setting_a2/setting_a2_instances_120x3_usercal.csv": "6a9d681a7e6252b9f475eccbc516af68c88a55b58cc3a93227c86293946a5260",
+    "experiments/oct10_evening/results/daily_chrono/test_runs.csv": "a1979a4f06a82d804031efd1c09d3398622592d799289778f0195c53c38466b2",
+    "experiments/today_2026_10_10/results/wikipedia/summary.csv": "cefb332bb5eb3d6068894510ffc1aca982ed96608d6ab5f07837a7fefbc3c25f",
+    "experiments/today_2026_10_10/results/certificates_confirmation/summary.csv": "436f3d5cb4362eabdf89319ec9fa0635493444497ed20904fd5af856dc6c3d23",
+    "experiments/oct10_evening/results/certificates_real/runs.csv": "2896760378059e0f8d63b387f6d218ee360b446e80200a654129e31c936cc239",
+    "experiments/oct10_evening/results/certificates_real/widths.csv": "9da52d35cfa9e033fc2b2288756b2947fbbd942bbb58ca310efcfd26b338d43c",
+    "research/alignment_paper/results/geometry/summary.csv": "9d65c4ba60270b31ff0cc36c5d54b1f76b5a9587adf8eae9c749b642a748c748",
+    "experiments/oct10_runs/results/theory_instances/b2_runs.csv": "2a7520b9396124381ccac3b9da3353bce1ca6c267e2db964d7b28ab1164d8b3c",
+    "experiments/oct10_runs/results/theory_instances/b3_contrast.csv": "fbca3ee74a0d60dbbc69a7796749d54929c67631b71c6cea1ae98939c99c7d51",
+    "experiments/today_2026_10_10/results/slate/summary.csv": "aca3fdebf774c833ec0a1cf9726df9d5a2baf7afd3cbf4d014af1d62526bb72c",
+    "experiments/oct10_runs/results/obd_pooling/runs.csv": "491ecce772453603861ebd28ed2a4911c61c21ca76b77f808f68aab47e2ea646",
+    "experiments/overnight_2026_10_10/results/obd_calibration/calibration.csv": "55078477f7ee08a2113f47909607d1214036c21c6120ea130f93b60545173583",
+    "experiments/overnight_2026_10_10/results/obd_calibration/ranking_uncertainty.csv": "6250a71fc9199485311baf370c3a0b06e3af4cf9301cab10f341584f51663fd1",
+    "research/spatiotemporal_bandits/results/policies_ar20/summary.csv": "7284ef5722a24a6359232c11e778c0b3467924758bf62d9933045f4545eeeeb4",
+    "research/predictive_ar1/results/summary.csv": "bb368a084186dbf762c401d282c58f63aeecb80a4c448de53369b74afa2ca919",
+    "research/correlated_arms/README.md": "270fadbcc4f2568252dceb95e9306bd07ae7e3e47efa0b8282d9cb213062cdb2",
+    "research/gpt_sol_10_09/sections/synthesis.tex": "29c7b8d13158752339fdde532aafb88f01289788221c9e041620db09e19173c8",
+    "research/alignment_paper/README.md": "d4928ffb40663a4cba43f669a3e30e520a9976193732b9284858dbbb2ac62963",
+    "experiments/oct10_evening/README.md": "9d875b5db2dfb5e133b03e8d34a3acb5a59a6955b130c875d53e538477ee95a3"
+  },
+  "catalogued_artifacts": 361,
+  "frozen_copies": 110,
+  "exact_duplicate_artifacts": 103,
+  "analysis": "existing results only; no new simulation runs"
+}

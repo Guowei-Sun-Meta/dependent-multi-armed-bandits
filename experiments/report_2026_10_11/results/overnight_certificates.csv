@@ -1,0 +1,25 @@
+graph,certificate,valid_component_fraction,rejectable_component_fraction,mean_width,diagnostic_basis
+I-coeng,oracle,1.0,0.6755847953216374,0.3517348743530087,true component ranges
+I-coeng,energy,1.0,0.17149122807017542,0.8218761941606415,true component ranges
+I-coeng,cal90,0.896388888888889,0.26959064327485377,0.6701522750107082,true component ranges
+I-coeng,cal50,0.4783333333333333,0.7097953216374269,0.27167373511201703,true component ranges
+I-coeng,none,0.0,0.9558479532163743,0.0,true component ranges
+I-mf,oracle,1.0,0.5941520467836258,0.38686964984011174,true component ranges
+I-mf,energy,1.0,0.20891812865497073,0.7421830070792116,true component ranges
+I-mf,cal90,0.8974999999999999,0.14649122807017542,0.7282583809969948,true component ranges
+I-mf,cal50,0.47291666666666665,0.6172514619883042,0.30632604008067177,true component ranges
+I-mf,none,0.0,0.9535087719298246,0.0,true component ranges
+I-mf~rewired,oracle,1.0,0.5307017543859648,0.41560840302832436,true component ranges
+I-mf~rewired,energy,1.0,0.030409356725146185,0.9473790662290378,true component ranges
+I-mf~rewired,cal90,0.8951388888888889,0.07456140350877191,0.761978508517787,true component ranges
+I-mf~rewired,cal50,0.47652777777777783,0.5614035087719298,0.33386466035047907,true component ranges
+I-mf~rewired,none,0.0,0.9514619883040936,0.0,true component ranges
+I-tag,oracle,1.0,0.6211988304093568,0.37106712223113864,true component ranges
+I-tag,energy,1.0,0.29371345029239765,0.6977702497498764,true component ranges
+I-tag,cal90,0.8923611111111112,0.2618421052631579,0.6624355977506896,true component ranges
+I-tag,cal50,0.4769444444444444,0.6488304093567251,0.2971450256687146,true component ranges
+I-tag,none,0.0,0.9558479532163743,0.0,true component ranges
+I-coeng,user90,0.8895833333333333,,0.6076755225105406,"true user level, not realized noisy warm-up"
+I-coeng,user75,0.7394444444444446,,0.40577354626397505,"true user level, not realized noisy warm-up"
+I-mf,user90,0.8934722222222221,,0.6531648660798729,"true user level, not realized noisy warm-up"
+I-mf,user75,0.7358333333333332,,0.4408483324033698,"true user level, not realized noisy warm-up"

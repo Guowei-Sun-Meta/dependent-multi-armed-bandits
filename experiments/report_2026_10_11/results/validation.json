@@ -1,0 +1,11 @@
+{
+  "overnight_users": 120,
+  "overnight_subsets_per_policy_user": 3,
+  "overnight_unique_main_runs": 10440,
+  "overnight_unique_usercal_runs": 1440,
+  "real_dynamics_worlds_per_cell": 100,
+  "real_dynamics_runs": 4800,
+  "ratio_intervals_finite": true,
+  "figures": 9,
+  "inventory_artifacts": 361
+}

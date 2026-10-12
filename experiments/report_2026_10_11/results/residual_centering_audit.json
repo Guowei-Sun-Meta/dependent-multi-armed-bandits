@@ -1,0 +1,12 @@
+{
+  "empirical_innovation_mean_max_abs": 0.0015340131023719953,
+  "stationary_level_offset_max_abs": 0.019361390708351186,
+  "best_to_second_gap": 0.13509641426624286,
+  "ar_radius": 0.9730076507869253,
+  "scope": "Empirical residual resampling is not recentered in source code; Gaussian worlds are centered.",
+  "best_article_unchanged": true,
+  "top5_members_changed": 0,
+  "top10_members_changed": 0,
+  "components": 6,
+  "oracle_widths_invalid_for_shifted_levels": 1
+}

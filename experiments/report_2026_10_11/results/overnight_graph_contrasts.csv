@@ -1,0 +1,5 @@
+candidate,baseline,relative_difference,ci_low,ci_high,users,scope
+spectral_ts/I-mf/10.0,spectral_ts/I-mf~rewired/10.0,0.0028560657723506466,-0.041283069865622024,0.04638318427853028,120,"user-cluster bootstrap, conditional on common tuning data"
+sp_klucb/I-mf/oracle,sp_klucb/I-mf~rewired/oracle,-0.0844809387529708,-0.09458934510247036,-0.07383450775288675,120,"user-cluster bootstrap, conditional on common tuning data"
+sp_klucb/I-mf/none,sp_klucb/I-mf~rewired/none,0.02796466550562071,-0.03386659429441665,0.09739290738699471,120,"user-cluster bootstrap, conditional on common tuning data"
+shrink_ts/complete/10.0,spectral_ts/I-mf/10.0,-0.13386542166012794,-0.22097230853068486,-0.044979583538655034,120,"user-cluster bootstrap, conditional on common tuning data"

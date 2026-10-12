@@ -32,7 +32,7 @@ The proposal is [www/CLAUDE.md](www/CLAUDE.md). The theory map, which records re
 | `research/correlated_arms/` | Theory map for the long paper (B1–B3) |
 | `research/claude_opus_10_09/`, `research/claude_opus_10_09_v2/` | Long working papers (v2 is current) |
 | `research/temporal_bandits.md`, `predictive_ar1/`, `two_arm_ar1/`, `ar_p_bandits/`, `spatiotemporal_bandits/` | Temporal-dependence thread, maintained by the user in parallel. **Don't edit these unless asked**; the user often has uncommitted work there |
-| `www/` | WWW proposal and experiment plan |
+| `www/` | WWW proposal, the submission draft (`www/submission/`: paper, OpenReview abstract) and the 30-paper related-work index |
 | `data/` | Raw and cached data (git-ignored) |
 
 ## Working conventions
@@ -120,6 +120,6 @@ Kept up to date by whoever runs experiments. Check `experiments/kuairec/README.m
     - KuaiRec daily and Wikipedia are done. `experiments/st_apps/` is another agent's panel harness.
 - [ ] Setting C (product graph), Last.fm social graph, R2 sensitivity
 - [ ] Theory: T4 (product-graph regret), T5 (certificate for embedding graphs), and the calibrated certificate's validity statement
-- [ ] Abstract (by 18 October) and paper draft (by 25 October)
+- [ ] Abstract (by 18 October) and paper draft (by 25 October). **First submission-format draft and abstract text done on 12 October** in [www/submission/](www/submission/README.md); to-do list there
 
 How to check running jobs: `ps aux | grep kuairec`. Logs from the 3-hour queue go to `data/logs/` (git-ignored).

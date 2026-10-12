@@ -1,6 +1,8 @@
-# When Can a Bandit Trust Correlation? Revision 2 of the Compiled Findings
+# When Can a Bandit Trust Correlation? Updated Working Draft
 
-9 October 2026. A rewrite of [claude_opus_10_09](../claude_opus_10_09/README.md) with a clearer story, deeper analysis of every experiment, explicit links between each theoretical result and the data that tests it, and a hypothesis-driven second application. The first version is kept unchanged for comparison.
+Updated 12 October 2026 (revision 3, in the existing revision-2 folder). The [paper](paper/paper.pdf) and [source](paper/paper.tex) incorporate the completed 10--11 October experiments. Both this draft and the [extended synthesis](../gpt_sol_10_09/manuscript.pdf) include a [shared results section](../../experiments/report_2026_10_11/paper/latest_results.tex), seven generated tables and five new figures. The original draft remains in [claude_opus_10_09](../claude_opus_10_09/README.md).
+
+Current headlines: oracle-certified I-mf pooling has average regret 0.640 times matched conservative KL-UCB but 1.456 times Bernoulli TS; graph-free shrinkage explains much of spectral performance. Chronological KuaiRec gains against iid TS do not establish superiority over last value. Full-year Wikipedia gains depend on panel and budget. Known-model confidence is conditional; fitted-model coverage and useful elimination remain unresolved. OBD mean-channel simulations and the underpowered actual-log pilot are reported separately.
 
 | Item | What it is |
 | --- | --- |
@@ -20,21 +22,25 @@
 | Deep dives | Averages per policy | Mechanisms: which instances certified pooling helps, which users uncertified pooling fails and why, where Wikipedia regret comes from, what KuaiRec's drift is |
 | Corrections | "Drift grows with video age" | KuaiRec is one upload cohort whose engagement falls during days 21–42. Younger videos change faster early on, but drift does not grow with age |
 
-## Each prediction and its test
+## Updated predictions and tests
 
 | Prediction (from theory) | Test | Result |
 | --- | --- | --- |
 | Certified pooling gains only through components with width below gap (SP-UCB theorem) | Setting A: gain against the share of rejectable components | Median ratio to UCB1 falls from 0.84 to 0.40 as the share rises (Spearman −0.48). Energy certificates rarely make components rejectable and gain only 2–11% |
-| Zero-width pooling fails when the optimal component is not the top component by average | Recompute every instance's partition | Safe when it is top (90th pct 0.37× UCB1); fails when not (90th pct 1.19×). Never fails on rewired graphs, up to 38% on informative ones |
+| Incorrect widths can cause dilution failures | Static KuaiRec, cold users and OBD | Heavy tails and failure to identify the best item occur in selected settings; no sample with zero failures establishes safety for all random graphs |
 | iid certificates under bursty persistence miscover by B2's inflation | Coverage sweeps, blocks of 25 | Predicted inflation 1.7× / 3.5× / 4.4× at φ = 0.5 / 0.9 / 0.97; runs violated 0% / 85% / 90–95% |
-| Innovation certificates (B1, B1′, B1″) stay valid | Same sweeps, several thousand runs | Never violated |
-| Exploring persistent uncertainty pays only with enough future observations per arm | Five environments | Refined: heavy exploration (predictive sampling) beats greedy with many observations and clear gaps (0.63× benchmark, 0.92× one-domain Wikipedia), but loses with near-ties or about 1 observation per arm (1.11×, 1.67–1.74×). Mild optimism (UCB, 1 sd) helps where rankings move (0.91× six-domain Wikipedia, sparse KuaiRec) |
-| A graph helps the shock model only when shocks are community-specific | Shock correlation and held-out likelihood on three panels; paired policy runs | No help on KuaiRec or one-domain Wikipedia. On six domains hyperlinks fit shocks best (edges 0.273 against rewired 0.051), but change decisions by only ±3%, because long-run levels decide which articles lead |
-| Modelling dynamics beats iid policies | Five environments | Best model 24–44% below iid Thompson sampling everywhere |
+| Correct-model innovation confidence has conditional guarantees | Fresh general-AR confirmation and real-calibrated worlds | Known AR(20): 1/100 failures; fitted: 5/100; wrong order plus diagonal covariance: 40/100. Conservative elimination can retain all arms |
+| The value of predictive exploration depends on continuation information, gaps and initialization | Legacy five-environment analysis | Performance varies across settings; these retrospectively selected panels motivate hypotheses rather than a general exploration rule |
+| Better shock fit need not improve decisions | Historical covariance diagnostics and current topology controls | Legacy six-domain hyperlinks fit shocks better, but chronological KuaiRec and historical small-panel Wikipedia do not establish a real-topology advantage over appropriate controls |
+| Persistence-aware rules can improve on iid policies | Chronological KuaiRec and full-year historical Wikipedia | KuaiRec joint UCB is 49–54% below iid TS, but comparisons with last value are inconclusive. Wikipedia is panel- and budget-dependent |
+
+The older five-environment exploration analysis and retrospective shock-correlation diagnostics remain historical context, not a universal algorithm claim. Primary performance in the updated section uses ratios of mean losses and user-level uncertainty; legacy tables that average instance ratios are explicitly labelled. Empirical residual resampling has a nonzero-mean audit qualification, and practical calibration diagnostics are not simultaneous coverage guarantees.
 
 ## Reproduce
 
 From the repository root, after the experiments listed in the paper's appendix:
+
+Generate the latest shared tables with `.venv/bin/python -I experiments/report_2026_10_11/paper/build_latest.py`, then compile the draft. The generated input fingerprints are in `experiments/report_2026_10_11/paper/source_manifest.json`.
 
 ```sh
 OPENBLAS_NUM_THREADS=2 .venv/bin/python -I experiments/paper/deepdive.py

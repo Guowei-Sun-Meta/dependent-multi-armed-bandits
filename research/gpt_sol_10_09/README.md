@@ -1,14 +1,18 @@
 # Correlated and persistent rewards: extended research package
 
-9 October 2026. This directory contains the requested long manuscript and a completed second application experiment. Original research manuscripts and experiments were read and collected without being overwritten.
+Updated 12 October 2026. The main manuscript now incorporates the completed 10--11 October experiments. The original evidence collection and technical appendices preserve their source history; the current main-text qualifications govern empirical interpretation.
 
-Start with the **102-page [compiled paper](manuscript.pdf)** or its [editable LaTeX source](manuscript.tex). The [integrated synthesis](sections/synthesis.tex) connects the model, estimators, policies, information limits, selection formulas, simulations, and applications. Five technical appendices retain the full derivations from the spatial/general-AR, graph-alignment, predictive AR(1), two-arm, and multiple-arm/general-AR papers. The main model permits heterogeneous AR orders; AR(1) appears only as a restricted analytical example.
+Start with the [compiled paper](manuscript.pdf) or its [editable LaTeX source](manuscript.tex). The [integrated synthesis](sections/synthesis.tex) connects the model, estimators, policies, information limits, selection formulas, simulations and applications. Its [shared latest-results section](../../experiments/report_2026_10_11/paper/latest_results.tex) covers the overnight 120-user expansion, chronological KuaiRec, full-year Wikipedia, general-AR coverage, real-calibrated certificates and OBD. Five technical appendices retain the original derivations. The main model permits heterogeneous AR orders; AR(1) appears as a restricted analytical example.
+
+The new results support conditional safety and information mechanisms more strongly than universal algorithm superiority. Practical certificates remain wide or empirically incomplete; simple persistence and graph-free shrinkage are essential controls. Seven tables are generated from saved results and source hashes by `experiments/report_2026_10_11/paper/build_latest.py`; the original `evidence_manifest.json` still describes the frozen collection, not the new inputs.
 
 The [evidence index](findings.md) maps findings to their source artifacts. The [source manifest](evidence_manifest.json) fingerprints the collected versions. Older Bayesian or iid results keep their original assumptions. Exploratory findings and incomplete theoretical extensions are explicitly identified, including two corrections to the original pooling/partial-feedback bridge notes.
 
-## New application: selective Wikipedia attention monitoring
+## Original half-year application: selective Wikipedia attention monitoring
 
 The [executed protocol](experiment_design.md) and [completed findings](results/wikipedia/findings.md) describe two fixed panels of 24 articles each, covering astronomy and football. Historical hyperlinks come from revisions before 2024. Models use 2024 fitting and development; test feedback is selectively masked over 181 days in January–June 2025. Rewards are observed human page views transformed by `log1p`.
+
+The updated manuscript also reports the 365-day extension on these same panels. It overlaps the half-year history and is not an independent replication. Its last-value, EWMA, discounting and static controls narrow the earlier modelling claims.
 
 - Main model: general AR(7) with lags 1, 2, and 7; sensitivity: dense AR(20).
 - Budgets: one or five simultaneous observations per day, with no full-field test refresh.

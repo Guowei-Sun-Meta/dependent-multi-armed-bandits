@@ -1,5 +1,5 @@
-\begin{table}[htbp]\centering\small
-\resizebox{\linewidth}{!}{%
+\begin{table}[!htbp]\centering\small
+\begin{lrbox}{\latestTableBox}
 \begin{tabular}{lrrrr}
 \toprule
 Policy & Loss, k=1 & / IID TS & Loss, k=5 & / IID TS \\
@@ -15,7 +15,8 @@ Joint UCB & 0.2383 & 0.507 & 0.1504 & 0.459 \\
 Joint UCB, rewired & 0.2351 & 0.500 & 0.1525 & 0.465 \\
 Joint UCB, common factor & 0.2362 & 0.502 & 0.1559 & 0.475 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}\end{lrbox}
+\ifdim\wd\latestTableBox>\linewidth\resizebox{\linewidth}{!}{\usebox{\latestTableBox}}\else\usebox{\latestTableBox}\fi
 \caption{Chronological KuaiRec: observed-oracle logit completion-rate loss per day per selected slot. Five panels in each of three disjoint 11-day windows; policy seeds are averaged within each panel-window. Unavailable selections receive the specified retrospective median fallback for scoring and no feedback.}
 \label{tab:latest-daily}
 \end{table}

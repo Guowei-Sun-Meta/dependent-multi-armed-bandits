@@ -1,5 +1,7 @@
 # Findings and evidence index
 
+Updated 12 October 2026: the current manuscript includes the [completed October 10--11 evidence](../../experiments/report_2026_10_11/paper/latest_results.tex). The rows below retain the original source index and must be read with that update. In particular, chronological KuaiRec is now complete, the static study covers 120 users × 3 subsets, Wikipedia has a same-panel full-year extension, and OBD has both semi-synthetic and sparse actual-log results. Known-model guarantees, fitted-model diagnostics, usable confidence and algorithm performance remain distinct.
+
 This index accompanies the [long manuscript](manuscript.pdf). The integrated synthesis states the current interpretation; frozen notes preserve the source history, including limitations and superseded claims. Results with different clocks, priors, truths, or comparators are not pooled into one experiment.
 
 | Finding | Evidence and scope |

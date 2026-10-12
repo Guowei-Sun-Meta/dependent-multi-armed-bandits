@@ -983,6 +983,8 @@ File: results/wikipedia/cumulative.pdf Graphic file (type pdf)
 <use results/wikipedia/cumulative.pdf>
 )
 [21] [22] [23] (../../experiments/report_2026_10_11/paper/latest_results.tex
+\latestTableBox=\box73
+
 (../../experiments/report_2026_10_11/paper/pooling.tex) [24
 
 ]
@@ -995,33 +997,32 @@ hic file (type pdf)
 File: ../../experiments/report_2026_10_11/figures/02_real_panel_baselines.pdf G
 raphic file (type pdf)
 <use ../../experiments/report_2026_10_11/figures/02_real_panel_baselines.pdf>
-
-(../../experiments/report_2026_10_11/paper/coverage.tex) [27] [28]
-(../../experiments/report_2026_10_11/paper/realcert.tex)
-Underfull \hbox (badness 1072) in paragraph at lines 66--67
+ [27]
+(../../experiments/report_2026_10_11/paper/coverage.tex)
+(../../experiments/report_2026_10_11/paper/realcert.tex) [28]
+Underfull \hbox (badness 1072) in paragraph at lines 71--72
 \TU/texgyrepagella-regular.otf(0)/m/n/10.95 iid confidence removes the best arm
  in 28–89% of selected high-persistence configurations,
  []
 
-[29]
 File: ../../experiments/report_2026_10_11/figures/03_coverage_and_usefulness.pd
 f Graphic file (type pdf)
 <use ../../experiments/report_2026_10_11/figures/03_coverage_and_usefulness.pdf
 >
- (../../experiments/report_2026_10_11/paper/slates.tex) [30]
-(../../experiments/report_2026_10_11/paper/obd.tex) [31]
+[29] (../../experiments/report_2026_10_11/paper/slates.tex)
+(../../experiments/report_2026_10_11/paper/obd.tex) [30]
 File: ../../experiments/report_2026_10_11/figures/07_obd_pooling_and_calibratio
 n.pdf Graphic file (type pdf)
 <use ../../experiments/report_2026_10_11/figures/07_obd_pooling_and_calibration
 .pdf>
- [32])
-Underfull \hbox (badness 3525) in paragraph at lines 106--437
+ [31])
+Underfull \hbox (badness 3525) in paragraph at lines 111--437
 \TU/lmtt/m/n/10.95 build_latest.py\TU/texgyrepagella-regular.otf(0)/m/n/10.95 ;
  \TU/lmtt/m/n/10.95 source_manifest.json \TU/texgyrepagella-regular.otf(0)/m/n/
 10.95 fingerprints their inputs. The quantitative re-
  []
 
-[33]
+[32]
 Underfull \hbox (badness 2426) in paragraph at lines 451--452
 \TU/texgyrepagella-regular.otf(0)/m/n/10.95 The package contains this manuscrip
 t, compiled PDF, editable sections, generated tables,
@@ -1058,17 +1059,17 @@ Underfull \hbox (badness 5607) in paragraph at lines 451--452
 ar.otf(0)/m/n/10.95 . Its generator reads saved quantitative tables;
  []
 
-) [34
+) [33
 
-] [35] (appendices/spatiotemporal_bandits.tex [36
+] [34] (appendices/spatiotemporal_bandits.tex [35
 
-] [37] [38] [39] [40]
-[41] [42] [43] [44] [45]
+] [36] [37] [38] [39]
+[40] [41] [42] [43] [44]
 PGFPlots: reading {evidence/spatiotemporal_bandits/results/general_ar/pcs_sched
 ule.csv}
 PGFPlots: reading {evidence/spatiotemporal_bandits/results/general_ar/pcs_sched
 ule.csv}
- [46] [47] [48] [49]
+ [45] [46] [47] [48]
 File: figures/spatiotemporal_bandits_oracle_regret.pdf Graphic file (type pdf)
 <use figures/spatiotemporal_bandits_oracle_regret.pdf>
 File: figures/spatiotemporal_bandits_mean_regret.pdf Graphic file (type pdf)
@@ -1078,8 +1079,8 @@ File: figures/spatiotemporal_bandits_pcs.pdf Graphic file (type pdf)
 File: figures/spatiotemporal_bandits_stationary_reward_regret.pdf Graphic file 
 (type pdf)
 <use figures/spatiotemporal_bandits_stationary_reward_regret.pdf>
- [50] [51] [52] [53] [54] [55]
-[56]) [57] (appendices/alignment_paper.tex [58
+ [49] [50] [51] [52] [53] [54]
+[55]) [56] (appendices/alignment_paper.tex [57
 
 ]
 Underfull \hbox (badness 1571) in paragraph at lines 21--22
@@ -1087,17 +1088,17 @@ Underfull \hbox (badness 1571) in paragraph at lines 21--22
  the structured-bandit change-of-measure program of
  []
 
-[59] [60] [61] [62] [63]
+[58] [59] [60] [61] [62]
 Underfull \hbox (badness 2772) in paragraph at lines 268--269
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 When the opti-
  []
 
-[64] [65]
+[63] [64]
 Underfull \hbox (badness 10000) in paragraph at lines 359--360
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 Suppose, on the subspace
  []
 
-[66]
+[65]
 Underfull \hbox (badness 5077) in paragraph at lines 393--394
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 At a homoge-
  []
@@ -1107,13 +1108,13 @@ ode=log unsupported (yet).
 PGFPlots: reading {evidence/alignment_paper/results/geometry/information.csv}
 PGFPlots: reading {evidence/alignment_paper/results/geometry/information.csv}
 PGFPlots: reading {evidence/alignment_paper/results/geometry/information.csv}
-[67] [68] [69] [70] [71]
+[66] [67] [68] [69] [70]
 Underfull \hbox (badness 1968) in paragraph at lines 594--595
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 Consider the normalized path of 
 Corol-
  []
 
-[72] [73]
+[71] [72]
 Package pgfplots info on input line 696: Using 'lua backend=false' for axis: xm
 ode=log unsupported (yet).
 PGFPlots: reading {evidence/alignment_paper/results/geometry/path_scaling.csv}
@@ -1121,7 +1122,7 @@ PGFPlots: reading {evidence/alignment_paper/results/geometry/path_scaling.csv}
 PGFPlots: reading {evidence/alignment_paper/results/geometry/path_scaling.csv}
 PGFPlots: reading {evidence/alignment_paper/results/geometry/clique_scaling.csv
 }
- [74]
+ [73]
 Underfull \hbox (badness 1552) in paragraph at lines 748--749
 []\TU/texgyrepagella-regular.otf(0)/m/n/10.95 Numerical checks cover the resolv
 ent’s least informative alternatives, clique agreement,
@@ -1133,13 +1134,13 @@ Underfull \hbox (badness 1199) in paragraph at lines 748--749
 le to direct scalar bisection. These checks help detect
  []
 
-[75]
+[74]
 Underfull \hbox (badness 4634) in paragraph at lines 766--767
 \TU/texgyrepagella-regular.otf(0)/m/n/10.95 The accompanying standard-library P
 ython implementation runs 40 independent macro-
  []
 
-[76]
+[75]
 Package pgfplots info on input line 821: Using 'lua backend=false' for axis: xm
 ode=log unsupported (yet).
 PGFPlots: reading {evidence/alignment_paper/results/certificate_curves.csv}
@@ -1147,10 +1148,10 @@ PGFPlots: reading {evidence/alignment_paper/results/certificate_curves.csv}
 PGFPlots: reading {evidence/alignment_paper/results/certificate_curves.csv}
 PGFPlots: reading {evidence/alignment_paper/results/certificate_curves.csv}
 PGFPlots: reading {evidence/alignment_paper/results/certificate_curves.csv}
- [77] [78] [79]) [80] (appendices/predictive_ar1.tex [81
+ [76] [77] [78]) [79] (appendices/predictive_ar1.tex [80
 
-] [82] [83]
-[84]
+] [81] [82]
+[83]
 Package pgfplots info on input line 204: Using 'lua backend=false' for axis: xm
 ode=log unsupported (yet).
 PGFPlots: reading {evidence/predictive_ar1/results/coefficient_plot.csv}
@@ -1165,23 +1166,23 @@ PGFPlots: reading {evidence/predictive_ar1/results/cumulative_plot.csv}
 PGFPlots: reading {evidence/predictive_ar1/results/cumulative_plot.csv}
 PGFPlots: reading {evidence/predictive_ar1/results/cumulative_plot.csv}
 PGFPlots: reading {evidence/predictive_ar1/results/cumulative_plot.csv}
- [85] [86] [87
+ [84] [85] [86
 
-] [88] [89]) [90] (appendices/two_arm_ar1.tex [91
+] [87] [88]) [89] (appendices/two_arm_ar1.tex [90
 
-] [92]
-[93] [94]
+] [91]
+[92] [93]
 Underfull \hbox (badness 1783) in paragraph at lines 220--221
 \TU/texgyrepagella-regular.otf(0)/m/it/10.95 alternation followed by choosing t
 he larger posterior mean maximizes prior-averaged PCS over all
  []
 
-[95] [96] [97]
+[94] [95] [96]
 PGFPlots: reading {evidence/two_arm_ar1/results/pcs_curve.csv}
 PGFPlots: reading {evidence/two_arm_ar1/results/pcs_curve.csv}
-) [98] [99] (appendices/ar_p_bandits.tex [100
+) [97] [98] (appendices/ar_p_bandits.tex [99
 
-] [101]
+] [100]
 Underfull \hbox (badness 10000) in paragraph at lines 104--105
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 For $[]$ identical zero-mean AR 
 arms, let
@@ -1192,15 +1193,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 149--150
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 Every causal policy in the
  []
 
-[102] [103] [104] [105] [106]
+[101] [102] [103] [104] [105]
 Underfull \hbox (badness 10000) in paragraph at lines 306--307
 []\TU/texgyrepagella-regular.otf(0)/m/it/10.95 For two arms
  []
 
-[107] [108] [109]
+[106] [107] [108]
 PGFPlots: reading {evidence/ar_p_bandits/results/ar2_pcs.csv}
 PGFPlots: reading {evidence/ar_p_bandits/results/ar2_pcs.csv}
-) [110] (collected_references.tex
+) [109] (collected_references.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--4
 [][][][][] [] [][][][][] [] [][][][] [] [][][][] [] [][][][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -1228,7 +1229,7 @@ f(0)/m/n/10.95 . Operations Research 72(6):2526–2542, 2024; first published on
 ine 2023. [][]DOI:
  []
 
-[111
+[110
 
 ]
 Underfull \hbox (badness 2253) in paragraph at lines 52--56
@@ -1237,7 +1238,7 @@ gyrepagella-regular.otf(0)/m/it/10.95 Clus-UCB: A Near-Optimal Algorithm for Cl
 ustered Bandits\TU/texgyrepagella-regular.otf(0)/m/n/10.95 .
  []
 
-[112])
+[111])
 Underfull \hbox (badness 5711) in paragraph at lines 70--71
 []\TU/texgyrepagella-regular.otf(0)/m/n/10.95 Wikimedia Foundation. Page-view a
 nalytics API and access policy. Public human-
@@ -1256,8 +1257,8 @@ Underfull \hbox (badness 1132) in paragraph at lines 72--73
 served Dataset and Insights for Evaluating Recom-
  []
 
-[113] (manuscript.aux)
+[112] (manuscript.aux)
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
 (rerunfilecheck)             Checksum: 9E2741F4E8536BF2088A8A5F27D3ADA7;42255.
  )
-Output written on manuscript.xdv (113 pages, 3407108 bytes).
+Output written on manuscript.xdv (112 pages, 3409164 bytes).

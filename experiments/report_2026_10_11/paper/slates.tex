@@ -1,5 +1,5 @@
-\begin{table}[htbp]\centering\small
-\resizebox{\linewidth}{!}{%
+\begin{table}[!htbp]\centering\small
+\begin{lrbox}{\latestTableBox}
 \begin{tabular}{lrr}
 \toprule
 Pair & Simultaneous variance ratio & Staggered variance ratio \\
@@ -9,7 +9,8 @@ Unequal standard deviations 1, 2 & 0.280 & 0.284 \\
 Persistence 0.9 and 0.5 & 0.383 & 0.406 \\
 Equal, iid & 0.109 & 1.000 \\
 \bottomrule
-\end{tabular}}
-\caption{Contrast variance relative to zero innovation correlation, 365 observations per arm, innovation correlation 0.9. The ideal equal-pair factor is 0.1; heterogeneous pairs and staggered schedules require their own conditional covariance. The staggered design uses a different calendar length; its ratios do not establish equal-budget policy dominance.}
+\end{tabular}\end{lrbox}
+\ifdim\wd\latestTableBox>\linewidth\resizebox{\linewidth}{!}{\usebox{\latestTableBox}}\else\usebox{\latestTableBox}\fi
+\caption{Contrast variance relative to zero innovation correlation, 365 observations per arm, innovation correlation 0.9. The ideal equal-pair, zero-sensor-noise factor is 0.1; these calculations include independent sensor noise of standard deviation 0.1. Heterogeneous pairs and staggered schedules require their own conditional covariance. The staggered design uses a different calendar length; its ratios do not establish equal-budget policy dominance.}
 \label{tab:latest-slates}
 \end{table}

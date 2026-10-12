@@ -1,5 +1,5 @@
-\begin{table}[htbp]\centering\small
-\resizebox{\linewidth}{!}{%
+\begin{table}[!htbp]\centering\small
+\begin{lrbox}{\latestTableBox}
 \begin{tabular}{lrrr}
 \toprule
 Learner & Anytime failures & 95\% Wilson interval & Final maximum width \\
@@ -9,7 +9,8 @@ Fitted AR(20) & 5/100 & [0.022, 0.112] & 4.92 \\
 Fitted, Q times 1.5 & 3/100 & [0.010, 0.085] & 5.88 \\
 AR(1), diagonal shocks & 40/100 & [0.309, 0.498] & 2.72 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}\end{lrbox}
+\ifdim\wd\latestTableBox>\linewidth\resizebox{\linewidth}{!}{\usebox{\latestTableBox}}\else\usebox{\latestTableBox}\fi
 \caption{Fresh AR(20) confirmation after screening: six arms, 800 rounds, burst length 25, an independent 365-round fitting prefix, 100 paired worlds. The last row bundles wrong lag order and diagonalized innovations. Covariance inflation is an empirical heuristic.}
 \label{tab:latest-coverage}
 \end{table}

@@ -21,11 +21,13 @@ def esc(text):
 
 
 def table(name, headers, rows, caption):
-    lines = [r"\begin{table}[htbp]\centering\small", r"\resizebox{\linewidth}{!}{%",
+    lines = [r"\begin{table}[!htbp]\centering\small", r"\begin{lrbox}{\latestTableBox}",
              r"\begin{tabular}{l" + "r" * (len(headers)-1) + "}", r"\toprule",
              " & ".join(esc(x) for x in headers) + r" \\", r"\midrule"]
     lines += [" & ".join(esc(x) for x in row) + r" \\" for row in rows]
-    lines += [r"\bottomrule", r"\end{tabular}}", r"\caption{" + caption + "}",
+    lines += [r"\bottomrule", r"\end{tabular}\end{lrbox}",
+              r"\ifdim\wd\latestTableBox>\linewidth\resizebox{\linewidth}{!}{\usebox{\latestTableBox}}\else\usebox{\latestTableBox}\fi",
+              r"\caption{" + caption + "}",
               r"\label{tab:latest-" + name + "}", r"\end{table}", ""]
     (HERE / (name + ".tex")).write_text("\n".join(lines))
 
@@ -51,7 +53,7 @@ def main():
         valid = f"{100*cv.valid_component_fraction.iloc[0]:.1f}%" if len(cv) else "--"
         rows.append([label, f"{ts.ratio_of_means:.3f}", f"[{ts.ci_low:.3f}, {ts.ci_high:.3f}]",
                      f"{kl.ratio_of_means:.3f}", f"{kl.mean_instance_ratio:.3f}", valid])
-    table("pooling", ["Policy", "Mean loss / TS", "95% user interval", "Mean loss / fixed KL", "Mean paired ratio / fixed KL", "Valid components"], rows,
+    table("pooling", ["Policy", "Mean / TS", "95% CI", "Mean / fixed KL", "Paired / fixed KL", "Valid widths"], rows,
           "Completed Setting A v2: 120 held-out users, three subsets each, 300 videos, $T=20{,}000$. "
           "Ratios of mean losses differ from means of instance ratios. Intervals bootstrap users after averaging subsets. "
           "User-calibration validity is evaluated at the true user level, not the realized noisy warm-up; it is diagnostic, not a simultaneous certificate guarantee.")
@@ -114,7 +116,8 @@ def main():
         rows.append([label,f"{q.loc['simultaneous','ratio_to_rho0']:.3f}",f"{q.loc['staggered','ratio_to_rho0']:.3f}"])
     table("slates", ["Pair", "Simultaneous variance ratio", "Staggered variance ratio"], rows,
           "Contrast variance relative to zero innovation correlation, 365 observations per arm, innovation correlation 0.9. "
-          "The ideal equal-pair factor is 0.1; heterogeneous pairs and staggered schedules require their own conditional covariance. "
+          "The ideal equal-pair, zero-sensor-noise factor is 0.1; these calculations include independent sensor noise of standard deviation 0.1. "
+          "Heterogeneous pairs and staggered schedules require their own conditional covariance. "
           "The staggered design uses a different calendar length; its ratios do not establish equal-budget policy dominance.")
     (HERE/"source_manifest.json").write_text(json.dumps({"manuscript_update_date":"2026-10-12","experiment_snapshot":"2026-10-10 through 2026-10-11", "sources_sha256":MANIFEST},indent=2)+"\n")
     print(f"Generated 7 tables from {len(MANIFEST)} source tables.")

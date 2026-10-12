@@ -1,5 +1,10 @@
 \section{Updated empirical evidence: completed 10--11 October runs}
 \label{sec:latest}
+\newsavebox{\latestTableBox}
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{14pt}
+\makeatother
 
 This section supersedes earlier empirical headlines where protocols or comparators have changed. It incorporates the completed 120-user KuaiRec expansion, the chronological daily rerun, the full-year historical Wikipedia extension, general-AR coverage confirmation, real-calibrated certificates, and the Open Bandit Dataset (OBD). The experiments finished on 10--11 October; this manuscript update is dated 12 October. Legacy numerical studies and derivations remain useful under their original assumptions.
 
@@ -76,7 +81,7 @@ Full autocovariances matter. On the existing 150-article Wikipedia panels, seven
 
 \input{\latestExperimentRoot/paper/slates.tex}
 
-The equal-arm $(1-\rho)$ contrast factor is a restricted calculation. With heterogeneous persistence or marginal variance, use the long-run covariance $\Omega$ and contrast variance $\Omega_{ii}+\Omega_{jj}-2\Omega_{ij}$, with finite-calendar corrections when needed. At correlation 0.9, unequal pairs retain factors around 0.28 and 0.38 rather than 0.10. Staggered persistent observations retain substantial covariance benefit in the tested schedules; staggered iid observations retain none. This is schedule-specific evidence, not a theorem that simultaneity is unnecessary in every partial-observation design. Independent Monte Carlo checks over eight equal-pair cells and 20,000 worlds per cell agree with the exact finite-sample variances within 1.8\%.
+The equal-arm $(1-\rho)$ contrast factor is a restricted zero-sensor-noise calculation. The tabulated finite-sample cases include independent sensor noise of standard deviation 0.1, explaining the iid simultaneous ratio 0.109 instead of 0.100. With heterogeneous persistence or marginal variance, use the long-run covariance $\Omega$ and contrast variance $\Omega_{ii}+\Omega_{jj}-2\Omega_{ij}$, adding sensor variance and finite-calendar corrections when needed. At correlation 0.9, unequal pairs retain factors around 0.28 and 0.38 rather than 0.10. Staggered persistent observations retain substantial covariance benefit in the tested schedules; staggered iid observations retain none. This is schedule-specific evidence, not a theorem that simultaneity is unnecessary in every partial-observation design. Independent Monte Carlo checks over eight equal-pair cells and 20,000 worlds per cell agree with the exact finite-sample variances within 1.8\%.
 
 An exploratory 16-arm factorial holds stationary marginal variance fixed and changes only the learner's graph in corruption controls. At persistence 0.9, correlation strength 0.8 and small mean spread, joint UCB minus matched temporal UCB is $-0.039$ latent-oracle loss per round, paired interval $[-0.070,-0.008]$ over 20 worlds. The larger-spread contrast is inconclusive. Corrupting the learner graph worsens the selected joint-UCB contrasts while holding the true world fixed. This supports a spatial mechanism in a controlled regime; the planned 32--64-arm general-AR, 100-world confirmation remains unfinished.
 

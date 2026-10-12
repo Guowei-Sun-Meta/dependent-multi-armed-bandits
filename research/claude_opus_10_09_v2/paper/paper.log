@@ -492,6 +492,8 @@ File: ../figures/f5_synthesis.pdf Graphic file (type pdf)
 <use ../figures/f5_synthesis.pdf>
  [15] [16]
 (../../../experiments/report_2026_10_11/paper/latest_results.tex
+\latestTableBox=\box58
+
 (../../../experiments/report_2026_10_11/paper/pooling.tex) [17
 
 ]
@@ -505,28 +507,28 @@ File: ../../../experiments/report_2026_10_11/figures/02_real_panel_baselines.pd
 f Graphic file (type pdf)
 <use ../../../experiments/report_2026_10_11/figures/02_real_panel_baselines.pdf
 >
-
-(../../../experiments/report_2026_10_11/paper/coverage.tex) [20] [21]
-(../../../experiments/report_2026_10_11/paper/realcert.tex)
+ [20]
+(../../../experiments/report_2026_10_11/paper/coverage.tex)
+(../../../experiments/report_2026_10_11/paper/realcert.tex) [21]
 File: ../../../experiments/report_2026_10_11/figures/03_coverage_and_usefulness
 .pdf Graphic file (type pdf)
 <use ../../../experiments/report_2026_10_11/figures/03_coverage_and_usefulness.
 pdf>
- [22]
-(../../../experiments/report_2026_10_11/paper/slates.tex) [23]
-(../../../experiments/report_2026_10_11/paper/obd.tex) [24]
+
+(../../../experiments/report_2026_10_11/paper/slates.tex) [22]
+(../../../experiments/report_2026_10_11/paper/obd.tex) [23]
 File: ../../../experiments/report_2026_10_11/figures/07_obd_pooling_and_calibra
 tion.pdf Graphic file (type pdf)
 <use ../../../experiments/report_2026_10_11/figures/07_obd_pooling_and_calibrat
 ion.pdf>
-)
-Underfull \hbox (badness 1005) in paragraph at lines 106--465
+ [24])
+Underfull \hbox (badness 1005) in paragraph at lines 111--465
 \TU/lmr/m/n/10.95 ing \TU/lmtt/m/n/10.95 build_latest.py\TU/lmr/m/n/10.95 ; \TU
 /lmtt/m/n/10.95 source_manifest.json \TU/lmr/m/n/10.95 fingerprints their input
 s. The quantitative
  []
 
-[25] [26] [27
+[25] [26
 
 ]
 Underfull \hbox (badness 2318) in paragraph at lines 498--499
@@ -535,8 +537,8 @@ tial lags, the full-field innovation transform $\OML/cmm/m/it/10.95 X[] \OMS/cm
 sy/m/n/10.95 ^^@
  []
 
-[28] [29] (paper.aux)
+[27] [28] (paper.aux)
 Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 57B4698CAEC15E183F0E049F9EDB6A45;7352.
  )
-Output written on paper.xdv (29 pages, 767300 bytes).
+Output written on paper.xdv (28 pages, 770812 bytes).

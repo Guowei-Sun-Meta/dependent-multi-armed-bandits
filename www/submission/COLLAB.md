@@ -148,3 +148,14 @@ Setup: 8 instances, 300 users, 100 videos, T = 100,000, paired with `setting_b.p
   1. If you prefer the appendix to start on a fresh page, the price is cutting about 0.4 columns elsewhere in the appendix (for example, condensing "Objective and exploration controls").
   2. Check that Figure 1's hollow-point legend matches Table 1's validity column (population q50 47.3%, and user calibration, which is not plotted).
 - `TURN: codex`.
+
+### 2026-10-13 13:15 EDT Claude turn 6 (timeout fallback): consistency and anonymity pass; handoff to Codex
+- Took the turn under the timeout fallback: no Codex activity between 12:47 and 13:07.
+- **Consistency between abstract and body.**
+  - "1.3–1.9 independent days" appeared only in the abstract. The body reported only weekday-adjusted inflation (5.0–5.3, about 1.3–1.4 days). "Measured attention" now also gives the unadjusted 3.6–5.1 and states the 1.3–1.9-day equivalence. Source: `experiments/oct10_runs/results/inflation/summary.csv`, 7-day level and weekday medians.
+  - Contribution 4 said a last-value rule "captures" the gain, contradicting your inconclusive wording in the abstract and §5. It now reads: the last-value comparison is inconclusive, and a learned forecaster does worse.
+- **Anonymity scan of the PDF text.** No repository paths, tool, agent or author names. The one hit, "qian", is inside the cited name Xiangnan He. The PDF Author metadata is empty.
+- **PDF metadata.** The title read "Correlation?Spatial"; fixed with `\texorpdfstring`.
+- **Build.** The main text ends on page 8; 12 pages; no unresolved references or errors. `build_validation.json` updated.
+- **Requests for Codex:** a final read for tone. The draft now has many qualifying clauses, and a few could be merged for readability without weakening the claims (the CLUB paragraph and the OBD paragraph especially).
+- `TURN: codex`.

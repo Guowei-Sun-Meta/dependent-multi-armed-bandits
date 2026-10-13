@@ -22,7 +22,7 @@
 
 \begin{document}
 
-\title{When Can a Bandit Trust Correlation?\\Spatial and Temporal Dependence in Web Bandits}
+\title{When Can a Bandit Trust Correlation?\texorpdfstring{\\}{ }Spatial and Temporal Dependence in Web Bandits}
 
 \author{Anonymous Author(s)}
 
@@ -59,7 +59,7 @@ Every day a short-video platform fills a trending slot, and its rewards are corr
 \item \textbf{A spatiotemporal reward model with two graph roles} (\S\ref{sec:model}). A graph may restrict long-run means or shape innovation covariance; only the first identifies unobserved arms. The standard node-time covariance is separable only under homogeneous dynamics, so lag-one summaries misstate how much a schedule reveals (Proposition~\ref{prop:cov}).
 \item \textbf{Trusting a graph for long-run appeal} (\S\ref{sec:pool}). Certified pooling's regret depends on which components its widths make rejectable, and a path--clique separation shows that diameters miss information geometry (Theorem~\ref{thm:a1}). On KuaiRec and the Open Bandit Dataset, gains track rejectability across certificates; oracle pooling improves on a rewired I-mf control, and graph-free shrinkage matches or beats spectral, linear, clustering and hybrid-feature baselines on average.
 \item \textbf{Confidence when rewards persist} (\S\ref{sec:info}). An exact innovation regression yields all-time confidence under adaptive restless sampling (Theorems~\ref{thm:innov}--\ref{thm:conf}) and keeps certified pooling valid (Theorem~\ref{thm:b1}); iid confidence fails under bursts by a computable inflation factor (Proposition~\ref{prop:b2}). Held-out Wikipedia attention exhibits that inflation, iid certificates fail on worlds calibrated to it, and innovation certificates hold but are too wide to eliminate.
-\item \textbf{Acting on persistence} (\S\ref{sec:fluct}). On a chronological KuaiRec panel with standard non-stationary baselines, persistence halves loss, a simple last-value rule captures it, and graph-specific shock models add little beyond a common factor.
+\item \textbf{Acting on persistence} (\S\ref{sec:fluct}). On a chronological KuaiRec panel with standard non-stationary baselines, persistence halves loss against iid TS, the comparison with a simple last-value rule is inconclusive while a learned gradient-boosted forecaster does worse, and graph-specific shock models add little beyond a common factor.
 \end{enumerate}
 We close with five rules for practitioners (\S\ref{sec:conclusion}).
 
@@ -267,7 +267,7 @@ Known-model pooling incurs mean regret 441 versus 37.8 for iid confidence at siz
 
 Median terminal width is 1.74 for the scalar nuisance construction and 0.70 for the all-direction ellipsoid, against a best--second gap of 0.135. A pointwise posterior width of 0.07 is not an adaptive, simultaneous certificate. A tighter time-uniform contrast construction~\cite{howard2021confidence} is a research direction, not an established replacement. Empirical residual-resampling cells are excluded from clean coverage conclusions: the saved residuals were not recentered, inducing a maximum stationary level shift of 0.0194 and invalidating one of six oracle component widths. Weekly block resampling is also a temporal-misspecification stress, rather than a test of iid Gaussian innovations.
 
-\paragraph{Measured attention.} Retrospective panels of 150 articles each, fit on 2022--2023 and evaluated on 2024--2025, exhibit weekday-adjusted block-mean inflation of 5.0--5.3 for seven days and 17.1--17.8 for 28 days. Full AR(20) autocovariance predictions are closer than a lag-one shortcut (Appendix Table~\ref{tab:inflation}). Cohorts and hyperlinks use a later snapshot, so these results describe historical covariance rather than prospective graph transfer. The controlled consecutive-block formula explains the direction and scale; it is not a formula for adaptive policy-wide failure probabilities.
+\paragraph{Measured attention.} Retrospective panels of 150 articles each, fit on 2022--2023 and evaluated on 2024--2025, exhibit block-mean inflation of 5.0--5.3 for seven days after weekday adjustment (3.6--5.1 without it) and 17.1--17.8 for 28 days, so a week of consecutive views carries the information of 1.3--1.9 independent days. Full AR(20) autocovariance predictions are closer than a lag-one shortcut (Appendix Table~\ref{tab:inflation}). Cohorts and hyperlinks use a later snapshot, so these results describe historical covariance rather than prospective graph transfer. The controlled consecutive-block formula explains the direction and scale; it is not a formula for adaptive policy-wide failure probabilities.
 
 \subsection{Contrasts and mechanism checks}
 

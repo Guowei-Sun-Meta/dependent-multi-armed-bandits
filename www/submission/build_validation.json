@@ -22,6 +22,8 @@
     "figures/policy_controls.pdf"
   ],
   "visual_review": "All pages reviewed as a contact sheet; model/theorem page inspected at full resolution.",
-  "pdf_sha256": "d86c440112dbca2a4ca324e35c3b5f1d7f2d195a26cdced8f0ec0eb96a008e93",
-  "source_sha256": "9f2cc2e6375eea154ce50cf1656135ccdda86dca46aba3f732f03a0fb5e1d67e"
+  "pdf_sha256": "ec6e762d70a80dda5d4967d126df817496da62711122e2d2230f9aec60f58553",
+  "source_sha256": "9f2cc2e6375eea154ce50cf1656135ccdda86dca46aba3f732f03a0fb5e1d67e",
+  "validated_artifact_commit": "7ddeeec",
+  "artifact_check": "Committed PDF text matches all 12 visually reviewed pages; checksum identifies the committed snapshot, not subsequent edits by Claude."
 }

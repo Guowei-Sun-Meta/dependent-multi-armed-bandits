@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "sources_sha256": {
     "experiments/report_2026_10_11/results/overnight_comparisons.csv": "68bc56f30dc8646fab71f84ac523e905331af95df8b1f574aa47f3effab8ebf6",
     "experiments/report_2026_10_11/results/real_panel_baselines.csv": "3af7045b71bf95d724b278b060f0a78e0be33b37ff44279e5e3c9bbad22e8ca5",
@@ -17,7 +17,11 @@
     "experiments/report_2026_10_11/results/residual_centering_audit.json": "6c9f23796c153a9da40c60b6746ae0052f84eff20608152b964bd4bf04a061c2",
     "experiments/today_2026_10_10/results/certificates_confirmation/summary.csv": "436f3d5cb4362eabdf89319ec9fa0635493444497ed20904fd5af856dc6c3d23",
     "experiments/oct12_baselines/results/club_runs.csv": "92fecff74bf33e7dcba8e1e315521bbf98a42e9ff260a95ee31a824b7c9fd3cd",
-    "experiments/kuairec/results/setting_b_runs.csv": "a4c8a45358fe4a83290bc34dcc135772f8bf3f4d437e81c1d6bbe550e9ca37cf"
+    "experiments/kuairec/results/setting_b_runs.csv": "a4c8a45358fe4a83290bc34dcc135772f8bf3f4d437e81c1d6bbe550e9ca37cf",
+    "experiments/oct12_baselines/results/lin_setting_a_runs.csv": "222646d8ecfd5ce6fe560f655793a5c728936a8b4819041bedbf3be58e3dc5fa",
+    "experiments/oct12_baselines/results/lin_setting_a_tuned.json": "86ead05fbc9f0885b1cdfaa38cad797335b0f5352ada94acfb330ef41f4d553a",
+    "experiments/oct12_baselines/results/lin_setting_a_tuning.csv": "4f96ea02f95bf0bfe8d4a13fb337ff7bc3032d5f5c418cda5e84e053aa473b27",
+    "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3.csv": "789f10d95587b07f0c7f28d14816bebb7a956140a5368e996e741992eb66b264"
   },
-  "scope": "Manuscript numbers recomputed from the completed experiment snapshot; no new simulations."
+  "scope": "Manuscript numbers recomputed from the completed experiment snapshot, plus the 13 October linear and hybrid feature baselines (experiments/oct12_baselines)."
 }

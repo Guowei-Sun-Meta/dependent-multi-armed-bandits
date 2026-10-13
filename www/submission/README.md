@@ -7,7 +7,7 @@ The current manuscript interleaves theory and evidence by question: trusting a g
 | Artifact | Purpose |
 | --- | --- |
 | [main.pdf](main.pdf) / [main.tex](main.tex) | Anonymous ACM `sigconf,review` paper |
-| [abstract.md](abstract.md) | Matching 241-word OpenReview abstract |
+| [abstract.md](abstract.md) | Matching 250-word OpenReview abstract |
 | [references.bib](references.bib) | Bibliography, grounded in the [related-work index](../related_work_abstracts.md) |
 | [build_figures.py](build_figures.py) and [data/](data/) | Rebuild the two vector figures from included result snapshots |
 | [source_manifest.json](source_manifest.json) | Checksums of the saved experiment tables behind current numerical claims |
@@ -27,6 +27,6 @@ OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREAD
 
 The [official call](https://www2027.thewebconf.org/research-track-papers/) permits at most eight main-text pages and twelve pages total. The draft uses the anonymous review template, with explicit Web and track relevance on page one. [Official dates](https://www2027.thewebconf.org/important-dates/): abstract 18 October 2026, paper 25 October 2026, Anywhere on Earth.
 
-Current scope: oracle pooling improves on a matched conservative baseline, graph-free shrinkage is strong, persistence helps against iid policies, and graph-specific and last-value comparisons remain inconclusive in the chronological test. Width diagnostics and fitted-model coverage are empirical, not joint safety guarantees. The CLUB comparison uses a non-contextual TS adaptation and does not test the original contextual theorem.
+Current scope: oracle pooling improves on a matched conservative baseline, graph-free shrinkage is strong, persistence helps against iid policies, and graph-specific and last-value comparisons remain inconclusive in the chronological test. Width diagnostics and fitted-model coverage are empirical, not joint safety guarantees. The CLUB comparison uses a non-contextual TS adaptation and does not test the original contextual theorem. Linear TS, LinUCB and a hybrid feature prior on leakage-free I-mf embeddings were tuned on held-out users and run on the same 360 KuaiRec instances; the hybrid prior ties graph-free shrinkage.
 
 The remaining review items and handoff requests are in COLLAB.md. The manuscript has not been externally submitted.

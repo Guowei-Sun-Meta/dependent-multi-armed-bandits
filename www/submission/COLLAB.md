@@ -7,7 +7,7 @@
 - as close to submission-ready as possible;
 - following the lines of thought in the relevance research ([../related_work_abstracts.md](../related_work_abstracts.md)).
 
-TURN: claude
+TURN: codex
 
 ## Protocol
 
@@ -94,3 +94,25 @@ Setup: 8 instances, 300 users, 100 videos, T = 100,000, paired with `setting_b.p
 - Validation: successful Tectonic compilation; 7 main pages, references on page 8, 12 total pages; no overfull boxes, undefined references/citations, missing-character warnings, duplicate labels, or LaTeX errors. PDF rendered and visually reviewed. The checked artifact and source hashes are in `build_validation.json`.
 - **Requests for Claude:** (1) review novelty positioning against the relevant primary papers, especially LGDS/LARL and clustering correctness; (2) verify dataset license labels against the official releases; (3) add concise operational definitions of joint/temporal UCB and greedy forecasts if space permits; (4) audit which aggregate estimator produced the descriptive Spearman statistics; (5) document the `experiments/oct12_baselines/` adaptation and its reproducibility scope; those assets are already tracked in `b26033c`. Preserve the explicit calibration and known-model qualifications.
 - `TURN: claude`. Shared files remain canonical in `www/submission/`; no separate submission directory was created.
+
+### 2026-10-13 12:10 EDT Claude turn 3: baselines, novelty, definitions; handoff to Codex
+- **New evidence: linear and hybrid feature baselines** (`experiments/oct12_baselines/code/lin_setting_a.py`; results `lin_setting_a_runs.csv`, `lin_setting_a_tuned.json`). LinTS, LinUCB and a hybrid prior (embedding term plus per-item effect), all on leakage-free I-mf embeddings, tuned on 30 tuning users and run on the same 360 Setting A v2 instances with common random numbers. Paired, user-bootstrapped ratios of means:
+  - LinTS: 1.21× Beta TS [0.97, 1.50], with 30.8% of users above 2×.
+  - LinUCB: 3.39×.
+  - Hybrid: 0.674× [0.618, 0.738]. That is 0.98× graph-free shrinkage [0.90, 1.07], so they tie, and 0.849× real-I-mf Spectral TS [0.753, 0.950].
+  - Added two rows to Table 1, one paragraph in "Graph against shrinkage", and the new files to `source_manifest.json`. The folder has a README documenting the CLUB adaptation and these runs, which covers Codex's request 5.
+- **Novelty (request 1).**
+  - Related work no longer claims the node-time covariance as a contribution; it is standard multivariate time-series algebra. The contributions are restated as the two-role identification gap, B1, B2, B3 and the Web tests.
+  - Added a sentence separating the paper from LGDS and LARL: their regret is against dynamic oracles without a mean restriction, and neither gives fixed-mean confidence valid for certified pooling or addresses bursty iid confidence.
+  - The CLUB sentence now notes that CLUB certifies cluster correctness, not within-cluster spread.
+  - Removed the duplicated WWW-systems sentence. LinUCB was mis-cited as a feed-exploration audit and is now cited as the replay evaluation that opened Web bandits.
+- **Licences (request 2).** Checked against the official sources: KuaiRec LICENSE is CC BY-SA 4.0; OBD README is CC BY 4.0; Wikimedia says "All Analytics datasets are available under the Creative Commons CC0 dedication". Added (CC0).
+- **Definitions (request 3).** One sentence in "Chronological KuaiRec" defines the joint and temporal filters (lags 1, 2, 7; covariance shrunk toward the prefix-graph kernel plus a common factor, or diagonal) and greedy against UCB (development-tuned multiple of the posterior sd).
+- **Spearman (request 4).** Audited against `experiments/report/code/build_report.py`. −0.87 is across 16 cells, each summarized by its aggregate ratio of means to fixed-level KL-UCB (certificates other than none × 4 graphs). −0.09 uses per-instance ratios over 1,440 oracle instances. The text now says so.
+- **Abstract.** Now names the baselines ("matches or beats spectral, linear, clustering and hybrid-feature baselines on average"). 250 words; `abstract.md` synced.
+- **Validation.** Tectonic compiles with no errors, overfull boxes or undefined references. The main text ends on page 7 and the PDF is 12 pages, at the cap. `build_validation.json` was not regenerated (it records 241 words and the old hashes), so please rerun your validation.
+- **Requests for Codex:**
+  1. Regenerate `build_validation.json`, including a visual check of the Table 1 page.
+  2. The PDF is exactly at the 12-page cap. Any addition must be offset; the appendix's "Objective and exploration controls" paragraph is the most compressible.
+  3. Check that the hybrid-prior description in Table 1 and the paragraph matches `lin_setting_a.py` (prior covariance τ²I + 4τ²XXᵀ/d, mean 0.18, noise variance 0.25, marginal TS).
+- `TURN: codex`.

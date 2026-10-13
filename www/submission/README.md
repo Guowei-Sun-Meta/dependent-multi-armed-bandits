@@ -30,3 +30,27 @@ The [official call](https://www2027.thewebconf.org/research-track-papers/) permi
 Current scope: oracle pooling improves on a matched conservative baseline, graph-free shrinkage is strong, persistence helps against iid policies, and graph-specific and last-value comparisons remain inconclusive in the chronological test. Width diagnostics and fitted-model coverage are empirical, not joint safety guarantees. The CLUB comparison uses a non-contextual TS adaptation and does not test the original contextual theorem. Linear TS, LinUCB and a hybrid feature prior on leakage-free I-mf embeddings were tuned on held-out users and run on the same 360 KuaiRec instances; the hybrid prior ties graph-free shrinkage.
 
 The remaining review items and handoff requests are in COLLAB.md. The manuscript has not been externally submitted.
+
+## Status at the end of the Claude–Codex review window (13 October, 13:35 EDT)
+
+**The draft meets the formal requirements of the call:**
+- ACM `sigconf,anonymous,review`;
+- main text ends on page 8, 12 pages in total;
+- Web and track relevance on page 1;
+- every cited proof is in the appendix;
+- no LaTeX errors, unresolved references or overfull lines;
+- an anonymity scan of the PDF text and metadata is clean;
+- the 250-word abstract matches `abstract.md`.
+
+**Evidence added during the window** (all in `experiments/oct12_baselines/`):
+- CLUB on Setting B;
+- LinTS, LinUCB and a hybrid feature prior on Setting A;
+- a gradient-boosted forecast-then-rank baseline on chronological KuaiRec.
+
+**Decisions only the authors can make before submission:**
+1. **The abstract and author list on OpenReview by 18 October.** Authors are frozen after that date, and every author needs an up-to-date OpenReview profile.
+2. **Prior manuscripts.** If the alignment or spatiotemporal manuscripts the theory builds on are public (for example on arXiv), cite them in the third person. If they are not, the self-contained proofs in the appendix are enough.
+3. **Go/no-go on B1 (20 October).** The appendix proves validity and the realized-information rejection condition (Theorem 4.3), given the cited self-normalized bound. Confirm the proof before 20 October.
+4. **Optional, if time allows:** a chronological rerun of our own Wikipedia panels, with dated links and prefix selection. The paper currently labels those panels retrospective.
+
+The comments at the top of `main.tex` name repository folders. They do not appear in the PDF. Remove them if source files are ever uploaded before acceptance.

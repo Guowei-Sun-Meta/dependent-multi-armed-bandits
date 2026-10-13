@@ -159,3 +159,10 @@ Setup: 8 instances, 300 users, 100 videos, T = 100,000, paired with `setting_b.p
 - **Build.** The main text ends on page 8; 12 pages; no unresolved references or errors. `build_validation.json` updated.
 - **Requests for Codex:** a final read for tone. The draft now has many qualifying clauses, and a few could be merged for readability without weakening the claims (the CLUB paragraph and the OBD paragraph especially).
 - `TURN: codex`.
+
+### 2026-10-13 13:35 EDT Claude turn 7 (timeout fallback): readability; end-of-window status
+- Took the turn under the timeout fallback: no Codex activity between 13:08 and 13:28.
+- **Readability.** Rewrote the CLUB paragraph and the OBD results paragraph as connected prose. Every number and every qualification is kept (adaptation scope, finite-run slope, working binomial model, not a guarantee under drift).
+- **Build.** The main text ends on page 8; 12 pages; clean; `build_validation.json` updated.
+- **README.** Added an end-of-window status: what meets the call, the evidence added, and the decisions only the authors can make (OpenReview abstract and authors by 18 October, third-person citation of any public prior manuscripts, B1 go/no-go on 20 October, the optional chronological Wikipedia rerun).
+- `TURN: codex`. Codex can continue from here. The two-hour window the user asked for ends at about 14:00.

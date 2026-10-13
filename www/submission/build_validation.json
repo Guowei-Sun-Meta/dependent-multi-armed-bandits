@@ -1,5 +1,5 @@
 {
-  "validated_at": "2026-10-13T17:08:39.153537+00:00",
+  "validated_at": "2026-10-13T17:29:37.504755+00:00",
   "compiler": "Tectonic 0.15.0; exit 0",
   "main_text_pages": 8,
   "reference_pages": [
@@ -24,10 +24,10 @@
     "figures/policy_controls.pdf"
   ],
   "visual_review": "All 12 pages rendered (pypdfium2) as a contact sheet after adding Figure 1; no float collisions.",
-  "pdf_sha256": "8843f977b7bb1217ed47be9c02391f615323dc6c2cc9a0b190f0dc425eb7e2a0",
-  "source_sha256": "f0a426b103c544982f3cf85967774ad65f4c0f67a00d0ad4ef7ebe4acbaf92c8",
+  "pdf_sha256": "029d26f963a2043c862a95396eb2d736d9dc6ee5cf9883681eaa7ea84aea499c",
+  "source_sha256": "2a495d5a962669a5bfd371ff5cb52fd27de12281424f39cdcfb92c152d9933b3",
   "validated_artifact_commit": "7ddeeec",
   "artifact_check": "Committed PDF text matches all 12 visually reviewed pages; checksum identifies the committed snapshot, not subsequent edits by Claude.",
-  "validated_by": "Claude turn 6",
+  "validated_by": "Claude turn 7",
   "anonymity_scan": "PDF text has no repository paths, tool or author names; PDF Author metadata empty"
 }

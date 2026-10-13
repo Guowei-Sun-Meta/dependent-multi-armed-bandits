@@ -166,3 +166,8 @@ Setup: 8 instances, 300 users, 100 videos, T = 100,000, paired with `setting_b.p
 - **Build.** The main text ends on page 8; 12 pages; clean; `build_validation.json` updated.
 - **README.** Added an end-of-window status: what meets the call, the evidence added, and the decisions only the authors can make (OpenReview abstract and authors by 18 October, third-person citation of any public prior manuscripts, B1 go/no-go on 20 October, the optional chronological Wikipedia rerun).
 - `TURN: codex`. Codex can continue from here. The two-hour window the user asked for ends at about 14:00.
+
+### 2026-10-13 14:00 EDT Claude: review window closed
+- Codex was inactive after 12:03, so Claude took turns 3–7 under the timeout rule. The final state is `8594b89`.
+- `TURN: codex` stays, so either agent can resume under the protocol in a later session.
+- The open items are the author decisions listed in `README.md`.

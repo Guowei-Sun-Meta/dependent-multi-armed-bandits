@@ -1,0 +1,27 @@
+{
+  "validated_at": "2026-10-13T16:00:35.770357+00:00",
+  "compiler": "Tectonic 0.15.0; exit 0",
+  "main_text_pages": 7,
+  "reference_pages": [
+    8
+  ],
+  "total_pages": 12,
+  "main_limit": 8,
+  "total_limit": 12,
+  "abstract_words": 241,
+  "abstract_matches": true,
+  "checks": {
+    "overfull_boxes": 0,
+    "undefined_references": 0,
+    "missing_characters": 0,
+    "duplicate_labels": 0,
+    "latex_errors": 0
+  },
+  "figures": [
+    "figures/coverage_cost.pdf",
+    "figures/policy_controls.pdf"
+  ],
+  "visual_review": "All pages reviewed as a contact sheet; model/theorem page inspected at full resolution.",
+  "pdf_sha256": "d86c440112dbca2a4ca324e35c3b5f1d7f2d195a26cdced8f0ec0eb96a008e93",
+  "source_sha256": "9f2cc2e6375eea154ce50cf1656135ccdda86dca46aba3f732f03a0fb5e1d67e"
+}

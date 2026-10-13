@@ -7,7 +7,7 @@
 - as close to submission-ready as possible;
 - following the lines of thought in the relevance research ([../related_work_abstracts.md](../related_work_abstracts.md)).
 
-TURN: codex
+TURN: claude
 
 ## Protocol
 
@@ -83,3 +83,14 @@ Setup: 8 instances, 300 users, 100 videos, T = 100,000, paired with `setting_b.p
 - Taking the editing token under the timeout fallback: `TURN: claude` had not been updated, and `main.tex` was last saved at 16:33:54 EDT, more than three minutes ago. Preserving Claude's question-interleaved structure, CLUB evidence, track relevance, and practical-guidance section.
 - This turn reviews theorem assumptions, unsupported equivalence/causal language, the CLUB implementation's scope, statement/proof completeness, and PDF layout. Numbers remain tied to saved results, including `experiments/oct12_baselines/results/club_runs.csv`.
 - Requests for Claude after the handoff: review the novelty paragraph against `www/related_work_abstracts.md`; tighten the theory/evidence balance without weakening assumptions; avoid describing 74% marginal width validity as a certified safety guarantee.
+
+### 2026-10-13 12:00 EDT Codex turn 2: review completed; handoff to Claude
+- Preserved Claude's interleaved theory/evidence organization, Web/track relevance, new user-clustering evidence, and practical-guidance section. Those source/README/abstract changes were captured by concurrent commit `b26033c` while this turn was closing. This handoff commit preserves that state and records the verified PDF and validation.
+- Tightened the abstract and contribution language: an inconclusive last-value comparison is not equivalence; favorable graph-specific results are scoped to the tested oracle/rewiring comparison; strong shrinkage does not prove structure never helps. The 241-word abstract now matches `main.tex`.
+- Made A1's noise, widths, counts, and arm/component gaps explicit. Effective-resistance widths apply only within connected components. Clarified stopping validity without claiming that the procedure necessarily terminates. Defined the long-run covariance in the main contrast statement and qualified noiseless graph-mode information. Removed the model/theorem line overflow.
+- CLUB is now described as the actual non-contextual TS adaptation: per-video Beta estimates, coordinate-wise edge deletion, and component sampling. Corrected the assertion that clustering always collapses to a global or per-user model; intermediate clusters occur in the saved runs. Evidence sources: `experiments/oct12_baselines/code/club.py`, `experiments/oct12_baselines/results/club_runs.csv`, and `experiments/kuairec/results/setting_b_runs.csv`. Both result files are fingerprinted in `source_manifest.json`.
+- Practical guidance no longer presents user-q75's approximately 74% marginal diagnostic coverage as a joint safety certificate. Static and chronological table ratios were populated directly from `experiments/report_2026_10_11/results/overnight_comparisons.csv` and `real_panel_baselines.csv` in the preceding revision; source fingerprints are preserved.
+- Replaced stale README claims and proof/figure TODOs with current build instructions and scope. Added an ignore file for LaTeX intermediates and `build_validation.json`.
+- Validation: successful Tectonic compilation; 7 main pages, references on page 8, 12 total pages; no overfull boxes, undefined references/citations, missing-character warnings, duplicate labels, or LaTeX errors. PDF rendered and visually reviewed. The checked artifact and source hashes are in `build_validation.json`.
+- **Requests for Claude:** (1) review novelty positioning against the relevant primary papers, especially LGDS/LARL and clustering correctness; (2) verify dataset license labels against the official releases; (3) add concise operational definitions of joint/temporal UCB and greedy forecasts if space permits; (4) audit which aggregate estimator produced the descriptive Spearman statistics; (5) document the `experiments/oct12_baselines/` adaptation and its reproducibility scope; those assets are already tracked in `b26033c`. Preserve the explicit calibration and known-model qualifications.
+- `TURN: claude`. Shared files remain canonical in `www/submission/`; no separate submission directory was created.

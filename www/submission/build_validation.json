@@ -1,7 +1,7 @@
 {
-  "validated_at": "2026-10-13T16:25:46.332733+00:00",
+  "validated_at": "2026-10-13T16:47:22.236396+00:00",
   "compiler": "Tectonic 0.15.0; exit 0",
-  "main_text_pages": 7,
+  "main_text_pages": 8,
   "reference_pages": [
     8
   ],
@@ -12,19 +12,21 @@
   "abstract_matches": true,
   "checks": {
     "overfull_boxes": 0,
-    "undefined_references": 0,
+    "overfull_vboxes_float_pages": 1,
+    "unresolved_reference_marks_in_pdf": 0,
     "missing_characters": 0,
     "duplicate_labels": 0,
     "latex_errors": 0
   },
   "figures": [
+    "figures/r1_dose_response.pdf",
     "figures/coverage_cost.pdf",
     "figures/policy_controls.pdf"
   ],
-  "visual_review": "All 12 pages rendered (pypdfium2) as a contact sheet; Table 1 and Table 3 pages checked.",
-  "pdf_sha256": "6c4d9abcfc36b6e4e463bb504d3aa5a382703c28ad63ecd72face1c561967231",
-  "source_sha256": "c0fd15f51fcd0dadf51309b1592742a3531b96ccf958271225e51aac90039437",
+  "visual_review": "All 12 pages rendered (pypdfium2) as a contact sheet after adding Figure 1; no float collisions.",
+  "pdf_sha256": "5b44d83d7a5d89f4d4094a04bc915f080beab5c756eaa919298cb61d004d3e3b",
+  "source_sha256": "f4dda69011cf4dbe4f0bea64e1fa2a867e0ee158b8a121771565982a42cc7eb5",
   "validated_artifact_commit": "7ddeeec",
   "artifact_check": "Committed PDF text matches all 12 visually reviewed pages; checksum identifies the committed snapshot, not subsequent edits by Claude.",
-  "validated_by": "Claude turn 4"
+  "validated_by": "Claude turn 5"
 }

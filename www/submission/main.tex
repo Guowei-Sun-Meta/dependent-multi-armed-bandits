@@ -151,7 +151,12 @@ Hybrid feature TS & \textbf{0.296} & \textbf{0.674} & -- \\
 \caption{KuaiRec: ratios of aggregate mean regrets. Fixed KL is conservative fixed-confidence KL-UCB, not standard log-time KL-UCB. Width validity is a diagnostic fraction of true component ranges covered, not joint coverage. $^\dagger$User diagnostics evaluate the true user level, rather than the realized noisy warm-up used by the policy.}\label{tab:certgap}
 \end{table}
 
-\paragraph{Certificate usefulness.} Oracle I-mf pooling has $0.640\times$ matched fixed-KL regret [0.613, 0.668], versus $0.802$ for the mean of instance-wise ratios; the ratio estimator matters. It rejects 59.4\% of suboptimal components, compared with 20.9\% for truth-derived energy widths and 14.6\% for q90 calibration. Energy and population-q90 widths leave only 4.0\% and 1.4\% aggregate gains. Across the 16 graph--certificate cells, each summarized by its aggregate ratio of means, rejectability and loss are negatively associated (Spearman $-0.87$); across the 1,440 oracle instances, using per-instance ratios, the association is weak ($-0.09$). This supports the rejection mechanism, not a causal dose-response law or practical joint validity. Oracle and energy widths use the true simulated means and serve as controlled side information.
+\paragraph{Certificate usefulness.} Oracle I-mf pooling has $0.640\times$ matched fixed-KL regret [0.613, 0.668], versus $0.802$ for the mean of instance-wise ratios; the ratio estimator matters. It rejects 59.4\% of suboptimal components, compared with 20.9\% for truth-derived energy widths and 14.6\% for q90 calibration. Energy and population-q90 widths leave only 4.0\% and 1.4\% aggregate gains. Across the 16 graph--certificate cells, each summarized by its aggregate ratio of means, rejectability and loss are negatively associated (Spearman $-0.87$; Figure~\ref{fig:dose}); across the 1,440 oracle instances, using per-instance ratios, the association is weak ($-0.09$). This supports the rejection mechanism, not a causal dose-response law or practical joint validity. Oracle and energy widths use the true simulated means and serve as controlled side information.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.9\linewidth]{figures/r1_dose_response.pdf}
+\caption{Certified pooling gains with the share of suboptimal components its widths make rejectable. Points: certificate $\times$ graph cells on KuaiRec (360 instances each) and campaign $\times$ grouping cells on the Open Bandit Dataset (oracle widths, 20 seeds). Hollow points: widths valid for under 85\% of components. Bars: 95\% bootstrap intervals over users or seeds. A descriptive association across certificates, not a per-instance law.}\label{fig:dose}
+\end{figure}
 
 \paragraph{Graph against shrinkage.} Oracle pooling on real I-mf has 8.45\% lower regret than its degree-preserving rewiring, with user-cluster bootstrap interval [7.38\%, 9.46\%]. Spectral TS on real versus rewired I-mf differs by $+0.29\%$ [$-4.13\%$, $+4.64\%$], an inconclusive comparison. Graph-free shrinkage TS has $0.688\times$ Beta-TS regret [0.644, 0.734] and beats real-I-mf spectral TS by 13.4\% [4.5\%, 22.1\%]. Oracle pooling remains $1.456\times$ Beta TS. Strong co-engagement spectral TS puts 26.7\% of users above twice Beta-TS regret, with a 90th-percentile user ratio of 4.70. Feature-based pooling, the standard Web alternative to a graph~\cite{li2010linucb}, behaves the same way. With hyperparameters tuned on held-out users, linear TS on the leakage-free I-mf embeddings has $1.21\times$ Beta-TS regret [0.97, 1.50], with 30.8\% of users above twice; LinUCB has $3.39\times$. Adding a per-item effect to the embedding model (a hybrid prior) gives $0.674\times$ [0.618, 0.738], indistinguishable from graph-free shrinkage ($0.98\times$ [0.90, 1.07]) and 15.1\% below real-I-mf spectral TS [5.0\%, 24.7\%]. Consequently, a favorable graph-alignment statistic is insufficient evidence of a safe or superior learning policy.
 
@@ -329,11 +334,9 @@ A graph restriction on means and a graph model for shocks supply different infor
 \paragraph{Data, licensing and reproducibility.} KuaiRec (CC BY-SA 4.0) and the Open Bandit Dataset (CC BY 4.0) are public research releases; Wikipedia page views come from the Wikimedia pageview API (CC0). Experiments use existing public research logs and aggregate public attention records. They introduce no new user interaction, targeted intervention, or released user-level profile. Reported outcomes are simulated or retrospective; the work does not claim participant consent or institutional approval beyond the source datasets' documented arrangements. Code, run tables and figure scripts will be released after review.
 
 \typeout{MAIN-TEXT-ENDS-ON-PAGE \thepage}
-\clearpage
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 
-\clearpage
 \appendix
 
 \section{Further information results}\label{app:info}

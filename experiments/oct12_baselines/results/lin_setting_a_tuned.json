@@ -1,0 +1,17 @@
+{
+ "lints": {
+  "param": 0.5,
+  "d": 64,
+  "tuning_mean_regret": 911.7764407390185
+ },
+ "linucb": {
+  "param": 1.0,
+  "d": 16,
+  "tuning_mean_regret": 4323.463991800773
+ },
+ "kerts": {
+  "param": 0.02,
+  "d": 16,
+  "tuning_mean_regret": 728.8764558524223
+ }
+}

@@ -5,6 +5,7 @@ These are baselines that WWW reviewers expect but the paper lacked: online user 
 | Script | Experiment | Results |
 | --- | --- | --- |
 | `code/club.py` | Non-contextual CLUB-style TS on Setting B (8 instances, 300 users, 100 videos, T = 100,000). Initial graph complete, U-coeng or rewired; γ ∈ {0.25, 0.5, 1} | `results/club_runs.csv` |
+| `code/gbm_daily.py` | Forecast-then-rank: a pooled gradient-boosted regressor on lag features (trained on the prefix with simulated staleness), greedy top k, on the chronological KuaiRec daily slot (15 units, k ∈ {1, 5}, 5 seeds) | `results/gbm_daily_runs.csv` |
 | `code/lin_setting_a.py` | LinTS, LinUCB and hybrid feature TS on Setting A v2 (360 instances, T = 20,000), using leakage-free I-mf embeddings. Tuned on 30 tuning users, then frozen | `results/lin_setting_a_*.csv`, `lin_setting_a_tuned.json` |
 
 ## Results
@@ -31,6 +32,17 @@ Further comparisons for hybrid feature TS:
 
 **Reading.** A pure linear model on the embeddings misspecifies individual taste and leaves a heavy tail. Adding a per-item effect turns it into shrinkage with a feature-informed prior. That ties graph-free shrinkage, so neither features nor graphs add average value beyond shrinkage on KuaiRec.
 
+**Chronological KuaiRec daily slot: forecast, then rank.** Paired with `oct10_evening/results/daily_chrono/test_runs.csv`, using the same two-level bootstrap over windows and panels.
+
+| | k = 1 | k = 5 |
+| --- | --- | --- |
+| Forecaster ÷ iid TS | 0.562 | 0.637 |
+| Against iid TS | −43.8% [−74.2%, −15.1%] | −36.3% [−58.0%, −18.2%] |
+| Against last observed value | +14.4% [−16.6%, +170.4%] | **+48.1% [+16.3%, +128.5%]** |
+| Against joint filter (greedy) | +19.6% [−5.5%, +157.1%] | **+44.7% [+20.0%, +64.6%]** |
+
+**Reading.** A generic learned forecaster beats iid TS. At five videos a day, though, it is clearly worse than both the last observed value and the joint filter, so a practical forecaster does not recover the persistence gain that simple persistence captures.
+
 ## Reproduce
 
 From the repository root, with `data/kuairec_cache` built (`kuairec/code/data.py`, then `graphs.py --k 10`):
@@ -38,4 +50,5 @@ From the repository root, with `data/kuairec_cache` built (`kuairec/code/data.py
 ```sh
 OPENBLAS_NUM_THREADS=1 .venv/bin/python -I experiments/oct12_baselines/code/club.py --jobs 6           # minutes
 OPENBLAS_NUM_THREADS=1 .venv/bin/python -I experiments/oct12_baselines/code/lin_setting_a.py --jobs 4  # about 4 h
+OPENBLAS_NUM_THREADS=1 .venv/bin/python -I experiments/oct12_baselines/code/gbm_daily.py --jobs 4       # under a minute; needs oct10_evening daily_chrono units
 ```

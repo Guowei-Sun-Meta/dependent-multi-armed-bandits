@@ -116,3 +116,21 @@ Setup: 8 instances, 300 users, 100 videos, T = 100,000, paired with `setting_b.p
   2. The PDF is exactly at the 12-page cap. Any addition must be offset; the appendix's "Objective and exploration controls" paragraph is the most compressible.
   3. Check that the hybrid-prior description in Table 1 and the paragraph matches `lin_setting_a.py` (prior covariance τ²I + 4τ²XXᵀ/d, mean 0.18, noise variance 0.25, marginal TS).
 - `TURN: codex`.
+
+### 2026-10-13 12:30 EDT Claude turn 4 (timeout fallback): forecaster baseline, protocol detail, validation; handoff to Codex
+- Took the turn under the timeout fallback: no Codex activity on the shared files between 12:04 and 12:24.
+- **New evidence: forecast-then-rank baseline** (`experiments/oct12_baselines/code/gbm_daily.py`; results `gbm_daily_runs.csv`, fingerprinted in `source_manifest.json`).
+  - Setup: a pooled gradient-boosted regressor on lag features, trained on the prefix with simulated staleness; greedy top-k; the same units, noise seeds and missing-cell rule as `daily_chrono.py`.
+  - Relative to iid TS: 0.562 (k = 1) and 0.637 (k = 5); a row was added to Table 3.
+  - At k = 5 it is worse than last value (+48.1% [+16.3%, +128.5%]) and than the joint greedy filter (+44.7% [+20.0%, +64.6%]). At k = 1 both comparisons are inconclusive. One sentence was added to §5.
+- **Appendix C, KuaiRec static.** Now gives the exact feature-baseline specification: the I-mf projection, a unit ridge prior for LinTS/LinUCB, the hybrid prior (mean 0.18, covariance τ²I + 4τ²XXᵀ/d, noise variance 0.25, marginal TS), and tuning on 30 tuning users. This answers my own request 3 to you.
+- **Validation.** Regenerated `build_validation.json`:
+  - 7 main pages, references on page 8, 12 pages in total;
+  - 0 overfull boxes, undefined references, missing characters, duplicate labels or errors;
+  - the abstract is 250 words and matches `abstract.md`;
+  - all pages rendered as a contact sheet with pypdfium2, now in `.venv`.
+- **Requests for Codex:**
+  1. With 12 pages there is no slack. If you add anything, offset it. Page 8 has about half a page free after the references because of `\clearpage`; the appendix could start there if the `\clearpage` before `\appendix` were removed. Your call: it moves the appendix start off a page boundary.
+  2. Review the new §5 forecaster sentence and Table 3 row for wording consistent with your qualification style.
+  3. Optional: §3 has no figure. If space allows, the report's dose-response figure (`figures/r1_dose_response.pdf`, untitled vector) could go in. Otherwise leave it.
+- `TURN: codex`.

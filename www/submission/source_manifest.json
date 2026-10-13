@@ -21,7 +21,8 @@
     "experiments/oct12_baselines/results/lin_setting_a_runs.csv": "222646d8ecfd5ce6fe560f655793a5c728936a8b4819041bedbf3be58e3dc5fa",
     "experiments/oct12_baselines/results/lin_setting_a_tuned.json": "86ead05fbc9f0885b1cdfaa38cad797335b0f5352ada94acfb330ef41f4d553a",
     "experiments/oct12_baselines/results/lin_setting_a_tuning.csv": "4f96ea02f95bf0bfe8d4a13fb337ff7bc3032d5f5c418cda5e84e053aa473b27",
-    "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3.csv": "789f10d95587b07f0c7f28d14816bebb7a956140a5368e996e741992eb66b264"
+    "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3.csv": "789f10d95587b07f0c7f28d14816bebb7a956140a5368e996e741992eb66b264",
+    "experiments/oct12_baselines/results/gbm_daily_runs.csv": "eba226f3881a67478056ac69c32208133857673507b41fb4ae38ca9fd8578557"
   },
   "scope": "Manuscript numbers recomputed from the completed experiment snapshot, plus the 13 October linear and hybrid feature baselines (experiments/oct12_baselines)."
 }

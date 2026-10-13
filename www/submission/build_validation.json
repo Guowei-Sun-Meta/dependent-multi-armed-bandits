@@ -1,5 +1,5 @@
 {
-  "validated_at": "2026-10-13T16:00:35.770357+00:00",
+  "validated_at": "2026-10-13T16:25:46.332733+00:00",
   "compiler": "Tectonic 0.15.0; exit 0",
   "main_text_pages": 7,
   "reference_pages": [
@@ -8,7 +8,7 @@
   "total_pages": 12,
   "main_limit": 8,
   "total_limit": 12,
-  "abstract_words": 241,
+  "abstract_words": 250,
   "abstract_matches": true,
   "checks": {
     "overfull_boxes": 0,
@@ -21,9 +21,10 @@
     "figures/coverage_cost.pdf",
     "figures/policy_controls.pdf"
   ],
-  "visual_review": "All pages reviewed as a contact sheet; model/theorem page inspected at full resolution.",
-  "pdf_sha256": "ec6e762d70a80dda5d4967d126df817496da62711122e2d2230f9aec60f58553",
-  "source_sha256": "9f2cc2e6375eea154ce50cf1656135ccdda86dca46aba3f732f03a0fb5e1d67e",
+  "visual_review": "All 12 pages rendered (pypdfium2) as a contact sheet; Table 1 and Table 3 pages checked.",
+  "pdf_sha256": "6c4d9abcfc36b6e4e463bb504d3aa5a382703c28ad63ecd72face1c561967231",
+  "source_sha256": "c0fd15f51fcd0dadf51309b1592742a3531b96ccf958271225e51aac90039437",
   "validated_artifact_commit": "7ddeeec",
-  "artifact_check": "Committed PDF text matches all 12 visually reviewed pages; checksum identifies the committed snapshot, not subsequent edits by Claude."
+  "artifact_check": "Committed PDF text matches all 12 visually reviewed pages; checksum identifies the committed snapshot, not subsequent edits by Claude.",
+  "validated_by": "Claude turn 4"
 }

@@ -18,4 +18,6 @@ Compile from this directory with `tectonic -X compile main.tex` (tectonic is at 
 3. "Web platforms" became "online platforms"; "WWW systems" became "platform systems"; the related-work heading "Confidence and Web evaluation" became "Confidence and evaluation on logged data".
 4. The reproducibility statement promises an anonymized repository at submission, as the call recommends.
 
-Not yet done: the related-work section still cites the WWW-era index; it will be revised against [kdd/related_work_abstracts.md](../related_work_abstracts.md). KDD's appendix has no page limit, so the proofs and protocols that were compressed for WWW's 12-page cap can be expanded.
+5. The three related-work paragraphs cite the core papers of the 2024–2026 scan ([kdd/related_work_abstracts.md](../related_work_abstracts.md)), and a new appendix, "Extended related work, 2024–2026", positions the paper against them by theme. Thirty-three entries were added to `references.bib`.
+
+Not yet done: KDD's appendix has no page limit, so the proofs and protocols that were compressed for WWW's 12-page cap can be expanded; the Laplacian-kernelized bandit (ICLR 2026) should be added as a baseline in Setting B.

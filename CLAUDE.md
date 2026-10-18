@@ -1,6 +1,10 @@
 # Dependent Multi-Armed Bandits: Project Context
 
-Read this first in a new session. Last updated 10 October 2026.
+Read this first in a new session. Last updated 18 October 2026.
+
+## Venue change (18 October 2026)
+
+The authors can only attend conferences in the United States, and WWW 2027 is in Dublin, so the WWW submission was dropped on its abstract deadline. **The target is now KDD 2027, research track, cycle 2** (San Jose, 1–5 August 2027; deadline "February 2027", exact day not yet published; 8 content pages plus references and an unlimited appendix). Everything for it is under [kdd/](kdd/README.md): the converted draft, the 2024–2026 related-work index, and new experiment proposals. The WWW dates below are kept for history; the 20 October B1 go/no-go moves to the KDD timeline in `kdd/README.md`.
 
 ## Goal
 

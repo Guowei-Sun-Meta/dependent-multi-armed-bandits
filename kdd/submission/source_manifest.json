@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-13",
+  "sources_sha256": {
+    "experiments/report_2026_10_11/results/overnight_comparisons.csv": "68bc56f30dc8646fab71f84ac523e905331af95df8b1f574aa47f3effab8ebf6",
+    "experiments/report_2026_10_11/results/real_panel_baselines.csv": "3af7045b71bf95d724b278b060f0a78e0be33b37ff44279e5e3c9bbad22e8ca5",
+    "experiments/report_2026_10_11/results/overnight_certificates.csv": "8f1f09617ed612b0e6166994b4792129a77b1bfff8b3895bdd66fd01e5960398",
+    "experiments/report_2026_10_11/results/overnight_graph_contrasts.csv": "cd778a95094d8a499bb1650fc568ba065208f3d861a7435b76115e465d381de4",
+    "experiments/report_2026_10_11/results/kuairec_chronological_contrasts.csv": "01b2367089db8701eaea30bc92dd1253d07f110d2f5f5b96f65aafd77e708784",
+    "experiments/report_2026_10_11/results/real_dynamics_certificates.csv": "5f44066cd732b94d2ca9ede9c70dc9252ccda1ca0c9d2b299c47c62d3a4a35b3",
+    "experiments/report_2026_10_11/results/obd_semisynthetic.csv": "12a29f89c9bd639504cfeeec01e4d7b0984a17a0c5d1c861bb2244d34979419f",
+    "experiments/report_2026_10_11/results/obd_calibration.csv": "8a3fe74fc4243dec13482c7827318f820494ad23262a14612bac8428b27c0541",
+    "experiments/report_2026_10_11/results/obd_ranking_uncertainty.csv": "09a6ac0061bca6f2b60031266b94db8036ccddf847d3febc5fe87a3f498457b8",
+    "experiments/report_2026_10_11/results/slate_contrasts.csv": "d60ac22227308601e29c65d4524737ff54b53ca117e17b5bc1b76711528eae3f",
+    "experiments/report_2026_10_11/results/geometry_summary.csv": "ce3e1094f8fa6d41acd3b128439b127ac97118632fb5fbdda544eea57848da50",
+    "experiments/report_2026_10_11/results/ar20_terminal_summary.csv": "6c0ca7b11357f55ac8b06a017e7efd3f13e0c2bf1583e8c7f1308dfb8f894fff",
+    "experiments/report_2026_10_11/results/known_mean_ar1_control.csv": "9041e4e61230c12f068daa9383e06b913564091d44f995542d33ad50c84bdaed",
+    "experiments/report_2026_10_11/results/residual_centering_audit.json": "6c9f23796c153a9da40c60b6746ae0052f84eff20608152b964bd4bf04a061c2",
+    "experiments/today_2026_10_10/results/certificates_confirmation/summary.csv": "436f3d5cb4362eabdf89319ec9fa0635493444497ed20904fd5af856dc6c3d23",
+    "experiments/oct12_baselines/results/club_runs.csv": "92fecff74bf33e7dcba8e1e315521bbf98a42e9ff260a95ee31a824b7c9fd3cd",
+    "experiments/kuairec/results/setting_b_runs.csv": "a4c8a45358fe4a83290bc34dcc135772f8bf3f4d437e81c1d6bbe550e9ca37cf",
+    "experiments/oct12_baselines/results/lin_setting_a_runs.csv": "222646d8ecfd5ce6fe560f655793a5c728936a8b4819041bedbf3be58e3dc5fa",
+    "experiments/oct12_baselines/results/lin_setting_a_tuned.json": "86ead05fbc9f0885b1cdfaa38cad797335b0f5352ada94acfb330ef41f4d553a",
+    "experiments/oct12_baselines/results/lin_setting_a_tuning.csv": "4f96ea02f95bf0bfe8d4a13fb337ff7bc3032d5f5c418cda5e84e053aa473b27",
+    "experiments/oct10_evening/results/setting_a2/setting_a2_runs_120x3.csv": "789f10d95587b07f0c7f28d14816bebb7a956140a5368e996e741992eb66b264",
+    "experiments/oct12_baselines/results/gbm_daily_runs.csv": "eba226f3881a67478056ac69c32208133857673507b41fb4ae38ca9fd8578557"
+  },
+  "scope": "Manuscript numbers recomputed from the completed experiment snapshot, plus the 13 October linear and hybrid feature baselines (experiments/oct12_baselines)."
+}

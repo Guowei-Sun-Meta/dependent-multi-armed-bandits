@@ -1,0 +1,514 @@
+% KDD 2027 research-track submission, cycle 2 (deadline February 2027).
+% Format per the call: 8 content pages, then references and an appendix with no page limit,
+% ACM sigconf, double-blind, third person for own prior work. Camera-ready: 9 + 3 pages.
+% Retargeted from the WWW 2027 draft (www/submission) on 18 October 2026.
+% Theory sources: research/gpt_sol_10_09 (synthesis + spatiotemporal appendix),
+% research/alignment_paper, research/correlated_arms. Evidence: research/claude_opus_10_12_v3.
+% Compile:  tectonic -X compile main.tex
+\documentclass[sigconf,review,anonymous]{acmart}
+
+\usepackage{booktabs}
+\usepackage{mathtools}
+\settopmatter{printacmref=false}
+\setcopyright{none}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\acmConference[KDD '27]{Proceedings of the 33rd ACM SIGKDD Conference on Knowledge Discovery and Data Mining}{August 1--5, 2027}{San Jose, CA, USA}
+
+\newtheorem{prediction}{Prediction}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\I}{\mathcal{I}}
+\setlength{\emergencystretch}{1.5em}
+
+\begin{document}
+
+\title{When Can a Bandit Trust Correlation?\texorpdfstring{\\}{ }Spatial and Temporal Dependence in Bandits on Logged Platform Data}
+
+\author{Anonymous Author(s)}
+
+\begin{abstract}
+Online platforms log graphs, such as co-engagement, embeddings and hyperlinks, that suggest which items share appeal, and their rewards persist and move together for days. Online learners that pool along such graphs, or that treat feedback as independent, can fail. We ask which logged correlation a bandit can trust and when its confidence statements break. Rewards are fixed long-run means plus autoregressive deviations with graph-correlated innovations, and a graph plays two separate roles: restricting the means or shaping the shocks. On the theory side, the regret of certified pooling depends on which components its certificate can reject, and graph geometry beyond diameters sets the information cost. An exact innovation regression gives confidence sets that are valid at all times under adaptive, restless sampling and keeps certified pooling valid. Confidence built for independent rewards fails under bursty exposure by an autocorrelation inflation factor. Each prediction is tested on KuaiRec, Wikipedia and the Open Bandit Dataset. Certified gains track the share of rejectable components (Spearman $-0.87$ across certificates on KuaiRec), while graph-free shrinkage matches or beats spectral, linear, clustering and hybrid-feature baselines on average, and several graph-specific comparisons are inconclusive. Held-out Wikipedia attention shows the predicted inflation: a week of views carries the information of 1.3--1.9 independent days. On worlds calibrated to it, iid certificates fail in 56--94\% of runs, while innovation certificates show no failures but are too wide to eliminate. On chronological KuaiRec panels, persistence-aware policies halve loss against iid Thompson sampling, while comparisons with last observed value are inconclusive.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept><concept_id>10010147.10010257.10010282.10010284</concept_id>
+<concept_desc>Computing methodologies~Online learning settings</concept_desc><concept_significance>500</concept_significance></concept>
+<concept><concept_id>10002951.10003317.10003347.10003350</concept_id>
+<concept_desc>Information systems~Recommender systems</concept_desc><concept_significance>300</concept_significance></concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Computing methodologies~Online learning settings}
+\ccsdesc[300]{Information systems~Recommender systems}
+\keywords{multi-armed bandits, spatiotemporal dependence, graph bandits, restless bandits, autoregressive rewards, confidence sequences}
+
+\maketitle
+
+%=====================================================================
+\section{Introduction}
+%=====================================================================
+
+Every day a short-video platform fills a trending slot, and its rewards are correlated in two ways. \emph{Spatially}, videos that are close in a co-engagement graph tend to share long-run appeal, and a shock such as a holiday or a community event hits related videos together. \emph{Temporally}, a video's engagement today predicts its engagement for days. Classical bandits assume neither. Graph bandits assume the first, as a static restriction on means~\cite{valko2014spectral,ban2021local}. Restless and autoregressive bandits assume the second, usually with independent arms~\cite{chen2023autoregressive,trella2025latent}. This paper studies both together: what each kind of correlation does to the information in an observation, to the validity of confidence sets, and to regret.
+
+\paragraph{Why this is a data-mining problem.} Spatiotemporal dependence is the normal state of platform rewards. The graphs are mined by-products of logging (co-engagement, embeddings, hyperlinks), not priors designed for the decision, and the rewards are time series whose autocovariance is estimable from the same logs. Attention persists and spreads along those graphs. Exposure is bursty, because the same items fill a slate, a notification queue or an experiment cell day after day. An online learner must therefore decide which mined correlation it can trust and how much each observation is worth, and an analyst who reads its confidence statements must know when they are invalid. We answer with theory, and test every prediction on three public logs: KuaiRec short video~\cite{gao2022kuairec}, Wikipedia attention, and the Open Bandit Dataset~\cite{saito2021obd}. The tools are graph mining (which graphs carry mean correlation), time-series estimation (long-run variance of persistent rewards) and sequential inference (confidence valid under adaptive sampling); the object is online decision making on logged platform data.
+
+\paragraph{Two ways to go wrong.} A learner can trust spatial correlation that is not there: pooling along a graph whose neighbourhoods do not share appeal biases estimates and can cause linear regret. Or it can ignore temporal correlation: confidence sets built for independent rewards are too narrow when consecutive observations move together, so irrevocable decisions such as dropping an item go wrong. The theory below explains when each failure occurs and what repairs it.
+
+\paragraph{Contributions.} Each theoretical result is paired with the evidence that tests it.
+\begin{enumerate}
+\item \textbf{A spatiotemporal reward model with two graph roles} (\S\ref{sec:model}). A graph may restrict long-run means or shape innovation covariance; only the first identifies unobserved arms. The standard node-time covariance is separable only under homogeneous dynamics, so lag-one summaries misstate how much a schedule reveals (Proposition~\ref{prop:cov}).
+\item \textbf{Trusting a graph for long-run appeal} (\S\ref{sec:pool}). Certified pooling's regret depends on which components its widths make rejectable, and a path--clique separation shows that diameters miss information geometry (Theorem~\ref{thm:a1}). On KuaiRec and the Open Bandit Dataset, gains track rejectability across certificates; oracle pooling improves on a rewired I-mf control, and graph-free shrinkage matches or beats spectral, linear, clustering and hybrid-feature baselines on average.
+\item \textbf{Confidence when rewards persist} (\S\ref{sec:info}). An exact innovation regression yields all-time confidence under adaptive restless sampling (Theorems~\ref{thm:innov}--\ref{thm:conf}) and keeps certified pooling valid (Theorem~\ref{thm:b1}); iid confidence fails under bursts by a computable inflation factor (Proposition~\ref{prop:b2}). Held-out Wikipedia attention exhibits that inflation, iid certificates fail on worlds calibrated to it, and innovation certificates hold but are too wide to eliminate.
+\item \textbf{Acting on persistence} (\S\ref{sec:fluct}). On a chronological KuaiRec panel with standard non-stationary baselines, persistence halves loss against iid TS, the comparison with a simple last-value rule is inconclusive while a learned gradient-boosted forecaster does worse, and graph-specific shock models add little beyond a common factor.
+\end{enumerate}
+We close with five rules for practitioners (\S\ref{sec:conclusion}).
+
+%=====================================================================
+\section{A spatiotemporal reward model}\label{sec:model}
+%=====================================================================
+
+There are $N$ arms. Arm $i$'s reward field is
+\begin{equation}\label{eq:model}
+X_{i,t}=\mu_i+z_{i,t},\qquad z_{i,t}=\sum_{r=1}^{p_i}a_{i,r}z_{i,t-r}+\eta_{i,t},\qquad \eta_t\stackrel{\rm iid}{\sim}N(0,Q_G).
+\end{equation}
+In round $t$ the learner chooses $a_t$ before seeing the field and observes $Y_t=X_{a_t,t}+\xi_t$, with independent sensor noise $\xi_t\sim N(0,r)$. Slates are vector observations chosen before any same-round feedback. Every arm evolves every round (restless), but only chosen arms are observed. The means $\mu$ are fixed and unknown; $Q_G\succ0$, and the field starts in stationarity. The AR polynomials $A_i(s)=1-\sum_ra_{i,r}s^r$ are stable, and $c_i=A_i(1)$, so the raw AR intercept is $c_i\mu_i$. For the theory, the orders, coefficients, $Q_G$ and $r$ are known; \S\ref{sec:evidence} tests estimated dynamics.
+
+\paragraph{Spatial correlation: two roles for a graph.} A graph with Laplacian $L_\mu$ may restrict the \emph{means}: $\mu^\top L_\mu\mu\le S^2$ and $\|\mu\|\le B$. This is deterministic side information, and for vertices in the same connected component, effective resistance implies widths, $|\mu_i-\mu_j|\le S\sqrt{(e_i-e_j)^\top L_\mu^\dagger(e_i-e_j)}$. A graph with Laplacian $L_\eta$ may instead shape the \emph{shocks}, for example $Q_G\propto(\alpha_\eta I+\lambda_\eta L_\eta)^{-1}$ rescaled to given variances. One graph may serve both roles, but that is an additional assumption. The roles also differ in identification. Correlated shocks improve prediction and comparisons, but they cannot identify the mean of an arm that is never observed: its column of the design is zero, so $\mu_i$ does not enter the likelihood. Only a mean restriction links an unobserved arm to observed ones.
+
+\paragraph{Temporal correlation and its interaction with space.} Stack each arm's current deviation and lags into $s_t$. Then $s_{t+1}=Fs_t+E\eta_{t+1}$ and $z_t=Cs_t$, where $F$ is block-diagonal with the AR companion blocks, $E$ inserts innovations, and $C=E^\top$. The stationary covariance solves
+\[\Gamma=F\Gamma F^\top+EQ_GE^\top.\] Although $F$ is block-diagonal, $EQ_GE^\top$ couples the arms.
+
+\begin{proposition}[Node-time covariance]\label{prop:cov}
+Define the lag covariance and causal representation by
+\[G_h=\Cov(z_{t+h},z_t)=CF^h\Gamma C^\top,\]
+and write
+\[
+z_{i,t}=\textstyle\sum_{k\ge0}\psi_i(k)\eta_{i,t-k}
+\]
+with impulse response $\psi_i$. Then
+\[
+(G_h)_{ij}=(Q_G)_{ij}\sum_{k\ge0}\psi_i(k+h)\psi_j(k),
+\]
+and the spectral density matrix is
+\[
+\mathcal S_z(\omega)=\Lambda(\omega)\,Q_G\,\Lambda(\omega)^*,\qquad \Lambda(\omega)=\diag\big(A_i(e^{-{\rm i}\omega})^{-1}\big).
+\]
+The covariance is a fixed spatial matrix times a scalar temporal kernel if and only if all arms have the same impulse response. Otherwise $G_h$ is generally asymmetric for $h>0$.
+\end{proposition}
+
+The innovation covariance supplies the spatial coupling, and each pair of filters sets its lag profile. Consequences follow directly. An AR(20) arm can have no lag-1 correlation but strong lag-20 correlation. Two arms can be uncorrelated at lag 1 and correlated at lag 2. A lag-1 summary, such as a single persistence parameter, therefore misstates the information in a schedule (Proposition~\ref{prop:ar2}).
+
+\paragraph{Regret.} \emph{Mean regret} $R_\mu(T)=\sum_t(\mu^\star-\mu_{a_t})$ measures learning of persistent appeal. \emph{Dynamic regret} $\sum_t(\max_iX_{i,t}-X_{a_t,t})$ measures tracking against an oracle that sees the current field. Actual-reward regret against the best fixed arm can be negative, because adaptive policies exploit predictable positive deviations: $\E R_{\rm fixed}=\E R_\mu-\sum_t\E z_{a_t,t}$. Several familiar models are special cases. iid bandits have $p_i=0$ and diagonal $Q_G$. Graph bandits add only the mean restriction. Restless AR bandits have no mean restriction.
+
+\paragraph{How we test the theory.} We test four implications: (i) supplied widths govern safe component rejection; (ii) bursts of persistent feedback undermine iid confidence; (iii) shared shocks can improve contrasts, with schedule-dependent gains; (iv) predictive persistence can help immediate reward without establishing graph-specific transfer. Static tests measure $R_\mu$ in Bernoulli simulators whose means are estimated from logs. Temporal panels measure retrospective current-oracle loss on transformed, partially observed reward fields. These are different objectives. All intervals below are 95\%; Appendix~\ref{app:data} specifies their units and dependence assumptions.
+
+%=====================================================================
+\section{Trusting a graph for long-run appeal}\label{sec:pool}
+%=====================================================================
+
+\subsection{Theory: certified pooling}
+
+\paragraph{Spatial pooling with iid noise.} Assume iid centered $\sigma^2$-sub-Gaussian noise. SP-UCB partitions the arms into $M$ components $C_c$ with supplied widths $\varepsilon_c\ge\max_{i,j\in C_c}|\mu_i-\mu_j|$. It uses $b(n)=\sqrt{2\sigma^2\ell/n}$, infinite bounds at zero counts, arm bounds $u_i=\bar Y_i+b(n_i)$, and pooled bounds $\hat p_c+b(N_c)+\varepsilon_c$, selects the component that maximizes the minimum of its two bounds, $U_c$, and pulls that component's best arm. SP-KLUCB uses KL radii~\cite{garivier2011klucb}. Let $v_c=\max_{i\in C_c}\mu_i$, let $\Gamma_c=\mu^\star-v_c$ and $\Delta_i=\mu^\star-\mu_i$ be component and arm gaps, and let $\ell=\log(2(N+M)T/\delta)$.
+
+\begin{theorem}[A1: alignment-sensitive regret]\label{thm:a1}
+With valid widths, with probability at least $1-\delta$,
+\[
+\mathcal R_T\le\textstyle\sum_{c\in\mathcal O}A_c+\sum_{c\notin\mathcal O}\min\{A_c,H_c\}.
+\]
+Here $\mathcal O$ is the set of components containing an optimal arm, $A_c=\sum_{i\in C_c:\Delta_i>0}(\Delta_i+8\sigma^2\ell/\Delta_i)$ is the cost of arm-by-arm exploration, and $H_c=(\Gamma_c+\varepsilon_c)(1+8\sigma^2\ell/(\Gamma_c-\varepsilon_c)^2)$ is the cost of rejecting the whole component. $H_c$ is finite only when the component is \emph{rejectable}, that is, when $\varepsilon_c<\Gamma_c$.
+\end{theorem}
+
+\paragraph{Geometry beyond widths.} Consider an isolated homogeneous suboptimal component with $m$ arms, gap $\Delta$, Gaussian observation variance $\sigma^2$, and energy budget $S$. Define
+\[
+F_L^*(s)=\max_{p\in\Delta_m}\min_{i\le m}\min_{\substack{z\in[0,1]^m,\ z_i=1\\z^\top Lz\le s^2}}\sum_jp_jz_j^2.
+\]
+The structured change-of-measure program~\cite{combes2017minimal} gives component regret constant $2\sigma^2/(\Delta F_L^*(S/\Delta))$. This is a lower-bound information program, rather than an attained finite-budget constant. Normalize both graphs to effective-resistance diameter two. At $S=\Delta$, the clique has $F_L^*=1/m$, while the path has $F_L^*\ge(1-1/\sqrt2)^2$ (Appendix~\ref{app:proofs}). Thus equal diameters can conceal a growing information separation. Without a valid mean restriction, smoothing can reverse rankings: for means $(1,0.9,0)$ and a strong edge between arms 1 and 3, arm 2 becomes the smoothed leader. A particular random graph can also reverse a ranking; rewiring is an empirical control, not a safety guarantee.
+
+\subsection{Evidence: KuaiRec}\label{sec:evidence}
+
+\paragraph{Protocol.} KuaiRec~\cite{gao2022kuairec} provides a nearly complete user--video matrix and a larger disjoint logging matrix. Graphs use non-evaluation users for item construction and non-evaluation videos for user construction. Collaborative graphs have stronger double-centered taste alignment than content and profile graphs (Appendix Table~\ref{tab:align}). The main comparison has 120 held-out users, three 300-video subsets per user, a 20-component partition, and $T=20{,}000$ per instance: 360 instances and 10,440 main policy trajectories. A separate 1,440-trajectory experiment tests user-calibrated widths. All policies pay any noisy warm-up cost. Repeated subsets are clustered within users, not treated as 360 independent users.
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrr}
+\toprule
+I-mf policy / width & / fixed KL & / Beta TS & Valid widths \\
+\midrule
+Oracle pooling & 0.640 & 1.456 & 100\% \\
+Energy pooling & 0.960 & 2.184 & 100\% \\
+Population q90 & 0.986 & 2.244 & 89.7\% \\
+Population q50 & 0.695 & 1.580 & 47.3\% \\
+User q90 & 0.947 & 2.153 & 89.3\%$^\dagger$ \\
+User q75 & 0.819 & 1.864 & 73.6\%$^\dagger$ \\
+Zero-width pooling & 0.370 & 0.842 & 0\% \\
+Spectral TS, real & 0.349 & 0.794 & -- \\
+Spectral TS, rewired & 0.348 & 0.792 & -- \\
+Graph-free shrinkage TS & \textbf{0.302} & \textbf{0.688} & -- \\
+Linear TS, I-mf features & 0.533 & 1.212 & -- \\
+Hybrid feature TS & \textbf{0.296} & \textbf{0.674} & -- \\
+\bottomrule
+\end{tabular}
+\caption{KuaiRec: ratios of aggregate mean regrets. Fixed KL is conservative fixed-confidence KL-UCB, not standard log-time KL-UCB. Width validity is a diagnostic fraction of true component ranges covered, not joint coverage. $^\dagger$User diagnostics evaluate the true user level, rather than the realized noisy warm-up used by the policy.}\label{tab:certgap}
+\end{table}
+
+\paragraph{Certificate usefulness.} Oracle I-mf pooling has $0.640\times$ matched fixed-KL regret [0.613, 0.668], versus $0.802$ for the mean of instance-wise ratios; the ratio estimator matters. It rejects 59.4\% of suboptimal components, compared with 20.9\% for truth-derived energy widths and 14.6\% for q90 calibration. Energy and population-q90 widths leave only 4.0\% and 1.4\% aggregate gains. Across the 16 graph--certificate cells, each summarized by its aggregate ratio of means, rejectability and loss are negatively associated (Spearman $-0.87$; Figure~\ref{fig:dose}); across the 1,440 oracle instances, using per-instance ratios, the association is weak ($-0.09$). This supports the rejection mechanism, not a causal dose-response law or practical joint validity. Oracle and energy widths use the true simulated means and serve as controlled side information.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.9\linewidth]{figures/r1_dose_response.pdf}
+\caption{Certified pooling gains with the share of suboptimal components its widths make rejectable. Points: certificate $\times$ graph cells on KuaiRec (360 instances each) and campaign $\times$ grouping cells on the Open Bandit Dataset (oracle widths, 20 seeds). Hollow points: widths valid for under 85\% of components. Bars: 95\% bootstrap intervals over users or seeds. A descriptive association across certificates, not a per-instance law.}\label{fig:dose}
+\end{figure}
+
+\paragraph{Graph against shrinkage.} Oracle pooling on real I-mf has 8.45\% lower regret than its degree-preserving rewiring, with user-cluster bootstrap interval [7.38\%, 9.46\%]. Spectral TS on real versus rewired I-mf differs by $+0.29\%$ [$-4.13\%$, $+4.64\%$], an inconclusive comparison. Graph-free shrinkage TS has $0.688\times$ Beta-TS regret [0.644, 0.734] and beats real-I-mf spectral TS by 13.4\% [4.5\%, 22.1\%]. Oracle pooling remains $1.456\times$ Beta TS. Strong co-engagement spectral TS puts 26.7\% of users above twice Beta-TS regret, with a 90th-percentile user ratio of 4.70. Feature-based pooling, the standard Web alternative to a graph~\cite{li2010linucb}, behaves the same way. With hyperparameters tuned on held-out users, linear TS on the leakage-free I-mf embeddings has $1.21\times$ Beta-TS regret [0.97, 1.50], with 30.8\% of users above twice; LinUCB has $3.39\times$. Adding a per-item effect to the embedding model (a hybrid prior) gives $0.674\times$ [0.618, 0.738], indistinguishable from graph-free shrinkage ($0.98\times$ [0.90, 1.07]) and 15.1\% below real-I-mf spectral TS [5.0\%, 24.7\%]. Consequently, a favorable graph-alignment statistic is insufficient evidence of a safe or superior learning policy.
+
+\paragraph{Pooling across users and a clustering baseline.} In Setting B, 300 test users arrive at random over $T=100{,}000$ rounds and choose among 100 videos, giving about 3.3 readings per user--video pair (8 instances, common random numbers). Shrinking each video toward its population mean has $0.726\times$ per-user TS regret, and no user graph beats it (co-engagement $0.759$, its rewiring $0.745$, location $0.893$). User-cluster pooling is $1.39\times$ per-user TS on every instance without widths and $0.934$--$0.950$ with oracle widths. We also adapt CLUB~\cite{gentile2014clustering} to this non-contextual setting, with per-video Beta estimates, coordinate-wise edge deletion and component Thompson sampling. With thresholds $\gamma\in\{0.5,1\}$ it reaches $0.927$--$0.962$ whatever its initial graph (complete, co-engagement or rewired); with $\gamma=0.25$ it splits every user apart and returns to per-user TS ($1.00$--$1.01$). At this sparse budget the threshold, not the graph, decides how much clustering remains, and population shrinkage is about 22\% better than the best setting. The comparison concerns our adaptation: the original contextual guarantee certifies that clusters are correct, not that their members' means are close.
+
+\subsection{Evidence: the Open Bandit Dataset}
+
+\paragraph{Simulator evidence.} Uniform-random ZOZOTOWN logs~\cite{saito2021obd} contain 2.69M impressions over three campaigns and seven days. The All and Women tests use prefix days 1--3 to construct attribute or audience clusters, and held-out days 4--7 click-rate estimates as stationary Bernoulli means. There are 20 seeds per policy--campaign, 640 trajectories, and two million simulated impressions per trajectory, updated in batches of 100. This is a semi-synthetic fixed-mean test, not online deployment or off-policy value identification.
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrr}
+\toprule
+Regret / matched fixed KL-UCB & All & Women \\
+\midrule
+Standard log-time KL-UCB & 0.684 & 0.746 \\
+Beta TS & 0.353 & 0.382 \\
+Graph-free empirical-Bayes TS & \textbf{0.206} & \textbf{0.290} \\
+Oracle pooling, attributes & 0.837 & 0.982 \\
+Oracle pooling, audience & 0.702 & 0.965 \\
+Prefix widths, attributes & 0.862 & 1.011 \\
+Prefix widths, audience & 0.775 & 0.809 \\
+\bottomrule
+\end{tabular}
+\caption{OBD simulator: aggregate loss ratios to a matched conservative baseline. Oracle gains do not establish superiority to ordinary TS.}\label{tab:obd}
+\end{table}
+
+Against fixed KL-UCB, oracle audience pooling gains 29.8\% in All but only 3.5\% in Women, and empirical-Bayes TS has the lowest point-estimate loss. Prefix widths cover only 25--70\% of held-out component ranges. Uncertified audience pooling in All never selects the optimal arm in the final 10\% of the horizon, although a finite run cannot establish its asymptotic slope. The truth is itself uncertain: across 12 splits with 5,000 held-out Jeffreys draws each, the empirical three-day best item is truly best with probability 0.627 in All and 0.553 in Women. These draws quantify ranking uncertainty under a working binomial model; they are not policy runs or a guarantee under future drift.
+
+\paragraph{Actual-log pilot.} A separate Men, position-1 pilot preserves logged hours, selects before feedback, and observes only matching random exposures, with propensity $1/34$. Across 142 policy trajectories and 72 held-out hours, each trajectory obtains only 10--16 clicks; 91.7\% of prefix arm--hour bins contain none. The IPS ranking is therefore underpowered. Its graph-transfer rule uses uncertified pseudo-observations, not the Gaussian innovation certificate. We report this negative result rather than treat simulator gains as real-log performance.
+
+%=====================================================================
+\section{Confidence when rewards persist}\label{sec:info}
+%=====================================================================
+
+\subsection{Theory: innovation confidence and certified pooling}
+
+\paragraph{The innovation regression.} Conditional on a candidate $\mu$, a Kalman filter~\cite{kalman1960} tracks $s_t\mid\mu,\mathcal H_t\sim N(g_t+D_t\mu,P_t)$, where $g_t$, $D_t$ and $P_t$ do not depend on $\mu$. For arm $a$, let $\ell_a=C^\top e_a$, $d_{t,a}=\ell_a^\top P_t\ell_a+r$ and $u_{t,a}=(e_a+D_t^\top\ell_a)/\sqrt{d_{t,a}}$.
+
+\begin{theorem}[Predictable innovation experiments]\label{thm:innov}
+The chosen observation satisfies $R_t:=(Y_t-\ell_{a_t}^\top g_t)/\sqrt{d_{t,a_t}}=u_t^\top\mu+\epsilon_t$, where $u_t=u_{t,a_t}$ is predictable and $\epsilon_t\mid\mathcal H_t,a_t\sim N(0,1)$. On every recorded path, $\I_T=\sum_tu_tu_t^\top=M^\top\Xi^{-1}M$ and $q_T=\sum_tu_tR_t=M^\top\Xi^{-1}Y$. Here $M$ selects observed means and $\Xi$ is assembled from $G_h$. These are likelihood identities; conditioning on an adaptively chosen schedule does not generally leave $Y$ Gaussian.
+\end{theorem}
+
+Spatial correlation enters $u_t$ through $D_t$. Removing predictable shared noise from a reading also changes the mean contributions of recently observed arms, so a reading measures a weighted linear combination. Temporal correlation enters through the propagation by $F$. The mean restriction enters as a penalty, $H=\alpha I+\lambda L_\mu$ with $\alpha>0$, $\lambda\ge0$, $J_T=H+\I_T$ and $\hat\mu_T=J_T^{-1}q_T$.
+
+\begin{theorem}[Graph-regularized confidence, valid at all times]\label{thm:conf}
+Suppose $\mu^\top L_\mu\mu\le S^2$, $\|\mu\|\le B$, and the graph is fixed before measurement. Let
+\[
+\beta_T=\sqrt{\log\tfrac{\det J_T}{\det H}+2\log\tfrac1\delta}+\sqrt{\alpha B^2+\lambda S^2}.
+\]
+Then, with probability at least $1-\delta$, $|v^\top(\hat\mu_T-\mu)|\le\beta_T\|v\|_{J_T^{-1}}$ for all $T$ and all contrasts $v$ simultaneously. If the procedure stops when every comparison with the leader clears its width, any returned arm is optimal on this event.
+\end{theorem}
+
+The first term of $\beta_T$ prices the stochastic error after whitening in space and time~\cite{abbasi2011improved}. The second prices the spatial restriction. If the graph is only approximately right, $(1-\zeta)L_\mu\preceq\hat L\preceq(1+\zeta)L_\mu$, replacing $S^2$ by $(1+\zeta)S^2$ keeps the guarantee. That repair applies only to the mean role. A shock covariance fitted from the wrong graph changes the likelihood itself.
+
+The information in this regression is sandwiched between sample counts scaled by the extremes of the shocks' spatial spectrum and the AR frequency response, which gives sublinear mean regret under arbitrary correlation; with common coefficients and no sensor noise, graph-mode long-run information per field is $c^2/q_k$, so graph-smooth shocks make rough contrasts cheap (Appendix~\ref{app:info}, Propositions~\ref{prop:sandwich}--\ref{prop:lr} and Corollary~\ref{cor:ucb}).
+
+\paragraph{Adding temporal dependence.} Let $\Delta(C_c)$ denote probability weights supported on component $C_c$, and define
+\begin{align*}
+U_i&=\hat\mu_i+\beta_t\|e_i\|_{J_t^{-1}},\\
+U_c&=\min\left\{\max_{i\in C_c}U_i,\ 
+\min_{w\in\Delta(C_c)}(w^\top\hat\mu+\beta_t\|w\|_{J_t^{-1}})+\varepsilon_c\right\}.
+\end{align*}
+A pooling policy selects a component maximizing $U_c$ and then an arm maximizing $U_i$ within it.
+
+\begin{theorem}[B1: valid pooling and realized-information rejection]\label{thm:b1}
+With valid widths, a valid mean norm/energy bound, and correctly specified dynamics, all $U_i$ and $U_c$ are upper bounds with probability at least $1-\delta$, simultaneously at every round. If a suboptimal component $c$ with $\Gamma_c>\varepsilon_c$ is selected, then
+\[
+\min_{w\in\Delta(C_c)}w^\top J_t^{-1}w
+\ge\frac{(\Gamma_c-\varepsilon_c)^2}{4\beta_t^2}.
+\]
+Thus it cannot be selected after its realized variance falls below this threshold on the confidence event.
+\end{theorem}
+
+This proves the validity bridge under arbitrary adaptive restless histories. Converting rejection to a count-based bound needs information growth for that schedule. With independent AR(1) arms, $0\le\varphi<1$, one scalar pull contributes at least $(1-\varphi)^2/(V+r)$ to that arm's information. Pooling sums information across arms; it supplies no extra factor $|C_c|$ per scalar reading. The spectral sandwich supplies a conservative count bound in the general model, but a full-field precision cannot substitute for partial-history information.
+
+The vector confidence set pays through its log determinant. A scalar nuisance construction, denoted B1$''$ in the experiments, initializes valid mean intervals and recursively bounds the other arms' mean contributions (Appendix~\ref{app:proofs}). Its broad intervals can protect validity while preventing elimination. Estimated coefficients, covariance inflation, and empirical mean-width calibration are additional working approximations; their empirical coverage is not Theorem~\ref{thm:conf}.
+
+\begin{proposition}[Temporal inflation of iid confidence, B2]\label{prop:b2}
+For a predetermined consecutive block of $b$ noiseless observations, $\Var(\bar X_i)=(G_0)_{ii}f_i(b)/b$, where
+\[
+f_i(b)=1+2\sum_{h=1}^{b-1}(1-h/b)\rho_i(h),\quad
+\rho_i(h)=(G_h)_{ii}/(G_0)_{ii}.
+\]
+For AR(1), $f_i(b)=\frac{1+\varphi}{1-\varphi}-\frac{2\varphi(1-\varphi^b)}{b(1-\varphi)^2}$. A two-sided iid radius $\sqrt{2(G_0)_{ii}\ell/b}$ has per-check failure probability $2\Phi(-\sqrt{2\ell/f_i(b)})$. Sensor noise adds $r/b$. At arbitrary fixed observation times $\tau_1,\ldots,\tau_n$, the exact variance is $n^{-2}\sum_{s,u}(G_{|\tau_s-\tau_u|})_{ii}+r/n$; separate blocks need not be independent.
+\end{proposition}
+
+By Proposition~\ref{prop:cov}, $\rho_i$ depends only on arm $i$'s own filter. Within-arm inflation is purely temporal, while every contrast between arms is spatiotemporal:
+
+\begin{proposition}[Contrasts, B3(2)]\label{prop:contrast}
+Let $D_c=\diag(c_i)$ and $\Omega=D_c^{-1}Q_GD_c^{-1}+rI$. Two arms observed together on $n$ consecutive dates have $n\Var(\bar Y_i-\bar Y_j)\to\Omega_{ii}+\Omega_{jj}-2\Omega_{ij}$. With common dynamics and $r=0$, the observed subset has long-run covariance $Q_{SS}/c^2$, with precision $(Q_{SS})^{-1}c^2$; the submatrix $(Q_G^{-1})_{SS}$ conditions on unobserved contemporaneous innovations. Equal variances give the ideal contrast factor $1-\rho$ only for common dynamics and $r=0$. For staggered schedules, use the cross-covariances at every selected lag. Persistence can preserve much of the gain; it does not make all schedules equivalent.
+\end{proposition}
+
+How spatial correlation meets the lag structure also decides which schedules are informative: in an exact AR(2) example, block sampling beats alternation for every gap (Appendix~\ref{app:info}, Proposition~\ref{prop:ar2}).
+
+\subsection{Temporal confidence: coverage and cost}
+
+\paragraph{Fresh model check.} A 400-world AR(20) confirmation uses six arms, $T=800$, bursts of 25, and a 365-round fitting prefix. Known dynamics produce 1/100 anytime violations [0.18\%, 5.45\%]; fitted dynamics 5/100 [2.15\%, 11.18\%]; fitted covariance inflated by 1.5 gives 3/100 [1.03\%, 8.45\%]. Jointly replacing AR(20) by AR(1) and removing cross-arm covariance gives 40/100 [30.94\%, 49.80\%]. This combined misspecification does not isolate lag order from covariance. Earlier lag-specific and heavy-tail stresses give additional failures. None of the fitted-model results establishes a nuisance-estimation theorem.
+
+\paragraph{Wikipedia-calibrated worlds.} Thirty articles determine six components, stable AR(7) dynamics, and correlated Gaussian innovations. Across 730 days and 100 worlds per cell, iid pooling certificates violate an arm or component upper bound in 56/100 runs for slate size five and 94/100 for size ten. Known-model and fitted-model B1$''$ pooling certificates each have 0/100 observed violations in these centered Gaussian cells. For 0/100, the Wilson upper endpoint is 3.7\%, not zero risk. Figure~\ref{fig:coverage} shows the corresponding reward cost.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/coverage_cost.pdf}
+\caption{Centered Gaussian Wikipedia-calibrated worlds: coverage and mean-regret cost of SP-UCB, 100 worlds per cell. Error bars on failures are 95\% Wilson intervals. Correct confidence is substantially more expensive at this finite horizon.}\label{fig:coverage}
+\end{figure}
+
+Known-model pooling incurs mean regret 441 versus 37.8 for iid confidence at size five, and 466.6 versus 44.6 at size ten. Known and fitted successive elimination keep all 30 arms; iid elimination violates bounds in 78/100 and 99/100 runs but never drops the best arm in these cells. Thus miscoverage need not imply catastrophic reward loss, while correctness need not imply useful rejection. Separate high-persistence AR(1) elimination tests do drop the best arm in 28--89\% of selected burst configurations. Valid elimination retains it but often eliminates nothing through 20,000 rounds.
+
+Median terminal width is 1.74 for the scalar nuisance construction and 0.70 for the all-direction ellipsoid, against a best--second gap of 0.135. A pointwise posterior width of 0.07 is not an adaptive, simultaneous certificate. A tighter time-uniform contrast construction~\cite{howard2021confidence} is a research direction, not an established replacement. Empirical residual-resampling cells are excluded from clean coverage conclusions: the saved residuals were not recentered, inducing a maximum stationary level shift of 0.0194 and invalidating one of six oracle component widths. Weekly block resampling is also a temporal-misspecification stress, rather than a test of iid Gaussian innovations.
+
+\paragraph{Measured attention.} Retrospective panels of 150 articles each, fit on 2022--2023 and evaluated on 2024--2025, exhibit block-mean inflation of 5.0--5.3 for seven days after weekday adjustment (3.6--5.1 without it) and 17.1--17.8 for 28 days, so a week of consecutive views carries the information of 1.3--1.9 independent days. Full AR(20) autocovariance predictions are closer than a lag-one shortcut (Appendix Table~\ref{tab:inflation}). Cohorts and hyperlinks use a later snapshot, so these results describe historical covariance rather than prospective graph transfer. The controlled consecutive-block formula explains the direction and scale; it is not a formula for adaptive policy-wide failure probabilities.
+
+\subsection{Contrasts and mechanism checks}
+
+\paragraph{Mechanism checks.} Exact two-arm information calculations with 365 observations per arm and sensor standard deviation 0.1 give contrast-variance ratios 0.100 under common AR(1) coefficient 0.9 and innovation correlation 0.9, 0.280 with unequal innovation scales, and 0.383 with unequal persistence. Corresponding staggered ratios are 0.106, 0.284, and 0.406. The iid case gives 0.109 simultaneously and 1.000 when staggered. The staggered design spans a different calendar length; these ratios do not rank policies at equal total time. Eight independent Monte Carlo cells agree with their exact finite-sample values within 1.8\%.
+
+A paired 16-arm factorial screen crosses persistence, innovation correlation, and gap spread (18 cells, 20 worlds per cell, seven policies). In the high-persistence/high-correlation small-spread cell, joint UCB improves on temporal UCB by 0.0390 loss per round [0.0084, 0.0696]. The corresponding large-spread interval crosses zero. This is a mechanism screen, not the planned larger confirmation. A separate 100-arm AR(20) benchmark also distinguishes objectives: current-field joint UCB loses 1.248 per round versus 1.397 for iid UCB, while mean regret favors iid UCB (0.668 versus 0.686). Practical UCB coefficients in these policy tests are tuned, not the theorem's confidence radius.
+
+%=====================================================================
+\section{Acting on persistence}\label{sec:fluct}
+
+The confidence results concern learning fixed means. A recommender filling a daily slot is also judged on current rewards. Every causal policy then pays an innovation floor: current shocks are independent of the pre-action history, so even a learner that knows the means cannot forecast their realized values. What remains to gain is persistence, the predictable part of each arm's deviation, and correlated shocks, which improve comparisons among items shown together (Proposition~\ref{prop:contrast}). We test both on chronological panels.
+
+\paragraph{Chronological KuaiRec.} Three disjoint 11-day test windows and five video panels per window give 15 panel--window units, 49--50 videos per panel, budgets one and five, 13 policies, and five seeds (1,950 trajectories). The graph uses pre-cutoff interactions from non-evaluation users. The daily reward is logit completion rate. The joint filter is a Kalman filter on each video's long-run mean and AR deviations at lags 1, 2 and 7, fitted on the prefix, with an innovation covariance shrunk toward the prefix-graph kernel plus a common factor; the temporal filter uses a diagonal covariance. Greedy ranks by the posterior mean of today's reward; UCB adds a development-tuned multiple of its posterior standard deviation. An empty chosen cell provides no observation; retrospective scoring uses the same-day median of available videos, with 17 missing test cells and 201 empty selections. This imputation defines the reported benchmark loss, not a deployable reward model. Development-panel eligibility conditions tuning on its cutoff cohort; the test windows remain later and disjoint.
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrr}
+\toprule
+Loss / iid TS & $k=1$ & $k=5$ \\
+\midrule
+Joint filter, greedy & \textbf{0.470} & 0.440 \\
+Last observed value & 0.491 & \textbf{0.430} \\
+EWMA & 0.485 & 0.729 \\
+Temporal filter, greedy & 0.496 & 0.456 \\
+Joint filter, UCB & 0.507 & 0.459 \\
+Temporal filter, UCB & 0.510 & 0.517 \\
+Joint UCB, rewired & 0.500 & 0.465 \\
+Joint UCB, common factor & 0.502 & 0.475 \\
+Gradient-boosted forecast, greedy & 0.562 & 0.637 \\
+Sliding-window UCB & 0.613 & 0.738 \\
+Discounted TS & 0.768 & 0.897 \\
+\bottomrule
+\end{tabular}
+\caption{Chronological KuaiRec: aggregate current-oracle loss per selected slot per day, relative to iid TS. Paired uncertainty is reported for the specified comparisons in Figure~\ref{fig:controls}.}\label{tab:chrono}
+\end{table}
+
+Joint UCB lowers loss by 49.3\% [$13.4\%$, $84.8\%$] at budget one and 54.1\% [$42.6\%$, $67.0\%$] at budget five relative to iid TS. Against last value it differs by $+3.2\%$ [$-12.9\%$, $+44.3\%$] and $+6.6\%$ [$-9.1\%$, $+61.8\%$], respectively. At budget five it improves on temporal UCB by 11.3\% [5.3\%, 20.4\%], but comparisons with rewired covariance ($-1.4\%$ [$-6.5\%$, $+3.5\%$]) and a common-factor model ($-3.5\%$ [$-6.7\%$, $+1.3\%$]) are inconclusive. A practical forecast-then-rank baseline, a gradient-boosted regressor on lag features trained on the prefix with simulated staleness, beats iid TS but is worse than both the last observed value ($+48.1\%$ [$+16.3\%$, $+128.5\%$]) and the joint greedy filter ($+44.7\%$ [$+20.0\%$, $+64.6\%$]) at budget five; at budget one both comparisons are inconclusive. Intervals resample windows and then panels; with only three time windows they are sensitivity summaries conditional on shared fitted inputs, not population guarantees.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/policy_controls.pdf}
+\caption{Paired effects on chronological KuaiRec at budget five: joint UCB against each baseline. Negative values favor joint UCB. The iid comparison is favorable; last-value and graph-specific comparisons remain inconclusive.}\label{fig:controls}
+\end{figure}
+
+Historical 2025 Wikipedia panels extend the check. At budget five, joint UCB has $0.749\times$ iid-TS loss on astronomy and $0.661\times$ on football, but EWMA nearly matches it on astronomy and temporal greedy is better on football (Appendix Table~\ref{tab:wiki}). Five policy seeds share each reward field and are not five independent historical replicates. Persistence is useful; the evidence does not establish a universal advantage from a detailed graph.
+
+\paragraph{What can be explored?} Current innovations are independent of the pre-action history, imposing a one-step forecasting floor even for a learner that knows the means. They can influence future AR states and become learnable from later observations. Removing $Q_G$ from a current forecast covariance is therefore a working exploration choice, not a proof that observing a fresh shock has no future value. Known-mean AR(1) controls give predictive sampling the best tested loss at $\varphi=0.99$ (0.1495), but two-step lookahead the best at $\varphi=0.9$ (0.4334). Mean learning, current tracking, and future information value require distinct comparisons.
+
+\section{Related work}\label{sec:related}
+%=====================================================================
+
+\paragraph{Spatial dependence.} Spectral bandits assume means smooth on a graph and bound regret by an effective dimension~\cite{valko2014spectral,kocak2020spectral}. Graph pure exploration prices similarity in samples~\cite{thaker2022graph}. Clustered and collaborative bandits pool across users or arms~\cite{gentile2014clustering,carlsson2021clustered,ban2021local,wu2016collaborative}, and deployed recommenders use social, knowledge and key-term graphs~\cite{zhao2022knowledge,wu2020graphneural,zhang2020conversational,li2025evoi}. Correlated-arm UCB pulls non-competitive arms $O(1)$ times when correlations are known~\cite{gupta2021correlated}, and network spillover adds dependence across users~\cite{faruk2025spillover}. These works, including the platform systems above, use structure or features to transfer information without checking that it is valid for the decision at hand. We separate a graph's role for the means from its role for the shocks, certify the first, and test the second; our CLUB-style adaptation and linear and hybrid feature bandits~\cite{li2010linucb} serve as clustering and feature-based controls. Exploring only uncertain pairs in online ranking~\cite{jia2021pairrank} parallels certified rejection, and empirical-Bayes rankers~\cite{yang2024empirical} agree with our finding that shrinkage carries the average gain.
+
+\paragraph{Temporal dependence.} Switching and drifting bandits forget old data~\cite{garivier2011switching,bogunovic2016tvgp,wu2019dynamic}. AR rewards~\cite{chen2023autoregressive}, latent AR states~\cite{trella2025latent} and linear Gaussian systems with Kalman prediction~\cite{gornet2024restless} model persistence. The closest, a Kalman-filtered linear Gaussian dynamical system and a latent-AR reduction, bound regret against dynamic oracles for arms without a mean restriction; neither gives confidence for fixed means that remains valid for certified pooling, nor addresses iid confidence under bursty exposure. Predictive sampling targets information that persists~\cite{liu2023predictive}, and the knowledge gradient handles correlated beliefs~\cite{frazier2009kg}. TV-GP-UCB combines spatial and temporal kernels, but they are separable~\cite{bogunovic2016tvgp}. We credit these works for filtering and for the policies, and the node-time covariance of Proposition~\ref{prop:cov} is standard multivariate time-series algebra. Our contributions are what it implies for decisions: the identification gap between a graph's two roles, confidence that keeps certified pooling valid under adaptive restless sampling (B1), the failure of iid confidence under bursty exposure (B2), long-run and contrast constants (B3), and tests of each on Web data.
+
+\paragraph{Confidence and evaluation on logged data.} Self-normalized bounds~\cite{abbasi2011improved} and time-uniform confidence sequences~\cite{howard2021confidence} underlie our certificates. Work on OBD questions the reliability of IPS rankings~\cite{korovaitceva2026ips}. Our sparse actual-log pilot is evaluated separately from semi-synthetic mean learning; daily click residuals do not establish the positive persistence of the Gaussian attention model. Related uses of logged platform data include offline-online learning~\cite{li2021unifying}, slate evaluation~\cite{kiyohara2024slate}, empirical-Bayes ranking~\cite{yang2024empirical,wang2021hybrid}, audits of feed exploration~\cite{vombatkere2024tiktok}, and the replay evaluation that opened bandits on logged traffic~\cite{li2010linucb}.
+
+%=====================================================================
+\section{Practical guidance and conclusion}\label{sec:conclusion}
+
+\paragraph{Five rules for practitioners.} (1) Before trusting a logged graph, compare it with its degree-preserving rewiring and with a graph-free empirical-Bayes prior; on our platforms the prior delivered the average gain. (2) Check width validity and rejectability separately. User q75 calibration recovers about half the oracle gain (regret $0.819$ against $0.640$ of fixed KL-UCB), but its 74\% marginal diagnostic coverage is insufficient for the joint safety guarantee. (3) When the same items are shown on consecutive days, compute confidence with the full autocovariance, including weekly lags; iid confidence fails in this regime and a lag-one summary underestimates the inflation. (4) Use persistence before a detailed model: the last observed value is a strong baseline for daily slots. (5) Use valid but wide certificates as safety rails for irrevocable decisions, such as dropping an item, rather than as the driver of exploration.
+
+A graph restriction on means and a graph model for shocks supply different information. Exact innovation regression yields valid adaptive confidence under known spatiotemporal dynamics, and certified rejection remains sound when it uses that information. Full autocovariance, partial observation, and sampling times determine how much feedback is worth. The experiments support the mechanisms but expose a gap between correctness and usefulness: practical widths are often uninformative, and generic shrinkage or last value captures much of the observed benefit. Unknown dynamics, future drift, context-dependent clicks, three chronological test windows, and retrospective missing-cell scoring limit the empirical conclusions. We do not establish fitted-model coverage or prospective deployment gains. Improving per-contrast confidence while retaining validity is the next algorithmic challenge.
+
+\paragraph{Data, licensing and reproducibility.} KuaiRec (CC BY-SA 4.0) and the Open Bandit Dataset (CC BY 4.0) are public research releases; Wikipedia page views come from the Wikimedia pageview API (CC0). Experiments use existing public research logs and aggregate public attention records. They introduce no new user interaction, targeted intervention, or released user-level profile. Reported outcomes are simulated or retrospective; the work does not claim participant consent or institutional approval beyond the source datasets' documented arrangements. An anonymized repository with code, run tables and figure scripts accompanies the submission, and the full repository will be released on acceptance.
+
+\typeout{MAIN-TEXT-ENDS-ON-PAGE \thepage}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\appendix
+
+\section{Further information results}\label{app:info}
+
+\begin{proposition}[Spectral information sandwich]\label{prop:sandwich}
+Let $a_{\min}$ and $a_{\max}$ be the extremes of $|A_i(e^{-{\rm i}\omega})|$ over arms and frequencies, and set $v_\pm=\lambda_{\max/\min}(Q_G)/a_{\min/\max}^2+r$. For every realized schedule, $v_+^{-1}\diag(N_i(T))\preceq\I_T\preceq v_-^{-1}\diag(N_i(T))$, where $N_i(T)$ is the number of observations of arm $i$.
+\end{proposition}
+
+The worst-case information per observation is $1/v_+$, which combines the largest spatial eigenvalue of the shocks with the most persistent temporal frequency. For AR(1), $a_{\min}=1-\varphi$, which recovers the $(1-\varphi)^{-2}$ cost of persistence that appears in B1 below.
+
+\begin{corollary}[Sublinear mean regret]\label{cor:ucb}
+Mean-UCB on $\hat\mu_i+\beta_{t-1}\sqrt{(J^{-1})_{ii}}$, after observing each arm once, has, with probability at least $1-\delta$,
+\begin{gather*}
+R_\mu(T)\le2BN+4\beta_T\sqrt{v_+NT},\\
+\beta_T\le\sqrt{N\log\big(1+\tfrac{T}{\alpha v_-}\big)+2\log\tfrac1\delta}+\sqrt{\alpha B^2+\lambda S^2}.
+\end{gather*}
+\end{corollary}
+
+This bound is conservative. Its value is that it holds under arbitrary spatial and temporal correlation. Sharper constants require the long-run structure below.
+
+\begin{proposition}[Long-run information and graph modes]\label{prop:lr}
+For full-field observations with $r=0$ and $n\ge p:=\max_i p_i$, $\I_n=\I_p+(n-p)D_cQ_G^{-1}D_c$, where $D_c=\diag(c_i)$. The long-run covariance of the sample-mean field is
+\[
+\Omega=D_c^{-1}Q_GD_c^{-1}+rI.
+\]
+For common coefficients ($D_c=cI$) and simultaneous eigenvectors $\phi_k$ of $Q_G$ and $L$, with eigenvalues $q_k$ and $\ell_k$, asymptotic information per field in mode $\phi_k^\top\mu$ is $(q_k/c^2+r)^{-1}$. A penalty $\lambda L$ adds $\lambda\ell_k$; $c^2/q_k$ is the noiseless case.
+\end{proposition}
+
+This is the spectral form of the interaction between space and time. Persistence ($c\to0$) scales every mode's information by $c^2$. Graph-smooth shocks, such as $Q_G=(\alpha_\eta I+\lambda_\eta L)^{-1}$ with $q_k^{-1}=\alpha_\eta+\lambda_\eta\ell_k$, cancel in rough contrasts. High-frequency differences between neighbours are therefore cheap to learn. The global level ($\ell_1=0$), which no contrast reveals, is the most expensive. The mean penalty also acts on high frequencies, so the two graph roles reinforce each other only on rough modes.
+
+\begin{proposition}[Space meets lag: an exact schedule comparison]\label{prop:ar2}
+Let two arms follow $z_{i,t}=az_{i,t-2}+\eta_{i,t}$ with $0<a<1$, equal stationary variance $V$, and innovation correlation $0\le\rho<1$. For four observations with noise $r$, the GLS contrast variance is $V+r-a\rho V$ under AABB and $V+r+aV$ under ABAB. AABB has strictly higher fixed-mean probability of correct selection for every positive gap.
+\end{proposition}
+
+Alternation looks natural for comparing two arms, but here it is wrong. Under AABB, each arm's consecutive readings are independent (lag 1), while readings of different arms two rounds apart share the correlated shock (lag 2). ABAB does the reverse: it reaches within-arm redundancy and misses the cross-arm correlation. At $V=1$, $r=0.1$, $a=0.8$, $\rho=0.6$ and gap $0.4$, the variances are 0.62 and 1.90, and the probabilities of correct selection are 0.694 and 0.614. No single persistence number can rank these schedules. The ranking requires the spatial and temporal structure together, as in Proposition~\ref{prop:cov}.
+
+\section{Proofs}\label{app:proofs}
+
+\paragraph{Node-time covariance (Proposition~\ref{prop:cov}).}
+Stationarity and causal stability give $z_{i,t}=\sum_{k\ge0}\psi_i(k)\eta_{i,t-k}$. Independence across innovation dates leaves only equal-date terms in the covariance, giving the stated sum for $h\ge0$, with $G_{-h}=G_h^\top$. Fourier transformation gives $\Lambda Q_G\Lambda^*$. If every filter is identical, $G_h=\gamma(h)Q_G$ for all $h$. Conversely, separability implies identical normalized diagonal autocovariances because $Q_G\succ0$. A stable causal AR transfer with numerator one is the unique normalized minimum-phase spectral factor of that autocorrelation spectrum. Hence the AR filters, and their impulse responses, agree (orders may differ only through zero coefficients). Heterogeneous filters generally yield nonsymmetric positive-lag cross-covariances.
+
+\paragraph{Innovation regression (Theorem~\ref{thm:innov}).}
+Initialize $g_1=D_1=0$ and $P_1=\Gamma$. Given the history and a candidate mean, the selected conditional mean is $\ell_a^\top g_t+v_{t,a}^\top\mu$, where $v_{t,a}=e_a+D_t^\top\ell_a$, and variance is $d_{t,a}$. Standardization gives the unit conditional Gaussian error. Set $k_t=P_t\ell_a/d_{t,a}$. The update and prediction are
+\begin{align*}
+g_t^+&=g_t+k_t(Y_t-\ell_a^\top g_t),\\
+D_t^+&=D_t-k_tv_{t,a}^\top,\qquad P_t^+=P_t-k_t\ell_a^\top P_t,\\
+g_{t+1}&=Fg_t^+,\qquad D_{t+1}=FD_t^+,\\
+P_{t+1}&=FP_t^+F^\top+EQ_GE^\top.
+\end{align*}
+Thus the affine representation is preserved. On a recorded schedule the standardized residual transform is triangular and whitens $\Xi$, proving the two information identities. Adaptive policy factors do not depend on the candidate mean. For a slate, replace $\ell_a^\top$ by its selected observation matrix and whiten the conditional innovation vector; the action is fixed before same-round readings.
+
+\paragraph{Simultaneous confidence (Theorem~\ref{thm:conf}).}
+For fixed $\theta$, $\exp(\theta^\top W_T-\theta^\top\I_T\theta/2)$ is a nonnegative martingale, with $W_T=\sum_tu_t\epsilon_t$. Mixing over $\theta\sim N(0,H^{-1})$, for $\alpha>0$ and $\lambda\ge0$, yields
+\[
+\sqrt{\det H/\det J_T}\exp(\|W_T\|_{J_T^{-1}}^2/2).
+\]
+Ville's inequality bounds this by $1/\delta$ simultaneously in $T$. Since $\hat\mu_T-\mu=J_T^{-1}(W_T-H\mu)$ and $H\preceq J_T$, the regularization term has $J_T$-norm at most $\sqrt{\mu^\top H\mu}\le\sqrt{\alpha B^2+\lambda S^2}$. Triangle and Cauchy--Schwarz inequalities give the all-direction statement. When a leader's lower contrast bounds against every other arm are positive, they are positive at the truth. With approximate mean graph $\hat L\preceq(1+\zeta)L_\mu$, its energy is at most $(1+\zeta)S^2$. This argument does not repair an incorrect innovation covariance.
+
+\paragraph{Information sandwich and regret.}
+The eigenvalues of $\mathcal S_z(\omega)$ lie between $\lambda_{\min}(Q_G)/a_{\max}^2$ and $\lambda_{\max}(Q_G)/a_{\min}^2$. Parseval's identity transfers these bounds to every finite field covariance. Selecting readings and adding sensor noise bounds $\Xi$ between $v_-I$ and $v_+I$. Inversion and congruence by $M$ give Proposition~\ref{prop:sandwich}, since $M^\top M=\diag(N_i)$. This pathwise matrix statement remains valid when the realized schedule is adaptive. After the first pull of every arm, $J_T\succeq v_+^{-1}\diag(N_i)$, so optimism bounds an ordinary selected gap by $2\beta_{t-1}\sqrt{v_+/N_{a_t}}$. Summing reciprocal square roots gives at most $2\sqrt{NT}$; initialization costs at most $2BN$. Finally $J_T\preceq H+(T/v_-)I$ and $H\succeq\alpha I$ yield the determinant bound in Corollary~\ref{cor:ucb}. For fixed $N$ and model parameters, it is $O(\sqrt T\log^{1/2}T)$. Expected regret adds $2BT\delta$.
+
+\paragraph{Long-run information (Proposition~\ref{prop:lr}).}
+With exact full-field readings and $t>p$, the residual
+\[
+X_t-\sum_{k=1}^p\diag(a_{\cdot,k})X_{t-k}=D_c\mu+\eta_t
+\]
+is independent of earlier innovations and adds $D_cQ_G^{-1}D_c$ information. The first $p$ stationary fields supply $\I_p$. At zero frequency, the observed process has spectral density $\Omega=D_c^{-1}Q_GD_c^{-1}+rI$. Stability gives summable covariances; consequently $n\Cov(\bar Y_n)\to\Omega$. For the full stationary Gaussian location experiment, boundary contributions are $o(n)$ and $\I_n/n\to\Omega^{-1}$. One way to see this is to apply the inverse covariance operator to a constant mean sequence: its interior response is the zero-frequency inverse, while stable-filter boundary terms are summable. Diagonalization in common graph modes gives the stated rates. Sensor noise requires this asymptotic argument and is not part of the exact noiseless increment identity.
+
+\paragraph{Inflation and contrasts.}
+Expand the variance of a block mean as $b^{-2}\sum_{s,u}(G_{s-u})_{ii}$. There are $b-h$ pairs at each positive lag, giving $f_i(b)$. Summing the AR(1) geometric series gives its closed form. The standardized Gaussian tail gives the fixed-block failure probability. For arbitrary dates, retain their actual lag differences; adaptively selected sample means need not have this unconditional Gaussian law. Expanding a simultaneous contrast mean similarly gives
+\[
+\frac1{n^2}\sum_{s,u=1}^n
+\big((G_{s-u})_{ii}+(G_{s-u})_{jj}-(G_{s-u})_{ij}-(G_{s-u})_{ji}\big)+\frac{2r}{n}.
+\]
+Covariance summability yields Proposition~\ref{prop:contrast}. Restricting observations marginalizes the unobserved field, so the contemporaneous covariance is $Q_{SS}$. Conditioning on all its coordinates would instead use the restricted full precision. Staggered dates require the same sum with their selected cross lags.
+
+\paragraph{The exact AR(2) schedules.}
+Odd-lag covariances vanish and $G_{2h}=a^hV\left(\begin{smallmatrix}1&\rho\\\rho&1\end{smallmatrix}\right)$. Under AABB the two within-arm readings have zero covariance; the only nonzero cross-arm covariances are the two lag-two pairs, each $a\rho V$. The symmetric GLS estimates are the per-arm averages, giving contrast variance $V+r-a\rho V$. Under ABAB each arm's readings have covariance $aV$ and all cross-arm lags are odd, giving $V+r+aV$. The two-arm correct-selection probability is $\Phi(\Delta/\sqrt{\Var(\hat\mu_A-\hat\mu_B)})$ for $\Delta>0$.
+
+\paragraph{Iid pooling (Theorem~\ref{thm:a1}).}
+Assume centered conditionally $\sigma^2$-sub-Gaussian independent observation noise. Use $b(n)=\sqrt{2\sigma^2\ell/n}$ and infinite arm or pooled bounds when their count is zero. No separate forced initialization of all arms is required. Arm and pooled noise sums are martingales at their predictable selection times. A tail bound and union over at most $N+M$ processes and $T$ counts gives the advertised event. A component's average sampled mean lies in $[v_c-\varepsilon_c,v_c]$, so the pooled upper bound is optimistic. If arm $i$ is pulled, its gap obeys $\Delta_i\le2b(n_i)$, giving at most $1+8\sigma^2\ell/\Delta_i^2$ pulls. If component $c$ is selected and $\Gamma_c>\varepsilon_c$, then $\Gamma_c\le\varepsilon_c+2b(N_c)$, giving at most $1+8\sigma^2\ell/(\Gamma_c-\varepsilon_c)^2$ component pulls. Each costs at most $\Gamma_c+\varepsilon_c$. Taking the smaller of the arm and component regret bounds proves A1. Bernoulli KL versions in the simulations use their own radii; A1 is the Gaussian/sub-Gaussian statement.
+
+\paragraph{Path--clique information program.}
+Take the homogeneous component mean to be zero and the unchanged outside optimum to be $\Delta$. An alternative raises some component coordinate to $\Delta$ while satisfying its energy budget. Its Gaussian KL cost is $\sum_j n_j\nu_j^2/(2\sigma^2)$. Clipping an alternative to $[0,\Delta]$ cannot increase Dirichlet energy or this cost; division by $\Delta$ gives $F_L^*$. The change-of-measure constraints imply total component sampling at least $2\sigma^2\log T/(\Delta^2F_L^*)$ for a uniformly efficient policy on this restricted class.
+
+For the normalized clique, $L=I-\mathbf1\mathbf1^\top/m$. Every $e_i$ has energy $1-1/m\le1$, so $F_L^*\le\max_p\min_i p_i=1/m$; uniform weights give the reverse bound since $z_i=1$. For the path, give every edge conductance $(m-1)/2$. Both graphs have resistance diameter two. Set half the design weight at each endpoint. For an interior $i$ with $z_i=1$, let $d_1,d_m$ be the resistances from $i$ to the endpoints, so $d_1+d_m=2$. Cauchy--Schwarz on each path segment gives
+\[
+z^\top Lz\ge\frac{(1-z_1)^2}{d_1}+\frac{(1-z_m)^2}{d_m}
+\ge\frac{(2-z_1-z_m)^2}{2}.
+\]
+At energy at most one, $(z_1+z_m)/2\ge1-1/\sqrt2$, and $(z_1^2+z_m^2)/2\ge(1-1/\sqrt2)^2$. An endpoint choice of $i$ gives an even stronger bound. This completes the claimed separation without an external supplement.
+
+\paragraph{Dependent pooling (Theorem~\ref{thm:b1}).}
+On Theorem~\ref{thm:conf}'s event, $w^\top\mu\ge v_c-\varepsilon_c$ for every component weight. Both terms in $U_c$ therefore upper-bound $v_c$. If $c$ is selected, its optimized weighted term is at least $\mu^\star$, yet at most $v_c+\varepsilon_c+2\beta_t\|w\|_{J_t^{-1}}$ for every $w$. Rearranging gives the rejection condition. For independent AR(1) arms, the scalar filter's affine mean coefficient after a reading stays in $[-1,0]$. Across a gap $h\ge1$, prediction multiplies it by $\varphi^h$; the next observation's mean coefficient is at least $1-\varphi$. Its conditional variance is at most $V+r$, proving the stated scalar information increment. This argument does not extend unchanged to correlated arms.
+
+\paragraph{Scalar nuisance intervals.}
+For $\lambda=0$, let $G=\I_t$, $J=\alpha I+G$, $q=G\mu+W$. A coordinate Gaussian-mixture bound and union with $\delta_i=\delta/N$ give, simultaneously in $t,i$,
+\[
+|W_i|\le h_i:=\sqrt{2J_{ii}\log\big(\sqrt{J_{ii}/\alpha}/\delta_i\big)}.
+\]
+If valid intervals have centers $m_j$ and half-widths $\rho_j$, set
+\[
+\widetilde m_i=\frac{q_i-\sum_{j\ne i}G_{ij}m_j}{J_{ii}},\qquad
+\widetilde\rho_i=\frac{h_i+\alpha B+\sum_{j\ne i}|G_{ij}|\rho_j}{J_{ii}}.
+\]
+The score identity bounds $|\widetilde m_i-\mu_i|$ by $\widetilde\rho_i$ when $|\mu_i|\le B$. Intersect with current intervals, initialized at $[-B,B]$ or a supplied valid mean range. Repetition preserves truth on the same event. Cross-coordinate nuisance terms explain the possible conservatism; fitted likelihoods are outside this proof.
+
+\section{Protocols and reproducibility}\label{app:data}
+
+\paragraph{KuaiRec static.} The small matrix has 1,411 users and 3,327 videos; the larger matrix has 7,176 users and 10,728 videos. Simulator means are $\min(\text{watch ratio},5)/5$. Graphs are union $k$-nearest-neighbor graphs, $k\in\{5,10,20\}$, with Laplacians scaled to mean degree one. Main item policies use $k=10$, a 20-way spectral partition, and degree-preserving nulls. Oracle widths equal true component ranges. Energy widths use a truth-derived energy radius and effective resistance. Population quantiles are fit on separate tuning users. User quantiles additionally use 300 paid noisy warm-up readings. Diagnostic width coverage is component-marginal, and the user diagnostic conditions on the true level, so neither is a joint $1-\delta$ certificate. All main paired intervals average three subsets within each of 120 users before 2,000 bootstrap resamples; they condition on the shared source matrix, graph fit, and tuning population. Earlier 30-user/60-instance results are nested exploratory evidence, not independent replication. Feature baselines use row-normalized leakage-free I-mf embeddings $X$ (projected to $d\in\{16,64\}$ principal directions, plus an intercept); linear TS and LinUCB use a unit ridge prior; the hybrid prior is Gaussian over item means with mean 0.18 and covariance $\tau^2I+4\tau^2XX^\top/d$, noise variance 0.25 and marginal Thompson sampling. Each family's hyperparameters were chosen on 30 tuning users before the 360 test instances were run.
+
+\paragraph{Chronological KuaiRec.} The panel spans 63 days. Cutoffs 30, 41, and 52 each precede an 11-day test window; five disjoint panels per cutoff use prefix eligibility, requiring at least ten plays per fit day. Prefix co-engagement uses non-evaluation users. Development uses days 20--30 after fitting days 1--19, but its panel eligibility and graph are conditioned on the day-30 cutoff; it is a development-cohort approximation, not an online eligibility simulation. Policy rewards are transformed daily aggregates, with synthetic sensor standard deviation 0.05. Policies select before that day's feedback and receive only selected nonempty cells. Missing-cell scoring is the available-video same-day median. Loss is oracle logit completion-rate difference per day per selected slot. Bootstrap sensitivity resamples the three windows, then panels within windows, 4,000 times, after averaging five policy seeds. Shared shocks and fitting data remain dependencies. Saved trajectories determine the reported outputs; a source implementation's process-dependent hashed policy seed means regenerated trajectories can differ across processes.
+
+\paragraph{Wikipedia.} Exploratory inflation panels contain one 150-article domain and six communities of 25 articles, with weekday adjustment, 2022--2023 fitting, and 2024--2025 testing. Article selection and hyperlinks from a later snapshot make their graph conclusions retrospective. Coverage worlds use 30 articles, six components, AR(7), $T=730$, slate sizes five/ten, and 100 worlds per learner--policy--noise cell: 4,800 trajectories in total. Clean theory comparisons here use centered Gaussian innovations; empirical and weekly block residual resampling are separately audited stresses. Historical policy panels each have 24 astronomy or football articles. They use pre-2024 hyperlinks, 2024 fitting/development and full-year refitting, and 365 masked days in 2025 at budgets one/five; no full-field refresh occurs after testing begins. Five stochastic policy seeds share the same field. Date-block intervals at lengths 7, 14, and 28 are descriptive sensitivities. Earlier half-year runs are nested in these dates.
+
+\paragraph{OBD.} Uniform-random logs cover 24--30 November 2019: All, Men, and Women, with 80, 34, and 46 items. Static simulations use All/Women, all logged positions pooled, days 1--3 construction, and days 4--7 estimated rates. Four-dimensional audience summaries and attribute metadata are retrospective features. Means ignore contextual and position heterogeneity. The real-log Men position-1 pilot uses three fit days, day four development, and the final 72 test hours. It retains the calendar and propensity $1/34$, rather than compressing to matching events. Stochastic policy seeds measure algorithm variation on one log, not uncertainty over independent platforms. Empirical prefix widths cannot certify future levels under drift. Daily click residual lag-one correlations are negative (approximately $-0.14$ to $-0.22$); finer bins are near zero, so OBD does not verify persistent Gaussian click shocks at this resolution.
+
+\paragraph{Reproducibility scope.} The experiment snapshot comprises the completed trajectories and exact-information outputs reported above. Confidence rates use Wilson intervals over independent simulated worlds; static comparisons use user clusters; historical comparisons condition on their recorded panels. Figure data and generation code accompany the manuscript source, with checksums linking the numeric snapshot to saved experiment tables. No claim relies on an unrun larger factorial confirmation. Public raw datasets retain their source terms; reconstructing logs is separate from rebuilding manuscript figures.
+
+\section{Additional results}\label{app:extra}
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lrrr}
+\toprule
+Graph & Energy quotient & Taste corr. & Smoothing loss \\
+\midrule
+Item factorization & 0.76 / 0.96 & 0.046 & 0.117 / 0.019 \\
+Item co-engagement & 1.10 / 1.30 & 0.034 & 0.131 / 0.037 \\
+Item category/tag & 0.91 / 0.99 & 0.010 & 0.099 / 0.079 \\
+User co-engagement & 0.65 / 0.79 & 0.020 & 0.284 / 0.291 \\
+User profile/location & 0.95--0.99 & 0.002--0.007 & 0.31--0.35 \\
+\bottomrule
+\end{tabular}
+\caption{KuaiRec alignment, $k=10$. Slash entries are real / rewired. Energy quotients normalize by a random-pair expectation; taste correlations use double-centered means. Smoothing loss is best-choice value lost under $(I+10L)^{-1}$. Small global energy need not preserve the best item.}\label{tab:align}
+\end{table}
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrr}
+\toprule
+Panel & Days & Observed & Lag-one & Full AR(20) \\
+\midrule
+One domain & 7 & 5.0 & 3.4 & 4.5 \\
+One domain & 28 & 17.1 & 4.6 & 13.2 \\
+Six communities & 7 & 5.3 & 4.4 & 5.0 \\
+Six communities & 28 & 17.8 & 7.4 & 15.3 \\
+\bottomrule
+\end{tabular}
+\caption{Retrospective Wikipedia block-mean inflation: weekday-adjusted medians over 150 articles per panel. Fits use 2022--2023; observations use 2024--2025.}\label{tab:inflation}
+\end{table}
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrr}
+\toprule
+2025 Wikipedia, loss per slot ($k=5$) & Astronomy & Football \\
+\midrule
+Iid TS & 0.05395 & 0.22025 \\
+Joint UCB & \textbf{0.04039} & 0.14552 \\
+EWMA & 0.04143 & 0.23209 \\
+Temporal greedy & 0.05438 & \textbf{0.13017} \\
+Static & 0.05345 & 0.22154 \\
+\bottomrule
+\end{tabular}
+\caption{Full-year historical attention: current-oracle $\log(1+\mathrm{views})$ loss per selected slot. Astronomy is competitive with EWMA; football favors temporal greedy.}\label{tab:wiki}
+\end{table}
+
+\paragraph{Geometry at finite budgets.} In a controlled two-component experiment, graph-design elimination on the normalized path has mean regret 46.08 versus 191.83 for ordinary UCB at component size 256. At size 16 it has 40.32 versus 10.81. On the size-256 clique its regret is 216.65. The information separation does not remove finite-budget pilot overhead or guarantee dominance for every graph. The experiment uses homogeneous component means, a supplied energy allowance, and a capped design policy with fallback.
+
+\paragraph{Objective and exploration controls.} The fixed 100-arm AR(20) truth benchmark has 32 paired worlds per tested configuration. Full-state joint UCB leads iid UCB in current-oracle loss (1.248 versus 1.397), while iid UCB leads in mean regret (0.668 versus 0.686). Known-mean AR(1) controls run 40 worlds through 30,000 rounds with 5,000 burn-in. At persistence 0.99, predictive sampling loses 0.1495 per round, lifetime knowledge gradient 0.1659, and two-step lookahead 0.1997. At persistence 0.9, two-step lookahead loses 0.4334, lifetime knowledge gradient 0.4574, and predictive sampling 0.5669. These controls reject a universal ordering of the exploration rules; they do not prove optimality of any tested policy.
+
+\end{document}

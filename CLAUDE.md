@@ -6,6 +6,8 @@ Read this first in a new session. Last updated 18 October 2026.
 
 The authors can only attend conferences in the United States, and WWW 2027 is in Dublin, so the WWW submission was dropped on its abstract deadline. **The target is now KDD 2027, research track, cycle 2** (San Jose, 1–5 August 2027; deadline "February 2027", exact day not yet published; 8 content pages plus references and an unlimited appendix). Everything for it is under [kdd/](kdd/README.md): the converted draft, the 2024–2026 related-work index, and new experiment proposals. The WWW dates below are kept for history; the 20 October B1 go/no-go moves to the KDD timeline in `kdd/README.md`.
 
+**Practice round (22 October 2026):** a 6-page IEEE version for CISS 2027 (Johns Hopkins, Baltimore, 24–26 March 2027; deadline expected early-to-mid December 2026) and a CISS 2022–2025 related-work index are under [ciss/](ciss/README.md). CISS papers go into IEEE Xplore, so check KDD's dual-submission rule before submitting the same work to both.
+
 ## Goal
 
 The research studies bandits whose arms are dependent:
